@@ -57,7 +57,11 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         t = time.perf_counter()
         db = GraphStore(store_path)
         app.state.db = db
-        app.state.svc = UnlockService(db)
+        try:
+            app.state.svc = UnlockService(db)
+        except Exception:
+            db.close()  # release the single-writer lease before failing
+            raise
         app.state.startup_seconds = round(time.perf_counter() - t, 3)
         try:
             yield
@@ -95,9 +99,9 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         return svc(req).station_list()
 
     @app.get("/api/network/stations/{station_id}")
-    def station(req: Request, station_id: str, scenario_id: str | None = None):
-        _check_id(station_id); scenario_id and _check_id(scenario_id)
-        return svc(req).station_graph(station_id, scenario_id)
+    def station(req: Request, station_id: str, scenario_id: str | None = None, candidate_lift: str | None = None):
+        _check_id(station_id); scenario_id and _check_id(scenario_id); candidate_lift and _check_id(candidate_lift)
+        return svc(req).station_graph(station_id, scenario_id, candidate_lift)
 
     @app.get("/api/network/lifts/{lift_id}")
     def lift(req: Request, lift_id: str, scenario_id: str | None = None):
@@ -155,6 +159,10 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         data = svc(req).explain_pair(pair_id, scenario_id, candidate_lift)
         data["narrative"] = X.explain_pair(data)
         return data
+
+    @app.get("/api/scenarios/{scenario_id}/with-candidate")
+    def with_candidate(req: Request, scenario_id: str, candidate_lift: str):
+        return svc(req).counts_with(_check_id(scenario_id), _check_id(candidate_lift))
 
     @app.post("/api/scenarios/{scenario_id}/export")
     def export(req: Request, scenario_id: str):

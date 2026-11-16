@@ -22,3 +22,4 @@ frontend/playwright-report/
 # misc
 *.log
 .DS_Store
+database/e2e/

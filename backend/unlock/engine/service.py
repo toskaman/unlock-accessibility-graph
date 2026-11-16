@@ -106,7 +106,8 @@ class UnlockService:
                         "out_of_scope": c.get("OUT_OF_SCOPE", 0)})
         return out
 
-    def station_graph(self, station_id: str, scenario_id: str | None = None) -> dict[str, Any]:
+    def station_graph(self, station_id: str, scenario_id: str | None = None,
+                      candidate_lift: str | None = None) -> dict[str, Any]:
         if station_id not in self.stations:
             raise NotFound(station_id)
         rows = self.db.query("""
@@ -121,6 +122,10 @@ class UnlockService:
             RETURN l.id AS lift, sp.id AS space, e.derivation AS derivation, e.side_text AS side_text
             ORDER BY lift, space""", {"id": station_id})
         state, scenario = self._scenario_state(scenario_id)
+        if candidate_lift:
+            if candidate_lift not in self.lifts:
+                raise NotFound(candidate_lift)
+            state[candidate_lift] = E.AVAILABLE
         lifts = [{"id": l.id, "name": l.name, "description": l.description, "baseline": l.baseline.value,
                   "raw_state": l.raw_state, "state": state[l.id].value,
                   "overridden": l.id in scenario.get("overrides", {})}
@@ -133,7 +138,8 @@ class UnlockService:
         return {"station": {"id": station_id, "name": s["name"], "lon": s["lon"], "lat": s["lat"],
                             "zone": {"id": s["zone_id"], "name": s["zone_name"]}, "lines": s["lines"]},
                 "spaces": spaces, "lifts": lifts, "serves": edges, "pairs": pairs,
-                "counts": ev.counts, "baseline_counts": base.counts, "scenario_id": scenario_id}
+                "counts": ev.counts, "baseline_counts": base.counts, "scenario_id": scenario_id,
+                "candidate_lift": candidate_lift}
 
     def _pair_view(self, p: Pair, r, base) -> dict[str, Any]:
         return {"id": p.id, "a": p.a, "b": p.b, "a_name": self.space_names[p.a]["name"], "b_name": self.space_names[p.b]["name"],
@@ -252,6 +258,18 @@ class UnlockService:
             "lost": len(lost), "gained": len(gained),
             "json": json.dumps({k: result[k] for k in ("baseline_counts", "scenario_counts", "transitions", "overrides")}, sort_keys=True)})])
         return result
+
+    def counts_with(self, scenario_id: str | None, candidate_lift: str) -> dict[str, Any]:
+        """Network-wide counts if ``candidate_lift`` is restored on top of the scenario (not persisted)."""
+        if candidate_lift not in self.lifts:
+            raise NotFound(candidate_lift)
+        state, _ = self._scenario_state(scenario_id)
+        before = I.evaluate(self.pairs, state)
+        state[candidate_lift] = E.AVAILABLE
+        after = I.evaluate(self.pairs, state)
+        return {"scenario_id": scenario_id, "candidate_lift": candidate_lift, "scenario_counts": before.counts,
+                "with_candidate_counts": after.counts, "baseline_counts": self.baseline.counts,
+                "gain": len(after.confirmed()) - len(before.confirmed())}
 
     def rank(self, scenario_id: str | None, limit: int = 25) -> dict[str, Any]:
         state, sc = self._scenario_state(scenario_id)
