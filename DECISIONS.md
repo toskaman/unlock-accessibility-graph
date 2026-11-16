@@ -1,0 +1,16 @@
+# Decisions
+
+| # | Date | Decision | Why | Alternatives rejected |
+|---|---|---|---|---|
+| D1 | 2026-11-16 | Use SNCF G&C NeTEx + lift status as the lift layer | Public, ODbL, 100 % id join lift↔status, three-valued status, quay-level assessments | IDFM elevator data (needs key); GTFS pathways (no lifts) |
+| D2 | 2026-11-16 | Derive lift→space edges from lift location text, label each edge | Only available topology; labelling keeps it honest and auditable | Inventing pathways; geometric proximity |
+| D3 | 2026-11-16 | Pairs = platform↔platform and platform↔exit inside a station | Matches what a lift actually enables; bounded and explainable | All node pairs; cross-station journeys (no platform↔line mapping in open data) |
+| D4 | 2026-11-16 | Pilot = all SNCF stations in IDF (401), spotlight Juvisy-sur-Orge | Data-dense, bounded, real current KO lifts to rank | A single famous hub chosen for recognisability |
+| D5 | 2026-11-16 | Single-file `.rl` store, one owner thread, uvicorn workers=1 | Relate is thread-affine with a single-writer lease | Multi-worker server, separate DB |
+| D6 | 2026-11-16 | Cache minimal lift sets per pair after one Relate traversal; evaluate scenarios in pure Python | ms-level scenarios; the traversal and evidence still come from Relate; cache rebuilt from the store | Re-running a 3 s traversal per click |
+| D7 | 2026-11-16 | "Blocked" when every modeled route needs an unavailable lift, with explicit scope text | Faithful to modeled criteria; UI states that undocumented ramps could exist | Calling it UNVERIFIED (would hide real outage effects) |
+| D8 | 2026-11-16 | Freshness displayed, not folded into classes | Keeps replays reproducible; staleness still visible | Downgrading stale snapshots to UNVERIFIED |
+| D9 | 2026-11-16 | No composite score; rank by Δ confirmed pairs only, exact k-repair planner | No verifiable cost/ridership data | Weighted scores |
+| D10 | 2026-11-16 | Runtime AI optional and number-validated | Core must work without keys; prevents fabricated figures | Chatbot over raw data |
+| D11 | 2026-11-16 | Commit normalized snapshot + snapshot store (ODbL) | Judges can run and inspect offline in seconds | Requiring 130 MB download |
+| D12 | 2026-11-16 | Git author set to a neutral local identity | Avoid publishing the entrant's e-mail before they choose an identity | — |

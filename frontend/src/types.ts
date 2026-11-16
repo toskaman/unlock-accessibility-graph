@@ -54,6 +54,7 @@ export interface Analysis {
   input_hash: string; overrides: Record<string, LiftState>; baseline_counts: Counts; scenario_counts: Counts;
   lost_confirmed: string[]; gained_confirmed: string[]; transitions: Record<string, number>;
   affected_stations: string[]; lost_by_station: Record<string, number>;
+  relate_crosscheck: { all_match: boolean; stations: { station_name: string; engine: number; cypher: number; match: boolean }[] };
 }
 
 export interface Candidate {

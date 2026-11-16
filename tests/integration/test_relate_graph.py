@@ -172,3 +172,11 @@ def test_connection_is_thread_affine_but_store_serialises(store):
     with cf.ThreadPoolExecutor(8) as ex:
         res = list(ex.map(lambda _: store.query("MATCH (l:Lift) RETURN count(l) AS n")[0]["n"], range(40)))
     assert set(res) == {7}
+
+
+def test_cypher_crosscheck_agrees_with_engine(store):
+    svc = UnlockService(store)
+    for ov in ({"L3": "UNAVAILABLE"}, {"L1": "UNAVAILABLE", "L5": "UNKNOWN"}, {"L6": "AVAILABLE"}):
+        sc = svc.create_scenario("x", ov)
+        cc = svc.analyze(sc["id"])["relate_crosscheck"]
+        assert cc["all_match"] and cc["stations"]

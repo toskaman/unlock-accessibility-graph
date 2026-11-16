@@ -1,0 +1,120 @@
+{
+ "gtfs": {
+  "files": [
+   "agency.txt",
+   "attributions.txt",
+   "booking_rules.txt",
+   "calendar.txt",
+   "calendar_dates.txt",
+   "object_codes_extension.txt",
+   "pathways.txt",
+   "routes.txt",
+   "shapes.txt",
+   "stop_times.txt",
+   "stops.txt",
+   "ticketing_deep_links.txt",
+   "transfers.txt",
+   "trips.txt"
+  ],
+  "has_levels_txt": false,
+  "stops": 53436,
+  "stops_by_location_type": {
+   "0": 35515,
+   "1": 15406,
+   "2": 2515
+  },
+  "wheelchair_boarding_location_type_0": {
+   "1": 19959,
+   "0": 1331,
+   "2": 14225
+  },
+  "pathways": 5034,
+  "pathway_modes": {
+   "1": 5034
+  },
+  "elevator_pathways_mode_5": 0,
+  "calendar_span": [
+   "20261113",
+   "20261215"
+  ]
+ },
+ "sncf": {
+  "netex_published": "2026-11-15T19:09:31Z",
+  "stop_places": 2800,
+  "stop_places_idf": 401,
+  "stop_places_missing_coords": 0,
+  "quays": 6970,
+  "lifts": 1645,
+  "lift_ids_unique": 1645,
+  "status_rows": 2547,
+  "status_ids_unique": 2547,
+  "status_values": {
+   "OK": 2298,
+   "KO": 141,
+   "INCONNU": 108
+  },
+  "lift_status_join": {
+   "numerator": 1645,
+   "denominator": 1645,
+   "pct": 100.0
+  },
+  "status_rows_not_lifts_in_netex": 902,
+  "status_gareid_join": {
+   "numerator": 2542,
+   "denominator": 2547,
+   "pct": 99.8
+  },
+  "quay_step_free_values": {
+   "INACCESSIBLE": 4908,
+   "ACCESSIBLE": 2062
+  },
+  "quay_lift_free_values": {
+   "ACCESSIBLE": 6970
+  }
+ },
+ "pilot_idf": {
+  "stations": 401,
+  "lifts": 588,
+  "quays": 1280,
+  "lifts_two_resolved_ends": {
+   "numerator": 338,
+   "denominator": 588,
+   "pct": 57.5
+  },
+  "lifts_one_resolved_end": {
+   "numerator": 249,
+   "denominator": 588,
+   "pct": 42.3
+  },
+  "serves_derivations": {
+   "NAMED_SPACE": 526,
+   "UNSPECIFIED_END": 251,
+   "VOIE_TOKEN": 466,
+   "QUAI_NUMBER": 72,
+   "NAME_VOIE_TOKEN": 3
+  },
+  "space_roles": {
+   "UNRESOLVED_PLATFORM": 81,
+   "UNSPECIFIED": 251,
+   "EXIT": 152,
+   "PLATFORM": 480,
+   "CONNECTOR": 103,
+   "UNRESOLVED": 15,
+   "PRIVATE": 10
+  },
+  "unmatched_track_tokens": 60,
+  "station_to_idfm_zone": {
+   "numerator": 401,
+   "denominator": 401,
+   "pct": 100.0
+  },
+  "station_zone_name_score_lt_0_5": 7,
+  "status_states": {
+   "AVAILABLE": 565,
+   "UNAVAILABLE": 16,
+   "UNKNOWN": 7
+  },
+  "zones": 392,
+  "lines_non_bus": 51
+ }
+}

@@ -156,3 +156,22 @@ def lift_evidence(db: GraphStore, lift_id: str, snapshot_id: str) -> dict[str, A
 def space_evidence(db: GraphStore, space_id: str) -> dict[str, Any] | None:
     rows = db.query(Q_SPACE_EVIDENCE, {"id": space_id})
     return rows[0] if rows else None
+
+
+# Independent re-computation of "pairs with at least one fully available route" entirely in Cypher,
+# with the scenario overrides passed as a map parameter. Used to cross-check the engine per station.
+Q_CROSSCHECK = """
+MATCH (st:Station {id: $sid})-[:HAS_SPACE]->(a:Space) WHERE a.role IN $roles
+MATCH (st)-[:HAS_SPACE]->(b:Space) WHERE b.role IN $roles AND a.id < b.id AND NOT (a.role = 'EXIT' AND b.role = 'EXIT')
+MATCH p = ACYCLIC (a)-[:SERVES]-{2,10}(b)
+WITH a, b, [n IN nodes(p) WHERE n:Lift] AS lifts
+WITH a, b, [l IN lifts | coalesce($ovr[l.id], head([(l)-[:HAS_STATUS]->(o:StatusSnapshot {snapshot_id: $snap}) | o.state]), 'UNKNOWN')] AS states
+WITH a, b, max(CASE WHEN all(s IN states WHERE s = 'AVAILABLE') THEN 1 ELSE 0 END) AS ok
+RETURN count(*) AS pairs_with_route, sum(ok) AS pairs_with_available_route
+"""
+
+
+def crosscheck(db: GraphStore, station_id: str, overrides: dict[str, str], snapshot_id: str) -> dict[str, int]:
+    rows = db.query(Q_CROSSCHECK, {"sid": station_id, "roles": list(ANCHOR_ROLES), "ovr": overrides, "snap": snapshot_id})
+    r = rows[0] if rows else {"pairs_with_route": 0, "pairs_with_available_route": 0}
+    return {"pairs_with_route": r["pairs_with_route"], "pairs_with_available_route": r["pairs_with_available_route"] or 0}

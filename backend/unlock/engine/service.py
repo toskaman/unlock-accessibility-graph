@@ -236,7 +236,16 @@ class UnlockService:
         analysis_id = f"ana-{input_hash}"
         affected_stations = sorted({self.pairs_by_id[p].station_id for p in lost + gained} |
                                    {self.lifts[l].station_id for l in sc["overrides"]})
+        checks = []
+        for st in affected_stations:
+            local = self.pairs_by_station.get(st, [])
+            py = sum(1 for p in local if p.routes and any(I.route_state(r, state) == E.AVAILABLE for r in p.routes))
+            cy = G.crosscheck(self.db, st, sc["overrides"], self.snapshot["id"])
+            checks.append({"station_id": st, "station_name": self.stations[st]["name"], "engine": py,
+                           "cypher": cy["pairs_with_available_route"], "match": py == cy["pairs_with_available_route"]})
         result = {
+            "relate_crosscheck": {"description": "Pairs with at least one fully available route, recomputed in a single Cypher query with the overrides as a map parameter",
+                                  "stations": checks, "all_match": all(c["match"] for c in checks)},
             "analysis_id": analysis_id, "scenario_id": scenario_id, "scenario_name": sc.get("name"),
             "algorithm_version": ALGORITHM_VERSION, "snapshot": self.freshness(), "input_hash": input_hash,
             "overrides": sc["overrides"],

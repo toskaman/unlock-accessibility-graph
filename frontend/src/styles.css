@@ -231,3 +231,6 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 .deps { font-size: 14px; margin-top: 6px !important; }
 .deps strong { color: var(--ko); }
 .deps.repair strong { color: var(--ok); }
+.xcheck { font-size: 13px; margin: 8px 0 0; padding: 6px 8px; border-radius: 6px; }
+.xcheck.ok { background: var(--ok-bg); color: var(--ok); }
+.xcheck.bad { background: var(--ko-bg); color: var(--ko); }

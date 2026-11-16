@@ -322,6 +322,12 @@ export default function App() {
               })}
             </ul>
           )}
+          {view !== "baseline" && analysis?.relate_crosscheck && (
+            <p className={`xcheck ${analysis.relate_crosscheck.all_match ? "ok" : "bad"}`}>
+              Cross-checked in Cypher: {analysis.relate_crosscheck.stations.map((c) => `${c.station_name} ${c.engine} = ${c.cypher}`).join(" · ")}
+              {analysis.relate_crosscheck.all_match ? " — engine and Relate query agree." : " — MISMATCH, see /api/debug/queries."}
+            </p>
+          )}
           {summary && (
             <p className="muted small">
               {summary.pairs.TOTAL} modeled station connections across Île-de-France; {summary.coverage.numerator} ({Math.round((summary.coverage.ratio || 0) * 100)}%) have at least one lift route in the source data.

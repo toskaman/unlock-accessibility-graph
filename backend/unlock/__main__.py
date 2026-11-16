@@ -43,6 +43,14 @@ def main() -> None:
         with GraphStore(a.store, read_only=True) as db:
             print(json.dumps(db.counts(), indent=1))
     if a.command == "serve":
+        store = Path(a.store)
+        if not store.exists():
+            from .config import NORMALIZED_DIR
+            from .db import GraphStore
+            from .ingest.load import run_import
+            print(f"No store at {store}; building it from {NORMALIZED_DIR / 'graph_input.json'} …")
+            with GraphStore(store) as db:
+                run_import(db)
         import uvicorn
         from .api.app import create_app
         uvicorn.run(create_app(Path(a.store)), host=a.host, port=a.port, workers=1)
