@@ -3,7 +3,7 @@
   python -m unlock fetch        download official source snapshots (data/raw)
   python -m unlock normalize    build data/normalized/graph_input.json
   python -m unlock import       import into the Relate store (idempotent)
-  python -m unlock build        normalize + import
+  python -m unlock build        normalize (if data/raw exists) + import
   python -m unlock serve        run the API (+ built frontend) on 127.0.0.1:8000
   python -m unlock stats        print graph counts from the store
 """
@@ -30,9 +30,16 @@ def main() -> None:
     if a.command == "fetch":
         subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_sources.py")], check=True)
     if a.command in ("normalize", "build"):
-        from .ingest.normalize import build
-        rep = build(with_gtfs=not a.no_gtfs)
-        print(json.dumps(rep["counts"], indent=1))
+        from .config import RAW_DIR
+        if (RAW_DIR / "sncf" / "SNCF_GC_accessibilite_gares.xml").exists():
+            from .ingest.normalize import build
+            rep = build(with_gtfs=not a.no_gtfs)
+            print(json.dumps(rep["counts"], indent=1))
+        elif a.command == "normalize":
+            sys.exit("No raw snapshots in data/raw — run `python -m unlock fetch` first.")
+        else:
+            print("data/raw not present: importing the committed snapshot data/normalized/graph_input.json "
+                  "(run `python -m unlock fetch` to refresh from the publishers).")
     if a.command in ("import", "build"):
         from .db import GraphStore
         from .ingest.load import run_import
