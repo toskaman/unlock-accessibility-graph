@@ -124,7 +124,7 @@ export function RegionMap({ stations, reach, journey, selected, onSelect }: Prop
 
   return (
     <div className="map-wrap region-map">
-      <div ref={box} className="map" role="img" aria-label="Map of the Île-de-France rail, metro and tram stations, coloured by step-free state. Use the journey form and lists for keyboard access." />
+      <div ref={box} className="map" role="region" aria-label="Map of the Île-de-France rail, metro and tram stations, coloured by step-free state. Use the journey form and lists for keyboard access." />
       {blank && <p className="map-note">Basemap tiles unavailable — stations are still plotted.</p>}
     </div>
   );

@@ -88,6 +88,9 @@ class NetworkService:
         self.boardable_platforms = len(plats)
         feed = self.db.query(Q_FEED)
         self.feed = feed[0]["f"] if feed else None
+        from . import feedwatch
+        hist = [r["o"] for r in self.db.query("MATCH (o:FeedObservation) RETURN o {.*} AS o ORDER BY o.observed_at")]
+        self.feed_watch = feedwatch.summary(hist)
         self.entries = {r["id"]: r["v"] for r in self.db.query(
             "MATCH (s:NStation) WHERE s.entries_per_day IS NOT NULL RETURN s.id AS id, s.entries_per_day AS v")}
         rp = self.db.query("MATCH (d:Dataset {key: 'idfm_validations_ferre'}) RETURN d.title AS title, d.url AS url, d.licence AS licence")
@@ -225,6 +228,7 @@ class NetworkService:
                                                     if o["announced_until"] and o["announced_until"] < now.date().isoformat())},
             "reconciliation": rec["counts"],
             "stale_messages": self.stale_effect(),
+            "feed_watch": self.feed_watch,
             "computed_ms": round((time.time() - t0) * 1000), "algorithm_version": REGION_ALGORITHM_VERSION,
             "method": "Ordered station pairs joined by a step-free journey (board and alight only at boardable, usable "
                       "platforms; changes inside a station). Exact reachability over the GTFS network stored in Relate.",
@@ -548,7 +552,12 @@ RETURN DISTINCT t.id AS id"""
         res = {"origin": self._st(origin), "view": view, "classes": classes,
                "counts": {"confirmed": len(c), "if_lifts_work": len(p), "cut": len(cut), "published": len(pub)},
                "entries_per_day": {"confirmed": round(ent(c)), "if_lifts_work": round(ent(p)), "cut": round(ent(cut))},
-               "origin_boardable": origin in self.net.station_platforms}
+               "origin_boardable": origin in self.net.station_platforms,
+               "origin_points": [{"point": k, "line": self.lines.get(self.net.platforms[k]["line"], {}).get("short_name"),
+                                  "state": states.get(k, E.OPEN)} for k in self.net.station_platforms.get(origin, [])],
+               "origin_outages": [{"text": o["text"], "operator": o["operator"], "first_reported": o["first_reported"]}
+                                  for o in self.outages.values() if o["station_id"] == origin
+                                  and not (view == "best" and o["operator"] == "SNCF_GC")]}
         if verify:
             t0 = time.time()
             cy, rounds = self.cypher_reach(origin, conf)

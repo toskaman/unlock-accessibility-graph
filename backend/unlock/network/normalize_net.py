@@ -54,7 +54,7 @@ def build_network_file(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR) 
                      "platforms_with_idfm_level": sum("access_level" in p for p in net["platforms"]),
                      "stations_with_entries": sum("entries_per_day" in s for s in net["stations"])}
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "network.json").write_text(json.dumps(net, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    (out_dir / "network.json").write_text(json.dumps(net, ensure_ascii=False, separators=(",", ":")), encoding="utf-8", newline="\n")
     return net
 
 
@@ -83,7 +83,7 @@ def build_outages_file(network: dict, raw_file: Path | None = None, out_dir: Pat
            "feed_non_lift_last_update": _non_lift_last_update(raw),
            "counts": {"lifts": len(outages), "messages": sum(o["messages"] for o in outages), **dict(sorted(q.items()))},
            "outages": outages}
-    (out_dir / "network_outages.json").write_text(json.dumps(doc, ensure_ascii=False, indent=0), encoding="utf-8")
+    (out_dir / "network_outages.json").write_text(json.dumps(doc, ensure_ascii=False, indent=0), encoding="utf-8", newline="\n")
     return doc
 
 

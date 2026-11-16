@@ -109,6 +109,8 @@ export type RegionOverview = {
   views: Record<RegionViewName, ViewSummary>;
   outages: { lifts: number; by_operator: Record<string, number>; messages: number; older_than_30_days: number; older_than_90_days: number; oldest_days: number | null; announced_end_passed: number };
   reconciliation: Record<string, number>;
+  feed_watch: { observations: number; first_observed: string; last_observed: string; identical_lift_content: number; identical_since: string; all_identical: boolean;
+    history: { observed_at: string; lifts: number; messages: number; feed_last_lift_update: string; feed_non_lift_last_update: string; lift_content_sha: string }[] } | null;
   stale_messages: { messages_contradicted: number; feed_confirmed: number; feed_confirmed_without_them: number; journeys_hidden: number };
   computed_ms: number; method: string;
 };

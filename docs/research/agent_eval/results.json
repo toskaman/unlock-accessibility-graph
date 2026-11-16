@@ -126,5 +126,81 @@
   "num_turns": 1,
   "exit_code": 0,
   "stderr_tail": ""
+ },
+ {
+  "task": "T6",
+  "mode": "graph",
+  "seconds": 15.5,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__check_journey"
+  ],
+  "answer": "Oui, trajet sans marche possible maintenant (vue « best », aucune panne d'ascenseur sur le trajet).\nLigne RER E de Rosa Parks jusqu'à Neuilly – Porte Maillot, c'est-à-dire Haussmann – Saint-Lazare puis Porte Maillot.\nChangement à Neuilly – Porte Maillot pour le RER C jusqu'à Juvisy. Les quais d'embarquement et de descente sont tous « OPEN », et les 2 tronçons ont été revérifiés dans le graphe.",
+  "correct": true,
+  "num_turns": 3,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T6",
+  "mode": "no_graph",
+  "seconds": 8.8,
+  "tool_calls": [],
+  "answer": "Je n'ai pas accès aux données en temps réel, donc je ne peux pas confirmer l'état des ascenseurs aujourd'hui.\nItinéraire probable : RER E depuis Rosa Parks jusqu'à Magenta, puis correspondance à Gare du Nord (RER D direction Melun ou Corbeil-Essonnes) jusqu'à Juvisy. Les deux gares et le RER D à Juvisy sont censés être accessibles, mais je n'ai pas vérifié l'état des ascenseurs de la correspondance.\nVérifiez avant de partir l'état des ascenseurs sur l'appli IDFM ou Île-de-France Mobilités, ainsi que sur SNCF Connect, car une panne à Magenta ou à Gare du Nord casserait le trajet.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T7",
+  "mode": "graph",
+  "seconds": 19.7,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__step_free_reach",
+   "mcp__unlock__station_overview"
+  ],
+  "answer": "Vue \"best\" (SNCF horaire + PRIM pour RATP), via `step_free_reach` :\n\n1. **30 stations** atteignables avec accès sans marche confirmé, soit environ 19 050 validations par jour. 473 autres ne le sont que « si les ascenseurs fonctionnent », et 3 sont coupées (Avenue Foch, Bécon-les-Bruyères, Chelles-Gournay).\n2. **Pourquoi si peu :** le RER B de La Croix de Berny est en doute. L'ascenseur du niveau -1 (quai RER B) vers le niveau 0 (sortie 2, rue Velpeau) est en panne depuis le 09/10/2026 (RATP).\n3. Tout trajet qui dépend de ce quai est donc seulement « conditionnel ». Les deux points d'embarquement T10 sont OUVERTS, et le point RER B est en DOUTE.\n4. Les 30 stations confirmées sont donc surtout celles du T10, car le quai RER B n'est pas confirmé. Les 506 stations sont le total accessible dans le réseau publié. Le décompte a été revérifié par une requête Cypher indépendante : 30 des deux côtés.",
+  "correct": false,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T7",
+  "mode": "no_graph",
+  "seconds": 10.9,
+  "tool_calls": [],
+  "answer": "- **Chiffre exact : je n'en ai pas.** Je n'ai pas de données en direct sur les ascenseurs. Tout nombre que j'avancerais serait inventé.\n- **Départ :** La Croix de Berny (RER B, branche Robinson) n'a pas, à ma connaissance, d'accès sans marche confirmé. Je n'ai pas pu le vérifier en direct. Si c'est le cas, le trajet commence déjà par un blocage.\n- **Pourquoi si peu :** le réseau est ancien. La plupart des gares RER et métro ont des escaliers, des quais étroits ou des écarts quai-train trop grands. Seules les lignes récentes (14, T-lignes) sont accessibles, et les ascenseurs tombent souvent en panne.\n- **Pour vérifier :** utiliser Vianavigo ou Île-de-France Mobilités avec le filtre PMR, et regarder l'état des ascenseurs sur Vianavigo (carte « ascenseurs en service »). Pour le RER B, demander aussi l'assistance Accès+ ou Veolia.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T8",
+  "mode": "graph",
+  "seconds": 17.4,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__region_overview"
+  ],
+  "answer": "Non, ne vous y fiez pas aujourd'hui : le flux PRIM est périmé pour les ascenseurs.\nDernière mise à jour des messages d'ascenseurs : 2026-10-09 09:53, soit 38 jours. Le contenu est resté identique sur 3 relevés pris le 16/11.\nSur les 264 ascenseurs SNCF que PRIM donne en panne, SNCF en déclare 235 en état de marche : 159 dans la catégorie « GHOST » et 76 dans des gares où tous les ascenseurs fonctionnent. 9 seulement sont confirmés, et 7 pannes SNCF manquent dans PRIM.",
+  "correct": true,
+  "num_turns": 3,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T8",
+  "mode": "no_graph",
+  "seconds": 6.1,
+  "tool_calls": [],
+  "answer": "Impossible de répondre : je n'ai ici aucun outil réseau ni shell, donc je n'ai pas pu interroger PRIM ni SNCF.\nJe n'ai donc ni date de dernière mise à jour des messages ascenseurs, ni nombre d'écarts, et je ne peux pas dire si le flux est fiable aujourd'hui (17/11/2026).\nPour comparer, il faut les deux flux : l'API PRIM (disponibilité des équipements) et l'open data SNCF (ascenseurs en panne). Donnez-moi un accès shell ou des exports, et je croise les deux.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
  }
 ]

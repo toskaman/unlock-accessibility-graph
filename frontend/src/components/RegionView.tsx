@@ -31,6 +31,7 @@ const EXAMPLES: [string, string, string, string][] = [
 ];
 const n = (x: number | undefined | null) => (x == null ? "—" : x.toLocaleString("en-GB"));
 const date = (s?: string | null) => (s ? new Date(s.length <= 19 ? s + "Z" : s).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
+const stamp = (s?: string | null) => (s ? new Date(s).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC" : "—");
 const days = (s?: string | null) => (s ? Math.floor((Date.now() - new Date(s.length <= 19 ? s + "Z" : s).getTime()) / 86400000) : null);
 
 function LineBadge({ name, color, text }: { name?: string | null; color?: string | null; text?: string | null }) {
@@ -254,6 +255,10 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
               other traffic messages were updated {date(ov.feed.last_other_update)}.</p>
             <p>SNCF's own hourly feed contradicts {n(ov.stale_messages.messages_contradicted)} of the {n(ov.outages.by_operator.SNCF_GC)} SNCF lifts it lists.
               Those stale messages alone hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</p>
+            {ov.feed_watch && ov.feed_watch.observations > 1 && (
+              <p className="tiny">UNLOCK fetched the feed {ov.feed_watch.observations} times between {stamp(ov.feed_watch.first_observed)} and {stamp(ov.feed_watch.last_observed)}:
+                the lift content was {ov.feed_watch.all_identical ? "identical every time" : `identical in the last ${ov.feed_watch.identical_lift_content}`} (same hash of all {n(ov.outages.messages)} messages).</p>
+            )}
           </section>
         )}
         <RegionMap stations={stations} reach={reach && !j ? { origin: reach.origin.id, classes: reach.classes } : null}

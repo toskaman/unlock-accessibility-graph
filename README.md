@@ -17,7 +17,7 @@ Every number on screen is computed on the graph and can be traced back to a sour
 
 > **What the data showed on 16 Nov 2026.** The PRIM traffic-information API lists **356 lifts out of service**
 > (1,047 messages) — and **none of those messages has changed since 9 October 2026**, while every other traffic
-> message is updated the same day. SNCF's own hourly lift feed reports **235 of the 264 SNCF lifts it lists as
+> message is updated the same day — three fetches over four hours returned byte-identical lift content. SNCF's own hourly lift feed reports **235 of the 264 SNCF lifts it lists as
 > working**. Those stale messages alone hide **96,340** step-free journeys from anyone who builds on the feed.
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
@@ -198,9 +198,11 @@ pip install -e ".[agent]"
 claude mcp add unlock -- python -m unlock mcp   # Claude Code (uses database/unlock.rl); other MCP clients alike
 ```
 
-**A real agent, with and without the graph.** Claude Code (model `claude-sonnet-5-5`) answered five planner
-questions twice. With the UNLOCK MCP tools: **5/5 correct**, every number taken from a tool. Without them: **0/5** —
-the model declined to answer each time. Details and transcripts: [docs/research/AGENT_EVAL.md](docs/research/AGENT_EVAL.md).
+**A real agent, with and without the graph.** Claude Code (model `claude-sonnet-5-5`) answered eight planner and
+rider questions (five station-level, three region-level). With the UNLOCK MCP tools: **7/8 correct**, every number
+taken from a tool (the miss gave the right count but only one of two causes). Without them: **0/8** — the model
+declined to answer each time. The region round exposed two tool-output gaps that were fixed and re-run; both rounds
+are published. Details and transcripts: [docs/research/AGENT_EVAL.md](docs/research/AGENT_EVAL.md).
 
 **Why the graph matters for the agent — measured.** On 22 hand-written outage reports
 (`data/eval/incidents.jsonl`, synthetic, developer-labelled), the graph-grounded resolver identifies the right
@@ -271,8 +273,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 76 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
-cd frontend && npx playwright test  # 7 end-to-end tests (station flow + region flow, on a copy of the store)
+pytest                              # 77 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
+cd frontend && npx playwright test  # 9 end-to-end tests, incl. an axe-core WCAG 2.1 AA scan (0 serious/critical) (station flow + region flow, on a copy of the store)
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 ```
 

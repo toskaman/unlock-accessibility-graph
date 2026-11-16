@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0 — 2026-11-17
+- **Feed watch**: every `fetch-outages` appends one observation (time, counts, last lift update, SHA-256 of all lift
+  messages) to `data/normalized/outage_feed_history.json`, imported as `(:FeedObservation)` nodes. Three fetches
+  (16 Nov 19:13, 22:33, 23:14 UTC) returned byte-identical lift content; the UI and MCP say so.
+- **Accessibility of UNLOCK itself**: axe-core WCAG 2.1 A/AA scan in e2e (region mode, journey result, station card,
+  station mode) — fixed colour contrast (`--ink-3`, amber text) and map containers (`role="region"` instead of
+  `img` around interactive canvases). 0 serious/critical violations.
+- **Agent eval extended to the region layer** (T6–T8): 7/8 with the graph across all tasks vs 0/8 without; round 1
+  exposed two tool-output gaps (`step_free_reach` now explains doubts at the origin, `region_overview` returns
+  engine-computed `key_facts`), fixed and re-run — both rounds published (AGENT_EVAL.md).
+- JSON outputs always written with LF line endings (Windows fetches no longer churn diffs).
+
 ## 0.4.0 — 2026-11-16
 - **Where can I go from here?** Click any station: the map recolours every station of Île-de-France by whether a
   wheelchair user can reach it step-free from there (confirmed / only if listed lifts work / cut by outages / no

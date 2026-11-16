@@ -123,6 +123,19 @@ def import_network(db: GraphStore, path: Path = NORMALIZED_DIR / "network.json")
     return {k: len(v) for k, v in rows.items()}
 
 
+def import_feed_history(db: GraphStore, path: Path = NORMALIZED_DIR / "outage_feed_history.json") -> int:
+    """One (:FeedObservation) per PRIM fetch — the evidence behind "the lift messages are frozen"."""
+    if not path.exists():
+        return 0
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    db.query("CREATE CONSTRAINT feedobservation_at IF NOT EXISTS FOR (n:FeedObservation) REQUIRE n.observed_at IS UNIQUE")
+    db.query("""UNWIND $rows AS r MERGE (o:FeedObservation {observed_at: r.observed_at})
+        SET o.lifts = r.lifts, o.messages = r.messages, o.feed_last_lift_update = r.feed_last_lift_update,
+            o.feed_non_lift_last_update = r.feed_non_lift_last_update, o.lift_content_sha = r.lift_content_sha,
+            o.source = 'PRIM line_reports, tag Ascenseur'""", {"rows": rows})
+    return len(rows)
+
+
 def import_outages(db: GraphStore, path: Path = NORMALIZED_DIR / "network_outages.json", resolver=None) -> dict | None:
     if not path.exists():
         return None

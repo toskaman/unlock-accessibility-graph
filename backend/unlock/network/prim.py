@@ -56,5 +56,5 @@ def fetch(dest: Path | None = None, page_size: int = 100, max_pages: int = 60) -
                          "file": SRC.filename, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest(),
                          "retrieved_at": fetched, "publisher_modified": None, "licence": SRC.licence,
                          "licence_url": SRC.licence_url, "role": SRC.role}
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8", newline="\n")
     return dest

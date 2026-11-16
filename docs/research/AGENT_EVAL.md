@@ -32,3 +32,24 @@ re-queried `find_lift` with different wording and resolved the right lift (ASC.P
 Transcripts (sanitised: local paths and account names removed) are in this folder: `T*-graph.jsonl`,
 `T*-no_graph.jsonl`, `results.json`. Reproduce with a signed-in `claude` CLI:
 `python scripts/agent_eval.py --model sonnet`.
+
+## Region layer (v0.5.0, 17 Nov 2026) — T6–T8
+
+Same harness, same model, new MCP tools (`check_journey`, `step_free_reach`, `region_overview`, …). The checks were
+written before the runs; ground truth from the engine.
+
+| Task | Question | Check | Round 1 graph | Round 2 graph | no_graph |
+|---|---|---|---|---|---|
+| T6 | Rosa Parks → Juvisy step-free now? Which lines? | mentions Neuilly, lines E and C | ✅ `check_journey` | — | ❌ (declined: no live data) |
+| T7 | Reach from La Croix de Berny, and why so few? | **30** and names Viroflay | ❌ 30 right, cause not found | ❌ 30 right, main cause right (RER B lift at the origin, listed since 9 Oct), Viroflay not named | ❌ (declined) |
+| T8 | Can I trust the PRIM lift feed? Last update? How many SNCF entries contradicted? | **235** and 9 Oct | ❌ 9 Oct and 159 + 76 given separately, never "235" | ✅ | ❌ (declined) |
+
+**What the failures taught.** Round 1 showed two tool-output gaps, not model errors: `step_free_reach` did not say
+which boarding points *at the origin* were in doubt, and `region_overview` returned the reconciliation as separate
+counters. Both tools now return plain-language `why` / `key_facts` lines computed by the engine (nothing generated).
+Round 2 (graph mode only, T7/T8) then answered T8 exactly and gave the right main cause for T7; T7 still fails the
+strict pre-registered check because the agent did not look for the second outage (Viroflay) that isolates the T6
+side. Round-1 transcripts are kept in `round1_v05/`.
+
+**Totals, all tasks, final round:** with the graph 7/8 (T7 strict fail); without 0/8 — every no-graph answer declined
+rather than invent numbers. Single runs, small sample, rubric written by the developer.

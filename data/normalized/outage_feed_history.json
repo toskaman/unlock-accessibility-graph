@@ -1,0 +1,26 @@
+[
+ {
+  "observed_at": "2026-11-16T19:13:43+00:00",
+  "lifts": 356,
+  "messages": 1047,
+  "feed_last_lift_update": "2026-10-09T09:53:34",
+  "feed_non_lift_last_update": "2026-11-16T20:13:11",
+  "lift_content_sha": "cdac23be4b3b7d05d02641cc48abf4add88ac98a9eea7303b9165a75a6a48d0e"
+ },
+ {
+  "observed_at": "2026-11-16T22:33:05+00:00",
+  "lifts": 356,
+  "messages": 1047,
+  "feed_last_lift_update": "2026-10-09T09:53:34",
+  "feed_non_lift_last_update": "2026-11-16T23:26:19",
+  "lift_content_sha": "cdac23be4b3b7d05d02641cc48abf4add88ac98a9eea7303b9165a75a6a48d0e"
+ },
+ {
+  "observed_at": "2026-11-16T23:14:21+00:00",
+  "lifts": 356,
+  "messages": 1047,
+  "feed_last_lift_update": "2026-10-09T09:53:34",
+  "feed_non_lift_last_update": "2026-11-17T00:04:17",
+  "lift_content_sha": "cdac23be4b3b7d05d02641cc48abf4add88ac98a9eea7303b9165a75a6a48d0e"
+ }
+]

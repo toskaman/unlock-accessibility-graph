@@ -3,10 +3,10 @@
 | Item | Status |
 |---|---|
 | Repository | https://github.com/toskaman/unlock-accessibility-graph (public, branch `main`, topics `relate`, `relate-neo4j-hackathon`) |
-| Version | **0.4.0** — step-free reach from any station (Cypher re-derived for all origins), ridership weight; **0.3.0** — whole-region mode (GTFS network + PRIM lift outages in Relate), three views, journey check, region repairs, PRIM-vs-SNCF reconciliation; 0.2.0 station features unchanged |
+| Version | **0.5.0** — feed watch (repeated identical observations), WCAG 2.1 AA scan of UNLOCK itself, agent eval on region tools; **0.4.0** — step-free reach from any station (Cypher re-derived for all origins), ridership weight; **0.3.0** — whole-region mode (GTFS network + PRIM lift outages in Relate), three views, journey check, region repairs, PRIM-vs-SNCF reconciliation; 0.2.0 station features unchanged |
 | Data access | SNCF NeTEx + lift status ✅ public; IDFM ZdC, GTFS, Accessibilité en gare ✅; PRIM traffic messages ✅ with the entrant's token (kept on D:, never committed); IDFM `etat-des-ascenseurs` ❌ needs a separate Opendatasoft key |
 | Store | `database/unlock.rl` (~25 MB, single file); clean snapshot `database/snapshot/unlock-snapshot-2026-11-16.rl` |
-| Tests | 76 pytest (real Relate, region layer, MCP over stdio) + 7 Playwright e2e on Linux; Windows run: see SUBMISSION_CHECKLIST |
+| Tests | 77 pytest (real Relate, region layer, MCP over stdio) + 9 Playwright e2e (incl. axe-core a11y) on Linux; Windows run: see SUBMISSION_CHECKLIST |
 | Evidence | Region numbers in docs/research/NETWORK_DISCOVERY.md; independent check of outage placement/matching in docs/research/region_eval/ |
 | Video | v0.2.0 station-mode video on the v0.2.0 release; the entrant records the v0.3.0 video (script in DEMO_SCRIPT.md) |
 

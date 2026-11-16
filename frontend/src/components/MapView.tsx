@@ -95,7 +95,7 @@ export function MapView({ stations, selected, affected, onSelect }: Props) {
 
   return (
     <div className="map-wrap">
-      <div ref={box} className="map" aria-label="Map of SNCF stations in Île-de-France. Use the station search for keyboard access." role="img" />
+      <div ref={box} className="map" role="region" aria-label="Map of SNCF stations in Île-de-France. Use the station search for keyboard access." />
       {basemap === "blank" && <p className="map-note">Basemap tiles unavailable — stations are still plotted.</p>}
     </div>
   );

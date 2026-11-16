@@ -46,7 +46,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.4.0")
+                    version="0.5.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
@@ -164,13 +164,37 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
             return {"status": "NOT_FOUND"}
         r = net.reach(a["id"], view if view in ("best", "feed", "published") else "best")
         cut = sorted((net.stations[s]["name"] for s, c in r["classes"].items() if c == "CUT"))
-        return {k: v for k, v in r.items() if k != "classes"} | {"cut_examples": cut[:15]}
+        doubt_here = [p for p in r["origin_points"] if p["state"] != "OPEN"]
+        why = []
+        if doubt_here:
+            why.append(f"{len(doubt_here)} of {len(r['origin_points'])} boarding points AT THE ORIGIN are not confirmed "
+                       f"({', '.join(sorted({p['line'] or '?' for p in doubt_here}))}) because of the outages listed there: "
+                       "every journey that needs them is only 'if lifts work'.")
+        if r["counts"]["if_lifts_work"]:
+            why.append(f"{r['counts']['if_lifts_work']} stations are reachable only through platforms with a listed lift outage.")
+        return {k: v for k, v in r.items() if k != "classes"} | {"cut_examples": cut[:15], "why": why}
 
     @mcp.tool()
     def region_overview() -> dict[str, Any]:
         """Region-wide step-free journeys under three views (published / PRIM feed / best available),
         the outage feed freshness, outage ages and the PRIM-vs-SNCF reconciliation counts."""
-        return net.overview() if net.ready else {"error": "network layer not imported"}
+        if not net.ready:
+            return {"error": "network layer not imported"}
+        o = net.overview()
+        f, w, s, rec = o["feed"], o["feed_watch"] or {}, o["stale_messages"], o["reconciliation"]
+        o["key_facts"] = [
+            f"PRIM lists {o['outages']['lifts']} lifts out of service ({o['outages']['messages']} messages); last lift-message "
+            f"update {f['last_lift_update']} ({f['lift_messages_stale_days']} days ago); other messages updated {f['last_other_update']}.",
+            f"Feed watch: {w.get('observations', 0)} fetches, lift content identical in {w.get('identical_lift_content', 0)}.",
+            f"Of the {o['outages']['by_operator'].get('SNCF_GC', 0)} SNCF lifts PRIM lists as broken, SNCF's hourly feed "
+            f"contradicts {s['messages_contradicted']} (GHOST {rec.get('GHOST', 0)} matched to one working lift + "
+            f"{rec.get('UNRESOLVED_STATION_ALL_WORKING', 0)} at stations where every SNCF lift works); "
+            f"{rec.get('CONFIRMED', 0)} confirmed; {rec.get('MISSING_FROM_FEED', 0)} SNCF outages missing from PRIM.",
+            f"Confirmed step-free station pairs: published {o['views']['published']['confirmed']}, best "
+            f"{o['views']['best']['confirmed']}, PRIM feed {o['views']['feed']['confirmed']}; stale messages hide "
+            f"{s['journeys_hidden']}.",
+        ]
+        return o
 
     @mcp.tool()
     def region_repairs(limit: int = 10) -> dict[str, Any]:

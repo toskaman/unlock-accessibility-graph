@@ -30,7 +30,7 @@ of 264 contradicted — stale messages that hide 96,340 step-free journeys from 
 
 **Inside a station.** UNLOCK builds a graph of the 401 SNCF stations in Île-de-France: platforms, underpasses, halls and the 588 lifts that join them, each linked to its latest published status and source file. Select a lift and simulate an outage: UNLOCK shows which step-free platform↔platform and platform↔exit connections break, ranks every possible lift repair across the region by how many confirmed connections it restores (including the lifts really out of service today), and shows the exact graph path and evidence behind each number. Example: at Juvisy-sur-Orge, losing lift ASC3 cuts 21 confirmed connections — a bigger loss than any lift currently out of service in the region.
 
-Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact lift through the graph and refuses to guess when it's ambiguous), browse "lifts you can't lose" (191 single points of failure), or ask an AI agent: the same graph is a read-only MCP server, and in our test Claude Code answered 5/5 planner questions correctly with it and 0/5 without it.
+Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact lift through the graph and refuses to guess when it's ambiguous), browse "lifts you can't lose" (191 single points of failure), or ask an AI agent: the same graph is a read-only MCP server, and in our test Claude Code answered 7 of 8 planner and rider questions correctly with it and 0/8 without it.
 
 ### How we built it
 - Region: GTFS stops/patterns → `NStation`, `NPlatform`, `NEXT`, `LEG` in Relate; PRIM messages → `LiftOutage
@@ -46,7 +46,7 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM elevator feed needs an API key and the IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 5/5 with the graph vs 0/5 without; every number traceable to a path and a source hash; 76 tests against the real Relate engine plus 7 end-to-end tests; every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 76 tests against the real Relate engine plus 7 end-to-end tests; every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.

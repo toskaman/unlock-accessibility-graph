@@ -20,9 +20,10 @@ lift outages for **both RATP and SNCF** stations, tagged `Ascenseur`, with free-
 **not** open the restricted Opendatasoft dataset `etat-des-ascenseurs` (that needs a separate key from the
 data.iledefrance-mobilites.fr account page; tested: 401/403).
 
-Observed on 16 Nov 2026 at 19:13 UTC (13 pages, 1,355 line reports) and again at **22:33 UTC** from the entrant's Windows
-machine with `python -m unlock fetch-outages` — identical lift content; the committed snapshot
-(`data/normalized/network_outages.json`) is the 22:33 one:
+Observed on 16 Nov 2026 at 19:13 UTC (13 pages, 1,355 line reports), again at **22:33 UTC** and at **23:14 UTC** from the entrant's Windows
+machine with `python -m unlock fetch-outages` — the SHA-256 of all lift messages is identical at every
+observation (`data/normalized/outage_feed_history.json`, `(:FeedObservation)` nodes); the committed snapshot is the
+latest one:
 
 | Fact | Value | Class |
 |---|---|---|

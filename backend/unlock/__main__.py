@@ -37,7 +37,12 @@ def main() -> None:
         from .network.normalize_net import build_outages_file
         from .config import NORMALIZED_DIR
         net = json.loads((NORMALIZED_DIR / "network.json").read_text(encoding="utf-8"))
-        print(json.dumps(build_outages_file(net)["counts"], indent=1))
+        doc = build_outages_file(net)
+        print(json.dumps(doc["counts"], indent=1))
+        from .network import feedwatch
+        s = feedwatch.summary(feedwatch.append(doc))
+        print(f"feed watch: {s['observations']} observations, lift content identical in {s['identical_lift_content']} "
+              f"since {s['identical_since']}; last lift update {doc['feed_last_lift_update']}")
         return
     if a.command in ("normalize", "build"):
         from .config import RAW_DIR

@@ -9,11 +9,13 @@
 | Integration — agent | `pytest tests/integration/test_agent.py` | 5 | Resolver grounded in SERVES edges, abstains on ambiguity/unknown station, reported state; what-if persists nothing; single points of failure; MCP server over stdio on a read-only store rejects writes |
 | Unit — region engine | `pytest tests/unit/test_network_engine.py` | 8 | Exact reachability = brute force on 40 random platform subsets; directional quays cut one direction only; riding through a station needs nothing from it; messages grouped per lift; placement by direction and rail station |
 | Integration — region | `pytest tests/integration/test_region.py` | 4 | Real store: import, resolver → MATCHES_LIFT, three views with hand-computed counts (12 / 9 / 4), CLOSED from station topology, GHOST verdict, ranking gains, journey verdicts + Relate leg check, region API (422/404), graceful absence |
+| Unit — feed watch | `pytest tests/unit/test_feedwatch.py` | 1 | Identical lift content detected across observations; a change is not hidden; re-adding an observation does not double-count |
 | Data quality | `pytest tests/data_quality` | 8 | Unique ids, referential integrity, status vocabulary, single snapshot, IDF coordinates, every edge labelled |
-| End-to-end | `cd frontend && npx playwright test` | 7 | Select lift → simulate → counts drop → evidence from Relate → top candidate gain = loss → repair view restores counts → export → restore baseline; keyboard access; error states |
+| Accessibility | `npx playwright test e2e/a11y.spec.ts` | 2 | axe-core WCAG 2.1 A/AA: no serious/critical violation in region mode, journey result, station card, station mode |
+| End-to-end | `cd frontend && npx playwright test` | 9 | Select lift → simulate → counts drop → evidence from Relate → top candidate gain = loss → repair view restores counts → export → restore baseline; keyboard access; error states |
 | Benchmark | `python scripts/benchmark.py` | — | Timings in docs/BENCHMARK.json |
 
-Last run (2026-11-16, v0.4.0): **76 passed**, **7 e2e passed** on Linux (Python 3.13); region reach re-derived in Cypher for all 519 origins × 3 views (`python scripts/region_crosscheck.py`). v0.2.0's 62 also passed natively on Windows 10 (Python 3.14.4).
+Last run (2026-11-17, v0.5.0): **77 passed**, **9 e2e passed** (incl. accessibility scan) on Linux (Python 3.13); region reach re-derived in Cypher for all 519 origins × 3 views (`python scripts/region_crosscheck.py`). v0.2.0's 62 also passed natively on Windows 10 (Python 3.14.4).
 Independent check of outage placement / SNCF matching: docs/research/region_eval/.
 Evaluation: `python scripts/eval_incidents.py` (incident → lift), `python scripts/agent_eval.py` (agent with/without graph).
 

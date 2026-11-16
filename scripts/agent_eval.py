@@ -40,6 +40,16 @@ TASKS = [
     {"id": "T5", "prompt": "We can repair only two lifts this week across Île-de-France SNCF stations. Which two, and how many "
                            "confirmed step-free connections do they restore together? Answer in 3 lines.",
      "expect_numbers": ["26"], "expect_text": ["Mantes", "Noisy"]},
+    # ---- region layer (v0.5.0)
+    {"id": "T6", "prompt": "Can a wheelchair user travel step-free from Rosa Parks to Juvisy right now? If yes, which lines "
+                           "and where do they change? Answer in 3 lines.",
+     "expect_numbers": [], "expect_text": ["Neuilly"], "expect_regex": [r"\bE\b", r"\bC\b"]},
+    {"id": "T7", "prompt": "From La Croix de Berny, how many stations of the Île-de-France rail/metro/tram network can a "
+                           "wheelchair user reach with confirmed step-free access right now, and why so few? Answer in 4 lines.",
+     "expect_numbers": ["30"], "expect_text": ["Viroflay"]},
+    {"id": "T8", "prompt": "Can I trust the regional (PRIM) lift-outage feed today? When were its lift messages last updated, "
+                           "and how many of the SNCF lifts it lists as broken does SNCF itself report as working? Answer in 3 lines.",
+     "expect_numbers": ["235"], "expect_text": [], "expect_regex": [r"(9 oct|2026-10-09|9 october|october 9|09/10/2026|9th of october|oct(ober)? 9)"]},
 ]
 
 ABSTAIN = re.compile(r"(ambigu|which (one|lift)|lequel|laquelle|préciser|preciser|clarif|several|plusieurs|cannot determine|"
@@ -69,7 +79,8 @@ def run(task: dict, mode: str, python: str, store: str, cwd: Path, model: str | 
     tools = [c.get("name") for e in events if e.get("type") == "assistant"
              for c in e.get("message", {}).get("content", []) if c.get("type") == "tool_use"]
     nums_ok = all(re.search(rf"(?<![\d.]){re.escape(n)}(?![\d])", answer) for n in task["expect_numbers"])
-    text_ok = all(x.lower() in answer.lower() for x in task["expect_text"])
+    text_ok = all(x.lower() in answer.lower() for x in task["expect_text"]) and \
+        all(re.search(rx, answer, re.I) for rx in task.get("expect_regex", []))
     abstain_ok = bool(ABSTAIN.search(answer)) if task.get("expect_abstain") else None
     correct = (abstain_ok if task.get("expect_abstain") else (nums_ok and text_ok))
     return {"task": task["id"], "mode": mode, "seconds": round(time.time() - t, 1), "tool_calls": tools,

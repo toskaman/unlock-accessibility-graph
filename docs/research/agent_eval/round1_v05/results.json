@@ -1,0 +1,207 @@
+[
+ {
+  "task": "T1",
+  "mode": "graph",
+  "seconds": 26.4,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__find_lift",
+   "mcp__unlock__simulate_outage"
+  ],
+  "answer": "- **Statut :** l'ascenseur « ASC.PMR 4556 ASC3 Quai 50/51 » est publié AVAILABLE (snapshot `sncf_lift_status@2273b7c1cb17`, 15:30, données « AGING »). La panne n'est pas confirmée, donc ceci est une **simulation** qui ne change rien.\n- **Impact à Juvisy-sur-Orge :** 21 liaisons quai↔quai modélisées passent de accessibles à bloquées. Ce sont les voies 50 et 51 vers 40 à 49, plus 50↔51. Le total passe de 582 à 561 liaisons sans marche confirmées. Le recoupement Cypher concorde (45 = 45). Ce sont des liaisons modélisées, pas des personnes.\n- **Priorité si confirmée :** réparer Juvisy ASC3 en premier, avec un gain de 21 liaisons, le plus élevé de l'Île-de-France.\n- **Ensuite, déjà HS aujourd'hui :** Mantes-la-Jolie « ASC.PMR 3571 Quai C/D » (+13) et Noisy-le-Sec « ASC.PMR 1021 Voie G/H » (+13). Viennent après Évry-Courcouronnes « ASC.PMR 5002 Voie 2 » (+4) et Maisons-Laffitte « ASC.PMR 3038 Voie 2/2B » (+3).\n- **À faire :** faire confirmer la panne dans le statut officiel avant d'agir. Il faudra aussi prévoir une solution de substitution pour les voitures 50 et 51 à Juvisy.",
+  "correct": true,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T1",
+  "mode": "no_graph",
+  "seconds": 10.7,
+  "tool_calls": [],
+  "answer": "1. **Non vérifié :** je n'ai que le message de l'agent. Je ne peux pas confirmer que les quais 50/51 existent sous cette numérotation, ni quelles lignes ils desservent. Confirmez d'abord auprès de SNCF Gares & Connexions ou du statut des équipements IDFM.\n2. **Impact probable :** Juvisy est un pivot RER C / RER D / Intercités. Si cet ascenseur est le seul accès sans marche à ces quais, les correspondances sans marche vers ou depuis ces voies sont coupées (PMR, poussettes, bagages). Si un autre ascenseur dessert la même île de quais, l'impact se limite à un détour.\n3. **À vérifier :** existence d'un second ascenseur ou d'une rampe, et état du passage souterrain.\n4. **Priorité IDF :** réparer en premier les ascenseurs qui sont l'unique accès sans marche d'une gare pivot, sans alternative à moins de 1 station. Juvisy en fait partie si le point 3 est négatif.\n5. **Aussi :** mettre en place une substitution (information voyageurs, taxi ou navette PMR) tant que la panne dure.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T2",
+  "mode": "graph",
+  "seconds": 24.5,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__find_lift",
+   "mcp__unlock__find_lift"
+  ],
+  "answer": "Ascenseur : **ASC.PMR 3574 A.Passerelle** (« Parking Gare Routière / passerelle »), gare de Mantes-la-Jolie, id `a1c2b32c-01e7-4070-bc00-1e02f47d83f1`.\n\nSon statut publié est **AVAILABLE (OK)**. Le signalement du voyageur ne figure donc pas dans les données officielles. Le seul ascenseur publié en panne (KO) est le 3571 Quai C/D, qui n'est pas celui-ci.\n\nS'il est hors service, **5 connexions sans marches confirmées** sont perdues. 7 connexions modélisées dépendent de lui, selon `find_lift`. Ce chiffre est hypothétique et je n'ai pas lancé `simulate_outage`.",
+  "correct": true,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T2",
+  "mode": "no_graph",
+  "seconds": 8.6,
+  "tool_calls": [],
+  "answer": "Je ne peux pas identifier cet ascenseur avec certitude. Je n'ai pas accès aux données d'accessibilité en direct de la gare de Mantes-la-Jolie. Le signalement ne précise pas non plus lequel des ascenseurs du site relie le parking de la gare routière à la passerelle.\n\nJe ne peux donc pas donner un nombre fiable de liaisons sans marches coupées. Un chiffre de ma part serait inventé.\n\nPour trancher, il faut l'identifiant de l'équipement et le plan des cheminements. Ils figurent dans les données ouvertes d'Île-de-France Mobilités et de SNCF Gares & Connexions, ou dans l'appli SNCF Connect, rubrique « état des ascenseurs ».",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T3",
+  "mode": "graph",
+  "seconds": 19.0,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__find_lift"
+  ],
+  "answer": "Ascenseur non identifiable : 4 candidats à Pontoise, tous publiés « AVAILABLE » (état OK) — le rapport ne dit pas lequel.\nCandidats : 2506 Quai A voies 11/12, 2507 Quai B voies 13/14, 2508 Quai C voies 15/16, 2509 Quai D voies 17/18 (tous souterrains).\nImpact non calculable sans choix ; dis-moi le quai ou la voie, et je simule la panne (hypothétique, rien n'est modifié).",
+  "correct": true,
+  "num_turns": 3,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T3",
+  "mode": "no_graph",
+  "seconds": 7.0,
+  "tool_calls": [],
+  "answer": "Je n'ai aucune donnée en temps réel et je n'ai pas d'outil de recherche web ici. Je ne peux donc pas dire de quel ascenseur il s'agit.\nLe message ne précise ni la gare (Pontoise RER C / Transilien ligne H, ou autre) ni le quai ou l'accès concerné. Je préfère ne pas l'inventer.\nImpact probable : accès PMR, poussettes et bagages coupés sur ce point, avec un détour ou une aide à prévoir. Pour confirmer, vérifie l'état des ascenseurs sur l'appli SNCF Connect ou Île-de-France Mobilités. Si tu me colles le texte complet de l'alerte, je l'analyse.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T4",
+  "mode": "graph",
+  "seconds": 21.2,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__critical_lifts",
+   "mcp__unlock__network_summary"
+  ],
+  "answer": "Plus gros point de défaillance unique : **Juvisy-sur-Orge**. Trois ascenseurs sont à égalité (ASC.PMR 4553 Quai 44-45, 4555 Quai 48-49 et 4556 Quai 50/51, tous en « souterrain nord »). Aucun n'est doublé par une alternative (`covered_by_alternative` = 0).\n\nLa panne d'un seul de ces ascenseurs couperait **21 liaisons sans marches confirmées**. Les 191 points de défaillance uniques du réseau en menacent 728 au total.\n\nDonnées : snapshot `sncf_lift_status@2273b7c1cb17`, relevé le 2026-11-16 à 15:30 UTC, fraîcheur « AGING » (2,76 h). Ces chiffres sont des liaisons modélisées quai↔quai ou quai↔sortie, pas des personnes. Le classement ne porte que sur les ascenseurs en service.",
+  "correct": true,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T4",
+  "mode": "no_graph",
+  "seconds": 8.4,
+  "tool_calls": [],
+  "answer": "Je ne peux pas répondre : je n'ai aucune donnée en direct sur les ascenseurs SNCF d'Île-de-France, et je n'ai pas d'outil web ici.\nCiter une gare et un nombre serait inventer, car l'état des ascenseurs et la liste des liaisons sans marche confirmées changent chaque jour.\nPour un vrai calcul, il faut croiser les jeux « équipements » et « disponibilité ascenseurs » d'Île-de-France Mobilités ou de SNCF Open Data avec le graphe des cheminements PMR. Donnez-moi ces fichiers ou des URL et je calcule le point de défaillance unique.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T5",
+  "mode": "graph",
+  "seconds": 20.8,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__plan_repairs"
+  ],
+  "answer": "Deux ascenseurs à réparer :\n1. **ASC.PMR 3571 Quai C/D**, gare de Mantes-la-Jolie (id `659111c6-da4e-4aa9-83ba-64ea79d4f4f6`) : +13 connexions.\n2. **ASC.PMR 1021 Voie G/H**, gare de Noisy-le-Sec (id `d1475f2d-aa10-4a71-b8b5-5460b7dd4081`) : +13 connexions.\n\nEnsemble, ils rétablissent **26 connexions de plain-pied confirmées**. Le plan est optimal (calcul exact, identique au glouton). Ce sont des connexions modélisées quai↔quai et quai↔sortie dans les gares, pas des personnes. Le classement tient compte du statut publié, et aucune panne hypothétique n'a été supposée.",
+  "correct": true,
+  "num_turns": 3,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T5",
+  "mode": "no_graph",
+  "seconds": 7.1,
+  "tool_calls": [],
+  "answer": "Je n'ai aucune donnée sur les ascenseurs en panne ni sur les correspondances sans marche. Je ne peux donc pas choisir deux ascenseurs sans inventer.\nIl me faut la liste des ascenseurs HS (gare, ligne, état), avec les correspondances sans marche que chacun conditionne. Un fichier ou un export suffit, ou une source à interroger, comme l'open data SNCF ou IDFM.\nAvec ça, je classe les paires possibles et je donne le total de correspondances rétablies. Il faut aussi éviter de compter deux fois une correspondance servie par les deux ascenseurs.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T6",
+  "mode": "graph",
+  "seconds": 15.5,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__check_journey"
+  ],
+  "answer": "Oui, trajet sans marche possible maintenant (vue « best », aucune panne d'ascenseur sur le trajet).\nLigne RER E de Rosa Parks jusqu'à Neuilly – Porte Maillot, c'est-à-dire Haussmann – Saint-Lazare puis Porte Maillot.\nChangement à Neuilly – Porte Maillot pour le RER C jusqu'à Juvisy. Les quais d'embarquement et de descente sont tous « OPEN », et les 2 tronçons ont été revérifiés dans le graphe.",
+  "correct": true,
+  "num_turns": 3,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T6",
+  "mode": "no_graph",
+  "seconds": 8.8,
+  "tool_calls": [],
+  "answer": "Je n'ai pas accès aux données en temps réel, donc je ne peux pas confirmer l'état des ascenseurs aujourd'hui.\nItinéraire probable : RER E depuis Rosa Parks jusqu'à Magenta, puis correspondance à Gare du Nord (RER D direction Melun ou Corbeil-Essonnes) jusqu'à Juvisy. Les deux gares et le RER D à Juvisy sont censés être accessibles, mais je n'ai pas vérifié l'état des ascenseurs de la correspondance.\nVérifiez avant de partir l'état des ascenseurs sur l'appli IDFM ou Île-de-France Mobilités, ainsi que sur SNCF Connect, car une panne à Magenta ou à Gare du Nord casserait le trajet.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T7",
+  "mode": "graph",
+  "seconds": 18.8,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__step_free_reach",
+   "mcp__unlock__station_overview"
+  ],
+  "answer": "- **30 stations** accessibles avec accès sans marches confirmé, vue \"best\" (30 sur 30 aussi par re-dérivation Cypher). Seuls 19 050 validations/jour sont concernées.\n- Le réseau publié offre 506 stations atteignables depuis La Croix de Berny. 473 sont classées \"si les ascenseurs fonctionnent\", donc non confirmées.\n- Seulement 3 stations sont coupées par des pannes (Avenue Foch, Bécon-les-Bruyères, Chelles-Gournay). Le goulot n'est donc pas les pannes, mais la confirmation.\n- Une station n'est \"confirmée\" que si chaque ascenseur du trajet a un état connu et en service. Je déduis que le reste n'a pas d'état confirmé, mais l'outil ne me donne pas la cause exacte. `station_overview` n'a pas trouvé \"La Croix de Berny\", donc je n'ai pas pu vérifier les ascenseurs de la station elle-même.",
+  "correct": false,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T7",
+  "mode": "no_graph",
+  "seconds": 10.9,
+  "tool_calls": [],
+  "answer": "- **Chiffre exact : je n'en ai pas.** Je n'ai pas de données en direct sur les ascenseurs. Tout nombre que j'avancerais serait inventé.\n- **Départ :** La Croix de Berny (RER B, branche Robinson) n'a pas, à ma connaissance, d'accès sans marche confirmé. Je n'ai pas pu le vérifier en direct. Si c'est le cas, le trajet commence déjà par un blocage.\n- **Pourquoi si peu :** le réseau est ancien. La plupart des gares RER et métro ont des escaliers, des quais étroits ou des écarts quai-train trop grands. Seules les lignes récentes (14, T-lignes) sont accessibles, et les ascenseurs tombent souvent en panne.\n- **Pour vérifier :** utiliser Vianavigo ou Île-de-France Mobilités avec le filtre PMR, et regarder l'état des ascenseurs sur Vianavigo (carte « ascenseurs en service »). Pour le RER B, demander aussi l'assistance Accès+ ou Veolia.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T8",
+  "mode": "graph",
+  "seconds": 20.1,
+  "tool_calls": [
+   "ToolSearch",
+   "mcp__unlock__region_overview",
+   "mcp__unlock__cypher_read"
+  ],
+  "answer": "Non, ne vous fiez pas au flux PRIM aujourd'hui : ses messages d'ascenseurs sont périmés, et les 356 ascenseurs listés ont plus de 30 jours.\nDernière mise à jour des messages ascenseurs : 2026-10-09 09:53, soit 38 jours de retard. Le contenu est identique sur mes 3 relevés du 16/11, alors que les autres messages du flux sont à jour (2026-11-17 00:04).\nSur les 264 ascenseurs SNCF listés en panne, SNCF en déclare 159 en service (« GHOST »). 9 seulement sont confirmés en panne. Pour 76 autres, SNCF dit que tous les ascenseurs de la gare fonctionnent, mais je n'ai pas pu rattacher la ligne PRIM à un ascenseur précis. 20 restent non résolus.",
+  "correct": false,
+  "num_turns": 4,
+  "exit_code": 0,
+  "stderr_tail": ""
+ },
+ {
+  "task": "T8",
+  "mode": "no_graph",
+  "seconds": 6.1,
+  "tool_calls": [],
+  "answer": "Impossible de répondre : je n'ai ici aucun outil réseau ni shell, donc je n'ai pas pu interroger PRIM ni SNCF.\nJe n'ai donc ni date de dernière mise à jour des messages ascenseurs, ni nombre d'écarts, et je ne peux pas dire si le flux est fiable aujourd'hui (17/11/2026).\nPour comparer, il faut les deux flux : l'API PRIM (disponibilité des équipements) et l'open data SNCF (ascenseurs en panne). Donnez-moi un accès shell ou des exports, et je croise les deux.",
+  "correct": false,
+  "num_turns": 1,
+  "exit_code": 0,
+  "stderr_tail": ""
+ }
+]

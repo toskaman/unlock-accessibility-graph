@@ -248,6 +248,6 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
               "serves_derivations": dict(der_counts), "unmatched_tokens": unmatched_tokens[:200],
               "unmatched_token_count": len(unmatched_tokens)}
     out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "graph_input.json").write_text(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=1), encoding="utf-8")
-    (out_dir / "quality_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out_dir / "graph_input.json").write_text(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=1), encoding="utf-8", newline="\n")
+    (out_dir / "quality_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     return report
