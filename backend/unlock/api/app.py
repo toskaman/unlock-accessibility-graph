@@ -47,6 +47,22 @@ class ScenarioIn(BaseModel):
         return v
 
 
+class IncidentIn(BaseModel):
+    text: str = Field(..., min_length=3, max_length=1000)
+
+
+class WhatIfIn(BaseModel):
+    overrides: dict[str, str] = Field(..., description="lift id -> AVAILABLE | UNAVAILABLE | UNKNOWN")
+
+    @field_validator("overrides")
+    @classmethod
+    def _ids(cls, v: dict[str, str]) -> dict[str, str]:
+        for k in v:
+            if not _ID.fullmatch(k):
+                raise ValueError("invalid lift id")
+        return v
+
+
 class OutageIn(BaseModel):
     lift_ids: list[str] = Field(..., min_length=1, max_length=20)
 
@@ -107,6 +123,20 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
     def lift(req: Request, lift_id: str, scenario_id: str | None = None):
         _check_id(lift_id); scenario_id and _check_id(scenario_id)
         return svc(req).lift_detail(lift_id, scenario_id)
+
+    @app.post("/api/incidents/resolve")
+    def resolve_incident(req: Request, body: IncidentIn):
+        """Free-text outage report -> lift in the graph (deterministic, graph-grounded)."""
+        return svc(req).resolve_incident(body.text)
+
+    @app.post("/api/what-if")
+    def what_if(req: Request, body: WhatIfIn):
+        """Transient analysis: nothing is written to the store."""
+        return svc(req).what_if(body.overrides)
+
+    @app.get("/api/network/critical-lifts")
+    def critical(req: Request, limit: int = Query(20, ge=1, le=600)):
+        return svc(req).critical_lifts(limit)
 
     @app.get("/api/scenarios")
     def scenarios(req: Request):

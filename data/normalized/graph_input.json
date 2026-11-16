@@ -25630,6 +25630,13 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "c0f12050-e278-4b50-a95f-af66eb0faf30",
+   "side_index": 2,
+   "side_text": "niveau metro",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-metro"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "33847f22-e286-4df8-b743-da81a3b8e059",
    "side_index": 0,
    "side_text": "hall niveau quais",
@@ -25644,6 +25651,27 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "33847f22-e286-4df8-b743-da81a3b8e059",
+   "side_index": 2,
+   "side_text": "niveau metro -1",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-metro-1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "33847f22-e286-4df8-b743-da81a3b8e059",
+   "side_index": 3,
+   "side_text": "niveau parking -2",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "33847f22-e286-4df8-b743-da81a3b8e059",
+   "side_index": 4,
+   "side_text": "niveau parking -3",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-3"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "10f273fa-0219-4af1-b7f7-da91fb244448",
    "side_index": 0,
    "side_text": "niveau rue",
@@ -25655,6 +25683,13 @@
    "side_index": 1,
    "side_text": "niveau parking -2",
    "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "10f273fa-0219-4af1-b7f7-da91fb244448",
+   "side_index": 2,
+   "side_text": "niveau parking -3",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-3"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -25683,6 +25718,27 @@
    "side_index": 1,
    "side_text": "accueil reunions multiburo",
    "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:accueil-reunions-multiburo"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "977f3731-7d98-4e70-a057-4cb954c30f1c",
+   "side_index": 2,
+   "side_text": "accueil l'usine",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:accueil-l-usine"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "977f3731-7d98-4e70-a057-4cb954c30f1c",
+   "side_index": 3,
+   "side_text": "hall niveau quais",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:hall-niveau-quais"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "977f3731-7d98-4e70-a057-4cb954c30f1c",
+   "side_index": 4,
+   "side_text": "sortie rue",
+   "space_id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:sortie-rue"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -25853,6 +25909,13 @@
    "space_id": "5dd4fb9f-a6f3-4107-a7cf-e198e3d3b169:space:acces-metro"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "37421b5e-87d0-462c-9041-dd1f0dbad281",
+   "side_index": 2,
+   "side_text": "rer e",
+   "space_id": "5dd4fb9f-a6f3-4107-a7cf-e198e3d3b169:space:rer-e"
+  },
+  {
    "derivation": "UNSPECIFIED_END",
    "lift_id": "879f24ac-85ac-4021-ba96-529be0ca1546",
    "side_index": 0,
@@ -25907,6 +25970,13 @@
    "side_index": 1,
    "side_text": "dalle routiere",
    "space_id": "70835097-e1ff-4138-86e1-4758ed173ed6:space:dalle-routiere"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "909131bf-30ca-4989-a1f1-9e53a7952ed3",
+   "side_index": 2,
+   "side_text": "hall",
+   "space_id": "70835097-e1ff-4138-86e1-4758ed173ed6:space:hall"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -26322,6 +26392,20 @@
    "space_id": "a6433423-9738-42fd-a125-321b28d78e8a:space:atten"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c0f1ee25-700c-4f40-8c26-56b4a8a5a4c1",
+   "side_index": 2,
+   "side_text": "hall 2",
+   "space_id": "a6433423-9738-42fd-a125-321b28d78e8a:space:hall-2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c0f1ee25-700c-4f40-8c26-56b4a8a5a4c1",
+   "side_index": 3,
+   "side_text": "hall 3 (place fresnay)",
+   "space_id": "a6433423-9738-42fd-a125-321b28d78e8a:space:hall-3-place-fresnay"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "8a501cd3-1567-4e02-b09b-80f8b6b570bc",
    "side_index": 0,
@@ -26460,6 +26544,13 @@
    "side_index": 1,
    "side_text": "hall 3 (consignes)",
    "space_id": "a6433423-9738-42fd-a125-321b28d78e8a:space:hall-3-consignes"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "13279cad-b9f0-4f8e-a8de-12a3cb7e98de",
+   "side_index": 2,
+   "side_text": "plateforme d'echange ratp sncf",
+   "space_id": "a6433423-9738-42fd-a125-321b28d78e8a:space:plateforme-d-echange-ratp-sncf"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -26721,6 +26812,13 @@
    "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:28"
   },
   {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "67882383-2947-4267-a4f4-307466828259",
+   "side_index": 2,
+   "side_text": "voie 24 niveau 2",
+   "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:24"
+  },
+  {
    "derivation": "NAMED_SPACE",
    "lift_id": "8022f6fc-f87c-4708-a0da-9f030fdff25c",
    "side_index": 0,
@@ -26806,6 +26904,13 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "53a8bf2c-51f8-4141-acdb-3033a29b15c8",
+   "side_index": 2,
+   "side_text": "metro niveau -1",
+   "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:metro-niveau-1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "e54911ce-bb08-404c-86bf-c7835f79773e",
    "side_index": 0,
    "side_text": "hall 2",
@@ -26861,6 +26966,13 @@
    "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:28"
   },
   {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "697ef152-e667-474e-874f-24eea3b551ee",
+   "side_index": 2,
+   "side_text": "voie 24 niveau 2",
+   "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:24"
+  },
+  {
    "derivation": "NAMED_SPACE",
    "lift_id": "5f528386-8118-4e9c-97a0-810f008d9894",
    "side_index": 0,
@@ -26897,6 +27009,13 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "4d4e0406-9b95-4d51-9ef5-0d716963484c",
+   "side_index": 2,
+   "side_text": "hall 4 niveau 0",
+   "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:hall-4-niveau-0"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "ea2690cb-e787-4898-a065-be243401d42c",
    "side_index": 0,
    "side_text": "hall 2",
@@ -26922,6 +27041,13 @@
    "side_index": 1,
    "side_text": "sortie tour montparnasse niveau 0",
    "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:sortie-tour-montparnasse-niveau-0"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "0cee9324-66db-41e0-9630-36d08b9ee759",
+   "side_index": 2,
+   "side_text": "metro niveau -1",
+   "space_id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:metro-niveau-1"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -27071,6 +27197,13 @@
    "space_id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:bureau-de-vente"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "91a2e332-049f-4318-8a34-20f5b26d68f5",
+   "side_index": 2,
+   "side_text": "rue",
+   "space_id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:rue"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "383d6729-59f0-4c62-8a9e-d461f32a36ab",
    "side_index": 0,
@@ -27083,6 +27216,13 @@
    "side_index": 1,
    "side_text": "bureau de vente",
    "space_id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:bureau-de-vente"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "383d6729-59f0-4c62-8a9e-d461f32a36ab",
+   "side_index": 2,
+   "side_text": "rue",
+   "space_id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:rue"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -27746,6 +27886,27 @@
    "derivation": "NAMED_SPACE",
    "lift_id": "a8cbe9f0-7a97-4f95-956c-789b4d89fd13",
    "side_index": 1,
+   "side_text": "souterrain paris et province",
+   "space_id": "154162dd-2e0a-42b4-bf3d-93071944f050:space:souterrain-paris-et-province"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "a8cbe9f0-7a97-4f95-956c-789b4d89fd13",
+   "side_index": 2,
+   "side_text": "voies c et d",
+   "space_id": "154162dd-2e0a-42b4-bf3d-93071944f050:quay:c"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "a8cbe9f0-7a97-4f95-956c-789b4d89fd13",
+   "side_index": 2,
+   "side_text": "voies c et d",
+   "space_id": "154162dd-2e0a-42b4-bf3d-93071944f050:quay:d"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "a8cbe9f0-7a97-4f95-956c-789b4d89fd13",
+   "side_index": 3,
    "side_text": "souterrain paris et province",
    "space_id": "154162dd-2e0a-42b4-bf3d-93071944f050:space:souterrain-paris-et-province"
   },
@@ -29395,6 +29556,13 @@
    "space_id": "cb0d0983-2489-455c-b772-7ccdf8220678:space:hall"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "444eccd1-f075-4fae-80f2-97a95a93848c",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "cb0d0983-2489-455c-b772-7ccdf8220678:space:passerelle"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "fe388e3e-c29f-40bf-8384-f7eea2268703",
    "side_index": 0,
@@ -29456,6 +29624,13 @@
    "side_index": 1,
    "side_text": "hall",
    "space_id": "cb0d0983-2489-455c-b772-7ccdf8220678:space:hall"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "f976668f-ab2b-4906-9216-28542dd868a6",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "cb0d0983-2489-455c-b772-7ccdf8220678:space:passerelle"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -30270,6 +30445,13 @@
    "space_id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:passerelle"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c41531d5-0a87-44a1-adb4-12ad37f2e2c3",
+   "side_index": 2,
+   "side_text": "sortie stephenson",
+   "space_id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:sortie-stephenson"
+  },
+  {
    "derivation": "QUAI_NUMBER",
    "lift_id": "a3d219c6-077a-4ea6-be2b-a63504d941a5",
    "side_index": 0,
@@ -30285,6 +30467,13 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "a3d219c6-077a-4ea6-be2b-a63504d941a5",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:passerelle"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "4e5c4f85-3d3c-4dec-b2c2-987a9c40e9be",
    "side_index": 0,
    "side_text": "gare routiere",
@@ -30296,6 +30485,13 @@
    "side_index": 1,
    "side_text": "hall",
    "space_id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:hall"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "4e5c4f85-3d3c-4dec-b2c2-987a9c40e9be",
+   "side_index": 2,
+   "side_text": "parvis cathedrale",
+   "space_id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:parvis-cathedrale"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -32377,6 +32573,13 @@
    "space_id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:quai"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "5f218ba0-fab5-4d91-b3b3-0f78fe062a64",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:passerelle"
+  },
+  {
    "derivation": "QUAI_NUMBER",
    "lift_id": "e2bffc42-fc6b-4c30-bfc1-40a0560e01c3",
    "side_index": 0,
@@ -32389,6 +32592,13 @@
    "side_index": 1,
    "side_text": "hall",
    "space_id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:hall"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "e2bffc42-fc6b-4c30-bfc1-40a0560e01c3",
+   "side_index": 2,
+   "side_text": "passerelle 2",
+   "space_id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:passerelle-2"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -32671,6 +32881,13 @@
    "space_id": "c3ee7e32-bd2b-49f2-b245-a778b342870c:space:passerelle"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "1c8a8b15-fb96-4ac8-a41d-1a0f6ef45e80",
+   "side_index": 2,
+   "side_text": "souterrain",
+   "space_id": "c3ee7e32-bd2b-49f2-b245-a778b342870c:space:souterrain"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "0ebce5e8-747e-4459-a10e-369878ee185f",
    "side_index": 0,
@@ -32853,6 +33070,13 @@
    "space_id": "c9474b0c-c822-43a9-9526-b53c8a9b9e7d:space:hall"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "204ea7cf-58af-403c-8485-e11be6e607da",
+   "side_index": 2,
+   "side_text": "bureau de vente",
+   "space_id": "c9474b0c-c822-43a9-9526-b53c8a9b9e7d:space:bureau-de-vente"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "a7a80882-1390-48e8-848d-3223bdfee1f5",
    "side_index": 0,
@@ -33022,6 +33246,27 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "d3d897b4-1e7d-4d20-b730-1048b80b7117",
+   "side_index": 2,
+   "side_text": "niv 2",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-2"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "d3d897b4-1e7d-4d20-b730-1048b80b7117",
+   "side_index": 3,
+   "side_text": "niv 1 - acces sud - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:4"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "d3d897b4-1e7d-4d20-b730-1048b80b7117",
+   "side_index": 3,
+   "side_text": "niv 1 - acces sud - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:6"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "cc68f332-1b15-4c47-a00a-5066493762a3",
    "side_index": 0,
    "side_text": "niv 2 - acces nord",
@@ -33064,6 +33309,27 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "e564a079-17d0-40cd-bb84-db84c0d3dde4",
+   "side_index": 2,
+   "side_text": "niv 2",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-2"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "e564a079-17d0-40cd-bb84-db84c0d3dde4",
+   "side_index": 3,
+   "side_text": "niv 1 - acces sud - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:4"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "e564a079-17d0-40cd-bb84-db84c0d3dde4",
+   "side_index": 3,
+   "side_text": "niv 1 - acces sud - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:6"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "b4d1790b-d5bc-4fbf-af55-8697874505a7",
    "side_index": 0,
    "side_text": "niv 4",
@@ -33078,6 +33344,27 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "b4d1790b-d5bc-4fbf-af55-8697874505a7",
+   "side_index": 2,
+   "side_text": "niv 2",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-2"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "b4d1790b-d5bc-4fbf-af55-8697874505a7",
+   "side_index": 3,
+   "side_text": "niv 1 - acces nord - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:4"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "b4d1790b-d5bc-4fbf-af55-8697874505a7",
+   "side_index": 3,
+   "side_text": "niv 1 - acces nord - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:6"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "afb9cd3b-3e8a-4045-bbd9-600f47913d97",
    "side_index": 0,
    "side_text": "niv 4",
@@ -33089,6 +33376,27 @@
    "side_index": 1,
    "side_text": "niv 3",
    "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-3"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "afb9cd3b-3e8a-4045-bbd9-600f47913d97",
+   "side_index": 2,
+   "side_text": "niv 2",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-2"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "afb9cd3b-3e8a-4045-bbd9-600f47913d97",
+   "side_index": 3,
+   "side_text": "niv 1 - acces nord - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:4"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "afb9cd3b-3e8a-4045-bbd9-600f47913d97",
+   "side_index": 3,
+   "side_text": "niv 1 - acces nord - voies 4 et 6",
+   "space_id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:6"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -33707,6 +34015,13 @@
    "space_id": "7a4c8971-455e-4d42-a3c7-5d0bd173a409:space:souterrain"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "a7aa877f-0e6d-417e-b94f-23ff085574ce",
+   "side_index": 2,
+   "side_text": "parvis montigny esplanade",
+   "space_id": "7a4c8971-455e-4d42-a3c7-5d0bd173a409:space:parvis-montigny-esplanade"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "72a07fcd-86f7-4402-a67c-6ef32a068fee",
    "side_index": 0,
@@ -33854,6 +34169,13 @@
    "space_id": "75278f22-627f-4102-8a70-13691b1b8e63:space:souterrain"
   },
   {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "8058012e-76ba-4fef-9e7b-e39a40b805ce",
+   "side_index": 2,
+   "side_text": "voie 2",
+   "space_id": "75278f22-627f-4102-8a70-13691b1b8e63:quay:2"
+  },
+  {
    "derivation": "NAMED_SPACE",
    "lift_id": "3abbfff4-7784-4eba-9bd2-90d11bd9a81a",
    "side_index": 0,
@@ -33866,6 +34188,13 @@
    "side_index": 1,
    "side_text": "voie 2",
    "space_id": "75278f22-627f-4102-8a70-13691b1b8e63:quay:2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "3abbfff4-7784-4eba-9bd2-90d11bd9a81a",
+   "side_index": 2,
+   "side_text": "souterrain",
+   "space_id": "75278f22-627f-4102-8a70-13691b1b8e63:space:souterrain"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -34603,6 +34932,13 @@
    "space_id": "9b163aa6-52ed-472a-bbf7-a4bed0a29e64:quay:2"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "7a9b264e-9c8e-4e10-a26d-b374f005b72d",
+   "side_index": 2,
+   "side_text": "souterrain",
+   "space_id": "9b163aa6-52ed-472a-bbf7-a4bed0a29e64:space:souterrain"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "6d530b9b-525c-474c-96de-f6570bf43a9e",
    "side_index": 0,
@@ -34615,6 +34951,13 @@
    "side_index": 1,
    "side_text": "bureau de vente",
    "space_id": "a1ec728f-142d-4660-84e0-46029c02106c:space:bureau-de-vente"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "6d530b9b-525c-474c-96de-f6570bf43a9e",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "a1ec728f-142d-4660-84e0-46029c02106c:space:passerelle"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -34631,6 +34974,13 @@
    "space_id": "a1ec728f-142d-4660-84e0-46029c02106c:space:bureau-de-vente"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "ef82d293-4654-4079-8baa-cd9692f66441",
+   "side_index": 2,
+   "side_text": "passerelle",
+   "space_id": "a1ec728f-142d-4660-84e0-46029c02106c:space:passerelle"
+  },
+  {
    "derivation": "QUAI_NUMBER",
    "lift_id": "b5d0a461-3865-4ae2-8a19-a8eb2ab66d8f",
    "side_index": 0,
@@ -34643,6 +34993,13 @@
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "3762b0df-44b5-47aa-8d2d-1b056f326858:space:souterrain"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "b5d0a461-3865-4ae2-8a19-a8eb2ab66d8f",
+   "side_index": 2,
+   "side_text": "hall",
+   "space_id": "3762b0df-44b5-47aa-8d2d-1b056f326858:space:hall"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -34843,6 +35200,13 @@
    "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
   },
   {
+   "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:accueil-l-usine",
+   "name": "accueil l'usine",
+   "quay_id": null,
+   "role": "PRIVATE",
+   "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
+  },
+  {
    "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:accueil-reunions-multiburo",
    "name": "accueil reunions multiburo",
    "quay_id": null,
@@ -34857,8 +35221,29 @@
    "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
   },
   {
+   "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-metro",
+   "name": "niveau metro",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
+  },
+  {
+   "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-metro-1",
+   "name": "niveau metro -1",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
+  },
+  {
    "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-2",
    "name": "niveau parking -2",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
+  },
+  {
+   "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:niveau-parking-3",
+   "name": "niveau parking -3",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
@@ -34880,6 +35265,13 @@
   {
    "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:sortie-parvis-cour-du-havre",
    "name": "sortie parvis cour du havre",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
+  },
+  {
+   "id": "9525725e-3b2c-4d63-9fa9-236a4ae26fee:space:sortie-rue",
+   "name": "sortie rue",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:75108:LMO:9525725e-3b2c-4d63-9fa9-236a4ae26fee:LOC"
@@ -34980,6 +35372,13 @@
    "name": "acces metro",
    "quay_id": null,
    "role": "EXIT",
+   "station_id": "FR:75110:LMO:5dd4fb9f-a6f3-4107-a7cf-e198e3d3b169:LOC"
+  },
+  {
+   "id": "5dd4fb9f-a6f3-4107-a7cf-e198e3d3b169:space:rer-e",
+   "name": "rer e",
+   "quay_id": null,
+   "role": "UNRESOLVED_PLATFORM",
    "station_id": "FR:75110:LMO:5dd4fb9f-a6f3-4107-a7cf-e198e3d3b169:LOC"
   },
   {
@@ -35120,6 +35519,13 @@
    "name": "gare principale",
    "quay_id": null,
    "role": "UNRESOLVED",
+   "station_id": "FR:75110:LMO:70835097-e1ff-4138-86e1-4758ed173ed6:LOC"
+  },
+  {
+   "id": "70835097-e1ff-4138-86e1-4758ed173ed6:space:hall",
+   "name": "hall",
+   "quay_id": null,
+   "role": "EXIT",
    "station_id": "FR:75110:LMO:70835097-e1ff-4138-86e1-4758ed173ed6:LOC"
   },
   {
@@ -35340,6 +35746,13 @@
    "station_id": "FR:75112:LMO:a6433423-9738-42fd-a125-321b28d78e8a:LOC"
   },
   {
+   "id": "a6433423-9738-42fd-a125-321b28d78e8a:space:hall-2",
+   "name": "hall 2",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75112:LMO:a6433423-9738-42fd-a125-321b28d78e8a:LOC"
+  },
+  {
    "id": "a6433423-9738-42fd-a125-321b28d78e8a:space:hall-3",
    "name": "hall 3",
    "quay_id": null,
@@ -35398,6 +35811,13 @@
   {
    "id": "a6433423-9738-42fd-a125-321b28d78e8a:space:place-louis-armand-tour-de-l-horloge",
    "name": "place louis armand - tour de l'horloge",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75112:LMO:a6433423-9738-42fd-a125-321b28d78e8a:LOC"
+  },
+  {
+   "id": "a6433423-9738-42fd-a125-321b28d78e8a:space:plateforme-d-echange-ratp-sncf",
+   "name": "plateforme d'echange ratp sncf",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:75112:LMO:a6433423-9738-42fd-a125-321b28d78e8a:LOC"
@@ -35613,6 +36033,13 @@
    "station_id": "FR:75115:LMO:db3c1d28-2b95-43df-ae9f-5418a778abe0:LOC"
   },
   {
+   "id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:24",
+   "name": "Voie 24",
+   "quay_id": "FR:75115:ZE:d4a4da56-e0b2-492c-b687-286307e6dc2b:LOC",
+   "role": "PLATFORM",
+   "station_id": "FR:75115:LMO:db3c1d28-2b95-43df-ae9f-5418a778abe0:LOC"
+  },
+  {
    "id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:quay:25",
    "name": "Voie 25",
    "quay_id": "FR:75115:ZE:eb44b66d-e01f-40fa-baf4-84282e1aa3db:LOC",
@@ -35713,6 +36140,20 @@
   {
    "id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:hall-2",
    "name": "hall 2",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75115:LMO:db3c1d28-2b95-43df-ae9f-5418a778abe0:LOC"
+  },
+  {
+   "id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:hall-4-niveau-0",
+   "name": "hall 4 niveau 0",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75115:LMO:db3c1d28-2b95-43df-ae9f-5418a778abe0:LOC"
+  },
+  {
+   "id": "db3c1d28-2b95-43df-ae9f-5418a778abe0:space:metro-niveau-1",
+   "name": "metro niveau -1",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:75115:LMO:db3c1d28-2b95-43df-ae9f-5418a778abe0:LOC"
@@ -35881,6 +36322,13 @@
   {
    "id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:bureau-de-vente",
    "name": "bureau de vente",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:75117:LMO:29a7ff77-3141-499e-9b69-e8b08c76b90f:LOC"
+  },
+  {
+   "id": "29a7ff77-3141-499e-9b69-e8b08c76b90f:space:rue",
+   "name": "rue",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:75117:LMO:29a7ff77-3141-499e-9b69-e8b08c76b90f:LOC"
@@ -36421,6 +36869,20 @@
    "id": "154162dd-2e0a-42b4-bf3d-93071944f050:quay:b",
    "name": "Voie B",
    "quay_id": "FR:77284:ZE:6bd88e08-5808-4145-8761-d206ffd24e02:LOC",
+   "role": "PLATFORM",
+   "station_id": "FR:77284:LMO:154162dd-2e0a-42b4-bf3d-93071944f050:LOC"
+  },
+  {
+   "id": "154162dd-2e0a-42b4-bf3d-93071944f050:quay:c",
+   "name": "Voie C",
+   "quay_id": "FR:77284:ZE:c8fd2c48-4a43-487c-ade8-0c7941d06669:LOC",
+   "role": "PLATFORM",
+   "station_id": "FR:77284:LMO:154162dd-2e0a-42b4-bf3d-93071944f050:LOC"
+  },
+  {
+   "id": "154162dd-2e0a-42b4-bf3d-93071944f050:quay:d",
+   "name": "Voie D",
+   "quay_id": "FR:77284:ZE:889a4c0d-6e5e-4c63-aaad-d1259637164f:LOC",
    "role": "PLATFORM",
    "station_id": "FR:77284:LMO:154162dd-2e0a-42b4-bf3d-93071944f050:LOC"
   },
@@ -38616,10 +39078,24 @@
    "station_id": "FR:91228:LMO:d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:LOC"
   },
   {
+   "id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:parvis-cathedrale",
+   "name": "parvis cathedrale",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:91228:LMO:d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:LOC"
+  },
+  {
    "id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:passerelle",
    "name": "passerelle",
    "quay_id": null,
    "role": "CONNECTOR",
+   "station_id": "FR:91228:LMO:d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:LOC"
+  },
+  {
+   "id": "d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:space:sortie-stephenson",
+   "name": "sortie stephenson",
+   "quay_id": null,
+   "role": "EXIT",
    "station_id": "FR:91228:LMO:d5fbe8bd-4b48-433f-8aa6-4e96941fb4af:LOC"
   },
   {
@@ -40415,6 +40891,20 @@
    "station_id": "FR:93031:LMO:f43a07d2-1ffd-40a6-8df1-73cecee32f10:LOC"
   },
   {
+   "id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:passerelle",
+   "name": "passerelle",
+   "quay_id": null,
+   "role": "CONNECTOR",
+   "station_id": "FR:93031:LMO:f43a07d2-1ffd-40a6-8df1-73cecee32f10:LOC"
+  },
+  {
+   "id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:passerelle-2",
+   "name": "passerelle 2",
+   "quay_id": null,
+   "role": "CONNECTOR",
+   "station_id": "FR:93031:LMO:f43a07d2-1ffd-40a6-8df1-73cecee32f10:LOC"
+  },
+  {
    "id": "f43a07d2-1ffd-40a6-8df1-73cecee32f10:space:quai",
    "name": "quai",
    "quay_id": null,
@@ -40807,6 +41297,13 @@
    "station_id": "FR:93070:LMO:c9474b0c-c822-43a9-9526-b53c8a9b9e7d:LOC"
   },
   {
+   "id": "c9474b0c-c822-43a9-9526-b53c8a9b9e7d:space:bureau-de-vente",
+   "name": "bureau de vente",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:93070:LMO:c9474b0c-c822-43a9-9526-b53c8a9b9e7d:LOC"
+  },
+  {
    "id": "c9474b0c-c822-43a9-9526-b53c8a9b9e7d:space:hall",
    "name": "hall",
    "quay_id": null,
@@ -40940,6 +41437,20 @@
    "station_id": "FR:93073:LMO:6dd2d30c-23e9-4da1-8719-1d78758c65c3:LOC"
   },
   {
+   "id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:4",
+   "name": "Voie 4",
+   "quay_id": "FR:93073:ZE:15a867b1-3d9b-4465-a597-8823dc7b35a8:LOC",
+   "role": "PLATFORM",
+   "station_id": "FR:93073:LMO:f41e853e-620f-4ce9-988b-4f7a75625dd2:LOC"
+  },
+  {
+   "id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:quay:6",
+   "name": "Voie 6",
+   "quay_id": "FR:93073:ZE:36830fa2-cd06-4d33-ae15-928ae8859d46:LOC",
+   "role": "PLATFORM",
+   "station_id": "FR:93073:LMO:f41e853e-620f-4ce9-988b-4f7a75625dd2:LOC"
+  },
+  {
    "id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:hall-quai",
    "name": "hall <> quai",
    "quay_id": null,
@@ -40951,6 +41462,13 @@
    "name": "niv 1 - voies rer",
    "quay_id": null,
    "role": "UNRESOLVED_PLATFORM",
+   "station_id": "FR:93073:LMO:f41e853e-620f-4ce9-988b-4f7a75625dd2:LOC"
+  },
+  {
+   "id": "f41e853e-620f-4ce9-988b-4f7a75625dd2:space:niv-2",
+   "name": "niv 2",
+   "quay_id": null,
+   "role": "CONNECTOR",
    "station_id": "FR:93073:LMO:f41e853e-620f-4ce9-988b-4f7a75625dd2:LOC"
   },
   {
@@ -41488,6 +42006,13 @@
   {
    "id": "7a4c8971-455e-4d42-a3c7-5d0bd173a409:space:acces-centre-commercial",
    "name": "acces centre commercial",
+   "quay_id": null,
+   "role": "EXIT",
+   "station_id": "FR:95051:LMO:7a4c8971-455e-4d42-a3c7-5d0bd173a409:LOC"
+  },
+  {
+   "id": "7a4c8971-455e-4d42-a3c7-5d0bd173a409:space:parvis-montigny-esplanade",
+   "name": "parvis montigny esplanade",
    "quay_id": null,
    "role": "EXIT",
    "station_id": "FR:95051:LMO:7a4c8971-455e-4d42-a3c7-5d0bd173a409:LOC"
@@ -42281,6 +42806,13 @@
    "name": "bureau de vente",
    "quay_id": null,
    "role": "EXIT",
+   "station_id": "FR:95572:LMO:a1ec728f-142d-4660-84e0-46029c02106c:LOC"
+  },
+  {
+   "id": "a1ec728f-142d-4660-84e0-46029c02106c:space:passerelle",
+   "name": "passerelle",
+   "quay_id": null,
+   "role": "CONNECTOR",
    "station_id": "FR:95572:LMO:a1ec728f-142d-4660-84e0-46029c02106c:LOC"
   },
   {

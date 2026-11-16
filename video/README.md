@@ -1,6 +1,9 @@
 # How the demo video was made
 
-`unlock-demo.mp4` (1 min 38 s, 1920×1080, H.264 + AAC, −16 LUFS) is published on the v0.1.0 release.
+`unlock-demo.mp4` (1 min 36 s, 1920×1080, H.264 + AAC, −16 LUFS) is published on the v0.2.0 release.
+Segments: outage report → resolved lift → simulated outage → graph path → region-wide ranking → repair +
+Cypher cross-check → ambiguous report / lifts you can't lose → real Claude Code session over MCP (replayed from
+`docs/research/agent_eval/T1-graph.jsonl`) → close.
 
 1. **Screen**: `frontend/scripts/record-demo.mjs` drives the real app with Playwright (real engine, committed
    snapshot `sncf_lift_status@2273b7c1cb17`, no mocked data) and records the browser. Captions, the pointer

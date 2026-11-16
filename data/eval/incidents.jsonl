@@ -1,0 +1,22 @@
+{"text": "Juvisy : ascenseur quai 50/51 HS depuis ce matin", "expect": "63cd6c0d", "state": "UNAVAILABLE"}
+{"text": "Ascenseur des voies 40-41 en panne à Juvisy-sur-Orge", "expect": "dbc0565a", "state": "UNAVAILABLE"}
+{"text": "Juvisy, l'ascenseur côté sortie Seine ne fonctionne pas", "expect": "146a6401", "state": "UNAVAILABLE"}
+{"text": "ascenseur 4553 juvisy hs", "expect": "5ac71eb5", "state": "UNAVAILABLE"}
+{"text": "Juvisy ascenseur ASC2 salle d'échange en panne", "expect": "8f9a8e78", "state": "UNAVAILABLE"}
+{"text": "Lift at Juvisy platform 46/47 not working", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "two lifts serve 46/47 (ASC5 underpass, ASC2 transfer hall)"}
+{"text": "Mantes la Jolie : ascenseur voies C/D bloqué", "expect": "659111c6", "state": "UNAVAILABLE"}
+{"text": "Mantes-la-Jolie: lift between the bus station car park and the footbridge is broken", "expect": "a1c2b32c", "state": "UNAVAILABLE"}
+{"text": "Lift to platforms G and H at Noisy-le-Sec is out of service", "expect": "d1475f2d", "state": "UNAVAILABLE"}
+{"text": "Noisy le Sec ascenseur sortie avenue Verdun en panne", "expect": "91c0bc0f", "state": "UNAVAILABLE"}
+{"text": "Ascenseur voie A/B Noisy-le-Sec remis en service", "expect": "804aeda9", "state": "AVAILABLE"}
+{"text": "Pontoise : panne de l'ascenseur quai B voie 13/14", "expect": "968c1f4f", "state": "UNAVAILABLE"}
+{"text": "Pontoise ascenseur passerelle ville HS", "expect": "27ad2b0d", "state": "UNAVAILABLE"}
+{"text": "Ascenseur en panne à Pontoise", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "six lifts at Pontoise"}
+{"text": "Gare du Nord : AS7 mezzanine voies 41/43 hors service", "expect": "a969e9ed", "state": "UNAVAILABLE"}
+{"text": "Montparnasse hall 2, ascenseur quai 6-7 en panne", "expect": "e54911ce", "state": "UNAVAILABLE"}
+{"text": "Ascenseur Montparnasse vers le parking Océane HS", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "two lifts P1/P2 to Parking Océane"}
+{"text": "Versailles Chantiers : ascenseur voies D/E côté passerelle 2 KO", "expect": "fe388e3e", "state": "UNAVAILABLE"}
+{"text": "Versailles Chantiers ascenseur voie D en panne", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "two lifts serve D/E"}
+{"text": "Chelles : ascenseur voies C/D côté souterrain en panne", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "lifts 1042 and 1044 have identical descriptions"}
+{"text": "Elevator broken at Gare de l'Est", "expect": "AMBIGUOUS", "state": "UNAVAILABLE", "note": "station only reachable through the IDFM zone alias; several lifts"}
+{"text": "Panne ascenseur gare de Trifouillis-les-Oies", "expect": "NOT_FOUND", "state": "UNAVAILABLE"}

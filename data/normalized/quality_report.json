@@ -22,18 +22,18 @@
   "zones": 392
  },
  "space_roles": {
-  "UNRESOLVED_PLATFORM": 81,
+  "UNRESOLVED_PLATFORM": 82,
   "UNSPECIFIED": 251,
-  "EXIT": 152,
-  "PLATFORM": 480,
-  "CONNECTOR": 103,
+  "EXIT": 166,
+  "PLATFORM": 485,
+  "CONNECTOR": 107,
   "UNRESOLVED": 15,
-  "PRIVATE": 10
+  "PRIVATE": 11
  },
  "serves_derivations": {
-  "NAMED_SPACE": 526,
+  "NAMED_SPACE": 564,
   "UNSPECIFIED_END": 251,
-  "VOIE_TOKEN": 466,
+  "VOIE_TOKEN": 479,
   "QUAI_NUMBER": 72,
   "NAME_VOIE_TOKEN": 3
  },

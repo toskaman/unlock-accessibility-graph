@@ -14,3 +14,6 @@
 | D10 | 2026-11-16 | Runtime AI optional and number-validated | Core must work without keys; prevents fabricated figures | Chatbot over raw data |
 | D11 | 2026-11-16 | Commit normalized snapshot + snapshot store (ODbL) | Judges can run and inspect offline in seconds | Requiring 130 MB download |
 | D12 | 2026-11-16 | Git author set to a neutral local identity | Avoid publishing the entrant's e-mail before they choose an identity | — |
+| D13 | 2026-11-16 | Resolve free-text reports deterministically over the graph, abstain when ambiguous | Wrong-but-confident lift ids are the worst failure for a planner; retrieval over SERVES edges is explainable | LLM-only entity extraction |
+| D14 | 2026-11-16 | Agent access through MCP on a read-only Relate connection | Relate allows many read-only processes beside the app; the agent can't write even via Cypher | Giving the agent the web API's write endpoints |
+| D15 | 2026-11-16 | Keep every level of multi-stop lifts | Text lists 3 levels for some lifts; dropping the 3rd lost real connections | Keep first two sides only (old behaviour) |

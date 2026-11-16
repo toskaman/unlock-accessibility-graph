@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, ApiError } from "./api";
 import { MapView } from "./components/MapView";
 import { STATE_LABEL, StationSection } from "./components/StationSection";
-import type { Analysis, Candidate, Explanation, PairClass, PairView, Ranking, StationGraph, StationRow, Summary, View } from "./types";
+import type { Analysis, Candidate, Critical, Explanation, LiftCandidate, PairClass, PairView, Ranking, Resolution, StationGraph, StationRow, Summary, View } from "./types";
 
 const CLASS_LABEL: Record<PairClass, string> = {
   CONFIRMED_ACCESSIBLE: "Confirmed step-free",
@@ -10,6 +10,11 @@ const CLASS_LABEL: Record<PairClass, string> = {
   UNVERIFIED: "Unverified",
   OUT_OF_SCOPE: "No modeled route",
 };
+const EXAMPLES = [
+  "Juvisy : ascenseur quai 50/51 HS depuis ce matin",
+  "Lift to platforms G and H at Noisy-le-Sec is out of service",
+  "Ascenseur en panne à Pontoise",
+];
 const CLASS_ORDER: PairClass[] = ["CONFIRMED_ACCESSIBLE", "CONFIRMED_BLOCKED", "UNVERIFIED", "OUT_OF_SCOPE"];
 const KIND_LABEL: Record<string, string> = {
   OBSERVATION: "Source record", CALCULATION: "Calculated", SIMULATION: "Simulated", DERIVATION: "Derived from text", UNKNOWN: "Unknown",
@@ -47,6 +52,10 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [inspect, setInspect] = useState(false);
+  const [report, setReport] = useState("");
+  const [resolution, setResolution] = useState<Resolution | null>(null);
+  const [critical, setCritical] = useState<Critical | null>(null);
+  const [rightTab, setRightTab] = useState<"repairs" | "critical">("repairs");
   const [repairCounts, setRepairCounts] = useState<import("./types").Counts | null>(null);
   const [liftDeps, setLiftDeps] = useState<{ pairs_depending: number; confirmed_now: number; would_lose_if_unavailable: number } | null>(null);
 
@@ -55,9 +64,9 @@ export default function App() {
   // initial load
   useEffect(() => {
     setBusy("Loading the network graph…");
-    Promise.all([api.summary(), api.stations(), api.rank(null)])
-      .then(([s, st, r]) => {
-        setSummary(s); setStations(st); setRanking(r);
+    Promise.all([api.summary(), api.stations(), api.rank(null), api.critical()])
+      .then(([s, st, r, c]) => {
+        setSummary(s); setStations(st); setRanking(r); setCritical(c);
         const fromHash = new URLSearchParams(location.hash.slice(1)).get("station");
         const best = [...st].sort((a, b) => b.confirmed - a.confirmed || a.name.localeCompare(b.name))[0];
         setStationId(st.find((x) => x.id === fromHash || x.name === fromHash)?.id || best?.id || null);
@@ -89,13 +98,14 @@ export default function App() {
     setStationId(id); setLift(null); setPair(null); setExplanation(null);
   }, []);
 
-  const simulate = async () => {
-    if (!lift) return;
+  const simulate = async (target?: string) => {
+    const id = target || lift;
+    if (!id) return;
     setBusy("Simulating the outage and recomputing every modeled route…");
     setError(null);
     try {
       if (scenario) await api.deleteScenario(scenario.id).catch(() => undefined);
-      const r = await api.simulate([lift]);
+      const r = await api.simulate([id]);
       setScenario(r.scenario); setAnalysis(r.analysis); setCandidate(null); setAnalyst(null);
       setView("outage");
       setRanking(await api.rank(r.scenario.id));
@@ -111,6 +121,7 @@ export default function App() {
   };
 
   const chooseCandidate = async (c: Candidate) => {
+    setRightTab("repairs");
     setCandidate(c); setView(scenario ? "restoration" : "baseline");
     if (c.station_id !== stationId) setStationId(c.station_id);
     setLift(c.lift_id); setPair(null); setExplanation(null);
@@ -119,6 +130,19 @@ export default function App() {
       api.explainCandidate(scenario.id, c.lift_id).then(setAnalyst).catch(fail);
       api.withCandidate(scenario.id, c.lift_id).then((r) => setRepairCounts(r.with_candidate_counts)).catch(fail);
     }
+  };
+
+  const findLift = async (text?: string) => {
+    const t = (text ?? report).trim();
+    if (t.length < 3) return;
+    if (text) setReport(text);
+    setError(null);
+    try { setResolution(await api.resolve(t)); } catch (e) { fail(e); }
+  };
+
+  const pickCandidate = (c: LiftCandidate, andSimulate: boolean) => {
+    setStationId(c.station_id); setLift(c.lift_id); setPair(null); setExplanation(null);
+    if (andSimulate) simulate(c.lift_id);
   };
 
   const openPair = async (p: PairView) => {
@@ -192,6 +216,53 @@ export default function App() {
       {view !== "baseline" && <div className="banner sim" role="status">Simulated scenario — {scenario?.name}. Published lift observations are unchanged.</div>}
 
       <aside className="left">
+        <section className="report" aria-labelledby="report-h">
+          <h2 id="report-h">Start from an outage report</h2>
+          <textarea value={report} onChange={(e) => setReport(e.target.value)} rows={3}
+                    placeholder="Paste what the operator or a traveller wrote, e.g. “Juvisy : ascenseur quai 50/51 HS”"
+                    onKeyDown={(e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) findLift(); }} />
+          <div className="report-actions">
+            <button className="primary small" onClick={() => findLift()} disabled={report.trim().length < 3}>Find the lift</button>
+            <span className="muted small">or try:</span>
+          </div>
+          <div className="chips">
+            {EXAMPLES.map((x) => <button key={x} className="chip" onClick={() => findLift(x)}>{x}</button>)}
+          </div>
+          {resolution && (
+            <div className={`resolution r-${resolution.status}`} aria-live="polite">
+              {resolution.status === "RESOLVED" && (() => {
+                const c = resolution.lift_candidates[0];
+                return (
+                  <>
+                    <p className="rtitle">Found in the graph: <strong>{c.lift_name}</strong> at {c.station_name}</p>
+                    <ul className="ev">{c.evidence.map((e, i) => <li key={i}>{e}</li>)}</ul>
+                    <p className="small">Published status: {c.raw_state ?? "none"} · {c.pairs_depending ?? 0} modeled connections can use it
+                      {c.would_lose_if_unavailable ? <>; <strong>{c.would_lose_if_unavailable}</strong> would be lost</> : null}.</p>
+                    <div className="report-actions">
+                      <button className="primary small" onClick={() => pickCandidate(c, resolution.reported_state === "UNAVAILABLE")}>
+                        {resolution.reported_state === "UNAVAILABLE" ? "Simulate this outage" : "Show this lift"}
+                      </button>
+                    </div>
+                  </>
+                );
+              })()}
+              {resolution.status === "AMBIGUOUS" && (
+                <>
+                  <p className="rtitle">{resolution.question} UNLOCK won't guess — pick one:</p>
+                  <ul className="cands">
+                    {resolution.lift_candidates.map((c) => (
+                      <li key={c.lift_id}><button onClick={() => pickCandidate(c, false)}>
+                        <strong>{c.lift_name}</strong> <span className="muted">{c.station_name} · {c.description}</span>
+                      </button></li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {resolution.status === "NOT_FOUND" && <p className="rtitle">{resolution.question}</p>}
+              <p className="muted tiny">Matched deterministically against the Relate graph (station and zone names, the platforms and spaces each lift serves). No AI guessing.</p>
+            </div>
+          )}
+        </section>
         <label className="search">
           <span>Find a station</span>
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="e.g. Juvisy, Gare du Nord" aria-describedby="search-help" />
@@ -269,7 +340,7 @@ export default function App() {
                     )}
                   </div>
                   <div className="actions">
-                    <button className="primary" onClick={simulate} disabled={!!busy || liftInfo.state === "UNAVAILABLE" || view === "restoration"}
+                    <button className="primary" onClick={() => simulate()} disabled={!!busy || liftInfo.state === "UNAVAILABLE" || view === "restoration"}
                             title={view === "restoration" ? "Switch to the published status or the outage view to simulate another outage" : liftInfo.state === "UNAVAILABLE" ? "This lift is already out of service in this view" : undefined}>
                       Simulate outage
                     </button>
@@ -369,7 +440,28 @@ export default function App() {
             <p className="muted small">Sources: {[...new Set(explanation.routes.flatMap((r) => r.lifts.flatMap((l) => [l.evidence?.status_dataset?.title, l.evidence?.description_dataset?.title])).filter(Boolean))].join("; ")}</p>
           </section>
         )}
-        <section className="ranking">
+        <div className="rtabs" role="tablist" aria-label="Ranking lists">
+          <button role="tab" aria-selected={rightTab === "repairs"} className={rightTab === "repairs" ? "on" : ""} onClick={() => setRightTab("repairs")}>Repairs to make</button>
+          <button role="tab" aria-selected={rightTab === "critical"} className={rightTab === "critical" ? "on" : ""} onClick={() => setRightTab("critical")}>Lifts you can't lose</button>
+        </div>
+        {rightTab === "critical" && critical && (
+          <section className="critical">
+            <p className="small">{critical.single_points_of_failure} of {critical.evaluated_lifts} working lifts on modeled routes are a single point of failure: if one stops, confirmed step-free connections are lost with no modeled alternative.</p>
+            <ol>
+              {critical.lifts.slice(0, 12).map((c) => (
+                <li key={c.lift_id}>
+                  <button className={`cand${lift === c.lift_id ? " active" : ""}`} onClick={() => { setStationId(c.station_id); setLift(c.lift_id); setPair(null); setExplanation(null); }}>
+                    <span className="gain"><strong className="risk">−{c.would_lose}</strong><span className="bar risk" style={{ width: `${(c.would_lose / Math.max(1, critical.lifts[0].would_lose)) * 100}%` }} /></span>
+                    <span className="who">{c.station_name}<small>{c.lift_name}</small></span>
+                    <span className="tag ko">{c.covered_by_alternative ? `${c.covered_by_alternative} covered by another route` : "no alternative route"}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <p className="muted small">Each lift evaluated alone against today's published status. Select one, then simulate its outage.</p>
+          </section>
+        )}
+        {rightTab === "repairs" && <section className="ranking">
           <h3>{scenario ? "Repairs ranked by connections restored" : "Repairs ranked on today's published status"}</h3>
           {!ranking ? <p className="muted">Ranking…</p> : ranking.candidates.length === 0 ? (
             <p className="empty">No lift is out of service or unknown on a modeled route — there is nothing to repair.</p>
@@ -392,7 +484,7 @@ export default function App() {
             </ol>
           )}
           {ranking && <p className="muted small">Gain = change in confirmed step-free connections if only that lift is repaired. {ranking.candidate_count} candidates evaluated.</p>}
-        </section>
+        </section>}
       </aside>
 
       {busy && <div className="busy" role="status">{busy}</div>}

@@ -11,7 +11,7 @@ published location text on `/` (see `backend/unlock/ingest/spaces.py`). Identica
 same station are one space (labelled `NAMED_SPACE`).
 
 **Origin–destination pair** — an unordered pair of *anchor* spaces in the same station:
-platform ↔ platform, or platform ↔ exit (exit ↔ exit is excluded). 1,399 pairs in the pilot.
+platform ↔ platform, or platform ↔ exit (exit ↔ exit is excluded). 1,497 pairs in the pilot.
 A pair counts a *modeled connection*, never a number of people.
 
 **Route** — an acyclic path in Relate `(:Space)<-[:SERVES]-(:Lift)-[:SERVES]->(:Space)…` of at most

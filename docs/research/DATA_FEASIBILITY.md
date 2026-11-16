@@ -39,7 +39,7 @@ anchored to the IDFM stop reference (transfer zones) and to the lines serving ea
 | Duplicate identifiers | 0 in stations, quays, lifts, spaces, snapshots (asserted by `tests/data_quality`). |
 | Missing identifiers / coordinates | 0 stop places without coordinates (2,800). |
 | Verified platform relationships | Quay ↔ station: from NeTEx structure (exact). Quay step-free assessment: 2,062 ACCESSIBLE / 4,908 INACCESSIBLE nationally; IDF 842 / 438. `LiftFreeAccess` is `true` on **6,970 / 6,970** quays → **not informative**, not used. |
-| Verified elevator-path relationships | No surveyed lift→platform topology exists in any open source. Derived from lift location text, every edge labelled: lifts with two resolved ends **338 / 588 (57.5 %)**, one resolved end **249 / 588 (42.3 %)**, none 1. SERVES edges: VOIE_TOKEN 466, QUAI_NUMBER 72, NAME_VOIE_TOKEN 3, NAMED_SPACE 526, UNSPECIFIED_END 251. 60 track tokens did not match a quay and were *not* linked. |
+| Verified elevator-path relationships | No surveyed lift→platform topology exists in any open source. Derived from lift location text, every edge labelled: lifts with two resolved ends **338 / 588 (57.5 %)**, one resolved end **249 / 588 (42.3 %)**, none 1. SERVES edges: VOIE_TOKEN 479, QUAI_NUMBER 72, NAME_VOIE_TOKEN 3, NAMED_SPACE 564, UNSPECIFIED_END 251 (multi-stop lifts keep every listed level since 0.2.0). 60 track tokens did not match a quay and were *not* linked. |
 | SNCF station → IDFM zone | **401 / 401 (100 %)** matched by name + distance (≤ 800 m); 7 matches have name score < 0.5; reviewed manually: 6 are the same place under another name (e.g. "Paris Est" → "Gare de l'Est", "Aéroport Charles de Gaulle 1" → "Aéroport CDG 1"), 1 is an adjacent but distinct station ("Massy TGV" → "Massy - Palaiseau", 230 m). Zone links are context only and never enter the impact metric. |
 | Accèslibre access | Public API exists (`acceslibre.beta.gouv.fr/api/`), Licence Ouverte 2.0. **Not used**: no verified pedestrian path links an ERP to a station space; proximity alone would be a false accessibility claim. |
 | License review | SNCF datasets ODbL 1.0 (attribution + share-alike on derived databases → `data/LICENSE-DATA.md`). IDFM reference data Licence Ouverte 2.0. IDFM GTFS Licence Mobilités (only derived zone→line facts are redistributed). Relate Apache-2.0. |
@@ -54,9 +54,9 @@ anchored to the IDFM stop reference (transfer zones) and to the lines serving ea
 | Source records (IDF) | 401 stations, 1,280 quays, 588 lifts, 588 status observations |
 | Status states (IDF) | AVAILABLE 565, UNAVAILABLE 16, UNKNOWN 7 |
 | Unknown accessibility values | 0 quays without an assessment in IDF (assessments are true/false only) |
-| Modeled origin–destination pairs | 1,399 (platform↔platform, platform↔exit within a station) |
-| Pairs with ≥ 1 modeled lift route | **677 / 1,399 (48.4 %)** |
-| Baseline classification | CONFIRMED_ACCESSIBLE 566, CONFIRMED_BLOCKED 67, UNVERIFIED 44, OUT_OF_SCOPE 722 |
+| Modeled origin–destination pairs | 1,497 (platform↔platform, platform↔exit within a station) |
+| Pairs with ≥ 1 modeled lift route | **705 / 1,497 (47.1 %)** |
+| Baseline classification | CONFIRMED_ACCESSIBLE 582, CONFIRMED_BLOCKED 75, UNVERIFIED 48, OUT_OF_SCOPE 792 |
 | Stale observations | Freshness is evaluated at view time (≤ 2 h CURRENT, ≤ 24 h AGING, else STALE). |
 
 ## Hard decision gate — outcome

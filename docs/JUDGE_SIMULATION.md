@@ -1,51 +1,47 @@
-# Internal judge simulation — 16 Nov 2026 (after P0–P2 + first UI)
+# Internal judge simulation — 16 Nov 2026, after v0.2.0
 
-These are internal projections to find weaknesses. They are **not** a prediction of the actual jury score.
+Internal projections to find weaknesses — not a prediction of the jury score. Criteria from the official rules
+(5 × equal weight) and the Devpost page (30/25/20/15/10). The Neo4j announcement post also stresses "how fully
+[entries] use AI and agentic capabilities"; the rules fold agents into *Effective use of connected context*.
 
 ## Judge A — product & impact
-*Strongest reason to award:* turns scattered public lift records into a concrete, inspectable repair priority,
-including real lifts out of service today (Mantes-la-Jolie, Noisy-le-Sec).
-*Strongest reason to reject:* SNCF stations only, and lift topology comes from free text; "blocked" can't rule
-out an undocumented ramp. **Attack:** a judge from RATP would ask about the metro. **Fix:** IDFM key → RATP lifts
-(ZdC-level, weaker topology), and a per-station "data confidence" indicator.
+- **Award:** a planner pastes this morning's outage message and in two clicks sees what it breaks and which repair
+  matters most region-wide; the "lifts you can't lose" list is preventive maintenance gold.
+- **Reject:** SNCF stations only (no RATP metro); topology derived from text; "blocked" can't exclude undocumented ramps.
+- **Most memorable:** a vague report gets "UNLOCK won't guess — pick one".
+- **Fix next:** RATP lifts via IDFM key; a held-out evaluation set for the resolver.
 
 ## Judge B — Relate expert
-*Award:* persistent single-file store; the core answer is a GQL `ACYCLIC` path query; evidence and scenarios are
-graph structures; thread-affinity and single-writer limits handled correctly; real-engine tests.
-*Reject:* scenario evaluation runs on an in-memory cache of route sets after the traversal — could be read as
-"Relate used for loading". **Mitigation in place:** cache is derived only from the Relate query, evidence re-queried
-live, inspector shows executed Cypher. **Done:** every analysis now recomputes the affected stations directly in one Cypher query (overrides passed as a
-map parameter) and shows "engine = Cypher" in the impact panel; a test asserts agreement.
+- **Award:** the answers *are* graph traversals (ACYCLIC QPP over SERVES), retrieval over graph context
+  (zone aliases, SERVES edges) grounds entity resolution, agents get a read-only Relate connection over MCP,
+  every analysis re-checked in Cypher, persistent single-file store, real-engine tests incl. MCP over stdio.
+- **Reject:** scenario evaluation uses an in-memory route cache (mitigated: derived from Relate, cross-checked, shown).
+- **Fix next:** none critical.
 
 ## Judge C — competition & demo
-*Award:* the outage → ranking → evidence → restore loop is visible and numerically consistent (e2e asserts
-gain = loss and full restoration).
-*Reject:* no video yet; Windows install unverified; repo not yet public with topic `relate`.
+- **Award:** theme fit ("connected context makes agents more reliable") demonstrated with a real agent 5/5 vs 0/5;
+  clean reproducibility (clone → build → serve, Windows + Linux), narrated video from the real app.
+- **Reject:** small evaluation samples (22 reports, 5 agent tasks, single run); resolver tuned on its eval set.
+- **Missing:** Devpost form submission (entrant).
 
-## Scorecard A — official rules (5 criteria, equal weight), 1–10
-
+## Scorecard A — official rules (1–10, equal weight)
 | Criterion | Score | Evidence | Weakness | Best improvement |
 |---|---|---|---|---|
-| Creativity | 7 | Station cross-section built from lift text; repair ranking with series-lift synergy | Category (accessibility map) is familiar | Lead with "repair together" insight in the demo |
-| Usefulness | 6 | Ranks real current outages region-wide | SNCF only; no ridership | RATP via IDFM key; export as planner-ready CSV |
-| Completeness | 7 | Full flow, tests, docs, persistence | No video; Windows untested | Record video; Windows check |
-| Clarity | 7 | Plain-language UI, legends, methodology | Dense pair grid on big stations | Collapse unchanged pairs by default |
-| Connected context | 8 | Path query is the answer; provenance graph; in-Cypher cross-check shown | RATP topology missing | Extend graph to IDFM ZdC-level lifts |
+| Creativity | 8 | Station cross-section from lift text; repair synergy; refuse-to-guess resolver | Accessibility maps exist | Lead with the outage-report moment (done in video) |
+| Usefulness | 7 | Real current outages ranked; SPOF list; free-text intake | SNCF only | RATP via IDFM key |
+| Completeness | 8 | End-to-end flows, 62+4 tests, Windows/Linux, video | Devpost form pending | Submit |
+| Clarity | 8 | Three entry points, plain language, evidence panel | Dense pair grid on big stations | Collapse unchanged pairs |
+| Connected context (graph, retrieval, agents) | 9 | Traversal is the answer; graph retrieval; MCP agent 5/5 vs 0/5 | Small eval | Held-out set, more agent tasks |
 
-Projection: 35 / 50.
+Projection: 40 / 50 (was 35 before v0.2.0).
 
-## Scorecard B — Devpost page weights
-
+## Scorecard B — Devpost weights
 | Criterion (weight) | Score /10 | Weighted |
 |---|---|---|
-| Relate & connected context (30) | 8 | 24 |
-| Functionality & completeness (25) | 7 | 17.5 |
-| Usefulness (20) | 6 | 12 |
-| Documentation & reproducibility (15) | 8 | 12 |
-| Creativity (10) | 7 | 7 |
+| Relate & connected context (30) | 9 | 27 |
+| Functionality & completeness (25) | 8 | 20 |
+| Usefulness (20) | 7 | 14 |
+| Documentation & reproducibility (15) | 9 | 13.5 |
+| Creativity (10) | 8 | 8 |
 
-Projection: 72.5 / 100.
-
-## Disqualification check
-New project (first commit 2026-11-16 ✓), Relate meaningfully used ✓, licences documented ✓,
-**public repo + `relate` topic not yet done** (needs the entrant), **video not yet recorded**.
+Projection: 82.5 / 100 (was 72.5).

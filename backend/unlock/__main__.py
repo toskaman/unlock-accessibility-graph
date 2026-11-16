@@ -6,6 +6,7 @@
   python -m unlock build        normalize (if data/raw exists) + import
   python -m unlock serve        run the API (+ built frontend) on 127.0.0.1:8000
   python -m unlock stats        print graph counts from the store
+  python -m unlock mcp          MCP server (stdio, read-only store) for AI agents
 """
 from __future__ import annotations
 
@@ -20,7 +21,7 @@ from .config import ROOT, STORE_PATH
 
 def main() -> None:
     ap = argparse.ArgumentParser(prog="unlock")
-    ap.add_argument("command", choices=["fetch", "normalize", "import", "build", "serve", "stats"])
+    ap.add_argument("command", choices=["fetch", "normalize", "import", "build", "serve", "stats", "mcp"])
     ap.add_argument("--store", default=str(STORE_PATH))
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8000)
@@ -49,6 +50,10 @@ def main() -> None:
         from .db import GraphStore
         with GraphStore(a.store, read_only=True) as db:
             print(json.dumps(db.counts(), indent=1))
+    if a.command == "mcp":
+        from .agent.mcp_server import main as mcp_main
+        mcp_main(a.store)
+        return
     if a.command == "serve":
         store = Path(a.store)
         if not store.exists():

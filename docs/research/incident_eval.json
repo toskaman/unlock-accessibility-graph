@@ -1,0 +1,240 @@
+{
+ "dataset": "data/eval/incidents.jsonl (22 hand-written synthetic reports, gold labels by the developer)",
+ "summary": {
+  "graph": {
+   "CORRECT": 21,
+   "ABSTAINED": 1,
+   "n": 22,
+   "correct_rate": 0.955
+  },
+  "text_search": {
+   "CORRECT": 9,
+   "WRONG_CONFIDENT": 13,
+   "n": 22,
+   "correct_rate": 0.409
+  },
+  "state_detection_correct": 22
+ },
+ "rows": [
+  {
+   "text": "Juvisy : ascenseur quai 50/51 HS depuis ce matin",
+   "expect": "63cd6c0d",
+   "graph_status": "RESOLVED",
+   "graph_top": "63cd6c0d",
+   "graph_grade": "CORRECT",
+   "baseline_top": "63cd6c0d",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Ascenseur des voies 40-41 en panne à Juvisy-sur-Orge",
+   "expect": "dbc0565a",
+   "graph_status": "RESOLVED",
+   "graph_top": "dbc0565a",
+   "graph_grade": "CORRECT",
+   "baseline_top": "dbc0565a",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Juvisy, l'ascenseur côté sortie Seine ne fonctionne pas",
+   "expect": "146a6401",
+   "graph_status": "RESOLVED",
+   "graph_top": "146a6401",
+   "graph_grade": "CORRECT",
+   "baseline_top": "c0f12050",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "ascenseur 4553 juvisy hs",
+   "expect": "5ac71eb5",
+   "graph_status": "RESOLVED",
+   "graph_top": "5ac71eb5",
+   "graph_grade": "CORRECT",
+   "baseline_top": "5ac71eb5",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Juvisy ascenseur ASC2 salle d'échange en panne",
+   "expect": "8f9a8e78",
+   "graph_status": "RESOLVED",
+   "graph_top": "8f9a8e78",
+   "graph_grade": "CORRECT",
+   "baseline_top": "8f9a8e78",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Lift at Juvisy platform 46/47 not working",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "40aa9694",
+   "graph_grade": "CORRECT",
+   "baseline_top": "8f9a8e78",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Mantes la Jolie : ascenseur voies C/D bloqué",
+   "expect": "659111c6",
+   "graph_status": "RESOLVED",
+   "graph_top": "659111c6",
+   "graph_grade": "CORRECT",
+   "baseline_top": "dc4e81ac",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Mantes-la-Jolie: lift between the bus station car park and the footbridge is broken",
+   "expect": "a1c2b32c",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "dc4e81ac",
+   "graph_grade": "ABSTAINED",
+   "baseline_top": "dc4e81ac",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Lift to platforms G and H at Noisy-le-Sec is out of service",
+   "expect": "d1475f2d",
+   "graph_status": "RESOLVED",
+   "graph_top": "d1475f2d",
+   "graph_grade": "CORRECT",
+   "baseline_top": "feb099bd",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Noisy le Sec ascenseur sortie avenue Verdun en panne",
+   "expect": "91c0bc0f",
+   "graph_status": "RESOLVED",
+   "graph_top": "91c0bc0f",
+   "graph_grade": "CORRECT",
+   "baseline_top": "91c0bc0f",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Ascenseur voie A/B Noisy-le-Sec remis en service",
+   "expect": "804aeda9",
+   "graph_status": "RESOLVED",
+   "graph_top": "804aeda9",
+   "graph_grade": "CORRECT",
+   "baseline_top": "feb099bd",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Pontoise : panne de l'ascenseur quai B voie 13/14",
+   "expect": "968c1f4f",
+   "graph_status": "RESOLVED",
+   "graph_top": "968c1f4f",
+   "graph_grade": "CORRECT",
+   "baseline_top": "968c1f4f",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Pontoise ascenseur passerelle ville HS",
+   "expect": "27ad2b0d",
+   "graph_status": "RESOLVED",
+   "graph_top": "27ad2b0d",
+   "graph_grade": "CORRECT",
+   "baseline_top": "27ad2b0d",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Ascenseur en panne à Pontoise",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "38ce64b2",
+   "graph_grade": "CORRECT",
+   "baseline_top": "fadb10ad",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Gare du Nord : AS7 mezzanine voies 41/43 hors service",
+   "expect": "a969e9ed",
+   "graph_status": "RESOLVED",
+   "graph_top": "a969e9ed",
+   "graph_grade": "CORRECT",
+   "baseline_top": "a969e9ed",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Montparnasse hall 2, ascenseur quai 6-7 en panne",
+   "expect": "e54911ce",
+   "graph_status": "RESOLVED",
+   "graph_top": "e54911ce",
+   "graph_grade": "CORRECT",
+   "baseline_top": "ea2690cb",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Ascenseur Montparnasse vers le parking Océane HS",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "72d999b5",
+   "graph_grade": "CORRECT",
+   "baseline_top": "8022f6fc",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Versailles Chantiers : ascenseur voies D/E côté passerelle 2 KO",
+   "expect": "fe388e3e",
+   "graph_status": "RESOLVED",
+   "graph_top": "fe388e3e",
+   "graph_grade": "CORRECT",
+   "baseline_top": "fe388e3e",
+   "baseline_grade": "CORRECT",
+   "state_ok": true
+  },
+  {
+   "text": "Versailles Chantiers ascenseur voie D en panne",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "73366593",
+   "graph_grade": "CORRECT",
+   "baseline_top": "fe388e3e",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Chelles : ascenseur voies C/D côté souterrain en panne",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "40e1109f",
+   "graph_grade": "CORRECT",
+   "baseline_top": "ff6b1399",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Elevator broken at Gare de l'Est",
+   "expect": "AMBIGUOUS",
+   "graph_status": "AMBIGUOUS",
+   "graph_top": "b0210457",
+   "graph_grade": "CORRECT",
+   "baseline_top": "de179b84",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  },
+  {
+   "text": "Panne ascenseur gare de Trifouillis-les-Oies",
+   "expect": "NOT_FOUND",
+   "graph_status": "NOT_FOUND",
+   "graph_top": "",
+   "graph_grade": "CORRECT",
+   "baseline_top": "fadb10ad",
+   "baseline_grade": "WRONG_CONFIDENT",
+   "state_ok": true
+  }
+ ]
+}

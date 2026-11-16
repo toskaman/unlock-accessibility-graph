@@ -21,7 +21,7 @@
 
 ## Why Relate, and how it is used
 
-* **Embedded, single file.** `database/unlock.rl` is the system of record: 6.4 MB, 6,077 domain nodes and 11,680
+* **Embedded, single file.** `database/unlock.rl` is the system of record: 6.5 MB, 6,102 domain nodes and 11,761
   relationships for the pilot (plus one `ImportRun` record per import). No server, no sign-up — judges open the same file the app uses.
 * **The core question is a traversal.** "Which lifts does a step-free connection between Voie 40 and
   Voie 50 depend on, and is there an alternative?" is an acyclic variable-length path query over

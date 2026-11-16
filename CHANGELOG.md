@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 — 2026-11-16
+- **Start from an outage report**: free-text report → exact lift via deterministic retrieval over the Relate graph
+  (station + IDFM zone names, platforms and spaces each lift SERVES); ambiguous reports return candidates, never a guess.
+- **Lifts you can't lose**: single-point-of-failure scan of every working lift (191 of 304).
+- **UNLOCK for AI agents**: MCP server (`python -m unlock mcp`) on a read-only store — find_lift, simulate_outage,
+  rank_repairs, plan_repairs, critical_lifts, explain_connection, station_overview, cypher_read, network_summary.
+- Transient what-if analysis (`POST /api/what-if`) that persists nothing.
+- Fix: multi-stop lifts ("Voies F et G / hall / passerelle") now keep every listed level (+51 SERVES edges);
+  baseline becomes 1,497 pairs, 582 confirmed.
+- Evaluation: incident resolution 21/22 vs 9/22 for text search (`scripts/eval_incidents.py`); agent harness
+  `scripts/agent_eval.py` (Claude Code with vs without the graph).
+- 62 pytest tests (incl. MCP over stdio), 4 Playwright e2e tests.
+
 ## 0.1.1 — 2026-11-16
 - Verified natively on Windows 10 (Python 3.14.4): 56 tests, build, serve.
 - Narrated 1:38 demo video (Playwright recording of the real app + Kokoro TTS) and README preview GIF.

@@ -18,6 +18,7 @@ from .. import ALGORITHM_VERSION
 from ..db import GraphStore
 from . import graph as G
 from . import impact as I
+from . import resolve as R
 from .model import EquipmentStatus, Pair, PairClass
 
 E = EquipmentStatus
@@ -65,6 +66,7 @@ class UnlockService:
                    collect(DISTINCT n {.id, .short_name, .mode, .color, .text_color}) AS lines
             ORDER BY id""")
         self.stations = {r["id"]: r for r in rows}
+        self.resolver = R.build_index(self.db)
         self.space_names = {r["id"]: r for r in self.db.query(
             "MATCH (s:Station)-[:HAS_SPACE]->(sp:Space) RETURN sp.id AS id, sp.name AS name, sp.role AS role, s.id AS station")}
 
@@ -282,6 +284,11 @@ class UnlockService:
 
     def rank(self, scenario_id: str | None, limit: int = 25) -> dict[str, Any]:
         state, sc = self._scenario_state(scenario_id)
+        out = self._rank_state(state, set(sc.get("overrides", {})), limit)
+        out["scenario_id"] = scenario_id
+        return out
+
+    def _rank_state(self, state: dict[str, EquipmentStatus], simulated: set[str], limit: int) -> dict[str, Any]:
         cands = I.rank_interventions(self.pairs, self.lifts, state)
         ev = I.evaluate(self.pairs, state)
         out = []
@@ -296,13 +303,79 @@ class UnlockService:
                 "rank": i + 1, "lift_id": c.lift_id, "lift_name": l.name, "description": l.description,
                 "station_id": c.station_id, "station_name": self.stations[c.station_id]["name"],
                 "current_state": c.current_state.value, "baseline_state": l.baseline.value,
-                "simulated": c.lift_id in sc.get("overrides", {}),
+                "simulated": c.lift_id in simulated,
                 "gain": c.gain, "restored_pairs": c.restored_pairs, "resolved_unverified": c.resolved_unverified,
                 "pairs_depending": c.pairs_depending, "still_blocked_by_others": c.still_blocked_by_others,
                 "reason": reason})
-        return {"scenario_id": scenario_id, "snapshot": self.freshness(), "algorithm_version": ALGORITHM_VERSION,
+        return {"scenario_id": None, "snapshot": self.freshness(), "algorithm_version": ALGORITHM_VERSION,
                 "confirmed_now": ev.counts["CONFIRMED_ACCESSIBLE"], "candidates": out, "candidate_count": len(cands),
                 "metric": "Δ confirmed step-free origin–destination pairs (modeled pairs, not people)"}
+
+    # ------------------------------------------------- transient (read-only) analysis
+    def what_if(self, overrides: dict[str, str], top_pairs: int = 12) -> dict[str, Any]:
+        """Analyse hypothetical lift states WITHOUT persisting anything (safe for read-only stores/agents)."""
+        ov = self._validate_overrides(overrides)
+        state = I.effective_state(self.lifts, ov)
+        ev = I.evaluate(self.pairs, state)
+        lost = sorted(self.baseline.confirmed() - ev.confirmed())
+        gained = sorted(ev.confirmed() - self.baseline.confirmed())
+        stations = sorted({self.lifts[l].station_id for l in ov} | {self.pairs_by_id[p].station_id for p in lost + gained})
+        checks = []
+        for st in stations:
+            local = self.pairs_by_station.get(st, [])
+            py = sum(1 for p in local if p.routes and any(I.route_state(r, state) == E.AVAILABLE for r in p.routes))
+            cy = G.crosscheck(self.db, st, {k: v.value for k, v in ov.items()}, self.snapshot["id"])
+            checks.append({"station_name": self.stations[st]["name"], "engine": py,
+                           "cypher": cy["pairs_with_available_route"], "match": py == cy["pairs_with_available_route"]})
+        def name(pid):
+            p = self.pairs_by_id[pid]
+            return {"pair_id": pid, "station": self.stations[p.station_id]["name"],
+                    "between": f"{self.space_names[p.a]['name']} ↔ {self.space_names[p.b]['name']}",
+                    "now": ev.results[pid].cls.value, "reason": ev.results[pid].reason.value}
+        return {"kind": "SIMULATION (not persisted; published observations unchanged)",
+                "overrides": {k: v.value for k, v in ov.items()},
+                "lift_names": {k: self.lifts[k].name for k in ov},
+                "snapshot": self.freshness(), "baseline_counts": self.baseline.counts, "scenario_counts": ev.counts,
+                "confirmed_lost": len(lost), "confirmed_gained": len(gained),
+                "lost_examples": [name(p) for p in lost[:top_pairs]], "gained_examples": [name(p) for p in gained[:top_pairs]],
+                "relate_crosscheck": {"stations": checks, "all_match": all(c["match"] for c in checks)},
+                "ranking_after": self._rank_state(state, set(ov), 5)}
+
+    def critical_lifts(self, limit: int = 20) -> dict[str, Any]:
+        """For every lift working today: confirmed connections lost if it alone fails (single point of failure)."""
+        rows = []
+        for lid, li in sorted(self.lifts.items()):
+            if self.baseline_state.get(lid) != E.AVAILABLE:
+                continue
+            local = [p for p in self.pairs_by_station.get(li.station_id, []) if any(lid in r.lifts for r in p.routes)]
+            if not local:
+                continue
+            before = I.evaluate(local, self.baseline_state)
+            trial = dict(self.baseline_state); trial[lid] = E.UNAVAILABLE
+            after = I.evaluate(local, trial)
+            lost = len(before.confirmed() - after.confirmed())
+            rows.append({"lift_id": lid, "lift_name": li.name, "description": li.description,
+                         "station_id": li.station_id, "station_name": self.stations[li.station_id]["name"],
+                         "would_lose": lost, "pairs_depending": len(local),
+                         "covered_by_alternative": len(before.confirmed()) - lost})
+        rows.sort(key=lambda r: (-r["would_lose"], -r["pairs_depending"], r["lift_id"]))
+        spof = [r for r in rows if r["would_lose"] > 0]
+        return {"snapshot": self.freshness(), "evaluated_lifts": len(rows), "single_points_of_failure": len(spof),
+                "total_confirmed_at_risk": sum(r["would_lose"] for r in spof), "lifts": rows[:limit],
+                "metric": "Confirmed step-free connections lost if this lift alone becomes unavailable (others as published)"}
+
+    def resolve_incident(self, text: str) -> dict[str, Any]:
+        r = R.resolve(self.resolver, text)
+        for c in r["lift_candidates"]:
+            li = self.lifts[c["lift_id"]]
+            c["published_state"] = li.baseline.value
+            c["raw_state"] = li.raw_state
+        if r["status"] == "RESOLVED":
+            top = r["lift_candidates"][0]
+            d = self.lift_detail(top["lift_id"])
+            top["pairs_depending"] = d["pairs_depending"]
+            top["would_lose_if_unavailable"] = d["would_lose_if_unavailable"]
+        return r
 
     def plan(self, scenario_id: str | None, budget: int) -> dict[str, Any]:
         if not 1 <= budget <= 5:
@@ -315,11 +388,15 @@ class UnlockService:
 
     # -------------------------------------------------------------- evidence
     def explain_pair(self, pair_id: str, scenario_id: str | None = None,
-                     candidate_lift: str | None = None) -> dict[str, Any]:
+                     candidate_lift: str | None = None, overrides: dict[str, str] | None = None) -> dict[str, Any]:
         p = self.pairs_by_id.get(pair_id)
         if not p:
             raise NotFound(pair_id)
-        state, sc = self._scenario_state(scenario_id)
+        if overrides:
+            ov = self._validate_overrides(overrides)
+            state, sc = I.effective_state(self.lifts, ov), {"overrides": {k: v.value for k, v in ov.items()}}
+        else:
+            state, sc = self._scenario_state(scenario_id)
         res = I.classify(p, state)
         base = I.classify(p, self.baseline_state)
         restored = None

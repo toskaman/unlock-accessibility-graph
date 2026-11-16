@@ -1,4 +1,4 @@
-import type { Analysis, Explanation, Ranking, StationGraph, StationRow, Summary } from "./types";
+import type { Analysis, Critical, Explanation, Ranking, Resolution, StationGraph, StationRow, Summary } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -27,6 +27,8 @@ const q = (o: Record<string, string | null | undefined>) => {
 };
 
 export const api = {
+  resolve: (text: string) => call<Resolution>("/api/incidents/resolve", { method: "POST", body: JSON.stringify({ text }) }),
+  critical: () => call<Critical>("/api/network/critical-lifts?limit=15"),
   summary: () => call<Summary>("/api/network/summary"),
   stations: () => call<StationRow[]>("/api/network/stations"),
   station: (id: string, scenario?: string | null, candidate?: string | null) =>

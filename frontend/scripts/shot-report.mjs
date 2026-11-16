@@ -1,0 +1,14 @@
+import { chromium } from "@playwright/test";
+const out = process.argv[2] || "/home/claude/shots";
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+p.on("pageerror", (e) => console.log("pageerror", e.message));
+await p.goto("http://127.0.0.1:8000/#station=Paris%20Gare%20du%20Nord"); await p.waitForSelector(".section-svg"); await p.waitForTimeout(1500);
+await p.screenshot({ path: `${out}/r1-landing.png` });
+await p.locator(".chip").first().click(); await p.waitForSelector(".resolution"); await p.waitForTimeout(500);
+await p.screenshot({ path: `${out}/r2-resolved.png` });
+await p.getByRole("button", { name: "Simulate this outage" }).click(); await p.waitForSelector(".banner.sim"); await p.waitForTimeout(1500);
+await p.screenshot({ path: `${out}/r3-simulated.png` });
+await p.locator(".chip").nth(2).click(); await p.waitForTimeout(800);
+await p.getByRole("tab", { name: "Lifts you can't lose" }).click(); await p.waitForTimeout(600);
+await p.screenshot({ path: `${out}/r4-ambiguous-critical.png` });
+await b.close();

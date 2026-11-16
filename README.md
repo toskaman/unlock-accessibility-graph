@@ -8,7 +8,7 @@ which step-free connections inside the station it breaks, and rank lift repairs 
 many confirmed connections each one restores. Every number on screen can be traced through the graph
 back to a source record.
 
-**▶ Demo video (1 min 38 s, narrated):** [unlock-demo.mp4 on the v0.1.0 release](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.1.0/unlock-demo.mp4)
+**▶ Demo video (1 min 36 s, narrated):** [unlock-demo.mp4 on the v0.2.0 release](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4)
 
 ![UNLOCK: simulating a lift outage at Juvisy-sur-Orge](docs/media/demo-preview.gif)
 
@@ -27,6 +27,15 @@ on what else that lift connects, and whether another route exists. That informat
 
 UNLOCK connects these sources so you can ask: *"Which repair restores the most verified step-free
 connectivity?"*
+
+## Three ways in
+
+| You have… | Do this | You get |
+|---|---|---|
+| **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | Paste it in *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed** — UNLOCK lists the candidates. |
+| **A maintenance budget** | Open *Repairs to make* | Every lift out of service today, ranked by confirmed connections its repair restores; exact best set of *k* repairs via the API. |
+| **Prevention in mind** | Open *Lifts you can't lose* | 191 of the 304 working lifts on modeled routes are single points of failure; the list shows what each one would cut. |
+| **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, so the agent's answers carry real numbers and evidence instead of guesses. |
 
 ## The 30-second walkthrough
 
@@ -105,11 +114,41 @@ All sources are listed in [DATA_SOURCES.md](DATA_SOURCES.md), with what was chec
 - The IDFM elevator dataset needs an API key, so RATP metro and RER lifts are not included yet.
 - The IDFM GTFS has no elevator pathways, so lift-to-platform links come from the publisher's location
   text. Every such edge is labelled with how it was derived.
-- 677 of the 1,399 pairs (48%) have a modeled lift route. The rest are reported as *No modeled route*,
+- 705 of the 1,497 pairs (47%) have a modeled lift route. The rest are reported as *No modeled route*,
   not as inaccessible.
 
 The derived dataset (`data/normalized/graph_input.json` and the snapshot store) is published under the
 ODbL. See [data/LICENSE-DATA.md](data/LICENSE-DATA.md).
+
+## For AI agents: UNLOCK over MCP
+
+The hackathon theme is *connected context makes agents more reliable*. UNLOCK exposes its graph to any MCP agent
+through a **read-only** Relate connection (the agent can't modify anything, even through `cypher_read`):
+
+| Tool | What the agent gets |
+|---|---|
+| `find_lift(report)` | Free-text report → lift id, with the graph evidence, or AMBIGUOUS + candidates |
+| `simulate_outage(lift_ids)` | Connections lost/gained, examples, Cypher cross-check, ranking afterwards (nothing persisted) |
+| `rank_repairs`, `plan_repairs(budget)` | Repair priorities and the exact best set of *k* repairs |
+| `critical_lifts` | Single points of failure |
+| `explain_connection(pair_id)` | The actual Relate path, statuses, snapshot, derivations, unknowns |
+| `station_overview`, `network_summary`, `cypher_read(query)` | Context and read-only Cypher (row-capped) |
+
+```bash
+pip install -e ".[agent]"
+claude mcp add unlock -- python -m unlock mcp   # Claude Code (uses database/unlock.rl); other MCP clients alike
+```
+
+**A real agent, with and without the graph.** Claude Code (model `claude-sonnet-5-5`) answered five planner
+questions twice. With the UNLOCK MCP tools: **5/5 correct**, every number taken from a tool. Without them: **0/5** —
+the model declined to answer each time. Details and transcripts: [docs/research/AGENT_EVAL.md](docs/research/AGENT_EVAL.md).
+
+**Why the graph matters for the agent — measured.** On 22 hand-written outage reports
+(`data/eval/incidents.jsonl`, synthetic, developer-labelled), the graph-grounded resolver identifies the right
+lift or correctly refuses to guess in **21/22** cases with **0** confidently wrong answers. A text search over the
+same source records (lift names and descriptions, no graph) gets **9/22** and is **confidently wrong 13 times**.
+Run `python scripts/eval_incidents.py`; results in `docs/research/incident_eval.json`. The resolver was tuned on
+this set; there is no held-out set yet.
 
 ## Run it
 
@@ -164,8 +203,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 56 tests: unit, real-Relate integration, API, data quality
-cd frontend && npx playwright test  # 3 end-to-end tests of the signature flow (on a copy of the store)
+pytest                              # 62 tests: unit, real-Relate integration, API, agent/MCP, data quality
+cd frontend && npx playwright test  # 4 end-to-end tests of the signature flow (on a copy of the store)
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 ```
 
@@ -185,12 +224,13 @@ Measured on the pilot (2-vCPU Linux container, median of 20 runs; full table in
 
 | Operation | Time |
 |---|---|
-| Fresh import | 0.9 s |
-| Service start, including the region-wide route traversal | 3.7 s |
-| Single-station traversal | 14 ms |
-| Create and analyse a scenario | 7 ms |
-| Rank every candidate repair in the region | 5 ms |
+| Fresh import | 1.0 s |
+| Service start, including the region-wide route traversal and the resolver index | 4.9 s |
+| Single-station traversal | 11 ms |
+| Create, analyse and persist a scenario (incl. Cypher cross-check) | 15 ms |
+| Rank every candidate repair in the region | 6 ms |
 | Explain a pair with evidence | 4 ms |
+| Critical-lift scan of all 304 working lifts on modeled routes | 13 ms |
 
 ## API
 

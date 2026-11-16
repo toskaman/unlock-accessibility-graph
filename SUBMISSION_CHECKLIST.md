@@ -7,8 +7,8 @@
 - [x] Code licence Apache-2.0; data licence ODbL documented
 - [x] Git author set to the GitHub account `toskaman` (noreply address); public repo created and pushed
 - [x] GitHub topics `relate` and `relate-neo4j-hackathon` added
-- [x] Install + 56 tests + build + serve verified natively on Windows 10 (Python 3.14.4)
-- [x] 1:38 narrated video recorded; public on the GitHub release (no login needed)
+- [x] Install + 62 tests + build + serve verified natively on Windows 10 (Python 3.14.4)
+- [x] 1:36 narrated video recorded; public on the v0.2.0 GitHub release (no login needed)
 - [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement
 - [ ] Re-read live rules page within 48 h of submission
-- [ ] Secret scan before publishing (`git log -p | grep -i key`) — no secrets are used by the project
+- [x] Secret scan before publishing — no secrets in history; agent transcripts sanitised (no local paths/accounts)

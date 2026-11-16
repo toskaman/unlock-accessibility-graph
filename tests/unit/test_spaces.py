@@ -53,3 +53,9 @@ def test_word_is_not_a_track_code():
 def test_platform_text_without_match_is_not_exit():
     _, t = roles("Quai A sortie rue du Bac", {"1", "2"})
     assert t.spaces["s:space:quai-a-sortie-rue-du-bac"].role == "UNRESOLVED_PLATFORM"
+
+
+def test_multi_stop_lift_keeps_every_level():
+    r, t = roles("Voies F et G / hall / passerelle", {"f", "g"})
+    names = {x for x, _ in r}
+    assert {"quay:f", "quay:g", "space:hall", "space:passerelle"} <= names

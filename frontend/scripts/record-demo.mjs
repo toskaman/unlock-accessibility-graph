@@ -7,18 +7,20 @@ const OUT = process.argv[2] || "video/out";
 const BASE = process.env.BASE || "http://127.0.0.1:8000";
 mkdirSync(OUT, { recursive: true });
 // narration durations in seconds (Kokoro af_heart, video/narration.json)
-const DUR = { s1: 6.49, s2: 14.57, s3: 9.54, s4: 9.94, s5: 14.68, s6: 11.99, s7: 9.58, s8: 6.70, s9: 4.52 };
+import { readFileSync, existsSync } from "node:fs";
+const DUR = { a1: 6.49, a2: 13.25, a3: 10.33, a4: 12.86, a5: 8.77, a6: 7.45, a7: 10.03, a8: 12.5, a9: 4.52 };
 const CAP = {
-  s1: "A station can be accessible. Its network may not be.",
-  s2: "401 SNCF stations in Île-de-France, one Relate graph file. Juvisy: 12 platforms joined to an underpass by lifts.",
-  s3: "Lift ASC3 — Voies 50 et 51 / souterrain nord. 21 confirmed step-free connections can use it.",
-  s4: "Simulated outage — published data untouched. 21 connections: confirmed → blocked.",
-  s5: "The actual graph path: Voie 40 → ASC8 → souterrain nord → ASC3 → Voie 50. Two lifts in series.",
-  s6: "Every repair in the region, ranked: ASC3 +21, then lifts really out of service today (+13, +13).",
-  s7: "With the repair: back to the published state. Re-computed independently in Cypher — they agree.",
-  s8: "One persistent Relate file: ~6,000 nodes, the path query, the statements it just ran.",
-  s9: "",
+  a1: "A station can be accessible. Its network may not be.",
+  a2: "Paste an outage report → UNLOCK finds the exact lift in the Relate graph (station + platforms it SERVES). No guessing.",
+  a3: "Simulated outage — published data untouched. Voies 50 & 51 cut off: 21 confirmed step-free connections lost.",
+  a4: "The actual graph path: Voie 40 → ASC8 → souterrain nord → ASC3 → Voie 50. Two lifts in series.",
+  a5: "Every repair in Île-de-France, ranked by connections restored — incl. lifts really out of service today.",
+  a6: "With the repair: back to the published state. Independent Cypher query = engine.",
+  a7: "Vague report? UNLOCK asks instead of guessing. 191 working lifts are single points of failure.",
+  a8: "Same graph as a read-only MCP server: a real Claude Code session, replayed from its transcript.",
+  a9: "",
 };
+const TRANSCRIPT = process.env.TRANSCRIPT || "";
 const PAD = 0.9;
 
 const browser = await chromium.launch();
@@ -29,7 +31,7 @@ const t0 = Date.now();
 const marks = {};
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-await page.goto(`${BASE}/#station=Juvisy-sur-Orge`);
+await page.goto(`${BASE}/#station=Paris%20Gare%20du%20Nord`);
 await page.waitForSelector(".section-svg");
 await page.addStyleTag({ content: `
   #vcap { position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%); max-width: 1180px; z-index: 50;
@@ -77,61 +79,92 @@ async function seg(id, fn) {
   if (left > 0) await sleep(left);
 }
 
+
+async function typeInto(locator, text) {
+  await pointAt(locator); await locator.click();
+  for (const ch of text) { await page.keyboard.type(ch); await sleep(28); }
+}
+await page.addStyleTag({ content: `
+  #vterm { position: fixed; inset: 90px 140px 120px 140px; z-index: 58; background: #0d1526; color: #dfe6f2; border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45); padding: 22px 28px; font: 17px/1.5 "Atkinson Hyperlegible Next", sans-serif; overflow: hidden; }
+  #vterm .hd { color: #8ea3c4; font-size: 14px; margin-bottom: 10px; }
+  #vterm .u { color: #fff; font-weight: 700; margin: 6px 0 12px; }
+  #vterm .t { color: #7fd1ae; font-family: ui-monospace, Consolas, monospace; font-size: 15px; margin: 3px 0; }
+  #vterm .a { margin-top: 14px; white-space: pre-wrap; color: #fff; }
+` });
+
 await sleep(1200);
-await seg("s1");
+await seg("a1");
 await page.evaluate(() => { document.getElementById("vcard").style.opacity = "0"; });
-await seg("s2", async () => {
-  await sleep(900);
-  await page.evaluate(() => document.getElementById("vcard").remove());
-  await pointAt(page.locator(".map-wrap"));
-  await sleep(3500);
-  await pointAt(page.locator(".section-scroll"));
-});
-await seg("s3", async () => { await click(page.getByRole("button", { name: /Lift ASC\.PMR 4556 ASC3/ })); await sleep(600); await pointAt(page.locator(".deps")); });
-await seg("s4", async () => {
-  await click(page.getByRole("button", { name: "Simulate outage" }));
-  await page.waitForSelector(".banner.sim");
+await seg("a2", async () => {
   await sleep(700);
+  await page.evaluate(() => document.getElementById("vcard").remove());
+  await typeInto(page.locator(".report textarea"), "Juvisy : ascenseur quai 50/51 HS depuis ce matin");
+  await click(page.getByRole("button", { name: "Find the lift" }));
+  await page.waitForSelector(".resolution");
+  await pointAt(page.locator(".resolution .ev"));
+});
+await seg("a3", async () => {
+  await click(page.getByRole("button", { name: "Simulate this outage" }));
+  await page.waitForSelector(".banner.sim");
+  await sleep(900);
   await pointAt(page.locator(".counts .c-CONFIRMED_ACCESSIBLE"));
-  await sleep(1800);
+  await sleep(2200);
   await pointAt(page.locator(".pair.changed").first());
 });
-await seg("s5", async () => {
+await seg("a4", async () => {
   await click(page.locator(".pair").filter({ hasText: /Voie 40[^0-9]*Voie 50(?!\d)/ }).first());
   await page.waitForSelector(".evidence .chain .node");
   await pointAt(page.locator(".evidence .chain"));
-  await sleep(4000);
-  await pointAt(page.locator(".evidence .stmts li").nth(3));
 });
-await seg("s6", async () => {
+await seg("a5", async () => {
   await click(page.locator(".evhead button"));
-  await sleep(500);
+  await sleep(400);
   await pointAt(page.locator("button.cand").first());
-  await sleep(3000);
+  await sleep(2200);
   await pointAt(page.locator("button.cand").nth(1));
-  await sleep(1300);
+  await sleep(1000);
   await pointAt(page.locator("button.cand").nth(2));
-  await sleep(1300);
-  await click(page.locator("button.cand").first());
 });
-await seg("s7", async () => {
-  await sleep(600);
+await seg("a6", async () => {
+  await click(page.locator("button.cand").first());
+  await sleep(700);
   await pointAt(page.locator(".counts .c-CONFIRMED_ACCESSIBLE"));
-  await sleep(1500);
-  await click(page.getByRole("tab", { name: "Simulated outage" }));
-  await sleep(1300);
-  await click(page.getByRole("tab", { name: "With proposed repair" }));
-  await sleep(600);
+  await sleep(1400);
   await pointAt(page.locator(".xcheck"));
 });
-await seg("s8", async () => {
-  await click(page.getByRole("button", { name: "Inspect the graph" }));
-  await sleep(1200);
-  await page.evaluate(() => document.querySelector(".sheet").scrollTo({ top: 420, behavior: "smooth" }));
+await seg("a7", async () => {
+  await click(page.locator(".chip").filter({ hasText: "Pontoise" }));
+  await page.waitForSelector(".resolution .cands");
+  await pointAt(page.locator(".resolution .cands"));
+  await sleep(2600);
+  await click(page.getByRole("tab", { name: "Lifts you can't lose" }));
+  await pointAt(page.locator(".critical p").first());
 });
-await seg("s9", async () => {
+await seg("a8", async () => {
+  let lines = [];
+  if (TRANSCRIPT && existsSync(TRANSCRIPT)) {
+    const ev = readFileSync(TRANSCRIPT, "utf-8").split("\n").filter((l) => l.startsWith("{")).map((l) => JSON.parse(l));
+    for (const e of ev) {
+      if (e.type === "assistant") for (const c of (e.content || e.message?.content || [])) if (c.type === "tool_use" && c.name.startsWith("mcp__"))
+        lines.push({ k: "t", s: `→ ${c.name.replace("mcp__unlock__", "unlock.")}(${JSON.stringify(c.input).slice(0, 90)})` });
+      if (e.type === "result") lines.push({ k: "a", s: (e.result || "").replace(/\*\*/g, "") });
+    }
+  }
+  const prompt = process.env.PROMPT || "";
+  await page.evaluate(({ lines, prompt }) => {
+    const t = document.createElement("div"); t.id = "vterm";
+    t.innerHTML = `<div class="hd">claude -p … --mcp-config unlock (read-only Relate store) · real session, replayed</div><div class="u">› ${prompt}</div>`;
+    document.body.appendChild(t);
+    let i = 0;
+    const step = () => { if (i >= lines.length) return; const d = document.createElement("div"); d.className = lines[i].k; d.textContent = lines[i].s; t.appendChild(d); i++; setTimeout(step, lines[i - 1].k === "t" ? 700 : 400); };
+    setTimeout(step, 600);
+  }, { lines, prompt });
+});
+await seg("a9", async () => {
   await caption("");
   await page.evaluate(() => {
+    document.getElementById("vterm")?.remove();
     const k = document.createElement("div"); k.id = "vcard"; k.style.opacity = "0";
     k.innerHTML = `<p class="big">UNLOCK doesn't just show you what's broken.<br>It shows you what fixing it makes possible.</p><h1>UNLOCK</h1><p>Find the repair that unlocks the most journeys.</p>`;
     document.body.appendChild(k); requestAnimationFrame(() => (k.style.opacity = "1"));

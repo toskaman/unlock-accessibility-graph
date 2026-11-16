@@ -79,3 +79,19 @@ export interface Explanation {
   narrative: { mode: string; statements: Statement[] };
   snapshot: Freshness;
 }
+
+export interface LiftCandidate {
+  lift_id: string; lift_name: string | null; description: string | null; station_id: string; station_name: string;
+  score: number; evidence: string[]; published_state: LiftState; raw_state: string | null;
+  pairs_depending?: number; would_lose_if_unavailable?: number;
+}
+export interface Resolution {
+  status: "RESOLVED" | "AMBIGUOUS" | "NOT_FOUND"; text: string; reported_state: LiftState;
+  station_candidates: { station_id: string; name: string; score: number }[];
+  lift_candidates: LiftCandidate[]; question: string | null; method: string;
+}
+export interface CriticalLift {
+  lift_id: string; lift_name: string | null; description: string | null; station_id: string; station_name: string;
+  would_lose: number; pairs_depending: number; covered_by_alternative: number;
+}
+export interface Critical { evaluated_lifts: number; single_points_of_failure: number; total_confirmed_at_risk: number; lifts: CriticalLift[] }

@@ -38,5 +38,5 @@ All ids are source identifiers; uniqueness constraints exist on every `id`/`key`
 `UNSPECIFIED_END` — defined in `backend/unlock/ingest/spaces.py`. An `UNSPECIFIED` space is a per-lift
 placeholder and can never join two anchors.
 
-Pilot counts (snapshot 2026-11-16): Station 401 · Quay 1,280 · Lift 588 · Space 1,092 · StatusSnapshot 588 ·
-AccessibilityAssertion 1,681 · TransferZone 392 · Line 51 · Dataset 4; SERVES 1,318, total 11,680 relationships.
+Pilot counts (snapshot 2026-11-16): Station 401 · Quay 1,280 · Lift 588 · Space 1,117 · StatusSnapshot 588 ·
+AccessibilityAssertion 1,681 · TransferZone 392 · Line 51 · Dataset 4; SERVES 1,369, total 11,761 relationships.

@@ -3,12 +3,13 @@
 | Item | Status |
 |---|---|
 | Repository | https://github.com/toskaman/unlock-accessibility-graph (public, branch `main`, topics `relate`, `relate-neo4j-hackathon`) |
-| Phases | P0 feasibility ✅ · P1 graph foundation ✅ · P2 impact intelligence ✅ · P3 product experience ✅ (first version) · P4 quality — partly · P5 jury prep — docs, public repo, 1:38 narrated video on release v0.1.0; Devpost form not yet submitted |
+| Phases | P0 feasibility ✅ · P1 graph foundation ✅ · P2 impact intelligence ✅ · P3 product experience ✅ (first version) · P4 quality — partly · P5 jury prep — docs, public repo, 1:36 narrated video on release v0.2.0; Devpost form not yet submitted |
 | Data access | SNCF NeTEx + lift status ✅ public; IDFM ZdC + GTFS ✅; **IDFM elevators blocked (API key needed)** |
 | Store | `database/unlock.rl` (6.4 MB, single file); clean snapshot `database/snapshot/unlock-snapshot-2026-11-16.rl` |
-| Tests | 56 pytest passed (real Relate), 3 Playwright e2e passed |
+| Tests | 62 pytest passed (real Relate, incl. MCP over stdio) on Linux and Windows; 4 Playwright e2e passed |
+| Version | 0.2.0 — outage-report resolver, lifts you can't lose, MCP agent server; agent eval 5/5 vs 0/5 |
 | Demo status | Signature flow works end-to-end on real data (Juvisy-sur-Orge ASC3: −21 confirmed pairs; ranking; evidence; repair restores to 566) |
-| Verified on | Linux container (Python 3.13): 56 pytest + 3 e2e. Linux VM on the entrant's PC, project on `Z:\Hackatons\Relate\UNLOCK` (Python 3.10.12, fastapi 0.162.5): 56 pytest passed, `pip install -e .`, `unlock build`, `unlock serve`, outage API + Cypher cross-check OK. Native **Windows 10, Python 3.14.4**: 56 pytest passed, build, serve, outage + cross-check OK (venv on local D:, project on Z: network share). |
+| Verified on | v0.2.0: Linux container (Python 3.13) 62 pytest + 4 e2e; native **Windows 10, Python 3.14.4** 62 pytest, build, serve, MCP + Claude Code agent eval (venv on local D:, project on Z: network share). v0.1.0 also passed on a Linux VM with Python 3.10. |
 
 ## Main risks
 SNCF-only coverage · text-derived topology · Devpost form still to submit (entrant).

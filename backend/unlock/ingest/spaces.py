@@ -165,7 +165,7 @@ def derive(station_uuid: str, quay_codes: set[str], lifts: list[tuple[str, str |
             if codes:
                 sides, used_name = [n], True
         resolved_any = False
-        for idx, side in enumerate(sides[:2]):
+        for idx, side in enumerate(sides):  # multi-stop lifts can list 3+ levels
             codes, unmatched, der = extract_codes(side, quay_codes)
             for tok in sorted(unmatched):
                 topo.unmatched_tokens.append((lift_id, tok))

@@ -7,3 +7,5 @@ pydantic>=2.7,<3
 # tests
 pytest>=8
 httpx>=0.27
+# agent (MCP server)
+mcp>=2.3,<3

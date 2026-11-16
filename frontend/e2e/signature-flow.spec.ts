@@ -61,3 +61,23 @@ test("API errors are explained, not swallowed", async ({ page }) => {
   await page.goto("/#station=Juvisy-sur-Orge");
   await expect(page.getByRole("alert")).toContainText("Unknown station");
 });
+
+test("outage report → graph-grounded lift → simulated impact; ambiguous reports are not guessed", async ({ page }) => {
+  await page.goto("/#station=Paris%20Gare%20du%20Nord");
+  await expect(page.locator(".section-svg")).toBeVisible();
+  const before = Number(await page.locator(".counts .c-CONFIRMED_ACCESSIBLE .n").textContent());
+  await page.getByRole("textbox", { name: /outage report/i }).or(page.locator(".report textarea")).first().fill("Juvisy : ascenseur quai 50/51 HS depuis ce matin");
+  await page.getByRole("button", { name: "Find the lift" }).click();
+  await expect(page.locator(".resolution")).toContainText("ASC3");
+  await expect(page.locator(".resolution")).toContainText("SERVES edge");
+  await page.getByRole("button", { name: "Simulate this outage" }).click();
+  await expect(page.getByRole("heading", { name: "Juvisy-sur-Orge" })).toBeVisible();
+  await expect(page.locator(".banner.sim")).toBeVisible();
+  const after = Number(await page.locator(".counts .c-CONFIRMED_ACCESSIBLE .n").textContent());
+  expect(after).toBe(before - 21);
+  await page.locator(".chip").filter({ hasText: "Pontoise" }).click();
+  await expect(page.locator(".resolution")).toContainText("won't guess");
+  await expect(page.locator(".resolution .cands li")).toHaveCount(4);
+  await page.getByRole("tab", { name: "Lifts you can't lose" }).click();
+  await expect(page.locator(".critical")).toContainText("single point of failure");
+});
