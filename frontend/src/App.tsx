@@ -336,6 +336,39 @@ export default function App() {
           )}
         </section>
 
+        {candidate && (
+          <section className="analyst">
+            <h3>Why this repair</h3>
+            <p>{candidate.reason}.</p>
+            {candidate.still_blocked_by_others.length > 0 && <p className="warn">Another unavailable lift blocks the same connections — repair them together.</p>}
+            {analyst?.fluent && <p className="fluent">{analyst.fluent}</p>}
+            {analyst && <ul className="stmts">{analyst.statements.map((s, i) => <li key={i}><em className={`k k-${s.kind}`}>{KIND_LABEL[s.kind] || s.kind}</em> {s.text}</li>)}</ul>}
+          </section>
+        )}
+
+        {explanation && pair && (
+          <section className="evidence">
+            <div className="evhead">
+              <h3>Evidence: {pair.a_name} ↔ {pair.b_name}</h3>
+              <button className="ghost small" onClick={() => { setPair(null); setExplanation(null); }}>Close</button>
+            </div>
+            <ul className="stmts">
+              {explanation.narrative.statements.map((s, i) => <li key={i}><em className={`k k-${s.kind}`}>{KIND_LABEL[s.kind] || s.kind}</em> {s.text}</li>)}
+            </ul>
+            {explanation.routes.map((r, i) => (
+              <div key={i} className="route">
+                <p className="small"><strong>Route {i + 1}</strong> — {r.state.toLowerCase()} {r.restored_state && r.restored_state !== r.state && <>→ {r.restored_state.toLowerCase()} with the repair</>}</p>
+                <p className="chain">
+                  {(r.path?.nodes || []).map((n: any, j: number) => (
+                    <span key={j} className={`node ${n.labels?.[0] === "Lift" ? "lift" : "space"}`}>{n.labels?.[0] === "Lift" ? (n.name || "Lift") : n.name}</span>
+                  ))}
+                </p>
+                <p className="muted small">Relationships: {(r.path?.relationships || []).map((x: any) => `${x.type} (${x.derivation})`).join(", ")}</p>
+              </div>
+            ))}
+            <p className="muted small">Sources: {[...new Set(explanation.routes.flatMap((r) => r.lifts.flatMap((l) => [l.evidence?.status_dataset?.title, l.evidence?.description_dataset?.title])).filter(Boolean))].join("; ")}</p>
+          </section>
+        )}
         <section className="ranking">
           <h3>{scenario ? "Repairs ranked by connections restored" : "Repairs ranked on today's published status"}</h3>
           {!ranking ? <p className="muted">Ranking…</p> : ranking.candidates.length === 0 ? (
@@ -360,37 +393,6 @@ export default function App() {
           )}
           {ranking && <p className="muted small">Gain = change in confirmed step-free connections if only that lift is repaired. {ranking.candidate_count} candidates evaluated.</p>}
         </section>
-
-        {candidate && (
-          <section className="analyst">
-            <h3>Why this repair</h3>
-            <p>{candidate.reason}.</p>
-            {candidate.still_blocked_by_others.length > 0 && <p className="warn">Another unavailable lift blocks the same connections — repair them together.</p>}
-            {analyst?.fluent && <p className="fluent">{analyst.fluent}</p>}
-            {analyst && <ul className="stmts">{analyst.statements.map((s, i) => <li key={i}><em className={`k k-${s.kind}`}>{KIND_LABEL[s.kind] || s.kind}</em> {s.text}</li>)}</ul>}
-          </section>
-        )}
-
-        {explanation && pair && (
-          <section className="evidence">
-            <h3>Evidence: {pair.a_name} ↔ {pair.b_name}</h3>
-            <ul className="stmts">
-              {explanation.narrative.statements.map((s, i) => <li key={i}><em className={`k k-${s.kind}`}>{KIND_LABEL[s.kind] || s.kind}</em> {s.text}</li>)}
-            </ul>
-            {explanation.routes.map((r, i) => (
-              <div key={i} className="route">
-                <p className="small"><strong>Route {i + 1}</strong> — {r.state.toLowerCase()} {r.restored_state && r.restored_state !== r.state && <>→ {r.restored_state.toLowerCase()} with the repair</>}</p>
-                <p className="chain">
-                  {(r.path?.nodes || []).map((n: any, j: number) => (
-                    <span key={j} className={`node ${n.labels?.[0] === "Lift" ? "lift" : "space"}`}>{n.labels?.[0] === "Lift" ? (n.name || "Lift") : n.name}</span>
-                  ))}
-                </p>
-                <p className="muted small">Relationships: {(r.path?.relationships || []).map((x: any) => `${x.type} (${x.derivation})`).join(", ")}</p>
-              </div>
-            ))}
-            <p className="muted small">Sources: {[...new Set(explanation.routes.flatMap((r) => r.lifts.flatMap((l) => [l.evidence?.status_dataset?.title, l.evidence?.description_dataset?.title])).filter(Boolean))].join("; ")}</p>
-          </section>
-        )}
       </aside>
 
       {busy && <div className="busy" role="status">{busy}</div>}

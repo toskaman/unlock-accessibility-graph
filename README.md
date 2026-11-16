@@ -8,7 +8,9 @@ which step-free connections inside the station it breaks, and rank lift repairs 
 many confirmed connections each one restores. Every number on screen can be traced through the graph
 back to a source record.
 
-![Simulated outage at Juvisy-sur-Orge](docs/screenshots/02-simulated-outage.png)
+**▶ Demo video (1 min 38 s, narrated):** [unlock-demo.mp4 on the v0.1.0 release](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.1.0/unlock-demo.mp4)
+
+![UNLOCK: simulating a lift outage at Juvisy-sur-Orge](docs/media/demo-preview.gif)
 
 > Built for the *Relate by Neo4j Hackathon 2026*. This is a decision-support prototype built from public
 > data. It has not been validated by any operator for operational use.
@@ -111,12 +113,12 @@ ODbL. See [data/LICENSE-DATA.md](data/LICENSE-DATA.md).
 
 ## Run it
 
-You need Python ≥ 3.10. Node ≥ 20 is only needed to rebuild the UI. Tested on Linux with Python 3.13 and
-on a Linux VM with Python 3.10. Relate publishes a Windows x64 wheel; see the
-[Windows notes](#windows).
+You need Python ≥ 3.10. Node ≥ 20 is only needed to rebuild the UI. Tested natively on **Windows 10
+(Python 3.14.4)**, on Linux with Python 3.13, and on a Linux VM with Python 3.10 — the full test suite passes
+on all three. See the [Windows notes](#windows).
 
 ```bash
-git clone <this repo> unlock && cd unlock
+git clone https://github.com/toskaman/unlock-accessibility-graph.git unlock && cd unlock
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"                                # installs relate-db==1.0.2, fastapi, uvicorn
 
@@ -156,7 +158,8 @@ python -m unlock build; python -m unlock serve
 ```
 
 The store is one `.rl` file. Only one process can open it for writing at a time, so stop the server
-before re-importing.
+before re-importing. If the project sits on a network drive, create the virtual environment on a local
+disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SMB share can fail.
 
 ## Tests
 
@@ -234,6 +237,8 @@ OpenAPI docs are at `/docs`. No endpoint accepts Cypher.
   - frontend: React, Vite, TypeScript, MapLibre GL JS, fonts Atkinson Hyperlegible Next and Archivo
     (OFL)
   - tests: pytest and Playwright
+- **Demo video:** recorded from the real app with Playwright; narration synthesised with the open-weight
+  Kokoro TTS model (Apache-2.0). See [video/README.md](video/README.md).
 - **Basemap:** © OpenFreeMap, © OpenMapTiles, data © OpenStreetMap contributors. If the tiles are
   unavailable, the app falls back to a blank map.
 

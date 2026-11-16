@@ -1,0 +1,11 @@
+[
+ {"id": "s1", "text": "A station can be accessible. Its network may not be. This is UNLOCK, the accessibility impact graph."},
+ {"id": "s2", "text": "UNLOCK loads the open lift and platform data of all four hundred and one S.N.C.F. stations around Paris into one Relate graph file. This is Juvisy: twelve platforms, joined to an underpass by lifts."},
+ {"id": "s3", "text": "Select lift A.S.C. three, between platforms fifty and fifty-one and the north underpass. Twenty-one confirmed step-free connections can use it."},
+ {"id": "s4", "text": "Simulate an outage. The published data is not touched, but platforms fifty and fifty-one are cut off. Twenty-one connections move from confirmed, to blocked."},
+ {"id": "s5", "text": "Why? Open a broken connection. This is the actual path in the graph: platform forty, lift A.S.C. eight, the underpass, lift A.S.C. three, platform fifty. Two lifts in series, each with its published status and source file."},
+ {"id": "s6", "text": "Now rank every possible repair across the region. Fixing this lift restores twenty-one connections, ahead of two lifts that are really out of service today, at Mantes-la-Jolie and Noisy-le-Sec."},
+ {"id": "s7", "text": "Apply the repair, and the network returns exactly to its published state. Every result is re-computed by an independent Cypher query, and the two agree."},
+ {"id": "s8", "text": "Inside: one persistent Relate file, about six thousand nodes, the path query, and the statements it just ran."},
+ {"id": "s9", "text": "UNLOCK doesn't just show you what's broken. It shows you what fixing it makes possible."}
+]

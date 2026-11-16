@@ -16,4 +16,18 @@ Contains information from Île-de-France Mobilités (Licence Ouverte 2.0 / Licen
 Because the SNCF inputs are ODbL, this derived database is made available under the **ODbL 1.0**
 (share-alike). Fields derived by UNLOCK (spaces, SERVES edges, zone matches) carry a `derivation` label.
 Raw source files are **not** redistributed; `python -m unlock fetch` downloads them from the publishers.
-Before public release, the entrant should re-confirm the Licence Mobilités terms for the derived GTFS facts.
+### Licence Mobilités (IDFM GTFS) — check done 2026-11-16
+
+The Licence Mobilités (version 03.02.2021) grants a royalty-free, worldwide, non-exclusive right to extract,
+re-use, create derived databases and distribute them, commercial use included (art. 3.1). Its obligations that
+apply here: keep the licence notice/URI when publicly sharing a derived database (art. 5.3), state that the
+content originates from the IDFM database (art. 5.4), share a publicly used derived database under the same or a
+compatible licence (share-alike, art. 5.5), and offer it free of charge online (art. 5.8). Extracting a
+non-substantial part is free (art. 8.2).
+
+UNLOCK redistributes only 51 line records and 551 "line calls at transfer zone" links derived from the GTFS
+(out of ~2,000 routes and ~15,400 stop areas), not the feed itself. They are published here, free of charge,
+with this notice: *Contains information from Île-de-France Mobilités, "Réseaux urbains et interurbains d'IDFM"
+(GTFS), licensed under the Licence Mobilités — https://transport.data.gouv.fr/datasets/reseaux-urbains-et-interurbains-dile-de-france-mobilites.*
+These derived records remain under the Licence Mobilités; the rest of the derived database is under the ODbL.
+This is a good-faith reading of the licence text, not legal advice.

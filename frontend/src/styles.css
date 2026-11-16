@@ -209,6 +209,12 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 .qlog .ms { display: block; color: var(--ink-3); }
 .qlog code { white-space: pre-wrap; word-break: break-word; }
 
+@media (min-width: 1181px) {
+  .left, .right { position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; }
+  .left { height: 100vh; }
+}
+.evhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.evhead button { padding: 2px 8px; font-size: 13px; }
 @media (max-width: 1500px) {
   .app { grid-template-columns: 300px minmax(0, 1fr) 360px; }
 }

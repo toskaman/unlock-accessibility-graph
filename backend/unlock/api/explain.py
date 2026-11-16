@@ -45,7 +45,9 @@ def explain_pair(d: dict[str, Any]) -> dict[str, Any]:
                 out.append(_s("OBSERVATION", f"{l['name']}: publisher status “{st.get('raw_state')}” in snapshot "
                                              f"{st.get('snapshot_id')} (observed {st.get('observed_at')})."))
     if c.get("candidate_lift"):
-        out.append(_s("SIMULATION", f"If lift {c['candidate_lift']} is restored, this pair becomes "
+        cid = c["candidate_lift"]
+        cname = next((l["name"] for r in d["routes"] for l in r["lifts"] if l["id"] == cid and l.get("name")), cid)
+        out.append(_s("SIMULATION", f"If lift {cname} is restored, this pair becomes "
                                     f"{CLASS_TEXT[c['with_candidate']]}."))
     for u in d.get("unknowns", []):
         out.append(_s("UNKNOWN", u))

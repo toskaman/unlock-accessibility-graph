@@ -1,5 +1,8 @@
 # Demo script (≤ 2:00) — recorded on the committed snapshot
 
+**Status:** recorded 2026-11-16 → `unlock-demo.mp4` (1:38) on the v0.1.0 release. Automated by
+`frontend/scripts/record-demo.mjs`; narration in `video/narration.json`; see `video/README.md`.
+
 Setup: `python -m unlock serve`, browser at 1920×1080, `http://127.0.0.1:8000/#station=Juvisy-sur-Orge`.
 Reset between takes: **Restore published status** (or restart the server).
 
