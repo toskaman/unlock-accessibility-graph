@@ -8,7 +8,7 @@
 | Store | `database/unlock.rl` (6.4 MB, single file); clean snapshot `database/snapshot/unlock-snapshot-2026-11-16.rl` |
 | Tests | 56 pytest passed (real Relate), 3 Playwright e2e passed |
 | Demo status | Signature flow works end-to-end on real data (Juvisy-sur-Orge ASC3: −21 confirmed pairs; ranking; evidence; repair restores to 566) |
-| Verified on | Linux container, Python 3.13; Linux VM on the entrant's PC (see below) |
+| Verified on | Linux container (Python 3.13): 56 pytest + 3 e2e. Linux VM on the entrant's PC, project on `Z:\Hackatons\Relate\UNLOCK` (Python 3.10.12, fastapi 0.162.5): 56 pytest passed, `pip install -e .`, `unlock build`, `unlock serve`, outage API + Cypher cross-check OK. **Native Windows not yet run.** |
 
 ## Main risks
 Windows-native install unverified · SNCF-only coverage · text-derived topology · video and public repo not yet done.
