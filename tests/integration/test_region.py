@@ -68,6 +68,18 @@ def test_three_views_and_reconciliation(region_store):
         assert ns.check_journey("Z1", "Z5", "published")["verdict"] == "NO_STEP_FREE_ROUTE_PUBLISHED"
 
 
+def test_reach_classes_and_cypher_rederivation(region_store):
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        r = ns.reach("Z1", "best")      # Testville: Alpha and Beta confirmed; Gamma needs the Beta quay in doubt
+        assert r["classes"]["Z2"] == "CONFIRMED" and r["classes"]["Z3"] == "CONFIRMED"
+        assert r["classes"]["Z4"] == "IF_LIFTS_WORK" and r["classes"]["Z5"] == "NOT_BOARDABLE"
+        assert r["verification"]["ok"] and r["verification"]["cypher"] == 2
+        f = ns.reach("Z2", "feed")      # feed: Testville CLOSED, Gamma only if lifts work
+        assert f["classes"]["Z1"] == "CUT" and f["counts"] == {"confirmed": 1, "if_lifts_work": 1, "cut": 1, "published": 3}
+        assert f["verification"]["ok"]
+
+
 def test_region_api(region_store):
     with TestClient(create_app(region_store)) as c:
         assert c.get("/api/region/overview").json()["views"]["best"]["confirmed"] == 9
@@ -79,6 +91,8 @@ def test_region_api(region_store):
         assert j["legs"] and j["legs"][0]["path"]
         assert c.get("/api/region/journey", params={"from": "Z2", "to": "nope"}).status_code == 404
         assert c.get("/api/region/stations", params={"q": "gam"}).json()[0]["id"] == "Z4"
+        assert c.get("/api/region/reach", params={"from": "Z4"}).json()["counts"]["confirmed"] == 3
+        assert c.get("/api/region/reach", params={"from": "nope"}).status_code == 404
         rec = c.get("/api/region/reconciliation").json()
         assert rec["rows"][0]["lift_name"] == "L3"
         oid = rec["rows"][0]["outage"]

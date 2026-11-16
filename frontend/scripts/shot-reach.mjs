@@ -1,0 +1,13 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+p.on("console", (m) => { if (m.type() === "error") console.log("console:", m.text()); });
+await p.goto("http://localhost:8011/#region");
+await p.waitForSelector(".hl-num", { timeout: 60000 });
+await p.waitForTimeout(4000);
+await p.getByRole("tab", { name: "Repairs that matter" }).click();
+await p.locator(".right .rank button").first().click();
+await p.waitForSelector(".reach-num", { timeout: 60000 });
+await p.waitForTimeout(3000);
+await p.screenshot({ path: "../docs/media/region-reach.png" });
+await b.close();

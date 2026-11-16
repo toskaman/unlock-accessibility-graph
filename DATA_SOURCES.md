@@ -17,6 +17,7 @@ Added in v0.3.0:
 | Key | Dataset | Publisher | Licence | Access | Notes |
 |---|---|---|---|---|---|
 | `idfm_accessibilite_en_gare` | Accessibilité en gare | IDFM | Licence Ouverte 2.0 | public | 459 rail stop points; levels 1/3/4/6 |
+| `idfm_validations_ferre` | Validations sur le réseau ferré : nombre de validations par jour (T2 2026) | IDFM | Licence Ouverte 2.0 | public | aggregated by `id_zdc` at download (724 zones, 91 days) |
 | `prim_lift_outages` | Calculateur IDFM – Messages Info Trafic (Navitia `line_reports`), tag « Ascenseur » | IDFM (PRIM) | Licence Mobilités | free PRIM token | 1,047 lift messages / 356 lifts on 16 Nov 2026; last lift update 9 Oct 2026 |
 
 Investigated and **not used**:

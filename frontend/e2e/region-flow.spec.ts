@@ -29,3 +29,17 @@ test("region -> inside the station", async ({ page }) => {
   await page.getByRole("button", { name: "Whole region" }).click();
   await expect(page.locator(".hl-num")).toBeVisible();
 });
+
+test("region: where can I go from here — reach recoloured and re-derived in Cypher", async ({ page, request }) => {
+  await page.goto("/");
+  await page.getByRole("tab", { name: "Repairs that matter" }).click();
+  await page.locator(".right .rank button").first().click();
+  await expect(page.locator(".reach-num")).toBeVisible();
+  const card = page.locator(".reachbox");
+  await expect(card).toContainText("Re-derived in Relate with Cypher");
+  const name = (await page.locator(".stationcard h3").textContent())!.trim();
+  const hits = await (await request.get(`/api/region/stations?q=${encodeURIComponent(name)}`)).json();
+  const r = await (await request.get(`/api/region/reach?from=${hits[0].id}&view=best`)).json();
+  await expect(page.locator(".reach-num")).toHaveText(r.counts.confirmed.toLocaleString("en-GB"));
+  await expect(page.locator(".region-legend")).toContainText(`From ${name}`);
+});

@@ -23,4 +23,6 @@
 | D19 | 2026-11-16 | Ignore the feed's own line links when placing an outage | Independent check showed them incomplete (3/40 wrong placements) | Trusting feed links |
 | D20 | 2026-11-16 | Boarding point = platform × line | GTFS has one rail platform per station; an RER A lift outage must not close RER D platforms | Platform-level states |
 | D21 | 2026-11-16 | PRIM token only from env var / file outside the repo; normalized snapshot (no token) committed | Judges run offline; the secret never leaves the entrant's machine | `.env` in the repo |
+| D23 | 2026-11-16 | Re-derive region reach in Cypher by set-at-a-time BFS (one query per round) | Relate answers each round in ~50 ms; exhaustive agreement on all origins makes the Python counts auditable | Path-pattern `SHORTEST` per pair (minutes) |
+| D24 | 2026-11-16 | Ridership as context, never as the ranking metric | Validations count all riders (not wheelchair users) and miss gate-less tram stops; mixing them into gains would mislead | Weighting gains by validations |
 | D22 | 2026-11-16 | Region "chokepoints" built, measured and dropped | Only 3 single platforms cut journeys between other stations; impact comes from combinations of outages | Shipping a feature with no signal |

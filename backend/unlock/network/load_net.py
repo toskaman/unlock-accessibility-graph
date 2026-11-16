@@ -29,7 +29,13 @@ BATCH = 1500
 ST = [
     ("stations", """UNWIND $rows AS r MERGE (s:NStation {id: r.id})
         SET s.name = r.name, s.gtfs_id = r.gtfs_id, s.lat = r.lat, s.lon = r.lon,
-            s.location = point({longitude: r.lon, latitude: r.lat})"""),
+            s.location = point({longitude: r.lon, latitude: r.lat}),
+            s.entries_per_day = r.entries_per_day, s.entries_days = r.entries_days"""),
+    ("datasets", """UNWIND $rows AS r MERGE (d:Dataset {key: r.key})
+        SET d.title = r.title, d.publisher = r.publisher, d.url = r.url, d.licence = r.licence,
+            d.licence_url = r.licence_url, d.sha256 = r.sha256, d.retrieved_at = r.retrieved_at, d.role = r.role"""),
+    ("entries_src", """UNWIND $rows AS r MATCH (s:NStation {id: r.id}) MATCH (d:Dataset {key: 'idfm_validations_ferre'})
+        MERGE (s)-[:ENTRIES_FROM]->(d)"""),
     ("lines", """UNWIND $rows AS r MERGE (l:NLine {id: r.id})
         SET l.short_name = r.short_name, l.long_name = r.long_name, l.mode = r.mode, l.color = r.color,
             l.text_color = r.text_color, l.operator = r.operator"""),
@@ -95,7 +101,13 @@ def network_rows(net: dict) -> dict[str, list[dict]]:
                 e["hops"] = min(e["hops"], ib - ia)
     plat = [{**p, "access_level": p.get("access_level")} for p in net["platforms"]]
     pats = [{k: v for k, v in p.items() if k != "stops"} | {"length": len(p["stops"])} for p in net["patterns"]]
-    return {"stations": net["stations"], "lines": net["lines"], "platforms": plat, "patterns": pats,
+    stations = [{"entries_per_day": None, "entries_days": None, **s} for s in net["stations"]]
+    ds = [{k: d.get(k) for k in ("key", "title", "publisher", "url", "licence", "licence_url", "sha256", "retrieved_at", "role")}
+          for d in net.get("datasets", [])]
+    return {"stations": stations, "datasets": ds,
+            "entries_src": [{"id": s["id"]} for s in net["stations"] if s.get("entries_per_day") is not None
+                            and any(d["key"] == "idfm_validations_ferre" for d in ds)],
+            "lines": net["lines"], "platforms": plat, "patterns": pats,
             "next": nxt, "legs": list(legs.values()), "zones": [{"id": s["id"]} for s in net["stations"]]}
 
 

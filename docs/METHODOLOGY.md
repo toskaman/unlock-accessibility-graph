@@ -115,5 +115,14 @@ against the *best* view; gain = additional confirmed pairs. Feed corrections: ea
 **Journey search.** Dijkstra, cost = stops ridden + 8 per boarding; the first of confirmed / possible / published
 that has a route gives the verdict. Every leg is re-matched in Cypher before it is shown.
 
+**Reach from a station.** For an origin O and a view: CONFIRMED = stations reachable using OPEN points;
+IF_LIFTS_WORK = reachable only with DOUBT points; CUT = reachable in the published network but neither of those;
+UNREACHABLE = boardable but no published route; NOT_BOARDABLE. The confirmed set is re-derived in Relate:
+frontier ← {O}; repeat `UNWIND $frontier … (s)-[:HAS_PLATFORM]->(x)-[e:LEG]->(y)<-[:HAS_PLATFORM]-(t)` with x, y
+usable until no new station; the result must equal the engine's set (shown in the UI).
+
+**Ridership weight.** Average daily ticket validations per IDFM transfer zone, Apr–Jun 2026 (sum ÷ days with data).
+All riders; gate-less stops (most tram stops) have none. Shown as context only.
+
 **Reconciliation verdicts.** GHOST, CONFIRMED, UNCLEAR (SNCF UNKNOWN), UNRESOLVED_STATION_ALL_WORKING, UNRESOLVED,
 MISSING_FROM_FEED (SNCF UNAVAILABLE, not matched by any message).

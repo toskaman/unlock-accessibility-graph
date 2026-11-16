@@ -202,6 +202,26 @@ def journey(net: Network, usable: set[str], a: str, b: str, hops: Mapping[tuple[
     return list(reversed(legs))
 
 
+def reach_set(net: Network, usable: set[str], origin: str) -> set[str]:
+    """Stations reachable step-free from ``origin`` (origin excluded) — same rules as journey()."""
+    start = [p for p in net.station_platforms.get(origin, []) if p in usable]
+    seen, out = set(start), set()
+    dq = deque(start)
+    while dq:
+        p = dq.popleft()
+        for q, _ in net.out_legs.get(p, ()):
+            if q not in usable:
+                continue
+            st = net.platforms[q]["station_id"]
+            out.add(st)
+            for r in net.station_platforms[st]:
+                if r in usable and r not in seen:
+                    seen.add(r)
+                    dq.append(r)
+    out.discard(origin)
+    return out
+
+
 def usable_sets(states: Mapping[str, str], platforms: Iterable[str]) -> tuple[set[str], set[str]]:
     conf = {p for p in platforms if states.get(p, OPEN) == OPEN}
     poss = {p for p in platforms if states.get(p, OPEN) in (OPEN, DOUBT)}

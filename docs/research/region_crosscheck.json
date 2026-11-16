@@ -1,0 +1,24 @@
+{
+ "store": "unlock.rl",
+ "views": {
+  "published": {
+   "origins": 519,
+   "ordered_pairs_cypher": 256592,
+   "mismatches": [],
+   "seconds": 273.8
+  },
+  "best": {
+   "origins": 519,
+   "ordered_pairs_cypher": 192377,
+   "mismatches": [],
+   "seconds": 173.3
+  },
+  "feed": {
+   "origins": 519,
+   "ordered_pairs_cypher": 88255,
+   "mismatches": [],
+   "seconds": 65.6
+  }
+ },
+ "feed_id": "prim_lift_outages@15d7b9a723a9"
+}

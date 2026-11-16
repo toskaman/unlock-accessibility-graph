@@ -39,6 +39,9 @@ This is a good-faith reading of the licence text, not legal advice.
   small extract of the feed (no times, no buses). Same notice and licence as above.
 * **IDFM *Accessibilité en gare* (Licence Ouverte 2.0)** — accessibility level per rail stop. *Source : Île-de-France
   Mobilités, « Accessibilité en gare », Licence Ouverte 2.0.*
+* **IDFM *Validations sur le réseau ferré*, Q2 2026 (Licence Ouverte 2.0)** — average daily validations per transfer
+  zone, stored on `NStation.entries_per_day`. *Source : Île-de-France Mobilités, « Validations sur le réseau ferré :
+  Nombre de validations par jour (2ème trimestre 2026) », Licence Ouverte 2.0.*
 * **PRIM *Messages Info Trafic* (Licence Mobilités)** — `data/normalized/network_outages.json` keeps, per lift, the
   message text, dates and placement for the 356 lifts listed on 16 Nov 2026. *Contains information from
   Île-de-France Mobilités (PRIM), « Calculateur Île-de-France Mobilités – Messages Info Trafic », licensed under the

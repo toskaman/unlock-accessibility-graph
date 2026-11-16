@@ -351,3 +351,9 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
 .rwho .tag { margin-left: 2px; }
 .clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .journey button.primary { background: var(--ink); border-color: var(--ink); }
+.reachbox { border: 1px solid var(--rule); border-left: 5px solid var(--ok); border-radius: 8px; padding: 8px 10px; margin: 8px 0; background: var(--ok-bg); }
+.reach-num { margin: 0; font-family: var(--display); font-variation-settings: "wdth" 75; font-weight: 800; font-size: 44px; line-height: 1; color: var(--ok); font-variant-numeric: tabular-nums; }
+.reach-cap { margin: 2px 0 6px; font-weight: 700; font-size: 14px; }
+.reach-legend { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.reachbox p { margin: 2px 0; }
+.dot.green { background: var(--ok); }

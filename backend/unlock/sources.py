@@ -84,6 +84,19 @@ SOURCES: dict[str, Source] = {
             role="Rail stop accessibility level (autonomous, on request to an agent, booked AssistenGare, not accessible)",
             metadata_url=f"{IDFM_API}/accessibilite-en-gare",
         ),
+        Source(
+            key="idfm_validations_ferre",
+            title="Validations sur le réseau ferré : Nombre de validations par jour (2ème trimestre 2026)",
+            publisher="Île-de-France Mobilités",
+            url=f"{IDFM_API}/validations-reseau-ferre-nombre-validations-par-jour-2eme-trimestre/exports/json"
+                "?select=id_zdc,sum(nb_vald)%20as%20v,count(distinct%20jour)%20as%20d&group_by=id_zdc",
+            filename="idfm/validations-ferre-q2-2026.json",
+            licence="Licence Ouverte v2.0 (Etalab)",
+            licence_url="https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+            role="Average daily ticket validations per transfer zone (all riders), Apr–Jun 2026 — a weight for "
+                 "how many people use a station, not a count of wheelchair users",
+            metadata_url=f"{IDFM_API}/validations-reseau-ferre-nombre-validations-par-jour-2eme-trimestre",
+        ),
     ]
 }
 

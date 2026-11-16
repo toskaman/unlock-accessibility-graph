@@ -46,7 +46,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.3.0")
+                    version="0.4.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
@@ -151,6 +151,20 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
         r = net.check_journey(a["id"], b["id"], view if view in ("best", "feed", "published") else "best")
         r["matched_names"] = {"from": a["name"], "to": b["name"]}
         return r
+
+    @mcp.tool()
+    def step_free_reach(from_station: str, view: str = "best") -> dict[str, Any]:
+        """Every station a wheelchair user can reach step-free from one station: counts of CONFIRMED,
+        IF_LIFTS_WORK, CUT (reachable in the published network but cut by outages), with the daily ticket
+        validations of those stations as a weight, and an independent Cypher re-derivation of the confirmed set."""
+        if not net.ready:
+            return {"error": "network layer not imported"}
+        a = _station(from_station)
+        if not a:
+            return {"status": "NOT_FOUND"}
+        r = net.reach(a["id"], view if view in ("best", "feed", "published") else "best")
+        cut = sorted((net.stations[s]["name"] for s, c in r["classes"].items() if c == "CUT"))
+        return {k: v for k, v in r.items() if k != "classes"} | {"cut_examples": cut[:15]}
 
     @mcp.tool()
     def region_overview() -> dict[str, Any]:

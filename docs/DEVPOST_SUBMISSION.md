@@ -19,8 +19,9 @@ A platform can be "accessible" and still unreachable when one lift breaks. Wheth
 **Whole region.** UNLOCK loads the Île-de-France rail, metro and tram network (996 stations, 59 lines, every
 wheelchair-boardable platform) and the lift outages published on PRIM into the same Relate graph, then computes
 exactly how many station-to-station journeys are step-free under three views: the published network (256,592), the
-best available lift status (192,377) and the PRIM outage feed (88,255). Anyone can ask *can I get from A to B in a
-wheelchair?* and get the route, the outages on it and a Relate re-check of every leg. Repairs are ranked by journeys
+best available lift status (192,377) and the PRIM outage feed (88,255). Click any station and the whole map shows where a wheelchair user can go
+from there (Rosa Parks: 437 stations confirmed, 294 if you believe the feed), each reach re-derived in Cypher. Anyone
+can ask *can I get from A to B in a wheelchair?* and get the route, the outages on it and a Relate re-check of every leg. Repairs are ranked by journeys
 given back region-wide (top: one lift at La Croix de Berny, +27,156 — the T6/T10 trams' only confirmed connection).
 
 **A real finding.** The PRIM feed's 1,047 lift messages have not changed since 9 Oct 2026, while its other messages
@@ -45,7 +46,7 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM elevator feed needs an API key and the IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 5/5 with the graph vs 0/5 without; every number traceable to a path and a source hash; 74 tests against the real Relate engine plus 6 end-to-end tests; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 5/5 with the graph vs 0/5 without; every number traceable to a path and a source hash; 76 tests against the real Relate engine plus 7 end-to-end tests; every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.

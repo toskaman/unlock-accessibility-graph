@@ -1,4 +1,4 @@
-import type { Analysis, Critical, Explanation, Journey, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName, Resolution, StationGraph, StationRow, Summary } from "./types";
+import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName, Resolution, StationGraph, StationRow, Summary } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -60,6 +60,7 @@ export const api = {
     stationOutages: (id: string, view: RegionViewName) =>
       call<{ station: { id: string; name: string }; outages: OutageDetail[] }>(`/api/region/stations/${encodeURIComponent(id)}/outages?view=${view}`),
     reconciliation: () => call<Reconciliation>("/api/region/reconciliation?limit=400"),
+    reach: (id: string, view: RegionViewName) => call<Reach>(`/api/region/reach${q({ from: id, view })}`),
   },
   queries: () => call<{ store: string; queries: { at: string; cypher: string; param_keys: string[]; rows: number; ms: number }[]; catalog: Record<string, string> }>("/api/debug/queries?limit=40"),
 };

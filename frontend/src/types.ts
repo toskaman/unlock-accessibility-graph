@@ -112,7 +112,12 @@ export type RegionOverview = {
   stale_messages: { messages_contradicted: number; feed_confirmed: number; feed_confirmed_without_them: number; journeys_hidden: number };
   computed_ms: number; method: string;
 };
-export type RegionStation = { id: string; name: string; lat: number; lon: number; state: PointState | "NOT_BOARDABLE"; outages: number; detail: boolean; sncf_station: string | null };
+export type RegionStation = { id: string; name: string; lat: number; lon: number; state: PointState | "NOT_BOARDABLE"; outages: number; detail: boolean; sncf_station: string | null; entries_per_day: number | null };
+export type ReachClass = "CONFIRMED" | "IF_LIFTS_WORK" | "CUT" | "UNREACHABLE" | "NOT_BOARDABLE";
+export type Reach = { origin: { id: string; name: string; lat: number; lon: number }; view: RegionViewName; classes: Record<string, ReachClass>;
+  counts: { confirmed: number; if_lifts_work: number; cut: number; published: number };
+  entries_per_day: { confirmed: number; if_lifts_work: number; cut: number }; origin_boardable: boolean;
+  verification: { engine: number; cypher: number; ok: boolean; rounds: number; ms: number; query: string } };
 export type Leg = { board: string; alight: string; line: string; from: string; to: string; line_name: string; mode: string; color: string; text_color: string;
   from_name: string; to_name: string; board_name: string; alight_name: string; board_state: PointState; alight_state: PointState; path: [number, number][] };
 export type OutageLabel = { outage?: string; lift?: string; station: string; station_id?: string; text?: string; operator: string; first_reported?: string | null; lines?: string[]; name?: string; state?: string };

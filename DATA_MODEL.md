@@ -49,6 +49,7 @@ AccessibilityAssertion 1,681 · TransferZone 392 · Line 51 · Dataset 4; SERVES
 | `NPlatform` | id (GTFS stop), station_id, `wheelchair`, `access_level`, `boardable`, modes, lines | GTFS stops + IDFM *Accessibilité en gare* |
 | `NLine` | id, short_name, mode (RAIL/METRO/TRAM/CABLE/FUNICULAR), colours, operator | GTFS routes |
 | `NPattern` | id, line_id, direction, trips, headsign, terminus_station, length | distinct GTFS stop sequences |
+| `NStation.entries_per_day` | average daily validations, Apr–Jun 2026 (724 stations) | `(NStation)-[:ENTRIES_FROM]->(Dataset {key:'idfm_validations_ferre'})` |
 | `OutageFeed` | id (`prim_lift_outages@sha`), observed_at, feed_last_lift_update, feed_non_lift_last_update | PRIM snapshot |
 | `LiftOutage` | lift_key (`GC:1090`, `RATP:…`), operator, text, first_reported, last_update, announced_until, messages | PRIM `Ascenseur` disruptions grouped per lift |
 

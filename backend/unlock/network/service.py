@@ -88,6 +88,10 @@ class NetworkService:
         self.boardable_platforms = len(plats)
         feed = self.db.query(Q_FEED)
         self.feed = feed[0]["f"] if feed else None
+        self.entries = {r["id"]: r["v"] for r in self.db.query(
+            "MATCH (s:NStation) WHERE s.entries_per_day IS NOT NULL RETURN s.id AS id, s.entries_per_day AS v")}
+        rp = self.db.query("MATCH (d:Dataset {key: 'idfm_validations_ferre'}) RETURN d.title AS title, d.url AS url, d.licence AS licence")
+        self.entries_source = rp[0] if rp else None
         self.outages: dict[str, dict] = {}
         if self.feed:
             for r in self.db.query(Q_OUTAGES, {"feed": self.feed["id"]}):
@@ -284,6 +288,7 @@ class NetworkService:
 
     def outage_view(self, oid: str) -> dict[str, Any]:
         o = self.outages[oid]
+        # (entries are attached by the station card through the map layer)
         now = datetime.now(timezone.utc)
         st = self.stations[o["station_id"]]
         return {"id": oid, "lift_key": o["lift_key"], "operator": o["operator"], "text": o["text"],
@@ -501,6 +506,58 @@ class NetworkService:
         return {"legs": len(legs), "verified": n, "ok": n == len(legs),
                 "query": "MATCH (s1:NStation)-[:HAS_PLATFORM]->(x:NPlatform {boardable:true})-[e:LEG {line}]->(y)<-[:HAS_PLATFORM]-(s2)"}
 
+    # ------------------------------------------------------------------ reach
+    Q_REACH_STEP = """UNWIND $frontier AS sid
+MATCH (s:NStation {id: sid})-[:HAS_PLATFORM]->(x:NPlatform)-[e:LEG]->(y:NPlatform)<-[:HAS_PLATFORM]-(t:NStation)
+WHERE (x.id + '|' + e.line) IN $usable AND (y.id + '|' + e.line) IN $usable
+RETURN DISTINCT t.id AS id"""
+
+    def cypher_reach(self, origin: str, usable: set[str]) -> tuple[set[str], int]:
+        """Independent re-derivation in Relate: breadth-first, one Cypher query per round over HAS_PLATFORM/LEG,
+        restricted to the usable boarding points. Returns (stations, rounds)."""
+        seen, frontier, rounds = {origin}, [origin], 0
+        u = sorted(usable)
+        while frontier:
+            rows = self.db.query(self.Q_REACH_STEP, {"frontier": frontier, "usable": u})
+            rounds += 1
+            frontier = sorted({r["id"] for r in rows} - seen)
+            seen |= set(frontier)
+        seen.discard(origin)
+        return seen, rounds
+
+    def reach(self, origin: str, view: str = "best", verify: bool = True) -> dict[str, Any]:
+        """Where can a wheelchair user go from ``origin``? Every station is classed CONFIRMED / IF_LIFTS_WORK
+        (needs a platform whose listed lift outage may or may not matter) / CUT (reachable in the published
+        network, not any more) / UNREACHABLE (no published step-free route) / NOT_BOARDABLE."""
+        if origin not in self.stations:
+            raise KeyError(origin)
+        self.view_summary(view)
+        states = self._cache[f"sum:{view}"]["_states"]
+        conf, poss = E.usable_sets(states, self.net.platforms)
+        c = E.reach_set(self.net, conf, origin)
+        p = E.reach_set(self.net, poss, origin) - c
+        pub = E.reach_set(self.net, set(self.net.platforms), origin)
+        cut = pub - c - p
+        classes = {}
+        for sid in self.stations:
+            if sid == origin:
+                continue
+            classes[sid] = ("CONFIRMED" if sid in c else "IF_LIFTS_WORK" if sid in p else "CUT" if sid in cut
+                            else "UNREACHABLE" if sid in self.net.station_platforms else "NOT_BOARDABLE")
+        ent = lambda ids: sum(self.entries.get(i, 0) for i in ids)
+        res = {"origin": self._st(origin), "view": view, "classes": classes,
+               "counts": {"confirmed": len(c), "if_lifts_work": len(p), "cut": len(cut), "published": len(pub)},
+               "entries_per_day": {"confirmed": round(ent(c)), "if_lifts_work": round(ent(p)), "cut": round(ent(cut))},
+               "origin_boardable": origin in self.net.station_platforms}
+        if verify:
+            t0 = time.time()
+            cy, rounds = self.cypher_reach(origin, conf)
+            res["verification"] = {"engine": len(c), "cypher": len(cy), "ok": cy == c, "rounds": rounds,
+                                   "ms": round((time.time() - t0) * 1000),
+                                   "query": "UNWIND $frontier … (s)-[:HAS_PLATFORM]->(x)-[e:LEG]->(y)<-[:HAS_PLATFORM]-(t), "
+                                            "x and y usable — repeated until no new station"}
+        return res
+
     # ------------------------------------------------------------------- map
     def map_layer(self, view: str = "best") -> dict[str, Any]:
         self.view_summary(view)
@@ -518,6 +575,7 @@ class NetworkService:
             else:
                 state = "NOT_BOARDABLE"
             feats.append({"id": sid, "name": s["name"], "lat": s["lat"], "lon": s["lon"], "state": state,
+                          "entries_per_day": self.entries.get(sid),
                           "outages": n_out.get(sid, 0), "detail": bool(self._p_all.get(sid)),
                           "sncf_station": (self.sncf_of.get(sid) or [None])[0]})
         return {"view": view, "stations": feats}

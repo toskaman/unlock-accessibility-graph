@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, ApiError } from "../api";
-import type { Journey, OutageDetail, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
+import type { Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
 import { RegionMap } from "./RegionMap";
 
 const VIEW_LABEL: Record<RegionViewName, string> = {
@@ -77,6 +77,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
   const [selected, setSelected] = useState<string | null>(null);
   const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[] } | null>(null);
   const [busy, setBusy] = useState<string | null>("Computing step-free journeys across Île-de-France…");
+  const [reach, setReach] = useState<Reach | null>(null);
   const fail = (e: unknown) => onError(e instanceof ApiError ? e.message : String(e));
 
   useEffect(() => {
@@ -88,8 +89,9 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
   useEffect(() => { api.region.map(view).then((m) => setStations(m.stations)).catch(fail); }, [view]); // eslint-disable-line
 
   useEffect(() => {
-    if (!selected) { setStationOut(null); return; }
+    if (!selected) { setStationOut(null); setReach(null); return; }
     api.region.stationOutages(selected, view).then(setStationOut).catch(fail);
+    api.region.reach(selected, view).then((r) => setReach(r.origin_boardable ? r : null)).catch(fail);
   }, [selected, view]); // eslint-disable-line
 
   const check = async (a = from, b = to) => {
@@ -99,6 +101,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
       const [best, feed, published] = await Promise.all((["best", "feed", "published"] as RegionViewName[]).map((v) => api.region.journey(a.id, b.id, v)));
       setJourneys({ best, feed, published });
       setSelected(null);
+      setReach(null);
     } catch (e) { fail(e); } finally { setBusy(null); }
   };
 
@@ -177,6 +180,22 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
               <h3>{selectedStation.name}</h3>
               <button className="ghost dark small" onClick={() => setSelected(null)}>Close</button>
             </div>
+            {selectedStation.entries_per_day != null && (
+              <p className="muted tiny">≈ {n(selectedStation.entries_per_day)} ticket validations a day (all riders, Apr–Jun 2026)</p>
+            )}
+            {reach && reach.origin.id === selectedStation.id && (
+              <div className="reachbox" aria-live="polite">
+                <p className="reach-num">{n(reach.counts.confirmed)}</p>
+                <p className="reach-cap">stations reachable step-free from here, {VIEW_PHRASE[view]}</p>
+                <ul className="reach-legend">
+                  <li><i className="dot green" />{n(reach.counts.confirmed)} confirmed</li>
+                  <li><i className="dot amber" />{n(reach.counts.if_lifts_work)} only if listed lifts work</li>
+                  <li><i className="dot red" />{n(reach.counts.cut)} cut by outages (reachable in the published network)</li>
+                </ul>
+                <p className="muted tiny">Those confirmed stations see ≈ {n(reach.entries_per_day.confirmed)} validations a day; the cut ones ≈ {n(reach.entries_per_day.cut)}.</p>
+                <p className="muted tiny">{reach.verification.ok ? `Re-derived in Relate with Cypher (${reach.verification.rounds} breadth-first rounds over HAS_PLATFORM/LEG, ${reach.verification.ms} ms): ${reach.verification.cypher} = ${reach.verification.engine}.` : `Cypher re-derivation disagrees (${reach.verification.cypher} vs ${reach.verification.engine}) — do not rely on this number.`}</p>
+              </div>
+            )}
             <p className="small">{selectedStation.state === "NOT_BOARDABLE" ? "No platform declared wheelchair-boardable in GTFS / IDFM data." :
               selectedStation.state === "OPEN" ? "All boardable platforms open in this view." :
               selectedStation.state === "DOUBT" ? "A listed lift outage concerns a boardable platform here; UNLOCK can't tell if another lift serves it." :
@@ -237,13 +256,25 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
               Those stale messages alone hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</p>
           </section>
         )}
-        <RegionMap stations={stations} journey={j} selected={selected} onSelect={(id) => setSelected(id)} />
-        <div className="legend region-legend" aria-label="Map legend">
-          <span><i className="dot ink" />Boardable, open</span>
-          <span><i className="dot amber" />Lift listed out — not confirmed</span>
-          <span><i className="dot red" />Cut off (station topology)</span>
-          <span><i className="dot grey" />No boardable platform</span>
-        </div>
+        <RegionMap stations={stations} reach={reach && !j ? { origin: reach.origin.id, classes: reach.classes } : null}
+                   journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }} />
+        {reach && !j ? (
+          <div className="legend region-legend" aria-label="Map legend — step-free reach">
+            <span><b>From {reach.origin.name}:</b></span>
+            <span><i className="dot green" />Reachable step-free</span>
+            <span><i className="dot amber" />Only if listed lifts work</span>
+            <span><i className="dot red" />Cut by outages</span>
+            <span><i className="dot grey" />No step-free route / not boardable</span>
+          </div>
+        ) : (
+          <div className="legend region-legend" aria-label="Map legend">
+            <span><i className="dot ink" />Boardable, open</span>
+            <span><i className="dot amber" />Lift listed out — not confirmed</span>
+            <span><i className="dot red" />Cut off (station topology)</span>
+            <span><i className="dot grey" />No boardable platform</span>
+            <span className="muted">Click a station to see where you can go from it.</span>
+          </div>
+        )}
         {busy && <p className="busy" role="status">{busy}</p>}
       </main>
 

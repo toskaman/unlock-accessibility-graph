@@ -8,6 +8,7 @@ the lift-by-lift structure of the 401 SNCF stations and the lift outages that ar
 for the whole region and down to a single underpass:
 
 * **Which step-free journeys exist right now, and which lift outages cut them?**
+* **Where can I go from here in a wheelchair?** — click a station: the whole map shows what is reachable step-free.
 * **Can I get from A to B in a wheelchair?** — with the route, and the outages on the way.
 * **Which repair gives the most back?** — region-wide, then lift by lift inside a station.
 * **Is the outage data even right?** — UNLOCK cross-checks the regional outage feed against the operator's own.
@@ -64,7 +65,13 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 4. *Repairs that matter*: **La Croix de Berny** (+27,156): with the Viroflay Rive Gauche lift also listed out
    (since Nov 2025), the T6/T10 tram stations lose their only confirmed step-free connections. These RATP
    entries come only from the frozen feed — the UI says *check on site*.
-5. Click a station on the map: each message, its age, and — for SNCF lifts — the lift UNLOCK matched it to
+5. Click **Rosa Parks** on the map: the whole region recolours — 437 stations reachable step-free from there with the
+   best available status (66 only if listed lifts work, 3 cut), together ≈ 2.8 million validations a day. With the
+   PRIM feed: 294. *Re-derived in Relate with Cypher: 437 = 437.*
+
+   ![Where can I go from here? La Croix de Berny: 30 stations confirmed, 473 only if listed lifts work](docs/media/region-reach.png)
+
+6. The station card also lists each message, its age, and — for SNCF lifts — the lift UNLOCK matched it to
    and what SNCF's hourly feed says. *Open inside the station* switches to the station cross-section.
 
 ![Journey check: Rosa Parks → Juvisy compared across the three views](docs/media/region-journey.png)
@@ -104,6 +111,7 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 
 | Region network | `(:NStation)-[:HAS_PLATFORM]->(:NPlatform {boardable})-[:LEG {line, hops}]->(:NPlatform)`, `NEXT` stop sequences per GTFS pattern, `(:NStation)-[:IS_ZONE]->(:TransferZone)<-[:IN_TRANSFER_ZONE]-(:Station)` joining the region to the station layer. |
 | Outage feed | Immutable `(:OutageFeed)-[:LISTS]->(:LiftOutage)`, `-[:AFFECTS {derivation}]->(:NPlatform)`, `-[:MATCHES_LIFT]->(:Lift)` written by the resolver. |
+| Region cross-check | Every reach is re-derived in Cypher by breadth-first rounds over `HAS_PLATFORM`/`LEG`; `scripts/region_crosscheck.py` does all 519 origins × 3 views — all ordered pairs agree with the engine ([region_crosscheck.json](docs/research/region_crosscheck.json)). |
 | Region verification | Every journey leg is re-matched in Cypher (`(s1)-[:HAS_PLATFORM]->(x {boardable:true})-[:LEG {line}]->(y)<-[:HAS_PLATFORM]-(s2)`); leg geometry is read back from the `NEXT` chain. |
 
 **Inspect the graph** (top right of the app) shows node and relationship counts, source hashes, the
@@ -152,6 +160,7 @@ All sources are listed in [DATA_SOURCES.md](DATA_SOURCES.md), with what was chec
 | État de fonctionnement des équipements d'élévatique | SNCF Gares & Connexions | ODbL 1.0 | latest published lift status (OK / KO / INCONNU, refreshed hourly) |
 | Référentiel des arrêts : Zones de correspondance | Île-de-France Mobilités | Licence Ouverte 2.0 | transfer-zone anchoring |
 | GTFS IDFM | Île-de-France Mobilités | Licence Mobilités | rail / metro / tram lines, platforms, `wheelchair_boarding`, stopping patterns |
+| Validations sur le réseau ferré (Q2 2026) | Île-de-France Mobilités | Licence Ouverte 2.0 | average daily validations per station — a weight, shown as context |
 | Accessibilité en gare | Île-de-France Mobilités | Licence Ouverte 2.0 | rail station accessibility level (autonomous / on request / booked AssistenGare / not accessible) |
 | Messages Info Trafic (PRIM API, tag « Ascenseur ») | Île-de-France Mobilités | Licence Mobilités | lift outages for RATP and SNCF stations — **needs a free personal PRIM token** to refresh; a snapshot is committed |
 
@@ -180,6 +189,7 @@ through a **read-only** Relate connection (the agent can't modify anything, even
 | `critical_lifts` | Single points of failure |
 | `explain_connection(pair_id)` | The actual Relate path, statuses, snapshot, derivations, unknowns |
 | `station_overview`, `network_summary`, `cypher_read(query)` | Context and read-only Cypher (row-capped) |
+| `step_free_reach(from, view)` | Region: stations reachable step-free from one station, with Cypher re-derivation |
 | `check_journey(from, to, view)` | Region: step-free verdict, legs, outages on the way, Relate re-check of every leg |
 | `region_overview`, `region_repairs`, `station_outages` | Region views, feed freshness, PRIM-vs-SNCF reconciliation, repairs and feed corrections |
 
@@ -261,8 +271,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 74 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
-cd frontend && npx playwright test  # 6 end-to-end tests (station flow + region flow, on a copy of the store)
+pytest                              # 76 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
+cd frontend && npx playwright test  # 7 end-to-end tests (station flow + region flow, on a copy of the store)
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 ```
 
@@ -289,6 +299,7 @@ Measured on the pilot (2-vCPU Linux container, median of 20 runs; full table in
 | Three region views, first call | 105 ms |
 | Rank every region repair and feed correction (107 evaluations) | 1.4 s |
 | Journey check incl. Relate re-check of every leg and geometry | 39 ms |
+| Reach from one station + Cypher re-derivation (5–6 BFS rounds) | ~0.4 s |
 | Single-station traversal | 11 ms |
 | Create, analyse and persist a scenario (incl. Cypher cross-check) | 15 ms |
 | Rank every candidate repair in the region | 6 ms |
@@ -312,7 +323,7 @@ Main endpoints:
 - `DELETE /api/scenarios/{id}`
 - `GET /api/debug/queries`
 - `GET /api/region/overview` · `GET /api/region/map?view=best|feed|published` · `GET /api/region/rank`
-- `GET /api/region/journey?from=&to=&view=` · `GET /api/region/stations?q=` · `GET /api/region/reconciliation`
+- `GET /api/region/reach?from=&view=` · `GET /api/region/journey?from=&to=&view=` · `GET /api/region/stations?q=` · `GET /api/region/reconciliation`
 - `GET /api/region/stations/{id}/outages` · `GET /api/region/outages/{id}`
 
 OpenAPI docs are at `/docs`. No endpoint accepts Cypher.

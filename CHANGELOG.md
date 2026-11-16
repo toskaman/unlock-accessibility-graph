@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 — 2026-11-16
+- **Where can I go from here?** Click any station: the map recolours every station of Île-de-France by whether a
+  wheelchair user can reach it step-free from there (confirmed / only if listed lifts work / cut by outages / no
+  route), with the count, and the daily ticket validations of those stations as a weight.
+- **Region numbers re-derived in Cypher.** Each reach is recomputed in Relate by a breadth-first Cypher query over
+  `HAS_PLATFORM`/`LEG`; `scripts/region_crosscheck.py` does it for all 519 origins × 3 views — every ordered pair
+  agrees with the engine (`docs/research/region_crosscheck.json`).
+- Ridership weight: IDFM *Validations sur le réseau ferré* (Q2 2026, Licence Ouverte 2.0) on `NStation`, linked
+  `ENTRIES_FROM` its `Dataset`.
+- MCP tool `step_free_reach`. Tests 76 + e2e 7.
+
 ## 0.3.0 — 2026-11-16
 - **Whole region** mode (default): the Île-de-France rail, metro and tram network from IDFM GTFS (996 stations,
   59 lines, 881 wheelchair-boardable platforms) stored in Relate (`NStation`, `NPlatform`, `NLine`, `NPattern`,

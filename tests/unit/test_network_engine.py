@@ -95,3 +95,14 @@ def test_worst_and_usable_sets():
     assert E.worst(E.OPEN, E.DOUBT) == E.DOUBT and E.worst(E.CLOSED, E.DOUBT) == E.CLOSED
     conf, poss = E.usable_sets({"a": E.DOUBT, "b": E.CLOSED}, ["a", "b", "c"])
     assert conf == {"c"} and poss == {"a", "c"}
+
+
+def test_reach_set_agrees_with_reach_counts():
+    net = _net(network())
+    rnd = random.Random(11)
+    pts = sorted(net.platforms)
+    for _ in range(30):
+        sub = set(rnd.sample(pts, rnd.randint(0, len(pts))))
+        _, per = E.reach_counts(net, sub)
+        for st in net.station_platforms:
+            assert len(E.reach_set(net, sub, st)) == per.get(st, 0)

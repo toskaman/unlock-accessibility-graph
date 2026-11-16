@@ -242,6 +242,14 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         except KeyError:
             raise HTTPException(404, "unknown station")
 
+    @app.get("/api/region/reach")
+    def region_reach(req: Request, a: str = Query(..., alias="from"), view: str = Query("best", pattern=_VIEW)):
+        n = net(req)
+        try:
+            return n.reach(_check_id(a), view)
+        except KeyError:
+            raise HTTPException(404, "unknown station")
+
     @app.get("/api/region/stations/{station_id}/outages")
     def region_station_outages(req: Request, station_id: str, view: str = Query("best", pattern=_VIEW)):
         n = net(req)

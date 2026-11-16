@@ -37,12 +37,22 @@ def build_network_file(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR) 
         if p["id"] in levels:
             p["access_level"] = levels[p["id"]]
         p["boardable"] = boardable(p)
+    val_path = raw_dir / "idfm" / "validations-ferre-q2-2026.json"
+    if val_path.exists():
+        rows = {str(int(r["id_zdc"])): r for r in json.loads(val_path.read_text(encoding="utf-8")) if r.get("id_zdc")}
+        for st in net["stations"]:
+            r = rows.get(st["id"])
+            if r and r.get("d"):
+                st["entries_per_day"] = round(r["v"] / r["d"])
+                st["entries_days"] = r["d"]
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
-    net["datasets"] = [manifest[k] for k in ("idfm_gtfs", "idfm_accessibilite_en_gare") if k in manifest]
+    net["datasets"] = [manifest[k] for k in ("idfm_gtfs", "idfm_accessibilite_en_gare", "idfm_validations_ferre")
+                       if k in manifest]
     net["counts"] = {"stations": len(net["stations"]), "platforms": len(net["platforms"]), "lines": len(net["lines"]),
                      "patterns": len(net["patterns"]),
                      "boardable_platforms": sum(p["boardable"] for p in net["platforms"]),
-                     "platforms_with_idfm_level": sum("access_level" in p for p in net["platforms"])}
+                     "platforms_with_idfm_level": sum("access_level" in p for p in net["platforms"]),
+                     "stations_with_entries": sum("entries_per_day" in s for s in net["stations"])}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "network.json").write_text(json.dumps(net, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return net
