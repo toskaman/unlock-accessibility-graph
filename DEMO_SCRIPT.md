@@ -2,7 +2,7 @@
 
 The v0.2.0 station-mode video (1:36) is on the v0.2.0 release and was produced by
 `frontend/scripts/record-demo.mjs`. This script is for the new whole-region video. All numbers below are from
-the committed snapshot (PRIM feed observed 16 Nov 2026 19:13 UTC, SNCF status `sncf_lift_status@2273b7c1cb17`);
+the committed snapshot (PRIM feed observed 16 Nov 2026 22:33 UTC, SNCF status `sncf_lift_status@2273b7c1cb17`);
 if you run `fetch-outages` before recording, read the numbers off the screen instead.
 
 | Time | Screen | Action | Say (suggestion) |

@@ -5,7 +5,7 @@
 Bonjour,
 
 En réutilisant l'API « Calculateur Île-de-France Mobilités – Messages Info Trafic »
-(`/marketplace/v2/navitia/line_reports/line_reports`), nous observons le 16/11/2026 à 20h13 (heure de Paris) :
+(`/marketplace/v2/navitia/line_reports/line_reports`), nous observons le 16/11/2026 à 20h13 puis à 23h33 (heure de Paris) :
 
 - 1 047 perturbations actives portant le tag « Ascenseur » (356 ascenseurs distincts d'après le champ
   `reference`) ;

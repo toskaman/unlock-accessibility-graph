@@ -2,7 +2,7 @@
 
 **What was checked.** 40 PRIM lift-outage messages (seeded random sample: 20 RATP/unknown operator, 20 SNCF
 Gares & Connexions) with the line × platform nodes UNLOCK marked, and 30 messages UNLOCK matched to a single SNCF
-lift (`MATCHES_LIFT`). Input: `sample.json`.
+lift (`MATCHES_LIFT`). Input: `sample.json` (outage ids refer to the 19:13 UTC feed snapshot; the 22:33 snapshot has the same lifts).
 
 **Who checked.** A separate Claude agent that was not involved in building UNLOCK. It was told to read only
 `sample.json` (no code, no docs) and to be strict. Its raw labels are in `labels.json`. It is independent of the
