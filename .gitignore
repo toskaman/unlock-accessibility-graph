@@ -1,0 +1,24 @@
+# data & stores
+data/raw/
+database/*.rl
+database/*.rl-*
+database/backups/
+!database/.gitkeep
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+# node
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+# env
+.env
+.env.*
+!.env.example
+# misc
+*.log
+.DS_Store
