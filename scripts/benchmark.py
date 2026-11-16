@@ -7,7 +7,8 @@ from unlock.config import ROOT, STORE_PATH  # noqa: E402
 from unlock.db import GraphStore  # noqa: E402
 from unlock.engine import graph as G  # noqa: E402
 from unlock.engine.service import UnlockService  # noqa: E402
-from unlock.ingest.load import run_import  # noqa: E402
+from unlock.ingest.load import import_all  # noqa: E402
+from unlock.network.service import NetworkService  # noqa: E402
 
 ap = argparse.ArgumentParser(); ap.add_argument("--runs", type=int, default=20); a = ap.parse_args()
 def stats(xs): xs = sorted(xs); return {"n": len(xs), "median_ms": round(statistics.median(xs), 1), "p95_ms": round(xs[max(0, int(0.95 * len(xs)) - 1)], 1)}
@@ -15,7 +16,7 @@ tmp = Path(tempfile.mkdtemp())
 res = {"hardware": {"platform": platform.platform(), "python": platform.python_version(), "cpus": os.cpu_count()}}
 t = time.perf_counter()
 with GraphStore(tmp / "fresh.rl") as db:
-    run_import(db); res["graph_counts"] = db.counts()
+    import_all(db); res["graph_counts"] = db.counts()
 res["import_fresh_store_ms"] = round((time.perf_counter() - t) * 1000, 1)
 res["store_bytes"] = (tmp / "fresh.rl").stat().st_size
 shutil.copy(STORE_PATH, tmp / "b.rl")
@@ -38,6 +39,20 @@ for _ in range(a.runs):
     t = time.perf_counter(); svc.explain_pair(an["lost_confirmed"][0], sc["id"], lift.id); expl.append((time.perf_counter() - t) * 1000)
     svc.delete_scenario(sc["id"])
 res["create_and_analyze_scenario"] = stats(sim); res["rank_interventions"] = stats(rank); res["explain_pair_with_evidence"] = stats(expl)
+t = time.perf_counter(); net = NetworkService(db, svc); res["region_service_startup_ms"] = round((time.perf_counter() - t) * 1000, 1)
+t = time.perf_counter(); ov = net.overview(); res["region_three_views_first_call_ms"] = round((time.perf_counter() - t) * 1000, 1)
+t = time.perf_counter(); rk = net.rank(10); res["region_rank_all_candidates_ms"] = round((time.perf_counter() - t) * 1000, 1)
+res["region_rank_evaluations"] = rk["evaluations"]
+from unlock.network import engine as E  # noqa: E402
+reach = []
+for _ in range(a.runs):
+    t = time.perf_counter(); E.reach_counts(net.net, set(net.net.platforms)); reach.append((time.perf_counter() - t) * 1000)
+res["region_exact_reachability_all_pairs"] = stats(reach)
+jr = []
+ids = sorted(net.net.station_platforms)
+for i in range(a.runs):
+    t = time.perf_counter(); net.check_journey(ids[i * 7 % len(ids)], ids[(i * 31 + 3) % len(ids)], "best"); jr.append((time.perf_counter() - t) * 1000)
+res["region_journey_check_with_relate_verification"] = stats(jr)
 db.close(); shutil.rmtree(tmp)
 (ROOT / "docs" / "BENCHMARK.json").write_text(json.dumps(res, indent=1))
 print(json.dumps(res, indent=1))

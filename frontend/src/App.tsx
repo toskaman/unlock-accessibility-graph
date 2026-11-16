@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, ApiError } from "./api";
 import { MapView } from "./components/MapView";
+import { RegionView } from "./components/RegionView";
 import { STATE_LABEL, StationSection } from "./components/StationSection";
 import type { Analysis, Candidate, Critical, Explanation, LiftCandidate, PairClass, PairView, Ranking, Resolution, StationGraph, StationRow, Summary, View } from "./types";
 
@@ -35,6 +36,7 @@ function downloadJSON(name: string, data: unknown) {
 }
 
 export default function App() {
+  const [mode, setMode] = useState<"region" | "station">(() => (location.hash.includes("station=") ? "station" : "region"));
   const [summary, setSummary] = useState<Summary | null>(null);
   const [stations, setStations] = useState<StationRow[]>([]);
   const [stationId, setStationId] = useState<string | null>(null);
@@ -90,9 +92,10 @@ export default function App() {
   }, [lift, view, scenario?.id]);
 
   useEffect(() => {
+    if (mode === "region") { history.replaceState(null, "", "#region"); return; }
     if (!stationId) return;
     history.replaceState(null, "", `#station=${encodeURIComponent(stationId)}`);
-  }, [stationId]);
+  }, [stationId, mode]);
 
   const selectStation = useCallback((id: string) => {
     setStationId(id); setLift(null); setPair(null); setExplanation(null);
@@ -186,6 +189,31 @@ export default function App() {
     return [...graph.pairs].sort((a, b) => changed(a) - changed(b) || CLASS_ORDER.indexOf(a.cls) - CLASS_ORDER.indexOf(b.cls) || a.a_name.localeCompare(b.a_name));
   }, [graph]);
 
+  const modeTabs = (
+    <nav className="modes" aria-label="Scale">
+      <button aria-current={mode === "region" ? "page" : undefined} className={mode === "region" ? "on" : ""} onClick={() => setMode("region")}>Whole region</button>
+      <button aria-current={mode === "station" ? "page" : undefined} className={mode === "station" ? "on" : ""} onClick={() => setMode("station")}>Inside a station</button>
+    </nav>
+  );
+
+  if (mode === "region") {
+    return (
+      <div className="app region-mode">
+        <header className="top">
+          <div className="brand">
+            <h1>UNLOCK</h1>
+            <p>Find the repair that unlocks the most journeys.</p>
+          </div>
+          {modeTabs}
+          <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button></div>
+        </header>
+        {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>Dismiss</button></div>}
+        <RegionView onError={setError} onOpenStation={(id) => { setMode("station"); selectStation(id); }} />
+        {inspect && <Inspector summary={summary} onClose={() => setInspect(false)} />}
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <header className="top">
@@ -193,6 +221,7 @@ export default function App() {
           <h1>UNLOCK</h1>
           <p>Find the repair that unlocks the most journeys.</p>
         </div>
+        {modeTabs}
         <div className="viewswitch" role="tablist" aria-label="Compare states">
           {(["baseline", "outage", "restoration"] as View[]).map((v) => (
             <button key={v} role="tab" aria-selected={view === v} className={view === v ? "on" : ""}

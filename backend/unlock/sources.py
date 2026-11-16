@@ -70,7 +70,32 @@ SOURCES: dict[str, Source] = {
             filename="gtfs/IDFM-gtfs.zip",
             licence="Licence Mobilités",
             licence_url="https://transport.data.gouv.fr/datasets/reseaux-urbains-et-interurbains-dile-de-france-mobilites",
-            role="Lines (routes) calling at each transfer zone, from stops/stop_times/trips/routes",
+            role="Lines (routes) calling at each transfer zone, from stops/stop_times/trips/routes; "
+                 "network layer: platforms, wheelchair_boarding and stopping patterns of rail/metro/tram lines",
+        ),
+        Source(
+            key="idfm_accessibilite_en_gare",
+            title="Accessibilité en gare",
+            publisher="Île-de-France Mobilités",
+            url=f"{IDFM_API}/accessibilite-en-gare/exports/json",
+            filename="idfm/accessibilite-en-gare.json",
+            licence="Licence Ouverte v2.0 (Etalab)",
+            licence_url="https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+            role="Rail stop accessibility level (autonomous, on request to an agent, booked AssistenGare, not accessible)",
+            metadata_url=f"{IDFM_API}/accessibilite-en-gare",
         ),
     ]
 }
+
+
+# Needs a personal PRIM API token (free account). Fetched by `python -m unlock fetch-outages`, never by `fetch`.
+PRIM_LINE_REPORTS = Source(
+    key="prim_lift_outages",
+    title="Calculateur Île-de-France Mobilités - Messages Info Trafic (Navitia line_reports), tag « Ascenseur »",
+    publisher="Île-de-France Mobilités (PRIM)",
+    url="https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
+    filename="prim/line_reports.json",
+    licence="Licence Mobilités",
+    licence_url="https://prim.iledefrance-mobilites.fr/fr/licences",
+    role="Lift outages published to passengers and re-users for RATP and SNCF stations, with location text",
+)

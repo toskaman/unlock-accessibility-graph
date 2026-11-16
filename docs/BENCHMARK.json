@@ -7,10 +7,16 @@
  "graph_counts": {
   "nodes": {
    "AccessibilityAssertion": 1681,
-   "Dataset": 4,
+   "Dataset": 6,
    "ImportRun": 1,
    "Lift": 588,
+   "LiftOutage": 356,
    "Line": 51,
+   "NLine": 59,
+   "NPattern": 1055,
+   "NPlatform": 1953,
+   "NStation": 996,
+   "OutageFeed": 1,
    "Quay": 1280,
    "Space": 1117,
    "Station": 401,
@@ -19,45 +25,68 @@
   },
   "relationships": {
    "ABOUT": 1681,
+   "AFFECTS": 503,
    "DESCRIBED_IN": 1432,
    "HAS_LIFT": 588,
+   "HAS_PLATFORM": 1953,
    "HAS_QUAY": 1280,
    "HAS_SPACE": 1117,
    "HAS_STATUS": 588,
    "IN_TRANSFER_ZONE": 401,
    "IS_PLATFORM_OF": 485,
+   "IS_ZONE": 392,
+   "LEG": 14147,
+   "LISTS": 356,
+   "MATCHES_LIFT": 168,
+   "NEXT": 14077,
+   "OF_LINE": 1055,
+   "REPORTED_AT": 356,
    "REPORTED_IN": 588,
    "SERVED_BY": 551,
    "SERVES": 1369,
    "SUPPORTED_BY": 1681
   }
  },
- "import_fresh_store_ms": 968.7,
- "store_bytes": 6471680,
- "service_startup_ms": 4948.8,
+ "import_fresh_store_ms": 4707.1,
+ "store_bytes": 24637440,
+ "service_startup_ms": 4469.3,
  "route_traversal_all_stations": {
   "n": 5,
-  "median_ms": 4863.4,
-  "p95_ms": 4900.2
+  "median_ms": 4445.2,
+  "p95_ms": 4856.6
  },
  "route_traversal_one_station": {
-  "n": 20,
-  "median_ms": 10.8,
-  "p95_ms": 13.8
+  "n": 15,
+  "median_ms": 14.2,
+  "p95_ms": 18.8
  },
  "create_and_analyze_scenario": {
-  "n": 20,
-  "median_ms": 14.7,
-  "p95_ms": 16.0
+  "n": 15,
+  "median_ms": 15.6,
+  "p95_ms": 20.9
  },
  "rank_interventions": {
-  "n": 20,
-  "median_ms": 5.9,
-  "p95_ms": 6.0
+  "n": 15,
+  "median_ms": 6.1,
+  "p95_ms": 7.4
  },
  "explain_pair_with_evidence": {
-  "n": 20,
-  "median_ms": 4.3,
-  "p95_ms": 5.0
+  "n": 15,
+  "median_ms": 4.6,
+  "p95_ms": 5.6
+ },
+ "region_service_startup_ms": 171.8,
+ "region_three_views_first_call_ms": 105.1,
+ "region_rank_all_candidates_ms": 1377.1,
+ "region_rank_evaluations": 107,
+ "region_exact_reachability_all_pairs": {
+  "n": 15,
+  "median_ms": 10.4,
+  "p95_ms": 10.6
+ },
+ "region_journey_check_with_relate_verification": {
+  "n": 15,
+  "median_ms": 39.3,
+  "p95_ms": 65.4
  }
 }

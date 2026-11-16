@@ -31,3 +31,15 @@ with this notice: *Contains information from Île-de-France Mobilités, "Réseau
 (GTFS), licensed under the Licence Mobilités — https://transport.data.gouv.fr/datasets/reseaux-urbains-et-interurbains-dile-de-france-mobilites.*
 These derived records remain under the Licence Mobilités; the rest of the derived database is under the ODbL.
 This is a good-faith reading of the licence text, not legal advice.
+
+## Added in v0.3.0
+
+* **IDFM GTFS (Licence Mobilités)** — the region layer redistributes, in `data/normalized/network.json`, the
+  rail/metro/tram stations, platforms (with `wheelchair_boarding`), lines and distinct stop sequences (1,055) — a
+  small extract of the feed (no times, no buses). Same notice and licence as above.
+* **IDFM *Accessibilité en gare* (Licence Ouverte 2.0)** — accessibility level per rail stop. *Source : Île-de-France
+  Mobilités, « Accessibilité en gare », Licence Ouverte 2.0.*
+* **PRIM *Messages Info Trafic* (Licence Mobilités)** — `data/normalized/network_outages.json` keeps, per lift, the
+  message text, dates and placement for the 356 lifts listed on 16 Nov 2026. *Contains information from
+  Île-de-France Mobilités (PRIM), « Calculateur Île-de-France Mobilités – Messages Info Trafic », licensed under the
+  Licence Mobilités.* The raw API response (`data/raw/prim/`) is not committed and the access token never is.

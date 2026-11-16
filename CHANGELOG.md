@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.3.0 — 2026-11-16
+- **Whole region** mode (default): the Île-de-France rail, metro and tram network from IDFM GTFS (996 stations,
+  59 lines, 881 wheelchair-boardable platforms) stored in Relate (`NStation`, `NPlatform`, `NLine`, `NPattern`,
+  `NEXT`, `LEG`), joined to the SNCF station layer through `IS_ZONE`.
+- **Lift outages from PRIM** (token read from env/file, never stored): 356 lifts / 1,047 messages placed on line ×
+  platform with a derivation; G&C messages read by the incident resolver into `MATCHES_LIFT` edges.
+- **Three views** — published, PRIM feed, best available (SNCF hourly status on station topology + PRIM for RATP);
+  exact reachability of all ordered station pairs (~10 ms); confirmed vs possible journeys.
+- **Can I get there in a wheelchair?** least-cost journey check compared across the three views, every leg
+  re-checked in Cypher, geometry read from the `NEXT` chain.
+- **Repairs that matter** region-wide; **Stale messages** (PRIM entries SNCF contradicts, ranked by journeys
+  hidden); **Not in the feed**.
+- Finding: PRIM lift messages unchanged since 9 Oct 2026; SNCF contradicts 235 of 264 SNCF entries; they hide
+  96,340 confirmed journeys. Draft note to IDFM in `docs/research/PRIM_LIFT_FEED_NOTE.md`.
+- Independent check of placement/matching (`docs/research/region_eval/`): 3 wrong line placements found → feed
+  line links dropped → 0 wrong on re-check; resolver matches 29/30 correct, 0 wrong.
+- New sources: IDFM *Accessibilité en gare* (Licence Ouverte 2.0), PRIM *Messages Info Trafic* (Licence Mobilités).
+- MCP tools `check_journey`, `region_overview`, `region_repairs`, `station_outages`. 74 tests + 6 e2e.
+
 ## 0.2.0 — 2026-11-16
 - **Start from an outage report**: free-text report → exact lift via deterministic retrieval over the Relate graph
   (station + IDFM zone names, platforms and spaces each lift SERVES); ambiguous reports return candidates, never a guess.

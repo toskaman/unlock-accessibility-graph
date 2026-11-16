@@ -2,15 +2,28 @@
 
 **Find the repair that unlocks the most journeys.**
 
-UNLOCK turns the open lift and accessibility data of the 401 SNCF stations in Île-de-France into a
-connected graph in [Relate](https://github.com/relatedb/relate). You can simulate a lift outage, see
-which step-free connections inside the station it breaks, and rank lift repairs across the region by how
-many confirmed connections each one restores. Every number on screen can be traced through the graph
-back to a source record.
+UNLOCK puts the whole Île-de-France rail, metro and tram network — 996 stations, 59 lines, every platform the
+publishers declare wheelchair-boardable — into a [Relate](https://github.com/relatedb/relate) graph, together with
+the lift-by-lift structure of the 401 SNCF stations and the lift outages that are actually published. It answers,
+for the whole region and down to a single underpass:
 
-**▶ Demo video (1 min 36 s, narrated):** [unlock-demo.mp4 on the v0.2.0 release](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4)
+* **Which step-free journeys exist right now, and which lift outages cut them?**
+* **Can I get from A to B in a wheelchair?** — with the route, and the outages on the way.
+* **Which repair gives the most back?** — region-wide, then lift by lift inside a station.
+* **Is the outage data even right?** — UNLOCK cross-checks the regional outage feed against the operator's own.
 
-![UNLOCK: simulating a lift outage at Juvisy-sur-Orge](docs/media/demo-preview.gif)
+Every number on screen is computed on the graph and can be traced back to a source record.
+
+> **What the data showed on 16 Nov 2026.** The PRIM traffic-information API lists **356 lifts out of service**
+> (1,047 messages) — and **none of those messages has changed since 9 October 2026**, while every other traffic
+> message is updated the same day. SNCF's own hourly lift feed reports **235 of the 264 SNCF lifts it lists as
+> working**. Those stale messages alone hide **96,340** step-free journeys from anyone who builds on the feed.
+> Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
+
+**▶ Demo video:** v0.2.0 (station mode, 1 min 36 s): [unlock-demo.mp4](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4).
+The v0.3.0 region mode is shown in the screenshots below.
+
+![UNLOCK whole-region mode: three views, frozen-feed finding, map and repair ranking](docs/media/region-overview.png)
 
 > Built for the *Relate by Neo4j Hackathon 2026*. This is a decision-support prototype built from public
 > data. It has not been validated by any operator for operational use.
@@ -18,26 +31,46 @@ back to a source record.
 ## The problem
 
 A platform can be "accessible" and still be unreachable if one lift fails. Whether that matters depends
-on what else that lift connects, and whether another route exists. That information is scattered:
+on what else that lift connects, whether another route exists — inside the station and across the network —
+and on whether the outage is even real. That information is scattered:
 
-- **Station structure** is in a NeTEx file.
-- **Lift locations** are free-text descriptions ("Voies 50 et 51 / souterrain nord").
-- **Lift status** comes from an hourly feed.
-- **Lines** are in GTFS.
+- **Network and boardable platforms** are in GTFS and an IDFM accessibility table.
+- **Station structure** is in a NeTEx file; **lift locations** are free text ("Voies 50 et 51 / souterrain nord").
+- **Lift status** comes from two feeds that disagree: SNCF's hourly file and the PRIM traffic messages (RATP + SNCF).
 
-UNLOCK connects these sources so you can ask: *"Which repair restores the most verified step-free
-connectivity?"*
+UNLOCK connects these sources so you can ask: *"Which repair restores the most verified step-free journeys?"*
 
-## Three ways in
+## Ways in
 
 | You have… | Do this | You get |
 |---|---|---|
-| **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | Paste it in *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed** — UNLOCK lists the candidates. |
-| **A maintenance budget** | Open *Repairs to make* | Every lift out of service today, ranked by confirmed connections its repair restores; exact best set of *k* repairs via the API. |
-| **Prevention in mind** | Open *Lifts you can't lose* | 191 of the 304 working lifts on modeled routes are single points of failure; the list shows what each one would cut. |
-| **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, so the agent's answers carry real numbers and evidence instead of guesses. |
+| **A trip to make** | *Whole region* → *Can I get there in a wheelchair?* | The least-cost step-free route under each view (best available status / PRIM feed / published network), each leg re-checked in Relate, and the outages listed on the way. |
+| **A region to run** | *Whole region* → *Repairs that matter* | Every listed outage and every SNCF lift out of service, ranked by the step-free journeys its repair gives back across Île-de-France. |
+| **Doubts about the data** | *Whole region* → *Stale messages* / *Not in the feed* | PRIM messages SNCF contradicts, ranked by the journeys they hide; SNCF outages PRIM doesn't show. A draft note to IDFM is in `docs/research/PRIM_LIFT_FEED_NOTE.md`. |
+| **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | *Inside a station* → *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed**. |
+| **A maintenance budget for a station network** | *Inside a station* → *Repairs to make* / *Lifts you can't lose* | Lifts ranked by confirmed in-station connections restored; 191 single points of failure. |
+| **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, including `check_journey` and `region_overview`. |
 
-## The 30-second walkthrough
+## Whole region in one minute
+
+1. The app opens on **Whole region**. The headline is the number of ordered station pairs joined by a
+   confirmed step-free journey: **256,592** in the published network, **192,377** with the best available lift
+   status, **88,255** if you believe the PRIM feed.
+2. The amber card explains the gap: PRIM's lift messages have not moved for 38 days, and SNCF contradicts
+   235 of its 264 SNCF entries.
+3. *Can I get there in a wheelchair?* — **Rosa Parks → Juvisy**: step-free with the best status (RER E then
+   RER C); with the PRIM feed only *possible if listed lifts work* (11 outages listed on the route). Each leg
+   says "re-checked in Relate".
+4. *Repairs that matter*: **La Croix de Berny** (+27,156): with the Viroflay Rive Gauche lift also listed out
+   (since Nov 2025), the T6/T10 tram stations lose their only confirmed step-free connections. These RATP
+   entries come only from the frozen feed — the UI says *check on site*.
+5. Click a station on the map: each message, its age, and — for SNCF lifts — the lift UNLOCK matched it to
+   and what SNCF's hourly feed says. *Open inside the station* switches to the station cross-section.
+
+![Journey check: Rosa Parks → Juvisy compared across the three views](docs/media/region-journey.png)
+
+## Inside a station
+
 
 1. Open **Juvisy-sur-Orge** (RER C & D, 12 platforms joined by an underpass). The station cross-section
    shows halls and exits, underpasses and footbridges, and platforms, with each lift as a green, red or
@@ -69,6 +102,10 @@ connectivity?"*
 | Integrity | Uniqueness constraints on every id, idempotent `MERGE` import, transactions, parameterised queries. |
 | Limits respected | A file store allows one writer and connections stick to one thread. UNLOCK owns the connection on a single dedicated thread and serialises all queries through it (see `backend/unlock/db.py`). |
 
+| Region network | `(:NStation)-[:HAS_PLATFORM]->(:NPlatform {boardable})-[:LEG {line, hops}]->(:NPlatform)`, `NEXT` stop sequences per GTFS pattern, `(:NStation)-[:IS_ZONE]->(:TransferZone)<-[:IN_TRANSFER_ZONE]-(:Station)` joining the region to the station layer. |
+| Outage feed | Immutable `(:OutageFeed)-[:LISTS]->(:LiftOutage)`, `-[:AFFECTS {derivation}]->(:NPlatform)`, `-[:MATCHES_LIFT]->(:Lift)` written by the resolver. |
+| Region verification | Every journey leg is re-matched in Cypher (`(s1)-[:HAS_PLATFORM]->(x {boardable:true})-[:LEG {line}]->(y)<-[:HAS_PLATFORM]-(s2)`); leg geometry is read back from the `NEXT` chain. |
+
 **Inspect the graph** (top right of the app) shows node and relationship counts, source hashes, the
 route query and the last Cypher statements Relate actually executed, with timings.
 
@@ -79,7 +116,14 @@ lifts that pay off only when repaired together.
 
 ## What the engine calculates
 
-The metric is **confirmed step-free origin–destination pairs**: platform ↔ platform and
+**Region.** A *journey* is an ordered pair of stations joined by a step-free route: board and alight only at
+boardable platforms, change lines only between two boardable platforms of the same station. Platforms are
+OPEN, DOUBT (a listed outage concerns it and nothing tells whether another lift serves it) or CLOSED (UNLOCK's
+station topology shows no platform keeps a confirmed route to the street). *Confirmed* journeys use OPEN
+platforms only; *possible* ones may use DOUBT. Reachability of all ~270,000 ordered pairs is exact (strongly
+connected components + bitsets, ~10 ms), so every candidate repair is evaluated by recomputing it.
+
+**Inside a station.** The metric is **confirmed step-free origin–destination pairs**: platform ↔ platform and
 platform ↔ exit inside a station. These are modeled connections, **not people**.
 
 Each pair is classified as one of:
@@ -107,11 +151,14 @@ All sources are listed in [DATA_SOURCES.md](DATA_SOURCES.md), with what was chec
 | Accessibilité des gares (NeTEx) | SNCF Gares & Connexions | ODbL 1.0 | stations, platforms, step-free assessments, lifts, lift location text |
 | État de fonctionnement des équipements d'élévatique | SNCF Gares & Connexions | ODbL 1.0 | latest published lift status (OK / KO / INCONNU, refreshed hourly) |
 | Référentiel des arrêts : Zones de correspondance | Île-de-France Mobilités | Licence Ouverte 2.0 | transfer-zone anchoring |
-| GTFS IDFM | Île-de-France Mobilités | Licence Mobilités | rail / metro / tram lines per zone |
+| GTFS IDFM | Île-de-France Mobilités | Licence Mobilités | rail / metro / tram lines, platforms, `wheelchair_boarding`, stopping patterns |
+| Accessibilité en gare | Île-de-France Mobilités | Licence Ouverte 2.0 | rail station accessibility level (autonomous / on request / booked AssistenGare / not accessible) |
+| Messages Info Trafic (PRIM API, tag « Ascenseur ») | Île-de-France Mobilités | Licence Mobilités | lift outages for RATP and SNCF stations — **needs a free personal PRIM token** to refresh; a snapshot is committed |
 
 **Important findings from the data check:**
 
-- The IDFM elevator dataset needs an API key, so RATP metro and RER lifts are not included yet.
+- RATP lifts come only from the PRIM traffic messages (frozen since 9 Oct 2026); the IDFM `etat-des-ascenseurs`
+  dataset needs a separate Opendatasoft key that UNLOCK does not have.
 - The IDFM GTFS has no elevator pathways, so lift-to-platform links come from the publisher's location
   text. Every such edge is labelled with how it was derived.
 - 705 of the 1,497 pairs (47%) have a modeled lift route. The rest are reported as *No modeled route*,
@@ -133,6 +180,8 @@ through a **read-only** Relate connection (the agent can't modify anything, even
 | `critical_lifts` | Single points of failure |
 | `explain_connection(pair_id)` | The actual Relate path, statuses, snapshot, derivations, unknowns |
 | `station_overview`, `network_summary`, `cypher_read(query)` | Context and read-only Cypher (row-capped) |
+| `check_journey(from, to, view)` | Region: step-free verdict, legs, outages on the way, Relate re-check of every leg |
+| `region_overview`, `region_repairs`, `station_outages` | Region views, feed freshness, PRIM-vs-SNCF reconciliation, repairs and feed corrections |
 
 ```bash
 pip install -e ".[agent]"
@@ -161,7 +210,7 @@ git clone https://github.com/toskaman/unlock-accessibility-graph.git unlock && c
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"                                # installs relate-db==1.0.2, fastapi, uvicorn
 
-python -m unlock build      # import data/normalized/graph_input.json into database/unlock.rl (~1 s)
+python -m unlock build      # import the committed snapshots (station layer + region network + outage feed) (~5 s)
 python -m unlock serve      # http://127.0.0.1:8000  (API + prebuilt UI)
 ```
 
@@ -177,6 +226,15 @@ cd frontend && npm ci && npm run build      # or: npm run dev (Vite on :5173, pr
 ```bash
 python -m unlock fetch      # data/raw + data/manifest/sources.json (sha256, timestamps)
 python -m unlock build      # re-normalise and import. Idempotent; status history is kept.
+```
+
+**Refresh the lift outages** (needs a free PRIM account token; it is read from the environment and never written
+to disk by UNLOCK):
+
+```bash
+export UNLOCK_PRIM_KEY_FILE=/path/outside/the/repo/prim.key   # or UNLOCK_PRIM_KEY=...
+python -m unlock fetch-outages    # data/raw/prim/line_reports.json -> data/normalized/network_outages.json
+python -m unlock build
 ```
 
 **Inspect the store directly** with Relate's own Python API:
@@ -203,8 +261,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 62 tests: unit, real-Relate integration, API, agent/MCP, data quality
-cd frontend && npx playwright test  # 4 end-to-end tests of the signature flow (on a copy of the store)
+pytest                              # 74 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
+cd frontend && npx playwright test  # 6 end-to-end tests (station flow + region flow, on a copy of the store)
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 ```
 
@@ -224,8 +282,13 @@ Measured on the pilot (2-vCPU Linux container, median of 20 runs; full table in
 
 | Operation | Time |
 |---|---|
-| Fresh import | 1.0 s |
-| Service start, including the region-wide route traversal and the resolver index | 4.9 s |
+| Fresh import (station layer + region network + outage feed + resolver matching) | 4.7 s |
+| Service start, including the station route traversal and the resolver index | 4.5 s |
+| Region layer start (network, outages, station topology per zone) | 0.17 s |
+| Exact reachability of every ordered station pair | 10 ms |
+| Three region views, first call | 105 ms |
+| Rank every region repair and feed correction (107 evaluations) | 1.4 s |
+| Journey check incl. Relate re-check of every leg and geometry | 39 ms |
 | Single-station traversal | 11 ms |
 | Create, analyse and persist a scenario (incl. Cypher cross-check) | 15 ms |
 | Rank every candidate repair in the region | 6 ms |
@@ -248,6 +311,9 @@ Main endpoints:
 - `POST /api/scenarios/{id}/export`
 - `DELETE /api/scenarios/{id}`
 - `GET /api/debug/queries`
+- `GET /api/region/overview` · `GET /api/region/map?view=best|feed|published` · `GET /api/region/rank`
+- `GET /api/region/journey?from=&to=&view=` · `GET /api/region/stations?q=` · `GET /api/region/reconciliation`
+- `GET /api/region/stations/{id}/outages` · `GET /api/region/outages/{id}`
 
 OpenAPI docs are at `/docs`. No endpoint accepts Cypher.
 
@@ -256,8 +322,11 @@ OpenAPI docs are at `/docs`. No endpoint accepts Cypher.
 - Lift endpoints are derived from text. Ramps and level access are not in the source, so *Blocked*
   means "no modeled step-free route". 42% of lifts describe only one end, and those ends never connect
   to anything.
-- SNCF-managed stations only. RATP lifts need the IDFM key (`IDFM_API_KEY` in `.env`, not yet
-  implemented as an importer).
+- The lift-by-lift station layer covers SNCF-managed stations only. RATP lifts enter through the PRIM
+  messages, without redundancy information: a listed RATP outage makes platforms DOUBT, never CLOSED.
+- The PRIM lift messages are frozen since 9 Oct 2026, and "best available" still uses them for RATP.
+- Region journeys are ordered station pairs, not trips or people; RER/Transilien stations are split per line,
+  not per track; changes assume step-free paths between two boardable platforms of one GTFS station.
 - The status feed has no per-record timestamp. The dataset's processing time is used as the
   observation time.
 - Connections are counted, not people. No ridership, cost or repair-duration data is used.

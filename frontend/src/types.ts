@@ -95,3 +95,36 @@ export interface CriticalLift {
   would_lose: number; pairs_depending: number; covered_by_alternative: number;
 }
 export interface Critical { evaluated_lifts: number; single_points_of_failure: number; total_confirmed_at_risk: number; lifts: CriticalLift[] }
+
+// ---- region (network mode)
+export type RegionViewName = "best" | "feed" | "published";
+export type PointState = "OPEN" | "DOUBT" | "CLOSED";
+export type ViewSummary = { view: RegionViewName; confirmed: number; possible: number; stations_confirmed: number;
+  boarding_points: { total: number; doubt: number; closed: number }; stations_affected: number };
+export type FeedInfo = { id: string; observed_at: string; last_lift_update: string | null; last_other_update: string | null;
+  lift_messages_stale_days: number | null; licence: string; source: string };
+export type RegionOverview = {
+  available: boolean; feed: FeedInfo | null;
+  network: { stations: number; stations_with_boardable_platform: number; boardable_platforms: number; boarding_points: number; lines: number; stations_with_station_topology: number };
+  views: Record<RegionViewName, ViewSummary>;
+  outages: { lifts: number; by_operator: Record<string, number>; messages: number; older_than_30_days: number; older_than_90_days: number; oldest_days: number | null; announced_end_passed: number };
+  reconciliation: Record<string, number>;
+  stale_messages: { messages_contradicted: number; feed_confirmed: number; feed_confirmed_without_them: number; journeys_hidden: number };
+  computed_ms: number; method: string;
+};
+export type RegionStation = { id: string; name: string; lat: number; lon: number; state: PointState | "NOT_BOARDABLE"; outages: number; detail: boolean; sncf_station: string | null };
+export type Leg = { board: string; alight: string; line: string; from: string; to: string; line_name: string; mode: string; color: string; text_color: string;
+  from_name: string; to_name: string; board_name: string; alight_name: string; board_state: PointState; alight_state: PointState; path: [number, number][] };
+export type OutageLabel = { outage?: string; lift?: string; station: string; station_id?: string; text?: string; operator: string; first_reported?: string | null; lines?: string[]; name?: string; state?: string };
+export type Journey = { from: { id: string; name: string; lat: number; lon: number }; to: { id: string; name: string; lat: number; lon: number }; view: RegionViewName;
+  verdict: "STEP_FREE" | "STEP_FREE_IF_LIFTS_WORK" | "CUT_BY_OUTAGES" | "NO_STEP_FREE_ROUTE_PUBLISHED"; legs: Leg[]; reason?: string;
+  blocking_outages?: OutageLabel[]; verification: { legs: number; verified: number; ok: boolean } };
+export type Repair = OutageLabel & { kind: "RATP_FEED_OUTAGE" | "SNCF_LIFT"; gain: number };
+export type Correction = OutageLabel & { verdict: string; gain: number };
+export type RegionRank = { base_live_confirmed: number; base_feed_confirmed: number; repairs: Repair[]; corrections: Correction[]; computed_ms: number; method: string };
+export type OutageDetail = { id: string; lift_key: string; operator: string; text: string; station: { id: string; name: string }; first_reported: string | null; days_reported: number | null;
+  last_update: string | null; announced_until: string | null; messages: number; lines: string[]; platforms: { id: string; derivation: string; line: string }[];
+  matched_lifts: { id: string; name: string | null; sncf_state: string; evidence: string[] }[]; sncf_station_all_working: boolean | null };
+export type Reconciliation = { counts: Record<string, number>; feed: FeedInfo;
+  rows: { outage: string; lift: string | null; verdict: string; sncf_state?: string; station: string; text: string; lift_name: string | null; evidence?: string[] }[];
+  missing_from_feed: { lift: string; name: string; station: string }[] };

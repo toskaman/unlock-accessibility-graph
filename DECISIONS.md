@@ -17,3 +17,10 @@
 | D13 | 2026-11-16 | Resolve free-text reports deterministically over the graph, abstain when ambiguous | Wrong-but-confident lift ids are the worst failure for a planner; retrieval over SERVES edges is explainable | LLM-only entity extraction |
 | D14 | 2026-11-16 | Agent access through MCP on a read-only Relate connection | Relate allows many read-only processes beside the app; the agent can't write even via Cypher | Giving the agent the web API's write endpoints |
 | D15 | 2026-11-16 | Keep every level of multi-stop lifts | Text lists 3 levels for some lifts; dropping the 3rd lost real connections | Keep first two sides only (old behaviour) |
+| D16 | 2026-11-16 | Region layer from GTFS boardable platforms, journeys = ordered station pairs, exact reachability | Whole-network question needs whole-network data; exact counts keep rankings deterministic | Sampling OD pairs; Relate `SHORTEST` QPP per pair (one pair took > 5 min — Cypher kept for per-leg verification) |
+| D17 | 2026-11-16 | A listed outage without topology makes a platform DOUBT, never CLOSED | The PRIM feed carries no redundancy information; inventing it would fake blocked journeys | Treating every listed outage as blocking |
+| D18 | 2026-11-16 | Keep three views side by side instead of picking one "truth" | The two official feeds disagree; the disagreement is itself the finding | Silently preferring SNCF |
+| D19 | 2026-11-16 | Ignore the feed's own line links when placing an outage | Independent check showed them incomplete (3/40 wrong placements) | Trusting feed links |
+| D20 | 2026-11-16 | Boarding point = platform × line | GTFS has one rail platform per station; an RER A lift outage must not close RER D platforms | Platform-level states |
+| D21 | 2026-11-16 | PRIM token only from env var / file outside the repo; normalized snapshot (no token) committed | Judges run offline; the secret never leaves the entrant's machine | `.env` in the repo |
+| D22 | 2026-11-16 | Region "chokepoints" built, measured and dropped | Only 3 single platforms cut journeys between other stations; impact comes from combinations of outages | Shipping a feature with no signal |

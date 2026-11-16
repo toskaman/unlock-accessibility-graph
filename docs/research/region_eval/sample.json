@@ -1,0 +1,1941 @@
+{
+ "placements": [
+  {
+   "case": "P01",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:114083-SY-ASC-ASC_2",
+   "operator": "RATP",
+   "station": "Saint-Denis - Université",
+   "message": "ST DENIS UNIVERSITE Panne de l'ascenseur situé Niveau -1 : à la fin du quai de la ligne 13 direction Châtillon en face d'un distributeur - Niveau 0 : en entrant dans la gare, au fond à gauche du hall, après la consigne \"Relais Pickup\", direction Ligne M13 direction Châtillon",
+   "lines_calling_at_station": [
+    "13 (METRO)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "13",
+     "mode": "METRO",
+     "platform": "Saint-Denis - Université",
+     "trains_from_this_platform_go_to": [
+      "Châtillon - Montrouge"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P02",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:148045-SY-ASC-ASC_1",
+   "operator": "RATP",
+   "station": "Fontenay-aux-Roses",
+   "message": "GARE DE FONTENAY AUX ROSES Panne de l'ascenseur situé Niveau 0 : quai du RER B direction Robinson - Niveau 1 : accès à la sortie 1 (rue Félix Pecault), direction Ligne RER B direction Saint-Rémy-lès-Chevreuses ou Robinson / Salle d'échange / Accès 1 rue Félix Pecault",
+   "lines_calling_at_station": [
+    "B (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Fontenay-aux-Roses",
+     "trains_from_this_platform_go_to": [
+      "Aulnay-sous-Bois",
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Aéroport CDG 1 (Terminal 3)",
+      "Châtelet - Les Halles",
+      "Mitry - Claye",
+      "Robinson"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P03",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:279",
+   "operator": "RATP",
+   "station": "Bures-sur-Yvette",
+   "message": "Gare de Bures sur Yvette Panne de l'ascenseur situé Salle d'accès <> Quai 1, direction Sud",
+   "lines_calling_at_station": [
+    "B (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Bures-sur-Yvette",
+     "trains_from_this_platform_go_to": [
+      "Aulnay-sous-Bois",
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Châtelet - Les Halles",
+      "Mitry - Claye",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P04",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:284",
+   "operator": "RATP",
+   "station": "Noisiel",
+   "message": "GARE DE NOISIEL Panne de l'ascenseur situé Salle d'accès <> Quai 1, direction Est",
+   "lines_calling_at_station": [
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Noisiel",
+     "trains_from_this_platform_go_to": [
+      "Cergy le Haut",
+      "La Défense",
+      "Le Vésinet - Le Pecq",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P05",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:550",
+   "operator": "RATP",
+   "station": "Viroflay - Rive Droite",
+   "message": "GARE DE VIROFLAY RIVE DROITE Panne de l'ascenseur situé VRD Quai 1 <> MZH, direction Viroflay",
+   "lines_calling_at_station": [
+    "L (RAIL)",
+    "T6 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "T6",
+     "mode": "TRAM",
+     "platform": "Viroflay - Rive Droite",
+     "trains_from_this_platform_go_to": [
+      "Châtillon - Montrouge"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    },
+    {
+     "line": "L",
+     "mode": "RAIL",
+     "platform": "Viroflay - Rive Droite",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Versailles Rive Droite"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P06",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:113079-SY-ASC-ASC_2",
+   "operator": "RATP",
+   "station": "Asnières - Gennevilliers - Les Courtilles",
+   "message": "Asnieres Gennevilliers Les Courtilles Panne de l'ascenseur situé Niveau 0 : au bout de la passerelle située dans la station au-dessus des quais, sur la droite avant les escaliers menant à l'arrière du quai de la ligne 13 direction Châtillon - Niveau -1 : au milieu du quai de la ligne 13 direction Châtillon dans un renfoncement à côté d'un distributeur., direction Ligne M13 direction Châtillon",
+   "lines_calling_at_station": [
+    "13 (METRO)",
+    "T1 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "13",
+     "mode": "METRO",
+     "platform": "Asnières - Gennevilliers - Les Courtilles",
+     "trains_from_this_platform_go_to": [
+      "Châtillon - Montrouge",
+      "La Fourche"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P07",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:138043-SY-ASC-ASC_1",
+   "operator": "RATP",
+   "station": "Parc de Sceaux",
+   "message": "GARE DE PARC DE SCEAUX Panne de l'ascenseur situé Niveau -1 : accès au quai du RER B direction Massy-Palaiseau - Niveau 0 : accès à la sortie, direction Ligne RER B direction Saint-Rémy-les-Chevreuses",
+   "lines_calling_at_station": [
+    "B (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Parc de Sceaux",
+     "trains_from_this_platform_go_to": [
+      "Aulnay-sous-Bois",
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Aéroport CDG 1 (Terminal 3)",
+      "Châtelet - Les Halles",
+      "Massy - Palaiseau",
+      "Mitry - Claye",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P08",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:371",
+   "operator": "RATP",
+   "station": "Les Agnettes",
+   "message": "Les Agnettes Panne de l'ascenseur situé Salle d'accès <> Quai 1, direction Les Courtilles",
+   "lines_calling_at_station": [
+    "13 (METRO)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "13",
+     "mode": "METRO",
+     "platform": "Les Agnettes",
+     "trains_from_this_platform_go_to": [
+      "Asnières - Gennevilliers - Les Courtilles"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P09",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:388",
+   "operator": "RATP",
+   "station": "Le Parc de Saint-Maur",
+   "message": "GARE DU PARC DE ST MAUR Panne de l'ascenseur situé Souterrain <> Quai 1, direction Est, jusqu'au 2026-10-05",
+   "lines_calling_at_station": [
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Le Parc de Saint-Maur",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "La Défense",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P10",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:312",
+   "operator": "RATP",
+   "station": "La Défense",
+   "message": "LA DEFENSE Panne de l'ascenseur situé Salle d'accès Sud/Ouest-Mezzanine Ouest <> Quai Métro Ligne 1, direction Esplanade de La Défense, jusqu'au 2026-04-29",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "A (RAIL)",
+    "E (RAIL)",
+    "L (RAIL)",
+    "T2 (TRAM)",
+    "U (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Château de Vincennes"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P11",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:206",
+   "operator": "RATP",
+   "station": "Charles de Gaulle - Étoile",
+   "message": "Charles de Gaulle-Etoile Panne de l'ascenseur situé Rue Carnot <> Bâtiment voyageurs",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "2 (METRO)",
+    "6 (METRO)",
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "Château de Vincennes"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "2",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "Porte Dauphine"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "6",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "Kléber",
+      "Nation"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "La Défense"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "6",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "2",
+     "mode": "METRO",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "Nation"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Charles de Gaulle - Étoile",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "La Défense",
+      "Le Vésinet - Le Pecq",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P12",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:317",
+   "operator": "RATP",
+   "station": "Torcy",
+   "message": "GARE DE TORCY Panne de l'ascenseur situé Voirie <> Souterrain",
+   "lines_calling_at_station": [
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Torcy",
+     "trains_from_this_platform_go_to": [
+      "Cergy le Haut",
+      "La Défense",
+      "Le Vésinet - Le Pecq",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P13",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:308",
+   "operator": "RATP",
+   "station": "La Défense",
+   "message": "LA DEFENSE Panne de l'ascenseur situé Tramway T2 <> Salle d'accès, direction Issy Val de Seine, jusqu'au 2026-06-30",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "A (RAIL)",
+    "E (RAIL)",
+    "L (RAIL)",
+    "T2 (TRAM)",
+    "U (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "T2",
+     "mode": "TRAM",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Porte de Versailles"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P14",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:275",
+   "operator": "RATP",
+   "station": "Nation",
+   "message": "NATION Panne de l'ascenseur situé Plateforme de correspondance <> Quai, direction Ouest, jusqu'au 2026-08-30",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "2 (METRO)",
+    "6 (METRO)",
+    "9 (METRO)",
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "9",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Mairie de Montreuil"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "2",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Porte Dauphine"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "6",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Charles de Gaulle - Étoile",
+      "Kléber"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Château de Vincennes"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "9",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Pont de Sèvres",
+      "Porte de Saint-Cloud"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "La Défense"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "6",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "2",
+     "mode": "METRO",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Nation",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "La Défense",
+      "Le Vésinet - Le Pecq",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P15",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:353",
+   "operator": "RATP",
+   "station": "La Varenne - Chennevières",
+   "message": "GARE DE LA VARENNE CHENNEVIERES Panne de l'ascenseur situé Hall <> Couloir",
+   "lines_calling_at_station": [
+    "A (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "La Varenne - Chennevières",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "La Défense",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P16",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:234",
+   "operator": "RATP",
+   "station": "La Défense",
+   "message": "LA DEFENSE Panne de l'ascenseur situé Couloir coupole (ascenseur 2), direction Est",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "A (RAIL)",
+    "E (RAIL)",
+    "L (RAIL)",
+    "T2 (TRAM)",
+    "U (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Château de Vincennes"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "T2",
+     "mode": "TRAM",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Porte de Versailles"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "T2",
+     "mode": "TRAM",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Pont de Bezons"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "1",
+     "mode": "METRO",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "E",
+     "mode": "RAIL",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Chelles - Gournay",
+      "Magenta",
+      "Nanterre-La-Folie",
+      "Tournan",
+      "Vaires - Torcy",
+      "Villiers-sur-Marne - Le Plessis-Trévise"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P17",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:138045-SY-ASC-ASC2",
+   "operator": "RATP",
+   "station": "La Croix de Berny",
+   "message": "GARE DE LA CROIX DE BERNY FRESNES Panne de l'ascenseur situé Niveau -1 : quai du RER B - Niveau 0 : accès à la sortie 2 (rue Velpeau), direction Ligne RER B direction Saint-Rémy-les-Chevreuses / Accès 2 rue de Velpeau",
+   "lines_calling_at_station": [
+    "B (RAIL)",
+    "T10 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "La Croix de Berny",
+     "trains_from_this_platform_go_to": [
+      "Aulnay-sous-Bois",
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Aéroport CDG 1 (Terminal 3)",
+      "Châtelet - Les Halles",
+      "Massy - Palaiseau",
+      "Mitry - Claye",
+      "Orsay - Ville",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P18",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:MSG:14bfac78-0838-4068-bd27-34eeeac095a4",
+   "operator": "UNKNOWN",
+   "station": "Grigny Centre",
+   "message": "GARE DE GRIGNY CENTRE Panne de l'ascenseur situé Voie 2 / mezzanine, direction Paris",
+   "lines_calling_at_station": [
+    "D (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "D",
+     "mode": "RAIL",
+     "platform": "Grigny Centre",
+     "trains_from_this_platform_go_to": [
+      "Corbeil-Essonnes",
+      "Creil",
+      "Gare de Lyon",
+      "Goussainville",
+      "Orry-la-Ville - Coye",
+      "Stade de France Saint-Denis",
+      "Villeneuve-Saint-Georges",
+      "Villiers-le-Bel - Gonesse - Arnouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P19",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP:374",
+   "operator": "RATP",
+   "station": "Bir-Hakeim",
+   "message": "Bir Hakeim Panne de l'ascenseur situé Salle d'accès <> Quai 2, direction Nation",
+   "lines_calling_at_station": [
+    "6 (METRO)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "6",
+     "mode": "METRO",
+     "platform": "Bir-Hakeim",
+     "trains_from_this_platform_go_to": [
+      "Nation"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P20",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:RATP-SIRI:112075-SY-ASC-CABINEASC_ABB__4",
+   "operator": "RATP",
+   "station": "Abbesses",
+   "message": "Abbesses Panne de l'ascenseur situé Niveau 0 : à l'entrée de la station à droite avant les portiques - Niveau -2 : dans le couloir d'échange entre les quais du métro ligne 12, du côté de la sortie de secours - Niveau -1 : à l'avant du quai du métro ligne 12 direction Mairie d'Aubervilliers, à côté d'un autre ascenseur., direction Mairie d'Issy - Aubervilliers",
+   "lines_calling_at_station": [
+    "12 (METRO)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "12",
+     "mode": "METRO",
+     "platform": "Abbesses",
+     "trains_from_this_platform_go_to": [
+      "Mairie d'Aubervilliers"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "12",
+     "mode": "METRO",
+     "platform": "Abbesses",
+     "trains_from_this_platform_go_to": [
+      "Mairie d'Issy"
+     ],
+     "derivation": "LINE_AT_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P21",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1235",
+   "operator": "SNCF_GC",
+   "station": "Deuil - Montmagny",
+   "message": "GARE DE DEUIL - MONTMAGNY Panne de l'ascenseur situé Province",
+   "lines_calling_at_station": [
+    "H (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "H",
+     "mode": "RAIL",
+     "platform": "Deuil - Montmagny",
+     "trains_from_this_platform_go_to": [
+      "Gare du Nord",
+      "Luzarches",
+      "Montsoult - Maffliers",
+      "Persan - Beaumont",
+      "Sarcelles - Saint-Brice"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P22",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:49",
+   "operator": "SNCF_GC",
+   "station": "Évry - Courcouronnes",
+   "message": "GARE D'EVRY COURCOURONNES Panne de l'ascenseur situé Hall <> Quai 2, direction Paris",
+   "lines_calling_at_station": [
+    "D (RAIL)",
+    "T12 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "D",
+     "mode": "RAIL",
+     "platform": "Évry - Courcouronnes",
+     "trains_from_this_platform_go_to": [
+      "Corbeil-Essonnes",
+      "Creil",
+      "Gare de Lyon",
+      "Goussainville",
+      "Orry-la-Ville - Coye",
+      "Stade de France Saint-Denis",
+      "Villeneuve-Saint-Georges",
+      "Villiers-le-Bel - Gonesse - Arnouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P23",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:120",
+   "operator": "SNCF_GC",
+   "station": "Parc des Expositions",
+   "message": "Gare de Parc des Expositions Panne de l'ascenseur situé Hall <> Quai 2, direction Paris / RER B Sud",
+   "lines_calling_at_station": [
+    "B (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Parc des Expositions",
+     "trains_from_this_platform_go_to": [
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Châtelet - Les Halles",
+      "Denfert-Rochereau",
+      "Gare du Nord",
+      "Laplace",
+      "Massy - Palaiseau",
+      "Orsay - Ville",
+      "Robinson",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P24",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:91",
+   "operator": "SNCF_GC",
+   "station": "Maisons-Laffitte",
+   "message": "GARE DE MAISONS LAFFITTE Panne de l'ascenseur situé Passerelle <> Quai Voies 1/1Bis, direction Cergy / Poissy",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)",
+    "L (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Maisons-Laffitte",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Les Mureaux",
+      "Mantes-la-Jolie"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P25",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1023",
+   "operator": "SNCF_GC",
+   "station": "Les Mureaux",
+   "message": "GARE DES MUREAUX Panne de l'ascenseur situé Quai côté Bâtiment voyageurs, direction Paris",
+   "lines_calling_at_station": [
+    "J (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Les Mureaux",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Mantes-la-Jolie",
+      "Poissy",
+      "Vernon - Giverny"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P26",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:963",
+   "operator": "SNCF_GC",
+   "station": "Meaux",
+   "message": "GARE DE MEAUX Panne de l'ascenseur situé Quai 2, direction Province",
+   "lines_calling_at_station": [
+    "P (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "P",
+     "mode": "RAIL",
+     "platform": "Meaux",
+     "trains_from_this_platform_go_to": [
+      "Château-Thierry",
+      "Gare de l'Est",
+      "La Ferté-Milon"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P27",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:512",
+   "operator": "SNCF_GC",
+   "station": "Créteil Pompadour",
+   "message": "GARE DE CRETEIL POMPADOUR Panne de l'ascenseur situé Quai Palier parvis (petit bois)",
+   "lines_calling_at_station": [
+    "D (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "D",
+     "mode": "RAIL",
+     "platform": "Créteil Pompadour",
+     "trains_from_this_platform_go_to": [
+      "Corbeil-Essonnes",
+      "Creil",
+      "Gare de Lyon",
+      "Goussainville",
+      "Juvisy",
+      "Melun",
+      "Orry-la-Ville - Coye",
+      "Stade de France Saint-Denis",
+      "Villiers-le-Bel - Gonesse - Arnouville"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P28",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:367",
+   "operator": "SNCF_GC",
+   "station": "Houilles - Carrières-sur-Seine",
+   "message": "GARE DE HOUILLES CARRIERES SUR SEINE Panne de l'ascenseur situé Voies A/B, direction Paris / Cergy",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)",
+    "L (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Houilles - Carrières-sur-Seine",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Les Mureaux",
+      "Mantes-la-Jolie",
+      "Vernon - Giverny"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P29",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:683",
+   "operator": "SNCF_GC",
+   "station": "Bécon les Bruyères",
+   "message": "GARE DE BECON LES BRUYERES Panne de l'ascenseur situé Chaise 6 <> Passerelle Quai D/T2 Voie 1, direction Province (Versailles)",
+   "lines_calling_at_station": [
+    "L (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "L",
+     "mode": "RAIL",
+     "platform": "Bécon les Bruyères",
+     "trains_from_this_platform_go_to": [
+      "Cergy le Haut",
+      "Gare Saint-Lazare",
+      "La Défense",
+      "La Garenne-Colombes",
+      "Maisons-Laffitte",
+      "Nanterre Université",
+      "Saint-Cloud",
+      "Saint-Nom-la-Bretèche - Forêt de Marly",
+      "Sartrouville",
+      "Versailles Rive Droite"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P30",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:425",
+   "operator": "SNCF_GC",
+   "station": "Mitry - Claye",
+   "message": "GARE DE MITRY CLAYE Panne de l'ascenseur situé Quai 1 Voie 2, direction Paris Nord",
+   "lines_calling_at_station": [
+    "B (RAIL)",
+    "K (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "K",
+     "mode": "RAIL",
+     "platform": "Mitry - Claye",
+     "trains_from_this_platform_go_to": [
+      "Crépy-en-Valois",
+      "Gare du Nord"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P31",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:585",
+   "operator": "SNCF_GC",
+   "station": "Fontainebleau - Avon",
+   "message": "GARE DE FONTAINEBLEAU AVON Panne de l'ascenseur situé Voie 1 (côté Parking), direction Paris",
+   "lines_calling_at_station": [
+    "R (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "R",
+     "mode": "RAIL",
+     "platform": "Fontainebleau - Avon",
+     "trains_from_this_platform_go_to": [
+      "Gare de Lyon",
+      "Melun",
+      "Montargis",
+      "Montereau"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P32",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:61",
+   "operator": "SNCF_GC",
+   "station": "Haussmann Saint-Lazare",
+   "message": "HAVRE CAUMARTIN Panne de l'ascenseur situé Passerelle intermédiaire <> Quais 32/34, direction Chelles / Villiers",
+   "lines_calling_at_station": [
+    "E (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "E",
+     "mode": "RAIL",
+     "platform": "Haussmann Saint-Lazare",
+     "trains_from_this_platform_go_to": [
+      "Chelles - Gournay",
+      "Magenta",
+      "Nanterre-La-Folie",
+      "Tournan",
+      "Vaires - Torcy",
+      "Villiers-sur-Marne - Le Plessis-Trévise"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P33",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:65",
+   "operator": "SNCF_GC",
+   "station": "Haussmann Saint-Lazare",
+   "message": "HAVRE CAUMARTIN Panne de l'ascenseur situé Terrasse <> Quais 31/33, direction Chelles / Villiers",
+   "lines_calling_at_station": [
+    "E (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "E",
+     "mode": "RAIL",
+     "platform": "Haussmann Saint-Lazare",
+     "trains_from_this_platform_go_to": [
+      "Chelles - Gournay",
+      "Magenta",
+      "Nanterre-La-Folie",
+      "Tournan",
+      "Vaires - Torcy",
+      "Villiers-sur-Marne - Le Plessis-Trévise"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P34",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:985",
+   "operator": "SNCF_GC",
+   "station": "Épinay - Villetaneuse",
+   "message": "GARE D'EPINAY VILLETANEUSE Panne de l'ascenseur situé Quai C, direction Province",
+   "lines_calling_at_station": [
+    "H (RAIL)",
+    "T11 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "H",
+     "mode": "RAIL",
+     "platform": "Épinay - Villetaneuse",
+     "trains_from_this_platform_go_to": [
+      "Ermont - Eaubonne",
+      "Gare du Nord",
+      "Luzarches",
+      "Montsoult - Maffliers",
+      "Persan - Beaumont",
+      "Pontoise",
+      "Saint-Leu-la-Forêt",
+      "Sarcelles - Saint-Brice",
+      "Valmondois"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P35",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1145",
+   "operator": "SNCF_GC",
+   "station": "La Défense",
+   "message": "LA DEFENSE Panne de l'ascenseur situé Couloir T2 quai central Correspondance",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "A (RAIL)",
+    "E (RAIL)",
+    "L (RAIL)",
+    "T2 (TRAM)",
+    "U (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "T2",
+     "mode": "TRAM",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Porte de Versailles"
+     ],
+     "derivation": "LINE_AT_STATION"
+    },
+    {
+     "line": "T2",
+     "mode": "TRAM",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Pont de Bezons"
+     ],
+     "derivation": "LINE_AT_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P36",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:567",
+   "operator": "SNCF_GC",
+   "station": "Sarcelles - Saint-Brice",
+   "message": "GARE DE SARCELLES ST BRICE Panne de l'ascenseur situé Voies 1/M (quai central), direction Paris / Province",
+   "lines_calling_at_station": [
+    "H (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "H",
+     "mode": "RAIL",
+     "platform": "Sarcelles - Saint-Brice",
+     "trains_from_this_platform_go_to": [
+      "Gare du Nord",
+      "Luzarches",
+      "Montsoult - Maffliers",
+      "Persan - Beaumont"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P37",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1170",
+   "operator": "SNCF_GC",
+   "station": "Saint-Michel Notre-Dame",
+   "message": "St Michel Notre Dame Panne de l'ascenseur situé Quai B",
+   "lines_calling_at_station": [
+    "4 (METRO)",
+    "B (RAIL)",
+    "C (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "C",
+     "mode": "RAIL",
+     "platform": "Saint-Michel Notre-Dame",
+     "trains_from_this_platform_go_to": [
+      "Bibliothèque François Mitterrand",
+      "Brétigny",
+      "Chaville - Vélizy",
+      "Dourdan",
+      "Dourdan la Forêt",
+      "Gare d'Austerlitz",
+      "Invalides",
+      "Juvisy",
+      "Massy - Palaiseau",
+      "Montigny - Beauchamp",
+      "Musée d'Orsay",
+      "Pontoise",
+      "Saint-Martin d'Étampes",
+      "Saint-Quentin en Yvelines - Montigny-le-Bretonneux",
+      "Thiais - Orly (Pont de Rungis)",
+      "Versailles Chantiers",
+      "Versailles Château Rive Gauche"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P38",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:491",
+   "operator": "SNCF_GC",
+   "station": "Sannois",
+   "message": "Gare de Sannois Panne de l'ascenseur situé Quai 1, direction Ermont",
+   "lines_calling_at_station": [
+    "J (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Sannois",
+     "trains_from_this_platform_go_to": [
+      "Ermont - Eaubonne",
+      "Gare Saint-Lazare"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P39",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:924",
+   "operator": "SNCF_GC",
+   "station": "Ermont Halte",
+   "message": "GARE D'ERMONT HALTE Panne de l'ascenseur situé Quai 2 Voie 2, direction Province",
+   "lines_calling_at_station": [
+    "H (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "H",
+     "mode": "RAIL",
+     "platform": "Ermont Halte",
+     "trains_from_this_platform_go_to": [
+      "Ermont - Eaubonne",
+      "Gare du Nord",
+      "Persan - Beaumont",
+      "Saint-Leu-la-Forêt",
+      "Valmondois"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P40",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:146",
+   "operator": "SNCF_GC",
+   "station": "Poissy",
+   "message": "GARE DE POISSY Panne de l'ascenseur situé Voies C/D, direction Paris",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Poissy",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Les Mureaux",
+      "Mantes-la-Jolie",
+      "Vernon - Giverny"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  }
+ ],
+ "matches": [
+  {
+   "case": "M01",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:977",
+   "station": "Viroflay - Rive Droite",
+   "prim_message": "GARE DE VIROFLAY RIVE DROITE Panne de l'ascenseur situé Quai Voie 1, direction Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3078 Voie 1",
+    "location": "Voie 1 direction Versaille"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3079 Voie 2",
+     "location": "Voie 2 direction paris"
+    },
+    {
+     "name": "ASC.PMR 3080 BV",
+     "location": "Hall"
+    }
+   ]
+  },
+  {
+   "case": "M02",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:921",
+   "station": "Ermont Halte",
+   "prim_message": "GARE D'ERMONT HALTE Panne de l'ascenseur situé Quai 1 Voie 1 <> Hall Bâtiment voyageurs, direction Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2042 VOIE 1",
+    "location": "Quai 1 / hall"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2043 VOIE 2",
+     "location": "Voie 2"
+    }
+   ]
+  },
+  {
+   "case": "M03",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:44",
+   "station": "La Courneuve - Aubervilliers",
+   "prim_message": "GARE DE LA COURNEUVE AUBERVILLIERS Panne de l'ascenseur situé Voies 1/2B, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2006 Quai 2",
+    "location": "Voies 1 et 2B"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2007 Quai 3",
+     "location": "Voie 1B"
+    }
+   ]
+  },
+  {
+   "case": "M04",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1055",
+   "station": "La Celle-Saint-Cloud",
+   "prim_message": "GARE DE LA CELLE ST CLOUD Panne de l'ascenseur situé Quai A Voie 1, direction Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3056 Voie 1",
+    "location": "Voie 1"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3057 Voie 2 (BV)",
+     "location": "Voie 2 / hall"
+    }
+   ]
+  },
+  {
+   "case": "M05",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:496",
+   "station": "Argenteuil",
+   "prim_message": "GARE D'ARGENTEUIL Panne de l'ascenseur situé Quais 21/22 Voies 1bis/2, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3531 Quai 21 / 22",
+    "location": "Voie 1bis/2"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3534 Quai 25 Voies 2/E",
+     "location": "Quai 25 Voies 2/E"
+    },
+    {
+     "name": "ASC.PMR 3533 Quai 24",
+     "location": "Voies C et E / souterrain"
+    },
+    {
+     "name": "ASC.PMR 3532 Quai 23",
+     "location": "Voie 1 / souterrain"
+    },
+    {
+     "name": "ASC.PMR 3530 Quai 20",
+     "location": "Voie 1 / souterrain"
+    }
+   ]
+  },
+  {
+   "case": "M06",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:494",
+   "station": "Saint-Ouen-l'Aumône Liesse",
+   "prim_message": "GARE DE ST OUEN L'AUMONE LIESSE Panne de l'ascenseur situé Bâtiment voyageurs <> Quai 2, direction Paris Nord / RER C Sud",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2513 Quai 2 Voie 2",
+    "location": "Voie 2 / bureau de vente / passerelle"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2512 Quai 1 Voie 1",
+     "location": "Voie 1 / bureau de vente / passerelle"
+    }
+   ]
+  },
+  {
+   "case": "M07",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:632",
+   "station": "Épinay-sur-Seine",
+   "prim_message": "EPINAY-SUR-SEINE - GARE Panne de l'ascenseur situé Quai Voie 1, direction Terminus",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2515 Quai 1 / HALL",
+    "location": "Quai 1 / hall / passerelle 2"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2252 RERC",
+     "location": "Hall / quai / passerelle"
+    }
+   ]
+  },
+  {
+   "case": "M08",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:567",
+   "station": "Sarcelles - Saint-Brice",
+   "prim_message": "GARE DE SARCELLES ST BRICE Panne de l'ascenseur situé Voies 1/M (quai central), direction Paris / Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2060 V1/VM",
+    "location": "Hall  Voies 1 et M"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2061 V2",
+     "location": "Voie 2 / hall"
+    }
+   ]
+  },
+  {
+   "case": "M09",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1145",
+   "station": "La Défense",
+   "prim_message": "LA DEFENSE Panne de l'ascenseur situé Couloir T2 quai central Correspondance",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 1110 ASCD10 (ASC 11)",
+    "location": "Couloir T2 quai central Correspondance"
+   },
+   "other_lifts_at_station": []
+  },
+  {
+   "case": "M10",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:538",
+   "station": "Versailles Chantiers",
+   "prim_message": "GARE DE VERSAILLES CHANTIERS Panne de l'ascenseur situé Passerelle 2 <> Voies D/E, direction Grandes Lignes / Paris Montparnasse",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 4072 Voies D/E",
+    "location": "Voies D et E / passerelle 2"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 4057 Voies H/J",
+     "location": "Voies H et J / hall / passerelle"
+    },
+    {
+     "name": "ASC.PMR 4073 Voies B/C",
+     "location": "Voies B et C / passerelle"
+    },
+    {
+     "name": "ASC.PMR 4054 Voies B/C",
+     "location": "Voies B et C / hall"
+    },
+    {
+     "name": "ASC.PMR 4055 Voies D/E",
+     "location": "Voies D et E / hall"
+    },
+    {
+     "name": "ASC.PMR 4070 Voies H/J",
+     "location": "Voies H et J / passerelle 2"
+    },
+    {
+     "name": "ASC.PMR 4071 Voies F/G",
+     "location": "Voies F et G / passerelle 2"
+    },
+    {
+     "name": "ASC.PMR 4074 Hall 2",
+     "location": "Hall 2 aile Ouest"
+    },
+    {
+     "name": "ASC.PMR 4056 Voies F/G",
+     "location": "Voies F et G / hall / passerelle"
+    }
+   ]
+  },
+  {
+   "case": "M11",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:93",
+   "station": "Mantes-la-Jolie",
+   "prim_message": "GARE DE MANTES LA JOLIE Panne de l'ascenseur situé Passerelle <> Quais A/B, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3570 Quai A/B",
+    "location": "Voies A et B / passerelle"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3571 Quai C/D",
+     "location": "Voies C et D / passerelle"
+    },
+    {
+     "name": "ASC.PMR 3573 Quai G/H",
+     "location": "Voies G et H / passerelle"
+    },
+    {
+     "name": "ASC.PMR 3572 Quai E/F",
+     "location": "Voies E et F / passerelle"
+    },
+    {
+     "name": "ASC.PMR 3574 A.Passerelle",
+     "location": "Parking Gare Routière / passerelle"
+    }
+   ]
+  },
+  {
+   "case": "M12",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:89",
+   "station": "Magenta",
+   "prim_message": "Magenta Panne de l'ascenseur situé Terrasse médiane <> Quais 51/53, direction Haussmann - Saint-Lazare",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 1014 ASA6",
+    "location": "Voies 51 et 53 / terrasse médiane"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 1013 ASA5",
+     "location": "Voies 52 et 54 / terrasse médiane"
+    },
+    {
+     "name": "ASC.PMR 1012 ASA4",
+     "location": "Accès rue de l'acqueduc / terrasse médiane"
+    },
+    {
+     "name": "ASC.PMR 1010 ASA2",
+     "location": "Niveau Supérieur / passerelle Intermédiaire pôle Saint Denis"
+    },
+    {
+     "name": "ASC.PMR 1011 ASA3",
+     "location": "Voies 52 et 54 / passerelle intemédiaire"
+    }
+   ]
+  },
+  {
+   "case": "M13",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:691",
+   "station": "Les Clairières de Verneuil",
+   "prim_message": "GARE DES CLAIRIERES DE VERNEUIL Panne de l'ascenseur situé Parking <> Côté Bâtiment voyageurs",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3551 BV",
+    "location": "Parking côté hall / passerelle"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3550 V 3/4",
+     "location": "Voies 3 et 4"
+    }
+   ]
+  },
+  {
+   "case": "M14",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1175",
+   "station": "Moret - Veneux-les-Sablons",
+   "prim_message": "GARE DE MORET VENEUX LES SABLONS Panne de l'ascenseur situé Quai 1, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 5203 Quai 1",
+    "location": "Quai 1"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 5205 Quai 4",
+     "location": "Quai 4"
+    },
+    {
+     "name": "ASC.PMR 5206  Accès côté Veneux quai 4",
+     "location": "Accès côté Veneux quai 4"
+    },
+    {
+     "name": "ASC.PMR 5204 Quai 2",
+     "location": "Quai 2"
+    }
+   ]
+  },
+  {
+   "case": "M15",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:961",
+   "station": "Montereau",
+   "prim_message": "Gare de Montereau Panne de l'ascenseur situé Quai 5, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 5213 Quai 5",
+    "location": "Quai 5 / souterrain"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 5210 Parvis (BV)",
+     "location": "Parvis"
+    },
+    {
+     "name": "ASC.PMR 5211 Quai 3",
+     "location": "Quai 3 / souterrain"
+    },
+    {
+     "name": "ASC.PMR 5212 Quai 4",
+     "location": "Quai 4 / souterrain"
+    }
+   ]
+  },
+  {
+   "case": "M16",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:73",
+   "station": "Juvisy",
+   "prim_message": "GARE DE JUVISY Panne de l'ascenseur situé Sortie mairie",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 4550 ASC9 Sortie Mairie - BV",
+    "location": "Hall sortie Mairie"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 4558 ASC1 Sortie Seine",
+     "location": "Sortie ville accès Seine / souterrain"
+    },
+    {
+     "name": "ASC.PMR 4554 ASC5 Quai 46-47",
+     "location": "Voies 46 et 47 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4553 ASC6 Quai 44-45",
+     "location": "Voies 44 et 45 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4556 ASC3 Quai 50/51",
+     "location": "Voies 50 et 51 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4557 ASC2 Quai 46-47",
+     "location": "Voies 46 et 47 / salle d'échange"
+    },
+    {
+     "name": "ASC.PMR 4555 ASC4 Quai 48-49",
+     "location": "Voies 48 et 49 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4552 ASC7 Quai 42-43",
+     "location": "Voies 42 et 43 / souterrain Nord"
+    },
+    {
+     "name": "ASC.PMR 4551 ASC8 Quai 40-41",
+     "location": "Voies 40 et 41 / souterrain Nord"
+    }
+   ]
+  },
+  {
+   "case": "M17",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:665",
+   "station": "Villetaneuse - Université",
+   "prim_message": "VILLETANEUSE - UNIVERSITE Panne de l'ascenseur situé Quai 2 Voie 2, direction Épinay-sur-Seine",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2261 Voie 2",
+    "location": "Voie 2 / salle d'échange"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2260 Voie 1",
+     "location": "Voie 1 / salle d'échange"
+    }
+   ]
+  },
+  {
+   "case": "M18",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:533",
+   "station": "Yerres",
+   "prim_message": "GARE DE YERRES Panne de l'ascenseur situé Quai 2 Voie 1B, direction Melun",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 5020 Quai 2",
+    "location": "Voie 1B"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 5021 Quai 3",
+     "location": "Voie 2B"
+    }
+   ]
+  },
+  {
+   "case": "M19",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:828",
+   "station": "Vernouillet - Verneuil",
+   "prim_message": "GARE DE VERNOUILLET VERNEUIL Panne de l'ascenseur situé Quai 1 <> Passage souterrain, direction Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3555 QUAI 1",
+    "location": "Voie 1 / souterrain"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3556 QUAI 2",
+     "location": "Voies B et C"
+    },
+    {
+     "name": "ASC.PMR 3557 QUAI 3",
+     "location": "Voie 3"
+    },
+    {
+     "name": "ASC.PMR 3558 PARKING",
+     "location": "Parking Triel"
+    }
+   ]
+  },
+  {
+   "case": "M20",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:368",
+   "station": "Houilles - Carrières-sur-Seine",
+   "prim_message": "GARE DE HOUILLES CARRIERES SUR SEINE Panne de l'ascenseur situé Accès Robespierre",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3103 ACCES ROBESPIERRE",
+    "location": "Accès Robespierre / hall"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3101 Voie C/D",
+     "location": "Voies C et D"
+    },
+    {
+     "name": "ASC.PMR 3100 Voie E",
+     "location": "Voie E"
+    },
+    {
+     "name": "ASC.PMR 3102 Voie A/B",
+     "location": "Voies A et B"
+    }
+   ]
+  },
+  {
+   "case": "M21",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:566",
+   "station": "Sarcelles - Saint-Brice",
+   "prim_message": "GARE DE SARCELLES ST BRICE Panne de l'ascenseur situé Quai 1 Voie 2 latéral <> Hall Bâtiment voyageurs, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2061 V2",
+    "location": "Voie 2 / hall"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2060 V1/VM",
+     "location": "Hall  Voies 1 et M"
+    }
+   ]
+  },
+  {
+   "case": "M22",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:91",
+   "station": "Maisons-Laffitte",
+   "prim_message": "GARE DE MAISONS LAFFITTE Panne de l'ascenseur situé Passerelle <> Quai Voies 1/1Bis, direction Cergy / Poissy",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3037 Voie 1/1C",
+    "location": "Voies 1 et 1bis / passerelle"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3038 Voie 2/2B",
+     "location": "Voies 2 et 2bis / passerelle"
+    }
+   ]
+  },
+  {
+   "case": "M23",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:656",
+   "station": "Stains la Cerisaie",
+   "prim_message": "STAINS LA CERISAIE Panne de l'ascenseur situé Passage souterrain <> Quai 2 Voie 2, direction Épinay-sur-Seine",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2277 Voie 2",
+    "location": "Voie 2 / souterrain"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2276 Voie 1",
+     "location": "Voie 1 / souterrain"
+    },
+    {
+     "name": "ASC.PMR 2275 BV",
+     "location": "Parvis / souterrain"
+    }
+   ]
+  },
+  {
+   "case": "M24",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:79",
+   "station": "Juvisy",
+   "prim_message": "GARE DE JUVISY Panne de l'ascenseur situé Voies 50/51, direction Creil / Melun Malesherbes",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 4556 ASC3 Quai 50/51",
+    "location": "Voies 50 et 51 / souterrain nord"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 4558 ASC1 Sortie Seine",
+     "location": "Sortie ville accès Seine / souterrain"
+    },
+    {
+     "name": "ASC.PMR 4554 ASC5 Quai 46-47",
+     "location": "Voies 46 et 47 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4553 ASC6 Quai 44-45",
+     "location": "Voies 44 et 45 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4550 ASC9 Sortie Mairie - BV",
+     "location": "Hall sortie Mairie"
+    },
+    {
+     "name": "ASC.PMR 4557 ASC2 Quai 46-47",
+     "location": "Voies 46 et 47 / salle d'échange"
+    },
+    {
+     "name": "ASC.PMR 4555 ASC4 Quai 48-49",
+     "location": "Voies 48 et 49 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4552 ASC7 Quai 42-43",
+     "location": "Voies 42 et 43 / souterrain Nord"
+    },
+    {
+     "name": "ASC.PMR 4551 ASC8 Quai 40-41",
+     "location": "Voies 40 et 41 / souterrain Nord"
+    }
+   ]
+  },
+  {
+   "case": "M25",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:8",
+   "station": "Asnières-sur-Seine",
+   "prim_message": "GARE D'ASNIERES Panne de l'ascenseur situé Voies D/E, direction Paris Trains Omnibus / Cormeilles",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 3003 Voie D/E",
+    "location": "Voie D/E"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 3002 Voie C",
+     "location": "Voies A et B"
+    },
+    {
+     "name": "ASC.PMR 3001 Voie A/B",
+     "location": "Voies F et G"
+    },
+    {
+     "name": "ASC.PMR 3005 Voie H",
+     "location": "Voie H / souterrain"
+    },
+    {
+     "name": "ASC.PMR 3004 Voie F/G",
+     "location": "Voies F/G"
+    }
+   ]
+  },
+  {
+   "case": "M26",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:971",
+   "station": "Brunoy",
+   "prim_message": "GARE DE BRUNOY Panne de l'ascenseur situé Quai 2, direction Melun",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 5023 Quai 2 Melun",
+    "location": "Quai 2 direction Melun"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 5024 Quai 3 Sortie",
+     "location": "Quai 3"
+    },
+    {
+     "name": "ASC.PMR 5022 Quai 1 Paris",
+     "location": "Quai 1"
+    }
+   ]
+  },
+  {
+   "case": "M27",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:348",
+   "station": "Émerainville - Pontault-Combault",
+   "prim_message": "Gare d'Emerainville Pontault Combault Panne de l'ascenseur situé Quai C/D, direction Paris",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 1054 Voie C/D",
+    "location": "Voies C et D / souterrain"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 1053 Voie A/B",
+     "location": "Voies A et B / souterrain Bercheres"
+    }
+   ]
+  },
+  {
+   "case": "M28",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1230",
+   "station": "Pont Cardinet",
+   "prim_message": "PONT CARDINET Panne de l'ascenseur situé Quai D",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR.3075",
+    "location": "QUAI D"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR.3076",
+     "location": "QUAI E"
+    },
+    {
+     "name": "ASC.PMR.3070",
+     "location": "QUAI B"
+    },
+    {
+     "name": "ASC.PMR.3074",
+     "location": "Quai C"
+    }
+   ]
+  },
+  {
+   "case": "M29",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:1076",
+   "station": "Sevran - Livry",
+   "prim_message": "Gare de Sevran Livry Panne de l'ascenseur situé Quai 3 Voie 1B, direction Province",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 2611 Voie 1B",
+    "location": null
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 2610 Voie 1 / 2B",
+     "location": null
+    },
+    {
+     "name": "ASC.PMR 2609 Voie 2 coté BV",
+     "location": "Hall"
+    }
+   ]
+  },
+  {
+   "case": "M30",
+   "outage_id": "prim_lift_outages@a6ea1e9736ed:GC:81",
+   "station": "Juvisy",
+   "prim_message": "GARE DE JUVISY Panne de l'ascenseur situé Sortie ville accès Seine",
+   "matched_sncf_lift": {
+    "name": "ASC.PMR 4558 ASC1 Sortie Seine",
+    "location": "Sortie ville accès Seine / souterrain"
+   },
+   "other_lifts_at_station": [
+    {
+     "name": "ASC.PMR 4554 ASC5 Quai 46-47",
+     "location": "Voies 46 et 47 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4553 ASC6 Quai 44-45",
+     "location": "Voies 44 et 45 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4556 ASC3 Quai 50/51",
+     "location": "Voies 50 et 51 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4550 ASC9 Sortie Mairie - BV",
+     "location": "Hall sortie Mairie"
+    },
+    {
+     "name": "ASC.PMR 4557 ASC2 Quai 46-47",
+     "location": "Voies 46 et 47 / salle d'échange"
+    },
+    {
+     "name": "ASC.PMR 4555 ASC4 Quai 48-49",
+     "location": "Voies 48 et 49 / souterrain nord"
+    },
+    {
+     "name": "ASC.PMR 4552 ASC7 Quai 42-43",
+     "location": "Voies 42 et 43 / souterrain Nord"
+    },
+    {
+     "name": "ASC.PMR 4551 ASC8 Quai 40-41",
+     "location": "Voies 40 et 41 / souterrain Nord"
+    }
+   ]
+  }
+ ]
+}

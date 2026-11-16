@@ -82,3 +82,38 @@ and the header shows the age. This keeps replayed scenarios reproducible while m
 
 `AnalysisResult.id = "ana-" + sha256(snapshot id, sorted overrides, algorithm version, hash of the
 route structure)[:16]`. The same inputs always give the same id and the same counts (tested).
+
+## 8. Region layer (v0.3.0)
+
+**Unit.** An ordered pair of stations (A, B), A ≠ B, both with at least one *boardable* platform: GTFS
+`wheelchair_boarding = 1`, or an IDFM *Accessibilité en gare* level other than "not accessible" (the IDFM level wins
+when present).
+
+**Boarding points.** A platform × line. GTFS publishes one platform node per mode for RER/Transilien stations;
+splitting it per line keeps an RER A outage from closing RER D.
+
+**Journey.** A sequence of legs; a leg boards at a usable point and alights at a usable point of the same GTFS
+pattern (riding through other stations needs nothing from them); between legs the traveller changes inside a
+station from one usable point to another. Same-platform changes between patterns are not assumed.
+
+**Point states per view.**
+* *published*: all OPEN.
+* *feed*: each PRIM outage makes the points it AFFECTS DOUBT. For Gares & Connexions outages matched to an SNCF lift
+  (`MATCHES_LIFT`) at a station UNLOCK models, the station topology decides instead: with those lifts UNAVAILABLE and
+  all others AVAILABLE, compare the platforms with ≥ 1 CONFIRMED_ACCESSIBLE exit route to the all-AVAILABLE case:
+  none lost → OPEN, all lost → CLOSED, some → DOUBT (applied to every rail point of the station).
+* *best*: RATP / unknown-operator outages as in *feed*; SNCF lifts from SNCF's hourly status on the station topology
+  (UNKNOWN status cannot confirm, so it can yield DOUBT).
+
+**Counts.** *Confirmed* = pairs reachable using OPEN points only; *possible* = OPEN or DOUBT. Exact: Tarjan SCC
+condensation of the point/station-hub graph, then station bitsets propagated in reverse topological order.
+
+**Ranking.** Each candidate (a non-SNCF PRIM outage removed, or an SNCF lift set AVAILABLE) is evaluated alone
+against the *best* view; gain = additional confirmed pairs. Feed corrections: each G&C message contradicted by SNCF
+(GHOST, or unresolved at a station where every SNCF lift works) removed from the *feed* view.
+
+**Journey search.** Dijkstra, cost = stops ridden + 8 per boarding; the first of confirmed / possible / published
+that has a route gives the verdict. Every leg is re-matched in Cypher before it is shown.
+
+**Reconciliation verdicts.** GHOST, CONFIRMED, UNCLEAR (SNCF UNKNOWN), UNRESOLVED_STATION_ALL_WORKING, UNRESOLVED,
+MISSING_FROM_FEED (SNCF UNAVAILABLE, not matched by any message).

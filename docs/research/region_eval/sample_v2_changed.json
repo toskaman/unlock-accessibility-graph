@@ -1,0 +1,277 @@
+{
+ "placements": [
+  {
+   "case": "P05",
+   "operator": "RATP",
+   "station": "Viroflay - Rive Droite",
+   "message": "GARE DE VIROFLAY RIVE DROITE Panne de l'ascenseur situé VRD Quai 1 <> MZH, direction Viroflay",
+   "lines_calling_at_station": [
+    "L (RAIL)",
+    "T6 (TRAM)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "T6",
+     "mode": "TRAM",
+     "platform": "Viroflay - Rive Droite",
+     "trains_from_this_platform_go_to": [
+      "Châtillon - Montrouge"
+     ],
+     "derivation": "DIRECTION_MATCH"
+    }
+   ]
+  },
+  {
+   "case": "P16",
+   "operator": "RATP",
+   "station": "La Défense",
+   "message": "LA DEFENSE Panne de l'ascenseur situé Couloir coupole (ascenseur 2), direction Est",
+   "lines_calling_at_station": [
+    "1 (METRO)",
+    "A (RAIL)",
+    "E (RAIL)",
+    "L (RAIL)",
+    "T2 (TRAM)",
+    "U (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "La Défense",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "Le Vésinet - Le Pecq",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Rueil-Malmaison",
+      "Saint-Germain-en-Laye",
+      "Sartrouville",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P24",
+   "operator": "SNCF_GC",
+   "station": "Maisons-Laffitte",
+   "message": "GARE DE MAISONS LAFFITTE Panne de l'ascenseur situé Passerelle <> Quai Voies 1/1Bis, direction Cergy / Poissy",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)",
+    "L (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Maisons-Laffitte",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Les Mureaux",
+      "Mantes-la-Jolie"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "L",
+     "mode": "RAIL",
+     "platform": "Maisons-Laffitte",
+     "trains_from_this_platform_go_to": [
+      "Cergy le Haut",
+      "Gare Saint-Lazare"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Maisons-Laffitte",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P28",
+   "operator": "SNCF_GC",
+   "station": "Houilles - Carrières-sur-Seine",
+   "message": "GARE DE HOUILLES CARRIERES SUR SEINE Panne de l'ascenseur situé Voies A/B, direction Paris / Cergy",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)",
+    "L (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "L",
+     "mode": "RAIL",
+     "platform": "Houilles - Carrières-sur-Seine",
+     "trains_from_this_platform_go_to": [
+      "Cergy le Haut",
+      "Gare Saint-Lazare",
+      "Maisons-Laffitte",
+      "Sartrouville"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Houilles - Carrières-sur-Seine",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Cergy le Haut",
+      "Marne-la-Vallée - Chessy",
+      "Nanterre - Préfecture",
+      "Poissy",
+      "Sartrouville",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P30",
+   "operator": "SNCF_GC",
+   "station": "Mitry - Claye",
+   "message": "GARE DE MITRY CLAYE Panne de l'ascenseur situé Quai 1 Voie 2, direction Paris Nord",
+   "lines_calling_at_station": [
+    "B (RAIL)",
+    "K (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "K",
+     "mode": "RAIL",
+     "platform": "Mitry - Claye",
+     "trains_from_this_platform_go_to": [
+      "Crépy-en-Valois",
+      "Gare du Nord"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Mitry - Claye",
+     "trains_from_this_platform_go_to": [
+      "Châtelet - Les Halles",
+      "Denfert-Rochereau",
+      "Gare du Nord",
+      "Massy - Palaiseau",
+      "Robinson",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P37",
+   "operator": "SNCF_GC",
+   "station": "Saint-Michel Notre-Dame",
+   "message": "St Michel Notre Dame Panne de l'ascenseur situé Quai B",
+   "lines_calling_at_station": [
+    "4 (METRO)",
+    "B (RAIL)",
+    "C (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "C",
+     "mode": "RAIL",
+     "platform": "Saint-Michel Notre-Dame",
+     "trains_from_this_platform_go_to": [
+      "Bibliothèque François Mitterrand",
+      "Brétigny",
+      "Chaville - Vélizy",
+      "Dourdan",
+      "Dourdan la Forêt",
+      "Gare d'Austerlitz",
+      "Invalides",
+      "Juvisy",
+      "Massy - Palaiseau",
+      "Montigny - Beauchamp",
+      "Musée d'Orsay",
+      "Pontoise",
+      "Saint-Martin d'Étampes",
+      "Saint-Quentin en Yvelines - Montigny-le-Bretonneux",
+      "Thiais - Orly (Pont de Rungis)",
+      "Versailles Chantiers",
+      "Versailles Château Rive Gauche"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "B",
+     "mode": "RAIL",
+     "platform": "Saint-Michel Notre-Dame",
+     "trains_from_this_platform_go_to": [
+      "Aulnay-sous-Bois",
+      "Aéroport CDG (Terminal 2) - TGV",
+      "Aéroport CDG 1 (Terminal 3)",
+      "Châtelet - Les Halles",
+      "Denfert-Rochereau",
+      "La Plaine Stade de France",
+      "Laplace",
+      "Massy - Palaiseau",
+      "Mitry - Claye",
+      "Orsay - Ville",
+      "Robinson",
+      "Saint-Rémy-lès-Chevreuse"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  },
+  {
+   "case": "P40",
+   "operator": "SNCF_GC",
+   "station": "Poissy",
+   "message": "GARE DE POISSY Panne de l'ascenseur situé Voies C/D, direction Paris",
+   "lines_calling_at_station": [
+    "A (RAIL)",
+    "J (RAIL)"
+   ],
+   "unlock_marked": [
+    {
+     "line": "J",
+     "mode": "RAIL",
+     "platform": "Poissy",
+     "trains_from_this_platform_go_to": [
+      "Gare Saint-Lazare",
+      "Les Mureaux",
+      "Mantes-la-Jolie",
+      "Vernon - Giverny"
+     ],
+     "derivation": "RAIL_STATION"
+    },
+    {
+     "line": "A",
+     "mode": "RAIL",
+     "platform": "Poissy",
+     "trains_from_this_platform_go_to": [
+      "Boissy-Saint-Léger",
+      "Marne-la-Vallée - Chessy",
+      "Torcy"
+     ],
+     "derivation": "RAIL_STATION"
+    }
+   ]
+  }
+ ],
+ "matches": []
+}

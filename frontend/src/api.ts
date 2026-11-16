@@ -1,4 +1,4 @@
-import type { Analysis, Critical, Explanation, Ranking, Resolution, StationGraph, StationRow, Summary } from "./types";
+import type { Analysis, Critical, Explanation, Journey, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName, Resolution, StationGraph, StationRow, Summary } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -51,5 +51,15 @@ export const api = {
   withCandidate: (scenario: string, lift: string) =>
     call<{ with_candidate_counts: import("./types").Counts; gain: number }>(`/api/scenarios/${scenario}/with-candidate${q({ candidate_lift: lift })}`),
   export: (scenario: string) => call<unknown>(`/api/scenarios/${scenario}/export`, { method: "POST" }),
+  region: {
+    overview: () => call<RegionOverview>("/api/region/overview"),
+    map: (view: RegionViewName) => call<{ view: string; stations: RegionStation[] }>(`/api/region/map?view=${view}`),
+    rank: () => call<RegionRank>("/api/region/rank?limit=40"),
+    search: (text: string) => call<{ id: string; name: string; boardable: boolean }[]>(`/api/region/stations${q({ q: text })}`),
+    journey: (a: string, b: string, view: RegionViewName) => call<Journey>(`/api/region/journey${q({ from: a, to: b, view })}`),
+    stationOutages: (id: string, view: RegionViewName) =>
+      call<{ station: { id: string; name: string }; outages: OutageDetail[] }>(`/api/region/stations/${encodeURIComponent(id)}/outages?view=${view}`),
+    reconciliation: () => call<Reconciliation>("/api/region/reconciliation?limit=400"),
+  },
   queries: () => call<{ store: string; queries: { at: string; cypher: string; param_keys: string[]; rows: number; ms: number }[]; catalog: Record<string, string> }>("/api/debug/queries?limit=40"),
 };

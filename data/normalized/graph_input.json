@@ -1,6 +1,22 @@
 {
  "datasets": [
   {
+   "bytes": 146330,
+   "file": "idfm/accessibilite-en-gare.json",
+   "gtfs_calendar_span": null,
+   "key": "idfm_accessibilite_en_gare",
+   "licence": "Licence Ouverte v2.0 (Etalab)",
+   "licence_url": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+   "published": null,
+   "publisher": "Île-de-France Mobilités",
+   "publisher_modified": "2026-07-06T09:23:36+00:00",
+   "retrieved_at": "2026-11-16T19:40:00+00:00",
+   "role": "Rail stop accessibility level (autonomous, on request to an agent, booked AssistenGare, not accessible)",
+   "sha256": "cb82ea4767a082503be0214379544072f2962c945e1a2099829581efdc4469f3",
+   "title": "Accessibilité en gare",
+   "url": "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/accessibilite-en-gare/exports/json"
+  },
+  {
    "bytes": 112987851,
    "file": "gtfs/IDFM-gtfs.zip",
    "gtfs_calendar_span": [
@@ -34,6 +50,22 @@
    "sha256": "36368ff11e97203ac3ad0e1975bd6f7719768a3b0832e0afb153ff522d5e4fa4",
    "title": "Référentiel des arrêts : Zones de correspondance",
    "url": "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/zones-de-correspondance/exports/csv?delimiter=%3B&use_labels=false"
+  },
+  {
+   "bytes": 30055373,
+   "file": "prim/line_reports.json",
+   "gtfs_calendar_span": null,
+   "key": "prim_lift_outages",
+   "licence": "Licence Mobilités",
+   "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
+   "published": null,
+   "publisher": "Île-de-France Mobilités (PRIM)",
+   "publisher_modified": null,
+   "retrieved_at": "2026-11-16T19:13:43+00:00",
+   "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text",
+   "sha256": "81a85f121fdc2b7df87fd25205c5a883a36f186bad2360cd4723e2d5589c7247",
+   "title": "Calculateur Île-de-France Mobilités - Messages Info Trafic (Navitia line_reports), tag « Ascenseur »",
+   "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports"
   },
   {
    "bytes": 347315,

@@ -40,3 +40,28 @@ placeholder and can never join two anchors.
 
 Pilot counts (snapshot 2026-11-16): Station 401 · Quay 1,280 · Lift 588 · Space 1,117 · StatusSnapshot 588 ·
 AccessibilityAssertion 1,681 · TransferZone 392 · Line 51 · Dataset 4; SERVES 1,369, total 11,761 relationships.
+
+## Region layer (v0.3.0)
+
+| Node | Key properties | Source |
+|---|---|---|
+| `NStation` | id (= IDFM ZdC id), name, lat/lon, `location` point | GTFS `parent_station` |
+| `NPlatform` | id (GTFS stop), station_id, `wheelchair`, `access_level`, `boardable`, modes, lines | GTFS stops + IDFM *Accessibilité en gare* |
+| `NLine` | id, short_name, mode (RAIL/METRO/TRAM/CABLE/FUNICULAR), colours, operator | GTFS routes |
+| `NPattern` | id, line_id, direction, trips, headsign, terminus_station, length | distinct GTFS stop sequences |
+| `OutageFeed` | id (`prim_lift_outages@sha`), observed_at, feed_last_lift_update, feed_non_lift_last_update | PRIM snapshot |
+| `LiftOutage` | lift_key (`GC:1090`, `RATP:…`), operator, text, first_reported, last_update, announced_until, messages | PRIM `Ascenseur` disruptions grouped per lift |
+
+| Relationship | Meaning | Derivation |
+|---|---|---|
+| `(NStation)-[:HAS_PLATFORM]->(NPlatform)` | platform of station | GTFS |
+| `(NPlatform)-[:NEXT {pattern, seq, line}]->(NPlatform)` | consecutive stops of a pattern | GTFS |
+| `(NPlatform)-[:LEG {line, patterns, trips, hops}]->(NPlatform)` | ride between two boardable platforms | `GTFS_PATTERN_BOARDABLE_ENDPOINTS` |
+| `(NPattern)-[:OF_LINE]->(NLine)` | pattern of line | GTFS |
+| `(NStation)-[:IS_ZONE]->(TransferZone)` | same IDFM ZdC | `SAME_IDFM_ZDC_ID` |
+| `(OutageFeed)-[:LISTS]->(LiftOutage)` · `(LiftOutage)-[:REPORTED_AT]->(NStation)` | feed content | PRIM |
+| `(LiftOutage)-[:AFFECTS {line_id, derivation, line_derivation}]->(NPlatform)` | platforms the outage concerns | `DIRECTION_MATCH`, `LINE_AT_STATION`, `RAIL_STATION`; lines by `TEXT_NAMES_LINE`, `DIRECTION_NAMES_LINE`, `ALL_LINES_AT_STATION` |
+| `(LiftOutage)-[:MATCHES_LIFT {score, evidence}]->(Lift)` | the SNCF lift a G&C message is about | `INCIDENT_RESOLVER_SAME_ZONE`, only RESOLVED |
+
+Counts (snapshot 2026-11-16): NStation 996 · NPlatform 1,953 · NLine 59 · NPattern 1,055 · NEXT 14,077 · LEG 14,147 ·
+IS_ZONE 392 · LiftOutage 356 · AFFECTS 583 · MATCHES_LIFT 168.

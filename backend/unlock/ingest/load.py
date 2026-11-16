@@ -141,3 +141,15 @@ def run_import(db: GraphStore, path: Path = NORMALIZED_DIR / "graph_input.json")
              {"id": run_id, "sha": sha, "at": started, "snap": doc["status_snapshot_id"], "fmt": doc["format"]})
     result.update({"run_id": run_id, "input_sha256": sha, "status_snapshot_id": doc["status_snapshot_id"]})
     return result
+
+
+def import_all(db: GraphStore, normalized_dir: Path = NORMALIZED_DIR) -> dict[str, Any]:
+    """Station layer, then (when present) the regional network layer and the PRIM outage feed."""
+    result = run_import(db, normalized_dir / "graph_input.json")
+    if (normalized_dir / "network.json").exists():
+        from ..engine.resolve import build_index
+        from ..network.load_net import import_network, import_outages
+        result["network"] = import_network(db, normalized_dir / "network.json")
+        result["outages"] = import_outages(db, normalized_dir / "network_outages.json", resolver=build_index(db))
+        result["after"] = db.counts()
+    return result

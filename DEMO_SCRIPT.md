@@ -1,19 +1,16 @@
-# Demo script (≤ 2:00) — recorded on the committed snapshot
+# Demo script v0.3.0 (≤ 2:00) — for the entrant to record
 
-**Status:** recorded 2026-11-16 → `unlock-demo.mp4` (1:36) on the v0.2.0 release. Fully automated by
-`frontend/scripts/record-demo.mjs` (real app, real engine); narration text in `video/narration.json`; see `video/README.md`.
+The v0.2.0 station-mode video (1:36) is on the v0.2.0 release and was produced by
+`frontend/scripts/record-demo.mjs`. This script is for the new whole-region video. All numbers below are from
+the committed snapshot (PRIM feed observed 16 Nov 2026 19:13 UTC, SNCF status `sncf_lift_status@2273b7c1cb17`);
+if you run `fetch-outages` before recording, read the numbers off the screen instead.
 
-| Time | Screen | Action | Narration (Kokoro TTS) |
+| Time | Screen | Action | Say (suggestion) |
 |---|---|---|---|
-| 0:00–0:07 | Title card | — | "A station can be accessible. Its network may not be. This is UNLOCK…" |
-| 0:07–0:21 | Gare du Nord → report box | Type "Juvisy : ascenseur quai 50/51 HS depuis ce matin", **Find the lift** | Lift found in the Relate graph from the station and the platforms it SERVES — no guessing |
-| 0:21–0:32 | Juvisy | **Simulate this outage** | Published data untouched; Voies 50/51 cut off; 21 confirmed connections lost |
-| 0:32–0:46 | Evidence | Click *Voie 40 ↔ Voie 50* | The actual graph path, two lifts in series, status + source |
-| 0:46–0:56 | Ranking | Point at top 3 | ASC3 +21, then lifts really out of service today (+13, +13) |
-| 0:56–1:04 | Repair view | Click top candidate | Back to the published state (582); Cypher cross-check = engine |
-| 1:04–1:15 | Report + tab | "Ascenseur en panne à Pontoise" → candidates; *Lifts you can't lose* | Never guessed; 191 single points of failure |
-| 1:15–1:29 | Agent | Replay of `docs/research/agent_eval/T1-graph.jsonl` | Same graph as a read-only MCP server — an agent answers with real numbers |
-| 1:29–1:36 | Title card | — | "UNLOCK doesn't just show you what's broken…" |
-
-All numbers are produced live on snapshot `sncf_lift_status@2273b7c1cb17`. The agent segment is a replay of a
-real session's transcript, labelled as such on screen.
+| 0:00–0:10 | Whole region, *Best available status* | — | "Île-de-France publishes 256,592 step-free station-to-station journeys. With today's lift outages, 192,377 are confirmed." |
+| 0:10–0:25 | Click *PRIM outage feed* | Point at the amber card | "Believe the regional outage feed and it drops to 88,255. But its 1,047 lift messages haven't changed since 9 October — 38 days — and SNCF's own hourly data says 235 of its 264 SNCF lifts work. Those stale messages alone hide 96,340 journeys." |
+| 0:25–0:50 | Chip *Rosa Parks → Juvisy* | Show legs, then the three mini-verdicts | "Can I get there in a wheelchair? With the best status: yes — RER E, then RER C. With the feed: only if 11 listed lifts work. Every leg is re-checked in the Relate graph." |
+| 0:50–1:10 | *Stale messages* → first item | Station card | "Rosa Parks: PRIM lists a broken lift; UNLOCK read the message, matched the SNCF lift, and SNCF says it works. Correcting that one message gives back 10,030 journeys." |
+| 1:10–1:30 | *Best available status* → *Repairs that matter* | Click La Croix de Berny | "Region-wide, the repair that matters most: one lift at La Croix de Berny. With Viroflay's lift also listed out since last November, the T6 and T10 trams lose their only confirmed step-free connections — 27,156 journeys." |
+| 1:30–1:45 | Click a SNCF station → *Open inside the station* | Station cross-section | "And down to a single underpass: the same graph holds every lift, platform and route inside 401 SNCF stations." |
+| 1:45–2:00 | *Inspect the graph* | — | "996 stations, 14,000 rides, 356 outages, 588 lifts — one Relate file, every number traceable. UNLOCK: find the repair that unlocks the most journeys." |

@@ -6,13 +6,17 @@
  SNCF NeTEx accessibility ─┐
  SNCF lift status (hourly) ┼─ fetch_sources.py ─ normalize.py ─────► graph_input.json ─ load.py ─► database/unlock.rl
  IDFM transfer zones       │  (sha256 manifest)  (parse, derive,          (committed,           (MERGE on      │
- IDFM GTFS (lines)        ─┘                      label every edge)       ODbL)                 constrained ids)│
+ IDFM GTFS (lines)        ─┘
+ IDFM GTFS + Accessibilité en gare ─ network/gtfs_net.py ──────► network.json ───────── network/load_net.py ─► (same store)
+ PRIM Messages Info Trafic (token) ─ network/prim.py ─ outages.py ► network_outages.json ─┘  + resolver → MATCHES_LIFT                      label every edge)       ODbL)                 constrained ids)│
                                                                                                                 │
                               GraphStore (one owner thread, parameterised Cypher, serialised writes) ◄──────────┘
                                          │
                        engine/graph.py ── Cypher: routes (ACYCLIC QPP), assertions, states, evidence, paths
                        engine/impact.py ─ pure functions: route state, pair class, diff, rank, exact plan
                        engine/service.py ─ scenarios + analyses persisted back into Relate
+                       network/engine.py ─ exact station-pair reachability (SCC + bitsets), least-cost journeys
+                       network/service.py ─ three views, ranking, reconciliation, Cypher re-check of journey legs
                                          │
                        api/app.py (FastAPI, 127.0.0.1, typed, no arbitrary Cypher) ── api/explain.py (Analyst)
                                          │

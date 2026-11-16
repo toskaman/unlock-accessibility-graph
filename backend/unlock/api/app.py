@@ -22,9 +22,10 @@ from ..config import ROOT, STORE_PATH
 from ..db import GraphStore
 from ..engine import graph as G
 from ..engine.service import InvalidScenario, NotFound, UnlockService
+from ..network.service import NetworkService
 from . import explain as X
 
-_ID = re.compile(r"^[A-Za-z0-9:._|\-]{1,200}$")
+_ID = re.compile(r"^[A-Za-z0-9:._|@\-]{1,200}$")
 
 
 def _check_id(v: str, what: str = "id") -> str:
@@ -75,6 +76,8 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         app.state.db = db
         try:
             app.state.svc = UnlockService(db)
+            app.state.net = NetworkService(db, app.state.svc)
+            app.state.net.warm()  # region views + ranking (~1.5 s, pure Python)
         except Exception:
             db.close()  # release the single-writer lease before failing
             raise
@@ -204,6 +207,67 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         s = svc(req)
         ranking = s.rank(scenario_id, limit=200)
         return X.explain_candidate(ranking, lift_id, s.analyze(scenario_id))
+
+    # ------------------------------------------------------------ region (network mode)
+    def net(req: Request) -> NetworkService:
+        n = req.app.state.net
+        if not n.ready:
+            raise HTTPException(404, "network layer not imported — run `python -m unlock build`")
+        return n
+
+    _VIEW = r"^(best|feed|published)$"
+
+    @app.get("/api/region/overview")
+    def region_overview(req: Request):
+        return net(req).overview()
+
+    @app.get("/api/region/map")
+    def region_map(req: Request, view: str = Query("best", pattern=_VIEW)):
+        return net(req).map_layer(view)
+
+    @app.get("/api/region/rank")
+    def region_rank(req: Request, limit: int = Query(12, ge=1, le=100)):
+        return net(req).rank(limit)
+
+    @app.get("/api/region/stations")
+    def region_stations(req: Request, q: str = Query(..., min_length=1, max_length=60)):
+        return net(req).station_search(q)
+
+    @app.get("/api/region/journey")
+    def region_journey(req: Request, a: str = Query(..., alias="from"), b: str = Query(..., alias="to"),
+                       view: str = Query("best", pattern=_VIEW)):
+        n = net(req)
+        try:
+            return n.check_journey(_check_id(a), _check_id(b), view)
+        except KeyError:
+            raise HTTPException(404, "unknown station")
+
+    @app.get("/api/region/stations/{station_id}/outages")
+    def region_station_outages(req: Request, station_id: str, view: str = Query("best", pattern=_VIEW)):
+        n = net(req)
+        if _check_id(station_id) not in n.stations:
+            raise HTTPException(404, "unknown station")
+        return {"station": n._st(station_id), "outages": n.station_outages(station_id, view)}
+
+    @app.get("/api/region/outages/{outage_id}")
+    def region_outage(req: Request, outage_id: str):
+        n = net(req)
+        if _check_id(outage_id) not in n.outages:
+            raise HTTPException(404, "unknown outage")
+        return n.outage_view(outage_id)
+
+    @app.get("/api/region/reconciliation")
+    def region_reconciliation(req: Request, limit: int = Query(50, ge=1, le=400)):
+        n = net(req)
+        rec = n.reconciliation()
+        rows = []
+        for r in rec["rows"][:limit]:
+            o = n.outages[r["outage"]]
+            rows.append({**r, "text": o["text"], "station": n.stations[o["station_id"]]["name"],
+                         "lift_name": n.ss.lifts[r["lift"]].name if r.get("lift") in n.ss.lifts else None})
+        missing = [{"lift": l, "name": n.ss.lifts[l].name, "station": n.ss.stations.get(n.ss.lifts[l].station_id, {}).get("name")}
+                   for l in rec["missing"]]
+        return {"counts": rec["counts"], "rows": rows, "missing_from_feed": missing, "feed": n.feed_info()}
 
     @app.get("/api/debug/queries")
     def queries(req: Request, limit: int = Query(30, ge=1, le=200)):

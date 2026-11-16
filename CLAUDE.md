@@ -9,3 +9,7 @@
 - Tests: `pytest` (must stay green), `cd frontend && npx playwright test` (uses a store copy).
 - Data refresh changes demo numbers: update DEMO_SCRIPT.md and README after `python -m unlock fetch`.
 - Do not push, publish or submit without the entrant's explicit authorisation.
+- Region layer: `backend/unlock/network/` (GTFS network, PRIM outages, three views). The PRIM token comes only from
+  `UNLOCK_PRIM_KEY` / `UNLOCK_PRIM_KEY_FILE`; never write it to the repo, logs, the graph or test fixtures.
+- A listed outage without station topology is DOUBT, never CLOSED. Don't trust the feed's own line links.
+- Agent eval runs Claude Code headless with `--model sonnet` and the MCP server on a read-only store.

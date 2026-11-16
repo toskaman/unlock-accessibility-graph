@@ -1,0 +1,413 @@
+{
+ "placements": [
+  {
+   "case": "P01",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "Lift serves the M13 platform toward Châtillon (terminus departure side); exactly that platform marked."
+  },
+  {
+   "case": "P02",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER B lift; only line at station marked."
+  },
+  {
+   "case": "P03",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER B lift; only line at station marked."
+  },
+  {
+   "case": "P04",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER A lift; only line at station marked."
+  },
+  {
+   "case": "P05",
+   "lines": "SUPERSET",
+   "direction": "CORRECT",
+   "note": "RATP-operated lift 'VRD Quai 1 <> MZH' is the T6 underground station; the Transilien L marking is extra. T6 is a terminus here, so 'direction Viroflay' vs a Châtillon-bound node is acceptable only if this is the single T6 platform."
+  },
+  {
+   "case": "P06",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "Lift explicitly on M13 platform direction Châtillon; marked platform goes to Châtillon; T1 correctly not marked."
+  },
+  {
+   "case": "P07",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER B lift; only line at station marked."
+  },
+  {
+   "case": "P08",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "Quai 1 direction Les Courtilles; marked platform goes to Les Courtilles."
+  },
+  {
+   "case": "P09",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER A lift; only line at station marked."
+  },
+  {
+   "case": "P10",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "Lift to M1 platform direction Esplanade (i.e. toward Château de Vincennes); matching single platform marked."
+  },
+  {
+   "case": "P11",
+   "lines": "UNCLEAR",
+   "direction": "BOTH_MARKED",
+   "note": "Street<>station-hall lift names no line; marking everything is a defensible fallback, though in reality this rue Carnot lift most likely serves only RER A (metro 1/2/6 at Étoile are not step-free)."
+  },
+  {
+   "case": "P12",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Street<>underpass lift at single-line RER A station."
+  },
+  {
+   "case": "P13",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "T2 lift direction Issy Val de Seine; marked T2 platform toward Porte de Versailles. Caveat: if T2 La Défense is an island platform (cf. P35 'quai central'), the other direction would also be affected."
+  },
+  {
+   "case": "P14",
+   "lines": "SUPERSET",
+   "direction": "BOTH_MARKED",
+   "note": "Wording ('Plateforme de correspondance <> Quai, direction Ouest', RATP RER-style ID) points to the RER A westbound platform; program marked every line and both directions of all metro lines, ignoring the usable 'direction Ouest'."
+  },
+  {
+   "case": "P15",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Hall<>corridor lift at single-line RER A station."
+  },
+  {
+   "case": "P16",
+   "lines": "WRONG",
+   "direction": "BOTH_MARKED",
+   "note": "'Couloir coupole, direction Est' (RATP, same phrasing as RER A messages) most likely concerns RER A eastbound, yet A is the one line NOT marked while SNCF line E, T2 (which has no eastbound direction) and both M1 nodes were; 'direction Est' was not used."
+  },
+  {
+   "case": "P17",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER B lift; B marked and T10 correctly not marked."
+  },
+  {
+   "case": "P18",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER D lift; only line at station marked."
+  },
+  {
+   "case": "P19",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "Quai 2 direction Nation; marked platform goes to Nation."
+  },
+  {
+   "case": "P20",
+   "lines": "CORRECT",
+   "direction": "BOTH_MARKED",
+   "note": "Lift serves the Aubervilliers platform plus the -2 exchange corridor between both platforms, message names both directions; marking both is justified."
+  },
+  {
+   "case": "P21",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line H station; 'Province' gives only a side, rail granularity is station-level."
+  },
+  {
+   "case": "P22",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Quai 2 direction Paris is RER D; D marked, T12 correctly not marked."
+  },
+  {
+   "case": "P23",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RER B lift; only line at station marked."
+  },
+  {
+   "case": "P24",
+   "lines": "WRONG",
+   "direction": "N/A",
+   "note": "Voies 1/1bis 'direction Cergy / Poissy' is the RER A westbound (and L to Cergy) platform; program marked only J, whose trains here go to Saint-Lazare/Les Mureaux/Mantes, and missed A."
+  },
+  {
+   "case": "P25",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line J station."
+  },
+  {
+   "case": "P26",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line P station."
+  },
+  {
+   "case": "P27",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line RER D station."
+  },
+  {
+   "case": "P28",
+   "lines": "WRONG",
+   "direction": "N/A",
+   "note": "'Voies A/B, direction Paris / Cergy' matches RER A and/or line L (both go to Cergy); program marked only J, which does not serve Cergy from this platform, and missed A/L."
+  },
+  {
+   "case": "P29",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line L station."
+  },
+  {
+   "case": "P30",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "'Quai 1 Voie 2, direction Paris Nord' fits line K (to Gare du Nord) rather than the RER B terminus; K marked. Some residual ambiguity."
+  },
+  {
+   "case": "P31",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line R station."
+  },
+  {
+   "case": "P32",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line RER E station."
+  },
+  {
+   "case": "P33",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line RER E station."
+  },
+  {
+   "case": "P34",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Quai C direction Province is line H; H marked, T11 correctly not marked."
+  },
+  {
+   "case": "P35",
+   "lines": "CORRECT",
+   "direction": "BOTH_MARKED",
+   "note": "Lift to T2 central (island) platform; both T2 directions marked, which is right."
+  },
+  {
+   "case": "P36",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line H station."
+  },
+  {
+   "case": "P37",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "'Quai B' is ambiguous (could read as RER B), but the SNCF G&C operator points to the SNCF-run RER C station; C marked. Some residual ambiguity."
+  },
+  {
+   "case": "P38",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line J station."
+  },
+  {
+   "case": "P39",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Single-line H station."
+  },
+  {
+   "case": "P40",
+   "lines": "UNCLEAR",
+   "direction": "N/A",
+   "note": "'Voies C/D, direction Paris' at Poissy (RER A + J) names no line and both lines go to Paris; J-only choice cannot be verified from the message."
+  }
+ ],
+ "matches": [
+  {
+   "case": "M01",
+   "match": "CORRECT",
+   "note": "Voie 1 direction Province = 'Voie 1 direction Versaille'."
+  },
+  {
+   "case": "M02",
+   "match": "CORRECT",
+   "note": "Quai 1 Voie 1 <> Hall matches 'Quai 1 / hall' lift on Voie 1."
+  },
+  {
+   "case": "M03",
+   "match": "CORRECT",
+   "note": "Voies 1/2B matches 'Voies 1 et 2B'."
+  },
+  {
+   "case": "M04",
+   "match": "CORRECT",
+   "note": "Voie 1 matches; the other lift is Voie 2."
+  },
+  {
+   "case": "M05",
+   "match": "CORRECT",
+   "note": "Quais 21/22 Voies 1bis/2 matches exactly."
+  },
+  {
+   "case": "M06",
+   "match": "CORRECT",
+   "note": "BV <> Quai 2 matches 'Quai 2 Voie 2 / bureau de vente'."
+  },
+  {
+   "case": "M07",
+   "match": "PLAUSIBLE",
+   "note": "'EPINAY-SUR-SEINE - GARE ... direction Terminus' reads like the T11 terminus; matched lift is the Quai 1/hall lift (25xx range, likely RER C side) while the '2252 RERC' lift is numbered like the T11 lifts and could equally be meant."
+  },
+  {
+   "case": "M08",
+   "match": "CORRECT",
+   "note": "Voies 1/M quai central = 'V1/VM'."
+  },
+  {
+   "case": "M09",
+   "match": "CORRECT",
+   "note": "Location text identical."
+  },
+  {
+   "case": "M10",
+   "match": "CORRECT",
+   "note": "Passerelle 2 <> Voies D/E distinguishes 4072 from the hall-side D/E lift 4055."
+  },
+  {
+   "case": "M11",
+   "match": "CORRECT",
+   "note": "Passerelle <> Quais A/B matches exactly."
+  },
+  {
+   "case": "M12",
+   "match": "CORRECT",
+   "note": "Terrasse médiane <> Quais 51/53 matches exactly."
+  },
+  {
+   "case": "M13",
+   "match": "CORRECT",
+   "note": "Parking <> BV side matches 'Parking côté hall'."
+  },
+  {
+   "case": "M14",
+   "match": "CORRECT",
+   "note": "Quai 1 matches."
+  },
+  {
+   "case": "M15",
+   "match": "CORRECT",
+   "note": "Quai 5 matches."
+  },
+  {
+   "case": "M16",
+   "match": "CORRECT",
+   "note": "Sortie mairie matches."
+  },
+  {
+   "case": "M17",
+   "match": "CORRECT",
+   "note": "Voie 2 matches."
+  },
+  {
+   "case": "M18",
+   "match": "CORRECT",
+   "note": "Quai 2 Voie 1B matches both name and location."
+  },
+  {
+   "case": "M19",
+   "match": "CORRECT",
+   "note": "Quai 1 <> souterrain matches 'Voie 1 / souterrain'."
+  },
+  {
+   "case": "M20",
+   "match": "CORRECT",
+   "note": "Accès Robespierre matches."
+  },
+  {
+   "case": "M21",
+   "match": "CORRECT",
+   "note": "Voie 2 <> Hall matches 'Voie 2 / hall'; the other lift is the central V1/VM one."
+  },
+  {
+   "case": "M22",
+   "match": "CORRECT",
+   "note": "Voies 1/1bis passerelle matches location."
+  },
+  {
+   "case": "M23",
+   "match": "CORRECT",
+   "note": "Souterrain <> Voie 2 matches."
+  },
+  {
+   "case": "M24",
+   "match": "CORRECT",
+   "note": "Voies 50/51 matches."
+  },
+  {
+   "case": "M25",
+   "match": "CORRECT",
+   "note": "Voies D/E matches (other lifts' name/location fields look inconsistent but irrelevant)."
+  },
+  {
+   "case": "M26",
+   "match": "CORRECT",
+   "note": "Quai 2 direction Melun matches exactly."
+  },
+  {
+   "case": "M27",
+   "match": "CORRECT",
+   "note": "Quai C/D matches."
+  },
+  {
+   "case": "M28",
+   "match": "CORRECT",
+   "note": "Quai D matches."
+  },
+  {
+   "case": "M29",
+   "match": "CORRECT",
+   "note": "Voie 1B matches lift name (location null)."
+  },
+  {
+   "case": "M30",
+   "match": "CORRECT",
+   "note": "Sortie ville accès Seine matches exactly."
+  }
+ ],
+ "summary": {
+  "placements_lines": {
+   "CORRECT": 33,
+   "SUPERSET": 2,
+   "UNCLEAR": 2,
+   "WRONG": 3
+  },
+  "placements_direction": {
+   "CORRECT": 7,
+   "N/A": 28,
+   "BOTH_MARKED": 5
+  },
+  "matches": {
+   "CORRECT": 29,
+   "PLAUSIBLE": 1
+  }
+ }
+}

@@ -20,17 +20,23 @@ from ..db import GraphStore
 from ..engine import impact as I
 from ..engine.model import EquipmentStatus
 from ..engine.service import UnlockService
+from ..network.service import NetworkService
 from ..api.explain import explain_pair as narrate
 
-INSTRUCTIONS = """UNLOCK tools answer questions about step-free (lift) accessibility in the 401 SNCF stations of
-Île-de-France, using a Relate graph built from official open data (SNCF Gares & Connexions, IDFM).
+INSTRUCTIONS = """UNLOCK tools answer questions about step-free (lift) accessibility in Île-de-France, using a Relate graph
+built from official open data: inside the 401 SNCF stations (lift-by-lift topology) and across the whole regional
+rail/metro/tram network (996 stations, GTFS) with the lift outages published in the PRIM traffic feed.
+For "can I get from A to B in a wheelchair?" use `check_journey`; for the region-wide picture use `region_overview`.
 Rules for the agent:
 1. Never state a count, lift id, status or ranking that a tool did not return. Quote tool numbers exactly.
 2. Turn free-text outage reports into a lift with `find_lift`. If it returns AMBIGUOUS or NOT_FOUND, ask the
    user (show the candidates) or rephrase the report in French station vocabulary and try again — never guess.
 3. Simulations (`simulate_outage`, `rank_repairs` with assumptions) are hypothetical and change nothing; say so.
-4. Counts are modeled platform↔platform / platform↔exit connections inside stations, not people.
-5. Give the evidence: lift names, the graph path from `explain_connection`, the status snapshot id and time."""
+4. Station counts are modeled platform↔platform / platform↔exit connections inside stations, not people.
+   Region counts are ordered station pairs joined by a step-free journey, not trips or people.
+5. Give the evidence: lift names, the graph path from `explain_connection`, the status snapshot id and time.
+6. The PRIM lift feed and SNCF's hourly lift feed disagree; say which view a number comes from
+   ("best" = SNCF hourly + PRIM for RATP, "feed" = PRIM only, "published" = no outages)."""
 
 _WRITE = re.compile(r"\b(CREATE|MERGE|DELETE|DETACH|SET|REMOVE|DROP|LOAD|CALL\s+db\.|FOREACH)\b", re.I)
 
@@ -38,8 +44,9 @@ _WRITE = re.compile(r"\b(CREATE|MERGE|DELETE|DETACH|SET|REMOVE|DROP|LOAD|CALL\s+
 def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     db = GraphStore(store, read_only=True)
     svc = UnlockService(db)
+    net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.2.0")
+                    version="0.3.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
@@ -106,9 +113,13 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     @mcp.tool()
     def cypher_read(query: str, limit: int = 50) -> dict[str, Any]:
         """Run a READ-ONLY Cypher query on the UNLOCK Relate graph (store opened read-only; max 200 rows).
-        Labels: Station, Quay, Lift, Space, StatusSnapshot, AccessibilityAssertion, TransferZone, Line, Dataset.
-        Relationships: HAS_LIFT, HAS_QUAY, HAS_SPACE, SERVES (Lift->Space), IS_PLATFORM_OF, HAS_STATUS,
-        IN_TRANSFER_ZONE, SERVED_BY (TransferZone->Line), ABOUT, SUPPORTED_BY, REPORTED_IN, DESCRIBED_IN."""
+        Station layer — labels: Station, Quay, Lift, Space, StatusSnapshot, AccessibilityAssertion, TransferZone, Line,
+        Dataset; relationships: HAS_LIFT, HAS_QUAY, HAS_SPACE, SERVES (Lift->Space), IS_PLATFORM_OF, HAS_STATUS,
+        IN_TRANSFER_ZONE, SERVED_BY (TransferZone->Line), ABOUT, SUPPORTED_BY, REPORTED_IN, DESCRIBED_IN.
+        Region layer — labels: NStation, NPlatform (boardable, wheelchair, access_level), NLine, NPattern, OutageFeed,
+        LiftOutage; relationships: HAS_PLATFORM, NEXT (stop sequence), LEG (ride between boardable platforms),
+        OF_LINE, IS_ZONE (NStation->TransferZone), LISTS, REPORTED_AT, AFFECTS (LiftOutage->NPlatform),
+        MATCHES_LIFT (LiftOutage->Lift)."""
         if _WRITE.search(query):
             return {"error": "Only read queries are allowed."}
         rows = db.query(query)
@@ -120,6 +131,48 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
         """Graph size, data sources (with sha256), status snapshot freshness and network-wide counts."""
         s = svc.summary()
         return {k: s[k] for k in ("graph", "datasets", "status", "stations", "lifts", "lift_states", "pairs", "coverage")}
+
+    def _station(name: str) -> dict | None:
+        hits = net.station_search(name, limit=5)
+        return hits[0] if hits else None
+
+    @mcp.tool()
+    def check_journey(from_station: str, to_station: str, view: str = "best") -> dict[str, Any]:
+        """Is there a step-free (wheelchair) journey between two Île-de-France stations right now?
+        Station names are matched against the regional network. Returns the verdict (STEP_FREE,
+        STEP_FREE_IF_LIFTS_WORK, CUT_BY_OUTAGES, NO_STEP_FREE_ROUTE_PUBLISHED), the legs (line, board/alight
+        platform state), the lift outages on the way, and a Relate re-check of every leg."""
+        if not net.ready:
+            return {"error": "network layer not imported"}
+        a, b = _station(from_station), _station(to_station)
+        if not a or not b:
+            return {"status": "NOT_FOUND", "question": "Which station? No network station matches "
+                    + (from_station if not a else to_station)}
+        r = net.check_journey(a["id"], b["id"], view if view in ("best", "feed", "published") else "best")
+        r["matched_names"] = {"from": a["name"], "to": b["name"]}
+        return r
+
+    @mcp.tool()
+    def region_overview() -> dict[str, Any]:
+        """Region-wide step-free journeys under three views (published / PRIM feed / best available),
+        the outage feed freshness, outage ages and the PRIM-vs-SNCF reconciliation counts."""
+        return net.overview() if net.ready else {"error": "network layer not imported"}
+
+    @mcp.tool()
+    def region_repairs(limit: int = 10) -> dict[str, Any]:
+        """Region-wide: lift repairs that give back the most confirmed step-free journeys (best view), and
+        feed corrections (PRIM outages SNCF reports as working) that would stop hiding journeys."""
+        return net.rank(max(1, min(limit, 50))) if net.ready else {"error": "network layer not imported"}
+
+    @mcp.tool()
+    def station_outages(station_name: str) -> dict[str, Any]:
+        """Lift outages the PRIM feed lists at a station (any operator), with age, affected platforms/lines and,
+        for SNCF lifts, the matched lift and SNCF's own current status."""
+        s = _station(station_name)
+        if not s:
+            return {"status": "NOT_FOUND"}
+        return {"station": s, "outages": [net.outage_view(o) for o, x in sorted(net.outages.items())
+                                          if x["station_id"] == s["id"]]}
 
     mcp._unlock_db = db  # closed by main() before interpreter shutdown
     return mcp

@@ -1,0 +1,58 @@
+{
+ "placements": [
+  {
+   "case": "P05",
+   "lines": "CORRECT",
+   "direction": "CORRECT",
+   "note": "RATP message at the T6 terminus; Line L is SNCF, so T6 is right, and at a terminus every train leaves toward Châtillon, so the single platform is the right one even though the message says 'direction Viroflay'."
+  },
+  {
+   "case": "P16",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "RATP message saying 'direction Est' at La Défense matches RER A (Metro 1 terminates there), though the 'couloir coupole' location leaves a little doubt about Metro 1."
+  },
+  {
+   "case": "P24",
+   "lines": "SUPERSET",
+   "direction": "N/A",
+   "note": "'Direction Cergy / Poissy' names RER A's branches; Line L (to Cergy) is plausible, but Line J (to Mantes) is probably an extra line."
+  },
+  {
+   "case": "P28",
+   "lines": "CORRECT",
+   "direction": "N/A",
+   "note": "Tracks A/B toward Paris and Cergy fit RER A and Line L, which share that service; Line J is correctly left unmarked."
+  },
+  {
+   "case": "P30",
+   "lines": "SUPERSET",
+   "direction": "N/A",
+   "note": "'Quai 1 Voie 2, direction Paris Nord' points to the Line K main-line platform; RER B, which terminates here, is likely an extra line."
+  },
+  {
+   "case": "P37",
+   "lines": "SUPERSET",
+   "direction": "N/A",
+   "note": "'Quai B' is ambiguous (platform letter vs RER B); SNCF as operator suggests RER C, so one of the two marked lines is extra either way."
+  },
+  {
+   "case": "P40",
+   "lines": "UNCLEAR",
+   "direction": "N/A",
+   "note": "Tracks C/D toward Paris could be the RER A terminus tracks or Line J; the message gives no way to tell, so marking both may be a superset."
+  }
+ ],
+ "summary": {
+  "total": 7,
+  "lines": {
+   "CORRECT": 3,
+   "SUPERSET": 3,
+   "UNCLEAR": 1
+  },
+  "direction": {
+   "CORRECT": 1,
+   "N/A": 6
+  }
+ }
+}

@@ -54,5 +54,33 @@
     "licence": "Licence Mobilités",
     "licence_url": "https://transport.data.gouv.fr/datasets/reseaux-urbains-et-interurbains-dile-de-france-mobilites",
     "role": "Lines (routes) calling at each transfer zone, from stops/stop_times/trips/routes"
+  },
+  "prim_lift_outages": {
+    "key": "prim_lift_outages",
+    "title": "Calculateur Île-de-France Mobilités - Messages Info Trafic (Navitia line_reports), tag « Ascenseur »",
+    "publisher": "Île-de-France Mobilités (PRIM)",
+    "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
+    "file": "prim/line_reports.json",
+    "bytes": 29966581,
+    "sha256": "f3ab8dc9fa2839d50f8f909616bce769b33ef1922cea9cc5bb061ab402dd8b13",
+    "retrieved_at": "2026-11-16T22:33:05+00:00",
+    "publisher_modified": null,
+    "licence": "Licence Mobilités",
+    "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
+    "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
+  },
+  "idfm_accessibilite_en_gare": {
+    "key": "idfm_accessibilite_en_gare",
+    "title": "Accessibilité en gare",
+    "publisher": "Île-de-France Mobilités",
+    "url": "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/accessibilite-en-gare/exports/json",
+    "file": "idfm/accessibilite-en-gare.json",
+    "bytes": 146330,
+    "sha256": "cb82ea4767a082503be0214379544072f2962c945e1a2099829581efdc4469f3",
+    "retrieved_at": "2026-11-16T19:40:00+00:00",
+    "publisher_modified": "2026-07-06T09:23:36+00:00",
+    "licence": "Licence Ouverte v2.0 (Etalab)",
+    "licence_url": "https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+    "role": "Rail stop accessibility level (autonomous, on request to an agent, booked AssistenGare, not accessible)"
   }
 }

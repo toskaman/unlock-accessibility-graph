@@ -137,11 +137,14 @@ def reported_state(text: str) -> str:
     return "UNAVAILABLE"  # a report about a lift is assumed to be an outage unless it says otherwise
 
 
-def resolve(ix: Index, text: str, max_candidates: int = 4) -> dict:
+def resolve(ix: Index, text: str, max_candidates: int = 4, restrict_stations: list[str] | None = None) -> dict:
+    """``restrict_stations``: the station is already known (e.g. the IDFM stop area of a feed message)."""
     text = (text or "")[:1000]
     toks = set(_tokens(text))
-    stations = _station_scores(ix, toks)
-    evidence_station = []
+    if restrict_stations is not None:
+        stations = [(1.0, sid, "IDFM stop area of the message") for sid in restrict_stations if sid in ix.stations]
+    else:
+        stations = _station_scores(ix, toks)
     if not stations or stations[0][0] < 0.5:
         return {"status": "NOT_FOUND", "text": text, "station_candidates": [
                     {"station_id": s, "name": ix.stations[s]["name"], "score": sc} for sc, s, _ in stations[:3]],
