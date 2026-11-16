@@ -189,6 +189,8 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
 
         @app.get("/{path:path}", include_in_schema=False)
         def spa(path: str):
+            if path.startswith("api/") or path == "api":
+                raise HTTPException(404, "unknown API route")
             f = (dist / path).resolve()
             if path and f.is_file() and dist.resolve() in f.parents:
                 return FileResponse(f)
