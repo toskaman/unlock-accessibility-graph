@@ -25,10 +25,10 @@ Every number on screen is computed on the graph and can be traced back to a sour
 
 > **What the data showed on 16–17 Nov 2026.** The PRIM traffic-information API lists **356 lifts out of service**
 > (1,047 messages) — and **none of those messages has changed since 9 October 2026**, while every other traffic
-> message is updated the same day: four fetches over five hours returned byte-identical lift content. SNCF's own
-> hourly lift feed reports **225 of the 264 SNCF lifts it lists as working**, and IDFM's own lift-status dataset
-> contradicts **18 of the 39 RATP messages** UNLOCK can match to a lift. Those stale messages alone hide
-> **93,776** step-free journeys from anyone who builds on the feed.
+> message is updated the same day: five fetches over 15 hours returned byte-identical lift content. On 17 Nov at
+> 10:30, SNCF's own hourly lift feed reports **216 of the 264 SNCF lifts it lists as working**, and IDFM's own
+> lift-status dataset contradicts **37 of the 39 RATP messages** UNLOCK can match to a lift. Those stale messages alone
+> hide **126,628** step-free journeys from anyone who builds on the feed.
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
 **▶ Try it now, nothing to install: https://toskaman.github.io/unlock-accessibility-graph/** — every region of
@@ -72,28 +72,28 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 
 ## Whole region in one minute
 
-Figures below: snapshot of **17 Nov 2026, 01:26 Paris** (the app recomputes them from whatever snapshot is
-loaded; `python -m unlock refresh` fetches a new one). A night snapshot matters: lifts switched off at the end of
-service appear in IDFM's dataset as failures — UNLOCK counts the 166 switched off since 23:00 as *unknown*, never as
-outages, and says so on screen.
+Figures below: daytime snapshot of **17 Nov 2026, 10:30–10:44 Paris** (the app recomputes them from whatever
+snapshot is loaded; `python -m unlock refresh` fetches a new one). Night snapshots are flagged: lifts switched off at
+the end of service appear in IDFM's dataset as failures — UNLOCK counts those switched off since 23:00 as *unknown*,
+never as outages (166 of them at 01:26 the same night).
 
 1. The app opens on **Whole region**. The headline is the number of ordered station pairs joined by a
-   confirmed step-free journey: **256,592** in the published network, **207,509** with the best available lift
+   confirmed step-free journey: **256,592** in the published network, **231,883** with the best available lift
    status (SNCF's hourly feed for SNCF lifts, IDFM's lift-status dataset for RATP lifts, both read on station lift
    graphs), **88,255** if you believe the PRIM feed.
-2. The amber card explains the gap: PRIM's lift messages have not moved for 38 days; SNCF contradicts 225 of its
-   264 SNCF entries and IDFM's own dataset 18 of the 39 RATP entries it can be matched to.
+2. The amber card explains the gap: PRIM's lift messages have not moved for 38 days; SNCF contradicts 216 of its
+   264 SNCF entries and IDFM's own dataset 37 of the 39 RATP entries it can be matched to.
 3. *Can I get there in a wheelchair?* — **Rosa Parks → Juvisy**: step-free with the best status (RER E then
    RER C); with the PRIM feed only *possible if listed lifts work* (11 outages listed on the route). Each leg
    says "re-checked in Relate". *Watch* it: it joins *My usual trips* and is re-checked at every visit.
-4. *Repairs that matter*: equal gains (a repair usually gives one station back to the whole network: +912
-   journeys) are ordered by how busy the station is — **Paris Gare du Nord** (Transmanche lift AS 15, ≈ 186,920
-   validations a day) first. *Today's maintenance bulletin* turns the list into a printable page.
-5. Click **Rosa Parks** on the map: the whole region recolours — 455 stations reachable step-free from there with the
-   best available status (47 only if listed lifts work, 4 cut), together ≈ 2.8 million validations a day. With the
-   PRIM feed: 294. *Re-derived in Relate with Cypher: 455 = 455.*
+4. *Repairs that matter*: **Paris Est** first (+1,930 journeys: lift CDGX / Asc 20); then equal gains (a repair
+   usually gives one station back to the whole network: +964) are ordered by how busy the station is — **Paris Gare
+   du Nord** (Transmanche lift AS 15, ≈ 186,920 validations a day) before Auber, Argenteuil, Choisy-le-Roi. *Today's maintenance bulletin* turns the list into a printable page.
+5. Click **Rosa Parks** on the map: the whole region recolours — 481 stations reachable step-free from there with the
+   best available status (22 only if listed lifts work, 3 cut), together ≈ 3.1 million validations a day. With the
+   PRIM feed: 294. *Re-derived in Relate with Cypher: 481 = 481.*
 
-   ![Where can I go from here? La Croix de Berny: 30 stations confirmed, 473 only if listed lifts work](docs/media/region-reach.png)
+   ![Where can I go from here? Gare de l'Est on 17 Nov, 10:30: 0 stations confirmed, 503 only if listed lifts work — one lift out (+1,930 if repaired), and the history chart of confirmed journeys](docs/media/region-reach.png)
 
 6. The station card lists every lift IDFM's dataset has at the station with its status, then each PRIM message,
    its age, and — for SNCF lifts — the lift UNLOCK matched it to and what SNCF's hourly feed says.
@@ -112,22 +112,23 @@ modelled, a lift not reported working puts the station in doubt, never assumed h
 
 | Region | Accessible stations | Published | Confirmed | Share | SNCF lifts out / unknown | Modelled street route |
 |---|---|---|---|---|---|---|
-| Île-de-France | 519 | 256,592 | 201,181 | 78.4 % | 23 / 7 (+ RATP) | 61 of 190 |
-| Auvergne-Rhône-Alpes | 51 | 2,550 | 1,640 | 64.3 % | 24 / 9 | 32 of 46 |
-| Bourgogne-Franche-Comté | 19 | 289 | 90 | 31.1 % | 14 / 2 | 10 of 15 |
-| Bretagne | 21 | 420 | 420 | 100 % | 4 / 1 | 5 of 11 |
-| Centre-Val de Loire | 10 | 20 | 0 | 0 % | 11 / 3 | 1 of 8 |
-| Grand Est | 47 | 2,162 | 1,332 | 61.6 % | 11 / 7 | 9 of 42 |
-| Hauts-de-France | 33 | 656 | 350 | 53.3 % | 12 / 2 | 3 of 31 |
-| Normandie | 23 | 462 | 240 | 51.9 % | 4 / 2 | 5 of 18 |
-| Nouvelle-Aquitaine | 23 | 506 | 210 | 41.5 % | 11 / 11 | 2 of 20 |
-| Occitanie | 24 | 464 | 62 | 13.4 % | 12 / 16 | 8 of 14 |
-| Pays de la Loire | 12 | 132 | 72 | 54.5 % | 3 / 3 | 4 of 9 |
-| Provence-Alpes-Côte d'Azur | 32 | 992 | 552 | 55.6 % | 18 / 3 | 10 of 26 |
+| Île-de-France | 519 | 256,592 | 231,883 | 90.4 % | 27 / 7 (+ 24 RATP) | 61 of 190 |
+| Auvergne-Rhône-Alpes | 51 | 2,550 | 2,070 | 81.2 % | 6 / 9 | 32 of 46 |
+| Bourgogne-Franche-Comté | 19 | 289 | 289 | 100 % | 0 / 2 | 10 of 15 |
+| Bretagne | 21 | 420 | 380 | 90.5 % | 1 / 1 | 5 of 11 |
+| Centre-Val de Loire | 10 | 20 | 6 | 30.0 % | 6 / 3 | 1 of 8 |
+| Grand Est | 47 | 2,162 | 1,122 | 51.9 % | 13 / 8 | 9 of 42 |
+| Hauts-de-France | 33 | 656 | 428 | 65.2 % | 8 / 2 | 3 of 31 |
+| Normandie | 23 | 462 | 210 | 45.5 % | 5 / 2 | 5 of 18 |
+| Nouvelle-Aquitaine | 23 | 506 | 272 | 53.8 % | 9 / 11 | 2 of 20 |
+| Occitanie | 24 | 464 | 162 | 34.9 % | 6 / 16 | 8 of 14 |
+| Pays de la Loire | 12 | 132 | 90 | 68.2 % | 1 / 3 | 4 of 9 |
+| Provence-Alpes-Côte d'Azur | 32 | 992 | 600 | 60.5 % | 15 / 3 | 10 of 26 |
 
-*Snapshot: SNCF lift status of 17 Nov 2026, 00:30 Paris — a night file: SNCF lifts switched off for the night may
-appear out of service (the SNCF file carries no per-lift time, so UNLOCK cannot tell). The app and the comparison
-recompute from whatever status is loaded; daytime observations are recorded twice a day ([history](docs/HISTORY.md)).*
+*Snapshot: SNCF lift status of 17 Nov 2026, 10:30 Paris (daytime). The app and the comparison recompute from
+whatever status is loaded; observations are recorded twice a day ([history](docs/HISTORY.md)). At night the same
+table looked very different (Bourgogne-Franche-Comté 31 %, Occitanie 13 %): SNCF's file carries no per-lift time, so
+lifts switched off for the night look like outages — refresh in the daytime before quoting figures.*
 
 ![Journey check: Rosa Parks → Juvisy compared across the three views](docs/media/region-journey.png)
 

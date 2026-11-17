@@ -3,6 +3,6 @@
  "reach_total": 1038,
  "journeys_identical": 600,
  "journeys_total": 600,
- "checked_at": "2026-11-17T01:33:48+00:00",
+ "checked_at": "2026-11-17T09:53:31+00:00",
  "method": "Same exported graph; server engine (backend/unlock/network/engine.py) vs browser engine (frontend/src/static/engine.ts): reach sizes of every origin, confirmed and possible, best and feed views; 300 random pairs \u00d7 2 views: verdict and every leg (board, alight, line)."
 }

@@ -22,8 +22,8 @@ A platform can be "accessible" and still unreachable when one lift breaks. Wheth
 wheelchair-boardable platform), the status of all 986 lifts (SNCF hourly feed + IDFM's lift-status dataset, read on
 per-station lift graphs) and the lift outages published on PRIM into the same Relate graph, then computes exactly how
 many station-to-station journeys are step-free under three views: the published network (256,592), the best
-available lift status (207,509 on 17 Nov, 01:26) and the PRIM outage feed (88,255). Click any station and the whole
-map shows where a wheelchair user can go from there (Rosa Parks: 455 stations confirmed, 294 if you believe the feed),
+available lift status (231,883 on 17 Nov, 10:44) and the PRIM outage feed (88,255). Click any station and the whole
+map shows where a wheelchair user can go from there (Rosa Parks: 481 stations confirmed, 294 if you believe the feed),
 each reach re-derived in Cypher. Anyone can ask *can I get from A to B in a wheelchair?* and get the route, the
 outages on it and a Relate re-check of every leg. Repairs are ranked by journeys given back region-wide, ties broken by
 how busy the station is (top: Paris Gare du Nord's Transmanche lift).
@@ -48,9 +48,9 @@ Relate's WebAssembly build in the visitor's browser, which re-runs the server's 
 leg and every reach (the browser engine was checked identical to the server's on 1,038 reaches and 600 journeys).
 
 **A real finding.** The PRIM feed's 1,047 lift messages have not changed since 9 Oct 2026, while its other messages
-update daily (four fetches over five hours: byte-identical lift content). Reading each SNCF message into the exact lift
-and comparing with SNCF's hourly feed, UNLOCK finds 225 of 264 contradicted; IDFM's own lift-status dataset contradicts
-18 of the 39 RATP messages it can be matched to — stale messages that hide 93,776 step-free journeys from apps built on
+update daily (five fetches over 15 hours: byte-identical lift content). Reading each SNCF message into the exact lift
+and comparing with SNCF's hourly feed, UNLOCK finds 216 of 264 contradicted; IDFM's own lift-status dataset contradicts
+37 of the 39 RATP messages it can be matched to — stale messages that hide 126,628 step-free journeys from apps built on
 the feed.
 
 **Inside a station.** UNLOCK builds a graph of the 401 SNCF stations in Île-de-France: platforms, underpasses, halls and the 588 lifts that join them, each linked to its latest published status and source file. Select a lift and simulate an outage: UNLOCK shows which step-free platform↔platform and platform↔exit connections break, ranks every possible lift repair across the region by how many confirmed connections it restores (including the lifts really out of service today), and shows the exact graph path and evidence behind each number. Example: at Juvisy-sur-Orge, losing lift ASC3 cuts 21 confirmed connections — a bigger loss than any lift currently out of service in the region.
