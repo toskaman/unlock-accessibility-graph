@@ -20,11 +20,18 @@ Added in v0.3.0:
 | `idfm_validations_ferre` | Validations sur le réseau ferré : nombre de validations par jour (T2 2026) | IDFM | Licence Ouverte 2.0 | public | aggregated by `id_zdc` at download (724 zones, 91 days) |
 | `prim_lift_outages` | Calculateur IDFM – Messages Info Trafic (Navitia `line_reports`), tag « Ascenseur » | IDFM (PRIM) | Licence Mobilités | free PRIM token | 1,047 lift messages / 356 lifts on 16 Nov 2026; last lift update 9 Oct 2026 |
 
+Added in v0.6.0:
+
+| Key | Dataset | Publisher | Licence | Access | Notes |
+|---|---|---|---|---|---|
+| `idfm_etat_ascenseurs` | État des ascenseurs | IDFM (from RATP and SNCF agents' station rounds, published 3 times a day) | Licence Mobilités | free Opendatasoft API key (account on data.iledefrance-mobilites.fr) | 986 lifts (391 RATP, 595 SNCF; 566 SNCF ids equal to the NeTEx lift ids); each lift lists the levels it joins (« Ligne M4 direction X / Accès 2 »). Snapshot 17 Nov 2026 00:26 UTC (night: see METHODOLOGY §9) |
+| `sncf_gtfs` | Horaires SNCF — GTFS théorique (TER, Intercités, TGV) | SNCF Voyageurs | ODbL 1.0 | public | second region; no `calendar.txt` (calendar_dates only), no `wheelchair_boarding`; stop point ids contain spaces (cleaned) |
+| `sncf_frequentation` | Fréquentation en gares | SNCF G&C | ODbL 1.0 | public API export | passengers 2025 per station (UIC code), 2,998 stations |
+
 Investigated and **not used**:
 
 | Dataset | Reason |
 |---|---|
-| IDFM `etat-des-ascenseurs` (Licence Mobilité) | Records require an Opendatasoft key from the data.iledefrance-mobilites.fr account (the PRIM token gives 401/403). 986 records announced. |
 | IDFM `acces`, `relations-acces`, `zones-d-arrets`, `relations` | Downloaded and inspected (hierarchy ZdC → ZdA → arrêt, accès → ZdA); not needed for the SNCF pilot. Will anchor RATP lifts (ZdC-level) later. |
 | GTFS `pathways.txt` | 5,034 pathways, all walkways (mode 1), no levels → no lift topology. |
 | Accèslibre (ERP accessibility) | Proximity to a station is not a verified accessible path; using it would overstate access. |

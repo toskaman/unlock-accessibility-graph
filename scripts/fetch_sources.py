@@ -47,7 +47,7 @@ def main() -> None:
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--skip-gtfs", action="store_true")
     a = ap.parse_args()
-    manifest = json.loads(MANIFEST_PATH.read_text()) if MANIFEST_PATH.exists() else {}
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8")) if MANIFEST_PATH.exists() else {}
     for key, s in SOURCES.items():
         if a.only and key not in a.only:
             continue
@@ -65,7 +65,7 @@ def main() -> None:
         }
         print(f"  {n} bytes sha256={sha[:12]}", flush=True)
     MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+    MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
     print(f"manifest -> {MANIFEST_PATH}")
 
 

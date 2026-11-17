@@ -65,7 +65,7 @@ def build_network(gtfs_zip: Path) -> dict:
                                       "lat": round(float(ps["stop_lat"] or s["stop_lat"]), 6),
                                       "lon": round(float(ps["stop_lon"] or s["stop_lon"]), 6)})
         platforms[pid] = {"id": pid, "station_id": zone_id, "name": s["stop_name"],
-                          "wheelchair": {"1": "ACCESSIBLE", "2": "NOT_ACCESSIBLE"}.get(s["wheelchair_boarding"], "UNKNOWN"),
+                          "wheelchair": {"1": "ACCESSIBLE", "2": "NOT_ACCESSIBLE"}.get(s.get("wheelchair_boarding", ""), "UNKNOWN"),
                           "lat": round(float(s["stop_lat"]), 6), "lon": round(float(s["stop_lon"]), 6),
                           "modes": set(), "lines": set()}
     lines = {}

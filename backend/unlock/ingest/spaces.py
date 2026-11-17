@@ -15,6 +15,8 @@ QUAI_NUMBER            side names "Quai N" and the station has a "Voie N"
 NAME_VOIE_TOKEN        description empty; track found in the lift *name*
 NAMED_SPACE            side names a non-platform space ("souterrain", "hall");
                        identical normalised names in one station are merged
+NAMED_SPACE_WITH_TRACK the same side also names an exit next to the track
+                       ("Hall et Voies A et S"): the landing opens on both
 UNSPECIFIED_END        description gives only one side; the other end is a
                        per-lift placeholder that never connects to anything
 =====================  =======================================================
@@ -85,7 +87,10 @@ def extract_codes(side: str, station_codes: set[str]) -> tuple[set[str], set[str
     for a, b in _RANGE_RE.findall(side):
         found += [str(i) for i in range(int(a), int(b) + 1)]
     for grp in _VOIE_RE.findall(side):
-        found += [t for t in re.split(r"\s*(?:,|\bet\b|&|-|\ba\b)\s*", grp) if t]
+        toks = [t for t in re.split(r"\s*(?:,|\bet\b|&|-)\s*|\s+", grp) if t]
+        # "a" is a range word ("voies 1 a 4") only between two numbers; elsewhere it is track A ("voies A et S")
+        found += [t for i, t in enumerate(toks)
+                  if not (t == "a" and 0 < i < len(toks) - 1 and toks[i - 1].isdigit() and toks[i + 1].isdigit())]
     found += _V_RE.findall(side)
     if found:
         derivation = "VOIE_TOKEN"
@@ -173,6 +178,13 @@ def derive(station_uuid: str, quay_codes: set[str], lifts: list[tuple[str, str |
                 for c in sorted(codes):
                     topo.serves.append(ServesFact(lift_id, platform(c), "NAME_VOIE_TOKEN" if used_name else der, side, idx))
                 resolved_any = True
+                # "Hall et Voies A et S": the same landing also opens on an exit
+                rest = _VOIE_RE.sub(" ", side)
+                rest = re.sub(r"\bet\b|,|&", " ", rest).strip()
+                if rest and not used_name and classify_named(rest) == "EXIT":
+                    sid = f"{station_uuid}:space:{slug(rest)}"
+                    topo.spaces.setdefault(sid, SpaceFact(sid, rest, "EXIT"))
+                    topo.serves.append(ServesFact(lift_id, sid, "NAMED_SPACE_WITH_TRACK", side, idx))
                 continue
             role = classify_named(side)
             sid = f"{station_uuid}:space:{slug(side)}"

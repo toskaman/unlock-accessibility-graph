@@ -357,3 +357,16 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
 .reach-legend { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
 .reachbox p { margin: 2px 0; }
 .dot.green { background: var(--ok); }
+.liftlist { font-size: 13px; margin: 6px 0; }
+.liftlist summary { cursor: pointer; font-weight: 700; }
+.tripwatch { margin-top: 18px; }
+.tripwatch h2 { font-size: 16px; margin: 0 0 6px; }
+.tw-list { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
+.tw-list li { border-left: 4px solid var(--ink-3); padding: 4px 8px; background: rgba(0,0,0,.03); }
+.tw-list li.v-ok { border-left-color: var(--ok); } .tw-list li.v-doubt { border-left-color: #c98a12; } .tw-list li.v-cut { border-left-color: var(--ko); }
+.tw-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.tw-badge { font-weight: 700; margin-right: 4px; }
+.tw-changed { color: var(--ko); font-weight: 700; }
+.tw-alert { font-weight: 700; color: var(--ko); margin: 6px 0; }
+.regionpick { font-size: 13px; font-weight: 700; margin-right: 12px; }
+.regionpick select { font: inherit; font-weight: 400; padding: 3px 6px; margin-left: 4px; }

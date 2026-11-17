@@ -114,3 +114,32 @@ dropped. After the fix (round 2 on the changed cases): 34 correct / 4 superset /
 * Journeys are ordered station pairs, not trips or people; transfers are assumed step-free between two
   boardable platforms of the same station (GTFS `parent_station`), which is what `wheelchair_boarding`
   promises for each platform separately.
+
+## v0.6.0 — the RATP gap closed, and what a night snapshot looks like (17 Nov 2026)
+
+With an Opendatasoft key (created on the entrant's account; never stored in the repo), IDFM's *État des ascenseurs*
+gives the status of all 986 lifts in IDF stations (391 RATP, 595 SNCF), collected from agents' station rounds and
+published three times a day, each lift with the levels it joins. UNLOCK reads the RATP lifts into per-station lift
+graphs (METHODOLOGY §9) and uses them in the best view instead of the frozen PRIM messages.
+
+| Snapshot 17 Nov 2026 (IDFM 00:26 UTC = 01:26 Paris, SNCF 23:30 UTC, PRIM 00:26 UTC) | Value |
+|---|---|
+| Confirmed step-free journeys — published / best / PRIM feed | 256,592 / **207,509** / 88,255 |
+| Best view, possible if every lift of unknown status works | 252,556 |
+| RATP lifts in IDFM's dataset: available / not available / unknown | 190 / 22 / 179 (166 of them: night switch-off suspected) |
+| RATP boarding points evaluated on lift graphs: CLOSED / DOUBT | 2 / 89 |
+| PRIM RATP messages matched to an IDFM lift: contradicted / confirmed / unclear | 18 / 1 / 20 (of 39; 53 not matchable) |
+| PRIM SNCF messages contradicted by SNCF's hourly feed | 225 of 264 |
+| Journeys hidden by contradicted PRIM messages | 93,776 |
+| PRIM lift content identical across fetches | 4 of 4 (16 Nov 19:13 → 17 Nov 00:26 UTC) |
+
+**The night trap.** The first import counted 188 RATP lifts "not available — liftFailure". 163 of them had changed
+status after midnight Paris time, i.e. when the metro and RER close and lifts are switched off. Counting them as
+outages would have produced a hundred fake repairs ranked by "journeys given back". UNLOCK now records a lift that
+became not available since 23:00 in a night snapshot as UNKNOWN (`NIGHT_CLOSURE_SUSPECTED`, raw status kept) and the
+UI, bulletin and MCP say how many. SNCF's hourly file has no per-lift time (23 SNCF lifts out at 00:30 vs 16 at
+16:30), so no such rule is possible there — another reason to refresh in the daytime before quoting figures.
+
+**Second region.** Auvergne-Rhône-Alpes from national data (docs/REGIONS.md): 327 stations in the SNCF timetable,
+51 declared wheelchair-accessible, 2,550 published step-free journeys, 2,070 confirmed with SNCF's status (5 stations
+affected: Lyon Gorge de Loup, Vienne, Pontcharra-sur-Bréda, …).

@@ -1,0 +1,137 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 228,
+  "lifts_no_resolved_end": 6,
+  "lifts_one_resolved_end": 5,
+  "lifts_two_resolved_ends": 217,
+  "lifts_with_status_record": 228,
+  "lines_non_bus": 143,
+  "netex_stop_places_in_region": 330,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 234,
+  "quay_step_free_INACCESSIBLE": 584,
+  "quays": 818,
+  "stations_matched_to_zone": 328,
+  "stations_unmatched_to_zone": 2,
+  "status_AVAILABLE": 195,
+  "status_UNAVAILABLE": 24,
+  "status_UNKNOWN": 9,
+  "zone_line_links": 1155,
+  "zones": 328
+ },
+ "space_roles": {
+  "PLATFORM": 216,
+  "CONNECTOR": 70,
+  "EXIT": 71,
+  "UNSPECIFIED": 17,
+  "UNRESOLVED_PLATFORM": 17,
+  "UNRESOLVED": 15
+ },
+ "serves_derivations": {
+  "VOIE_TOKEN": 246,
+  "NAMED_SPACE": 272,
+  "NAMED_SPACE_WITH_TRACK": 27,
+  "UNSPECIFIED_END": 17,
+  "NAME_VOIE_TOKEN": 5
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Livron-sur-Drôme",
+   "lift_id": "4415b5f2-0c2d-4b01-906b-13100d019b3f",
+   "token": "2"
+  },
+  {
+   "station": "Livron-sur-Drôme",
+   "lift_id": "f7b519e6-1672-497c-85fd-5f7fbe7d49f8",
+   "token": "1"
+  },
+  {
+   "station": "Loriol-sur-Drôme",
+   "lift_id": "fb96815b-479b-4fcf-aa67-8ea2acb02431",
+   "token": "1"
+  },
+  {
+   "station": "Loriol-sur-Drôme",
+   "lift_id": "c0021871-2cad-4351-a822-2a227506a300",
+   "token": "2"
+  },
+  {
+   "station": "Lancey",
+   "lift_id": "29426fd2-50c2-474e-bba3-d82148af46f0",
+   "token": "1"
+  },
+  {
+   "station": "Lancey",
+   "lift_id": "55524687-4a3d-4fce-bf51-530d6cfe23dd",
+   "token": "2"
+  },
+  {
+   "station": "Voiron",
+   "lift_id": "099380d1-5eae-49ee-9961-c1b31cce824e",
+   "token": "2"
+  },
+  {
+   "station": "Voiron",
+   "lift_id": "f81c1f97-c914-4465-b347-cd393bbac252",
+   "token": "2bis"
+  },
+  {
+   "station": "Balbigny",
+   "lift_id": "9edcb748-ef86-4a0a-bbbb-954d553fa099",
+   "token": "2"
+  },
+  {
+   "station": "Balbigny",
+   "lift_id": "a7a1e77d-0c0f-41f8-b444-08c57185426a",
+   "token": "1"
+  },
+  {
+   "station": "Feurs",
+   "lift_id": "fbe577c8-0bc0-485a-b51f-670171000dee",
+   "token": "2"
+  },
+  {
+   "station": "Feurs",
+   "lift_id": "95ec5dbb-94b4-4376-8f55-154269c072fa",
+   "token": "1"
+  },
+  {
+   "station": "L'Arbresle",
+   "lift_id": "b3f662c3-bdaa-49cb-822e-576012da0afb",
+   "token": "2"
+  },
+  {
+   "station": "L'Arbresle",
+   "lift_id": "43a6d4ac-9b12-4ae5-b24c-8523c20b7dc4",
+   "token": "1"
+  },
+  {
+   "station": "Irigny Yvours",
+   "lift_id": "98b5df5a-17b3-4a92-8e12-84cfbf777e23",
+   "token": "1"
+  },
+  {
+   "station": "Irigny Yvours",
+   "lift_id": "1a94bb08-adcd-4eb4-8dc5-06a600831375",
+   "token": "2"
+  },
+  {
+   "station": "Quincieux",
+   "lift_id": "50b6c00d-df78-4e28-a0da-db621bae8fad",
+   "token": "2"
+  },
+  {
+   "station": "Quincieux",
+   "lift_id": "feaa91dd-44b7-47ea-8f60-d1dca162965d",
+   "token": "1"
+  },
+  {
+   "station": "Villefranche-sur-Saône",
+   "lift_id": "85120451-625b-44fa-86d0-ea39b5a9044b",
+   "token": "3"
+  }
+ ],
+ "unmatched_token_count": 19
+}

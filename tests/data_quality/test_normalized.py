@@ -45,7 +45,7 @@ def test_coordinates_inside_ile_de_france(doc):
 
 
 def test_every_serves_edge_is_labelled(doc):
-    allowed = {"VOIE_TOKEN", "QUAI_NUMBER", "NAME_VOIE_TOKEN", "NAMED_SPACE", "UNSPECIFIED_END"}
+    allowed = {"VOIE_TOKEN", "QUAI_NUMBER", "NAME_VOIE_TOKEN", "NAMED_SPACE", "NAMED_SPACE_WITH_TRACK", "UNSPECIFIED_END"}
     assert {f["derivation"] for f in doc["serves"]} <= allowed
 
 
@@ -81,3 +81,16 @@ def test_outage_snapshot_is_placed_and_free_of_secrets():
                    for a in o["affects"])
         assert o["first_reported"] <= o["last_update"]
     assert "apikey" not in raw.lower() and "token" not in raw.lower()
+
+
+def test_idfm_lift_snapshot_is_consistent_and_secret_free():
+    p = NET.parent / "idfm_lifts.json"
+    if not p.exists():
+        pytest.skip("no IDFM lift-status snapshot")
+    raw = p.read_text(encoding="utf-8")
+    doc = json.loads(raw)
+    assert doc["counts"]["lifts"] == len(doc["lifts"]) == len({l["id"] for l in doc["lifts"]})
+    assert {l["status"] for l in doc["lifts"]} <= {"AVAILABLE", "UNAVAILABLE", "UNKNOWN"}
+    assert all(l["status_note"] in (None, "NIGHT_CLOSURE_SUSPECTED") for l in doc["lifts"])
+    assert all(l["status"] == "UNKNOWN" for l in doc["lifts"] if l["status_note"])
+    assert "apikey" not in raw.lower()

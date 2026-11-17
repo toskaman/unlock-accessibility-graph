@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { api, ApiError } from "./api";
+import { api, ApiError, setApiRegion } from "./api";
 import { MapView } from "./components/MapView";
 import { RegionView } from "./components/RegionView";
 import { STATE_LABEL, StationSection } from "./components/StationSection";
-import type { Analysis, Candidate, Critical, Explanation, LiftCandidate, PairClass, PairView, Ranking, Resolution, StationGraph, StationRow, Summary, View } from "./types";
+import type { RegionInfo, Analysis, Candidate, Critical, Explanation, LiftCandidate, PairClass, PairView, Ranking, Resolution, StationGraph, StationRow, Summary, View } from "./types";
 
 const CLASS_LABEL: Record<PairClass, string> = {
   CONFIRMED_ACCESSIBLE: "Confirmed step-free",
@@ -38,6 +38,11 @@ function downloadJSON(name: string, data: unknown) {
 export default function App() {
   const [mode, setMode] = useState<"region" | "station">(() => (location.hash.includes("station=") ? "station" : "region"));
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [region, setRegion] = useState<string>("idf");
+  const [regions, setRegions] = useState<RegionInfo[]>([]);
+  useEffect(() => {
+    api.regions().then((rs) => { setRegions(rs); const d = rs.find((r) => r.default); if (d) setRegion(d.code); }).catch(() => setRegions([]));
+  }, []);
   const [stations, setStations] = useState<StationRow[]>([]);
   const [stationId, setStationId] = useState<string | null>(null);
   const [graph, setGraph] = useState<StationGraph | null>(null);
@@ -208,7 +213,8 @@ export default function App() {
           <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button></div>
         </header>
         {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>Dismiss</button></div>}
-        <RegionView onError={setError} onOpenStation={(id) => { setMode("station"); selectStation(id); }} />
+        <RegionView key={region} region={region} regions={regions} onRegion={(c) => { setApiRegion(regions.find((r) => r.code === c)?.default ? null : c); setRegion(c); }}
+          onError={setError} onOpenStation={(id) => { setApiRegion(null); setRegion("idf"); setMode("station"); selectStation(id); }} />
         {inspect && <Inspector summary={summary} onClose={() => setInspect(false)} />}
       </div>
     );

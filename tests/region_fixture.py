@@ -54,3 +54,15 @@ def line_reports() -> dict:
           {"line": {"id": "line:R1", "links": [{"type": "disruption", "id": "d3"}, {"type": "disruption", "id": "d4"}]}, "pt_objects": []}]
     return {"fetched_at": "2026-11-16T19:00:00+00:00", "source": "fixture://prim",
             "pages": [{"pagination": {}, "disruptions": dis, "line_reports": lr}]}
+
+
+def idfm_lifts() -> dict:
+    """IDFM « État des ascenseurs » records: the only lift to Beta's M1 quay towards Gamma is out; a hall lift works."""
+    R = lambda lid, zdc, status, direction: {"zdcid": zdc, "zdcname": ST[zdc], "liftid": f"RATP:LiftEquipment:{lid}:LOC",
+                                             "liftstatus": status, "liftreason": None, "liftdirection": direction,
+                                             "liftsituation": "", "liftstateupdate": "2026-11-16T08:00",
+                                             "privateelevatorid": f"ASC:RATP:{lid}", "liftmode": "Metro"}
+    recs = [R("501", "Z3", "notavailable", "Accès 1 rue Beta  /  Ligne M1 direction Gamma"),
+            R("502", "Z3", "available", "Accès 2 rue Beta  /  Salle d'échange"),
+            {**R("x", "Z1", "available", ""), "liftid": "L3"}]           # SNCF lift: same id as the station layer
+    return {"fetched_at": "2026-11-17T00:00:00+00:00", "records": recs}

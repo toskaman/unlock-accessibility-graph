@@ -103,8 +103,11 @@ export type ViewSummary = { view: RegionViewName; confirmed: number; possible: n
   boarding_points: { total: number; doubt: number; closed: number }; stations_affected: number };
 export type FeedInfo = { id: string; observed_at: string; last_lift_update: string | null; last_other_update: string | null;
   lift_messages_stale_days: number | null; licence: string; source: string };
+export type RegionInfo = { code: string; name: string; network_label: string; center: [number, number]; zoom: number; default?: boolean };
 export type RegionOverview = {
-  available: boolean; feed: FeedInfo | null;
+  available: boolean; feed: FeedInfo | null; region: RegionInfo; has_feed: boolean;
+  idfm_status: { observed_at: string; observed_paris?: string; night_closure_suspected?: number; ratp_lifts: number; ratp_unavailable: number; ratp_unknown: number; points_closed: number; points_doubt: number } | null;
+  entries_source: { key: string; title: string; role: string; licence: string } | null;
   network: { stations: number; stations_with_boardable_platform: number; boardable_platforms: number; boarding_points: number; lines: number; stations_with_station_topology: number };
   views: Record<RegionViewName, ViewSummary>;
   outages: { lifts: number; by_operator: Record<string, number>; messages: number; older_than_30_days: number; older_than_90_days: number; oldest_days: number | null; announced_end_passed: number };
@@ -126,7 +129,7 @@ export type OutageLabel = { outage?: string; lift?: string; station: string; sta
 export type Journey = { from: { id: string; name: string; lat: number; lon: number }; to: { id: string; name: string; lat: number; lon: number }; view: RegionViewName;
   verdict: "STEP_FREE" | "STEP_FREE_IF_LIFTS_WORK" | "CUT_BY_OUTAGES" | "NO_STEP_FREE_ROUTE_PUBLISHED"; legs: Leg[]; reason?: string;
   blocking_outages?: OutageLabel[]; verification: { legs: number; verified: number; ok: boolean } };
-export type Repair = OutageLabel & { kind: "RATP_FEED_OUTAGE" | "SNCF_LIFT"; gain: number };
+export type Repair = OutageLabel & { kind: "RATP_FEED_OUTAGE" | "SNCF_LIFT" | "RATP_LIFT" | "RATP_LIFT_CHECK"; status_note?: string | null; gain: number; entries_per_day?: number | null; region_station_id?: string | null; updated?: string | null; state?: string };
 export type Correction = OutageLabel & { verdict: string; gain: number };
 export type RegionRank = { base_live_confirmed: number; base_feed_confirmed: number; repairs: Repair[]; corrections: Correction[]; computed_ms: number; method: string };
 export type OutageDetail = { id: string; lift_key: string; operator: string; text: string; station: { id: string; name: string }; first_reported: string | null; days_reported: number | null;
@@ -135,3 +138,11 @@ export type OutageDetail = { id: string; lift_key: string; operator: string; tex
 export type Reconciliation = { counts: Record<string, number>; feed: FeedInfo;
   rows: { outage: string; lift: string | null; verdict: string; sncf_state?: string; station: string; text: string; lift_name: string | null; evidence?: string[] }[];
   missing_from_feed: { lift: string; name: string; station: string }[] };
+export type TripStatusName = "OK" | "DETOUR" | "AT_RISK" | "CUT" | "NO_STEP_FREE_ROUTE" | "UNKNOWN_STATION";
+export type SavedTrip = { label?: string | null; from: { id: string; name: string }; to: { id: string; name: string };
+  usual?: { board: string; alight: string; line: string }[]; last_status?: string | null };
+export type TripStatus = { status: TripStatusName; message: string; changed?: boolean; previous_status?: string | null;
+  from: { id?: string; name: string }; to: { id?: string; name: string }; label?: string;
+  observed?: { sncf_lift_status: string | null; idfm_lift_status: string | null };
+  usual?: { board: string; alight: string; line: string; board_name: string; alight_name: string; line_name: string }[];
+  blocking?: OutageLabel[] };

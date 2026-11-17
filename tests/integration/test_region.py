@@ -5,13 +5,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from conftest import build_fixture_doc
-from region_fixture import line_reports, network
+from region_fixture import idfm_lifts, line_reports, network
 from unlock.api.app import create_app
 from unlock.db import GraphStore
 from unlock.engine.resolve import build_index
 from unlock.engine.service import UnlockService
 from unlock.ingest.load import import_document
-from unlock.network.load_net import import_network, import_outages
+from unlock.network.idfm_lifts import normalize_file
+from unlock.network.load_net import import_idfm_lifts, import_network, import_outages
 from unlock.network.normalize_net import build_outages_file
 from unlock.network.service import NetworkService
 
@@ -106,3 +107,75 @@ def test_region_absent_is_graceful(tmp_path):
     with TestClient(create_app(path)) as c:
         assert c.get("/api/region/overview").status_code == 404
         assert c.get("/api/health").json()["ok"]
+
+
+def test_idfm_lift_status_replaces_prim_for_ratp(region_store, tmp_path):
+    raw = tmp_path / "idfm_raw.json"
+    raw.write_text(json.dumps(idfm_lifts()), encoding="utf-8")
+    normalize_file(network(), raw=raw, out=tmp_path / "idfm_lifts.json")
+    with GraphStore(region_store) as db:
+        res = import_idfm_lifts(db, tmp_path / "idfm_lifts.json")
+    assert res["lifts"] == 3 and res["connects"] == 1 and res["same_lift"] == 1
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        assert ns.ratp_states["M:Z3a|M1"] == ("CLOSED", "STATION_LIFT_GRAPH")
+        assert "M:Z3b|M1" not in ns.ratp_states            # arrival-only quay: no lift lists it
+        o = ns.overview()
+        assert o["idfm_status"]["ratp_lifts"] == 2 and o["idfm_status"]["points_closed"] == 1
+        # the closed quay is not even "possible" any more in the best view
+        assert o["views"]["best"]["confirmed"] == 9 and o["views"]["best"]["possible"] == 9
+        rank = ns.rank(5)
+        top = rank["repairs"][0]
+        assert top["kind"] == "RATP_LIFT" and top["lift"].endswith("501:LOC") and top["gain"] > 0
+        lifts = ns.station_lifts("Z3")
+        assert [l["status"] for l in lifts] == ["UNAVAILABLE", "AVAILABLE"] and lifts[0]["lines"] == ["1"] and lifts[1]["lines"] == []
+
+
+def test_rider_alerts_and_bulletin(region_store, tmp_path):
+    raw = tmp_path / "idfm_raw.json"
+    raw.write_text(json.dumps(idfm_lifts()), encoding="utf-8")
+    normalize_file(network(), raw=raw, out=tmp_path / "idfm_lifts.json")
+    assert (tmp_path / "idfm_lift_history.json").exists()
+    with GraphStore(region_store) as db:
+        assert import_idfm_lifts(db, tmp_path / "idfm_lifts.json")["observations"] == 1
+    from unlock.network import bulletin
+    from unlock.network.alerts import run_file
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        assert ns.trip_status("Z2", "Z1")["status"] == "OK"
+        t = ns.trip_status("Z1", "Z4")          # R1 to Beta, then M1 from the quay whose only lift is out
+        assert t["status"] == "CUT" and t["usual_blocked_at"][0]["state"] == "CLOSED"
+        assert "cut at Beta" in t["message"] and t["blocking"][0]["lift"].endswith("501:LOC")
+        trips = tmp_path / "trips.json"
+        trips.write_text(json.dumps({"trips": [{"label": "work", "from": "Testville", "to": "Gamma", "last_status": "OK"}]}))
+        res = run_file(ns, trips, tmp_path / "reports")
+        assert res["trips"][0]["status"] == "CUT" and res["trips"][0]["changed"] is True
+        saved = json.loads(trips.read_text())["trips"][0]
+        assert saved["last_status"] == "CUT" and saved["usual"][0]["line"] == "R1"
+        b = bulletin.build(ns)
+        assert b["repairs"][0]["kind"] == "RATP_LIFT" and b["changes"]["since"] is None
+        md, page = bulletin.to_markdown(b), bulletin.to_html(b)
+        assert "## Fix first" in md and "Beta" in md and page.startswith("<!DOCTYPE html>") and "<script" not in page
+    app = create_app(region_store)
+    with TestClient(app) as c:
+        r = c.post("/api/region/trips/check", json={"trips": [{"from": "Z1", "to": "Z4"}, {"from": "nowhere", "to": "Z4"}]})
+        assert r.status_code == 200 and [x["status"] for x in r.json()["trips"]] == ["CUT", "UNKNOWN_STATION"]
+        assert c.post("/api/region/trips/check", json={"trips": []}).status_code == 422
+        assert c.post("/api/region/trips/check", json={"trips": [{"from": "Z1", "to": "Z4",
+                      "usual": [{"board": "R:Z1", "alight": "R:Z3", "line": "nope"}]}]}).status_code == 422
+        assert c.get("/api/region/bulletin").json()["format"] == "unlock-bulletin/1"
+        assert c.get("/api/region/bulletin.html").text.startswith("<!DOCTYPE html>")
+
+
+def test_several_regions_served_side_by_side(region_store, tmp_path):
+    import shutil
+    other = tmp_path / "other.rl"
+    shutil.copytree(region_store, other) if region_store.is_dir() else shutil.copy(region_store, other)
+    with TestClient(create_app(region_store, regions={"zz": other})) as c:
+        rs = c.get("/api/regions").json()
+        assert [r["code"] for r in rs] == ["idf", "zz"] and rs[0]["default"] and not rs[1]["default"]
+        a = c.get("/api/region/overview").json()
+        b = c.get("/api/region/overview?region=zz").json()
+        assert b["region"]["code"] == "zz" and a["views"]["published"] == b["views"]["published"]
+        assert c.get("/api/region/overview?region=nope").status_code == 404
+        assert c.post("/api/region/trips/check?region=zz", json={"trips": [{"from": "Z2", "to": "Z1"}]}).json()["trips"][0]["status"] == "OK"

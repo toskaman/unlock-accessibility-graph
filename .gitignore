@@ -24,3 +24,5 @@ frontend/playwright-report/
 database/e2e/
 !database/snapshot/
 !database/snapshot/*.rl
+database/regions/
+reports/

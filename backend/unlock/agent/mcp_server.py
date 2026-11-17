@@ -46,7 +46,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.5.0")
+                    version="0.6.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
@@ -194,6 +194,17 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
             f"{o['views']['best']['confirmed']}, PRIM feed {o['views']['feed']['confirmed']}; stale messages hide "
             f"{s['journeys_hidden']}.",
         ]
+        if o.get("idfm_status"):
+            i = o["idfm_status"]
+            o["key_facts"].insert(2, (
+                f"IDFM's lift-status dataset (observed {i['observed_at']}) lists {i['ratp_lifts']} RATP lifts: "
+                f"{i['ratp_unavailable']} out of service, {i['ratp_unknown']} unknown; on the station lift graphs that closes "
+                f"{i['points_closed']} RATP boarding points and leaves {i['points_doubt']} in doubt. It contradicts "
+                f"{rec.get('RATP_GHOST', 0)} of the {rec.get('RATP_GHOST', 0) + rec.get('RATP_CONFIRMED', 0) + rec.get('RATP_UNCLEAR', 0)} "
+                f"RATP PRIM messages UNLOCK can match to a lift. The best view uses it for RATP lifts."
+                + (f" Snapshot taken at night (Paris {i['observed_paris']}): {i['night_closure_suspected']} lifts switched "
+                   f"off since 23:00 are counted as unknown (end-of-service shutdown suspected), not as outages."
+                   if i.get("night_closure_suspected") else "")))
         return o
 
     @mcp.tool()
@@ -205,12 +216,33 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     @mcp.tool()
     def station_outages(station_name: str) -> dict[str, Any]:
         """Lift outages the PRIM feed lists at a station (any operator), with age, affected platforms/lines and,
-        for SNCF lifts, the matched lift and SNCF's own current status."""
+        for SNCF lifts, the matched lift and SNCF's own current status; plus every lift IDFM's lift-status dataset
+        lists at the station (RATP and SNCF) with its current status and the lines it serves."""
         s = _station(station_name)
         if not s:
             return {"status": "NOT_FOUND"}
         return {"station": s, "outages": [net.outage_view(o) for o, x in sorted(net.outages.items())
-                                          if x["station_id"] == s["id"]]}
+                                          if x["station_id"] == s["id"]],
+                "lift_status": net.station_lifts(s["id"]), "lift_status_source": net.idfm_feed}
+
+    @mcp.tool()
+    def usual_trip_alert(from_station: str, to_station: str) -> dict[str, Any]:
+        """Rider alert: is this usual trip step-free today? Status OK / DETOUR (usual route blocked, step-free
+        alternative given) / AT_RISK (only via lifts of uncertain status) / CUT / NO_STEP_FREE_ROUTE, with the lifts
+        that block the usual route and the time of the lift-status data used."""
+        a, b = _station(from_station), _station(to_station)
+        if not a or not b:
+            return {"status": "NOT_FOUND", "missing": from_station if not a else to_station}
+        return net.trip_status(a["id"], b["id"])
+
+    @mcp.tool()
+    def maintenance_bulletin() -> dict[str, Any]:
+        """Today's step-free access bulletin for maintenance and passenger-information teams: headline, repairs
+        ranked by journeys regained (ties: busiest station first), stations cut off and their lifts, lift-status
+        changes since the previous observation, unknown statuses, PRIM messages to correct. Returns Markdown."""
+        from ..network import bulletin as B
+        b = B.build(net)
+        return {"markdown": B.to_markdown(b), "headline": b["headline"], "freshness": b["freshness"]}
 
     mcp._unlock_db = db  # closed by main() before interpreter shutdown
     return mcp

@@ -7,33 +7,34 @@
   "lifts_one_resolved_end": 249,
   "lifts_two_resolved_ends": 338,
   "lifts_with_status_record": 588,
-  "lines_non_bus": 51,
-  "netex_stop_places_idf": 401,
+  "lines_non_bus": 52,
+  "netex_stop_places_in_region": 401,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 842,
   "quay_step_free_INACCESSIBLE": 438,
   "quays": 1280,
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 565,
-  "status_UNAVAILABLE": 16,
+  "status_AVAILABLE": 558,
+  "status_UNAVAILABLE": 23,
   "status_UNKNOWN": 7,
-  "zone_line_links": 551,
+  "zone_line_links": 552,
   "zones": 392
  },
  "space_roles": {
-  "UNRESOLVED_PLATFORM": 82,
+  "UNRESOLVED_PLATFORM": 72,
   "UNSPECIFIED": 251,
-  "EXIT": 166,
-  "PLATFORM": 485,
+  "EXIT": 179,
+  "PLATFORM": 515,
   "CONNECTOR": 107,
   "UNRESOLVED": 15,
   "PRIVATE": 11
  },
  "serves_derivations": {
-  "NAMED_SPACE": 564,
+  "NAMED_SPACE": 553,
   "UNSPECIFIED_END": 251,
-  "VOIE_TOKEN": 479,
+  "VOIE_TOKEN": 512,
+  "NAMED_SPACE_WITH_TRACK": 21,
   "QUAI_NUMBER": 72,
   "NAME_VOIE_TOKEN": 3
  },
@@ -72,6 +73,11 @@
    "station": "Aubergenville Élisabethville",
    "lift_id": "bb7c58d4-2ad6-44a0-8166-c6b954237d02",
    "token": "b"
+  },
+  {
+   "station": "Aubergenville Élisabethville",
+   "lift_id": "2b6080bb-6815-4154-afa1-2434c9bbca4c",
+   "token": "a"
   },
   {
    "station": "Maisons-Laffitte",
@@ -247,11 +253,6 @@
    "station": "Nanterre La Folie",
    "lift_id": "2e0092c4-ce43-4afb-a9ec-f9e8cff4e684",
    "token": "bc"
-  },
-  {
-   "station": "Nanterre La Folie",
-   "lift_id": "9cf7323d-ac6d-474e-b976-618eaa1cf569",
-   "token": "1"
   },
   {
    "station": "Aulnay-sous-Bois",

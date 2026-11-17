@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, ApiError } from "../api";
-import type { Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
+import type { RegionInfo, Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
+import { TripWatch } from "./TripWatch";
 import { RegionMap } from "./RegionMap";
 
 const VIEW_LABEL: Record<RegionViewName, string> = {
@@ -9,7 +10,7 @@ const VIEW_LABEL: Record<RegionViewName, string> = {
   published: "Published network",
 };
 const VIEW_HELP: Record<RegionViewName, string> = {
-  best: "SNCF's hourly lift status (read on UNLOCK's station topology) + the PRIM feed for RATP lifts",
+  best: "SNCF's hourly lift status + IDFM's lift status for RATP (refreshed several times a day), both read on station lift graphs",
   feed: "Every lift outage listed in the PRIM traffic-information feed",
   published: "Platforms declared wheelchair-boardable, no outage at all",
 };
@@ -25,10 +26,10 @@ const VERDICT: Record<Journey["verdict"], { cls: string; title: string }> = {
   NO_STEP_FREE_ROUTE_PUBLISHED: { cls: "v-none", title: "No step-free route in the published network" },
 };
 const STATE_WORD = { OPEN: "open", DOUBT: "lift listed out", CLOSED: "cut off" } as const;
-const EXAMPLES: [string, string, string, string][] = [
-  ["73798", "Rosa Parks", "478505", "Juvisy"],
-  ["65582", "Garges - Sarcelles", "71410", "Gare du Nord"],
-];
+const EXAMPLES: Record<string, [string, string, string, string][]> = {
+  idf: [["73798", "Rosa Parks", "478505", "Juvisy"], ["65582", "Garges - Sarcelles", "71410", "Gare du Nord"]],
+  ara: [["OCE87721175", "Lyon Gorge de Loup", "OCE87723197", "Lyon Part Dieu"], ["OCE87747006", "Grenoble", "OCE87722587", "Vienne"]],
+};
 const n = (x: number | undefined | null) => (x == null ? "—" : x.toLocaleString("en-GB"));
 const date = (s?: string | null) => (s ? new Date(s.length <= 19 ? s + "Z" : s).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
 const stamp = (s?: string | null) => (s ? new Date(s).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC" : "—");
@@ -65,7 +66,8 @@ function StationPicker({ label, value, onPick }: { label: string; value: { id: s
   );
 }
 
-export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfStationId: string) => void; onError: (m: string) => void }) {
+export function RegionView({ onOpenStation, onError, region, regions, onRegion }: { onOpenStation: (sncfStationId: string) => void; onError: (m: string) => void;
+  region: string; regions: RegionInfo[]; onRegion: (code: string) => void }) {
   const [view, setView] = useState<RegionViewName>("best");
   const [ov, setOv] = useState<RegionOverview | null>(null);
   const [stations, setStations] = useState<RegionStation[]>([]);
@@ -76,8 +78,9 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
   const [to, setTo] = useState<{ id: string; name: string } | null>(null);
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
   const [selected, setSelected] = useState<string | null>(null);
-  const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[] } | null>(null);
-  const [busy, setBusy] = useState<string | null>("Computing step-free journeys across Île-de-France…");
+  const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[];
+    lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
+  const [busy, setBusy] = useState<string | null>("Computing step-free journeys across the region…");
   const [reach, setReach] = useState<Reach | null>(null);
   const fail = (e: unknown) => onError(e instanceof ApiError ? e.message : String(e));
 
@@ -109,17 +112,29 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
   const j = journeys[view] || null;
   const v = ov?.views[view];
   const pub = ov?.views.published;
+  const VIEWS: RegionViewName[] = ov && !ov.has_feed ? ["best", "published"] : ["best", "feed", "published"];
+  const isDefault = !!regions.find((r) => r.code === region)?.default;
+  const examples = EXAMPLES[region] || [];
+  const help = (x: RegionViewName) => (x === "best" && ov && !ov.idfm_status ? "SNCF's hourly lift status, read on station lift graphs" : VIEW_HELP[x]);
+  const usage = ov?.entries_source?.key === "sncf_frequentation" ? "passengers a day" : "validations a day";
   const selectedStation = useMemo(() => stations.find((s) => s.id === selected) || null, [stations, selected]);
 
   return (
     <div className="region">
       <div className="rhead">
+        {regions.length > 1 && (
+          <label className="regionpick">Region{" "}
+            <select value={region} onChange={(e) => onRegion(e.target.value)}>
+              {regions.map((r) => <option key={r.code} value={r.code}>{r.name} — {r.network_label}</option>)}
+            </select>
+          </label>
+        )}
         <div className="viewswitch light" role="tablist" aria-label="Which lift status to believe">
-          {(["best", "feed", "published"] as RegionViewName[]).map((x) => (
-            <button key={x} role="tab" aria-selected={view === x} className={view === x ? "on" : ""} onClick={() => setView(x)} title={VIEW_HELP[x]}>{VIEW_LABEL[x]}</button>
+          {VIEWS.map((x) => (
+            <button key={x} role="tab" aria-selected={view === x} className={view === x ? "on" : ""} onClick={() => setView(x)} title={help(x)}>{VIEW_LABEL[x]}</button>
           ))}
         </div>
-        <p className="muted small">{VIEW_HELP[view]}.</p>
+        <p className="muted small">{help(view)}.</p>
       </div>
 
       <aside className="left">
@@ -132,7 +147,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
             <span className="muted small">or try:</span>
           </div>
           <div className="chips">
-            {EXAMPLES.map(([a, an, b, bn]) => (
+            {examples.map(([a, an, b, bn]) => (
               <button key={a + b} className="chip" onClick={() => { const A = { id: a, name: an }, B = { id: b, name: bn }; setFrom(A); setTo(B); check(A, B); }}>{an} → {bn}</button>
             ))}
           </div>
@@ -164,7 +179,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
                 </details>
               )}
               <div className="jcompare">
-                {(["best", "feed", "published"] as RegionViewName[]).filter((x) => x !== view).map((x) => journeys[x] && (
+                {VIEWS.filter((x) => x !== view).map((x) => journeys[x] && (
                   <button key={x} className={`mini ${VERDICT[journeys[x]!.verdict].cls}`} onClick={() => setView(x)}>
                     {VIEW_LABEL[x]}: {VERDICT[journeys[x]!.verdict].title.toLowerCase()}
                   </button>
@@ -175,6 +190,8 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
           )}
         </section>
 
+        <TripWatch region={region} journey={journeys.best || null} onError={onError} />
+
         {selectedStation && (
           <section className="stationcard" aria-live="polite">
             <div className="sc-head">
@@ -182,7 +199,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
               <button className="ghost dark small" onClick={() => setSelected(null)}>Close</button>
             </div>
             {selectedStation.entries_per_day != null && (
-              <p className="muted tiny">≈ {n(selectedStation.entries_per_day)} ticket validations a day (all riders, Apr–Jun 2026)</p>
+              <p className="muted tiny">≈ {n(selectedStation.entries_per_day)} {ov?.entries_source?.key === "sncf_frequentation" ? "passengers a day (2025 yearly total ÷ 365, SNCF)" : "ticket validations a day (all riders, Apr–Jun 2026)"}</p>
             )}
             {reach && reach.origin.id === selectedStation.id && (
               <div className="reachbox" aria-live="polite">
@@ -201,8 +218,19 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
               selectedStation.state === "OPEN" ? "All boardable platforms open in this view." :
               selectedStation.state === "DOUBT" ? "A listed lift outage concerns a boardable platform here; UNLOCK can't tell if another lift serves it." :
               "UNLOCK's station topology shows no platform keeps a confirmed step-free route to the street."}</p>
-            {view === "best" && stationOut?.outages.some((o) => o.operator === "SNCF_GC") && (
-              <p className="muted tiny">This view reads SNCF lifts from SNCF's hourly feed; the PRIM messages below are shown for comparison.</p>
+            {!!stationOut?.lifts?.length && (
+              <details className="liftlist" open={stationOut.lifts.some((l) => l.status !== "AVAILABLE")}>
+                <summary>{stationOut.lifts.length} lift{stationOut.lifts.length > 1 ? "s" : ""} in IDFM's lift status — {stationOut.lifts.filter((l) => l.status === "UNAVAILABLE").length} out of service</summary>
+                <ul className="olist">
+                  {stationOut.lifts.map((l) => (
+                    <li key={l.id}><span className={`pst s-${l.status === "AVAILABLE" ? "OPEN" : l.status === "UNAVAILABLE" ? "CLOSED" : "DOUBT"}`}>{l.status === "AVAILABLE" ? "working" : l.status === "UNAVAILABLE" ? "out of service" : "unknown"}</span>{" "}
+                      {l.direction || l.id} <span className="muted tiny">· {l.operator} · updated {l.updated || "—"}{l.reported_by_prim ? " · also in PRIM" : ""}</span></li>
+                  ))}
+                </ul>
+              </details>
+            )}
+            {view === "best" && !!stationOut?.outages.length && (
+              <p className="muted tiny">This view reads lift status from SNCF's and IDFM's status datasets; the PRIM messages below are shown for comparison.</p>
             )}
             {stationOut?.outages.length ? (
               <ul className="olist">
@@ -221,7 +249,7 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
                 ))}
               </ul>
             ) : <p className="muted small">The PRIM feed lists no lift outage here.</p>}
-            {selectedStation.sncf_station && selectedStation.detail && (
+            {isDefault && selectedStation.sncf_station && selectedStation.detail && (
               <button className="primary small" onClick={() => onOpenStation(selectedStation.sncf_station!)}>Open inside the station →</button>
             )}
           </section>
@@ -233,12 +261,12 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
           <section className="headline" aria-label="Region-wide step-free journeys">
             <div className="hl-main">
               <p className="hl-num">{n(v.confirmed)}</p>
-              <p className="hl-cap">step-free station-to-station journeys confirmed in Île-de-France {VIEW_PHRASE[view]}</p>
+              <p className="hl-cap">step-free station-to-station journeys confirmed in {ov.region.name} {VIEW_PHRASE[view]}</p>
               <p className="small muted">{n(pub.confirmed)} published between {n(ov.network.stations_with_boardable_platform)} stations
                 {v.possible > v.confirmed && <> · {n(v.possible - v.confirmed)} more only if every listed lift works</>}</p>
             </div>
             <div className="hl-bars" aria-label="Confirmed journeys by view">
-              {(["published", "best", "feed"] as RegionViewName[]).map((x) => (
+              {(["published", "best", "feed"] as RegionViewName[]).filter((x) => VIEWS.includes(x)).map((x) => (
                 <button key={x} className={`hl-bar ${x === view ? "on" : ""}`} onClick={() => setView(x)}>
                   <span className="hb-label">{VIEW_LABEL[x]}</span>
                   <span className="hb-track"><span className={`hb-fill hb-${x}`} style={{ width: `${(100 * ov.views[x].confirmed) / pub.confirmed}%` }} /></span>
@@ -253,15 +281,21 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
             <p><strong>The regional lift-outage feed has stopped moving.</strong> PRIM still lists {n(ov.outages.lifts)} lifts as out of service
               ({n(ov.outages.messages)} messages); none of them changed since {date(ov.feed.last_lift_update)} — {ov.feed.lift_messages_stale_days} days — while
               other traffic messages were updated {date(ov.feed.last_other_update)}.</p>
-            <p>SNCF's own hourly feed contradicts {n(ov.stale_messages.messages_contradicted)} of the {n(ov.outages.by_operator.SNCF_GC)} SNCF lifts it lists.
+            <p>SNCF's own hourly feed contradicts {n(ov.reconciliation.GHOST + ov.reconciliation.UNRESOLVED_STATION_ALL_WORKING)} of the {n(ov.outages.by_operator.SNCF_GC)} SNCF lifts it lists.
               Those stale messages alone hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</p>
+            {!!ov.idfm_status?.night_closure_suspected && (
+              <p><strong>Night snapshot.</strong> IDFM's lift status was read at {ov.idfm_status.observed_paris?.slice(11)} (Paris): {n(ov.idfm_status.night_closure_suspected)} RATP lifts switched off since 23:00 are treated as <em>unknown</em> (end-of-service shutdown), not as outages.</p>
+            )}
+            {(ov.reconciliation.RATP_GHOST ?? 0) > 0 && (
+              <p>IDFM's own lift-status dataset (refreshed several times a day) also contradicts {n(ov.reconciliation.RATP_GHOST)} of the {n((ov.reconciliation.RATP_GHOST ?? 0) + (ov.reconciliation.RATP_CONFIRMED ?? 0) + (ov.reconciliation.RATP_UNCLEAR ?? 0))} RATP messages UNLOCK can match to a lift.</p>
+            )}
             {ov.feed_watch && ov.feed_watch.observations > 1 && (
               <p className="tiny">UNLOCK fetched the feed {ov.feed_watch.observations} times between {stamp(ov.feed_watch.first_observed)} and {stamp(ov.feed_watch.last_observed)}:
                 the lift content was {ov.feed_watch.all_identical ? "identical every time" : `identical in the last ${ov.feed_watch.identical_lift_content}`} (same hash of all {n(ov.outages.messages)} messages).</p>
             )}
           </section>
         )}
-        <RegionMap stations={stations} reach={reach && !j ? { origin: reach.origin.id, classes: reach.classes } : null}
+        <RegionMap center={ov?.region.center} zoom={ov?.region.zoom} label={ov ? `${ov.region.name} — ${ov.region.network_label}` : undefined} stations={stations} reach={reach && !j ? { origin: reach.origin.id, classes: reach.classes } : null}
                    journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }} />
         {reach && !j ? (
           <div className="legend region-legend" aria-label="Map legend — step-free reach">
@@ -286,19 +320,23 @@ export function RegionView({ onOpenStation, onError }: { onOpenStation: (sncfSta
       <aside className="right">
         <div className="rtabs" role="tablist" aria-label="Region lists">
           <button role="tab" aria-selected={tab === "repairs"} className={tab === "repairs" ? "on" : ""} onClick={() => setTab("repairs")}>Repairs that matter</button>
+          {ov?.has_feed !== false && <>
           <button role="tab" aria-selected={tab === "stale"} className={tab === "stale" ? "on" : ""} onClick={() => setTab("stale")}>Stale messages</button>
           <button role="tab" aria-selected={tab === "missing"} className={tab === "missing" ? "on" : ""} onClick={() => setTab("missing")}>Not in the feed</button>
+          </>}
         </div>
         {tab === "repairs" && rank && (
           <section aria-label="Repairs ranked by journeys given back">
-            <p className="small">Fix one lift, give back this many confirmed step-free journeys (best available status).</p>
+            <p className="small">Fix one lift, give back this many confirmed step-free journeys (best available status). Equal gains: busiest station first.</p>
+            <p className="small"><a href={`/api/region/bulletin.html${isDefault ? "" : `?region=${region}`}`} target="_blank" rel="noopener">Today's maintenance bulletin (printable)</a></p>
             <ol className="rank">
               {rank.repairs.map((r) => (
                 <li key={r.outage || r.lift}>
-                  <button onClick={() => setSelected(r.station_id || null)}>
+                  <button onClick={() => setSelected((r.kind === "SNCF_LIFT" ? r.region_station_id : r.station_id) || null)}>
                     <span className="gain">+{n(r.gain)}</span>
                     <span className="rbody"><span className="rwho"><strong>{r.station}</strong>{r.lines?.map((l) => <span key={l} className="tag">{l}</span>)}</span>
-                      <span className="small clamp">{r.kind === "SNCF_LIFT" ? `${r.name} — out of service in SNCF's hourly feed` : r.text}</span>
+                      <span className="small clamp">{r.kind === "SNCF_LIFT" ? `${r.name} — out of service in SNCF's hourly feed` : r.kind === "RATP_LIFT" || r.kind === "RATP_LIFT_CHECK" ? `${r.name} — ${r.status_note === "NIGHT_CLOSURE_SUSPECTED" ? "switched off for the night — check in the morning" : r.state === "UNKNOWN" ? "status unknown — check on site" : "out of service"} in IDFM's lift status` : r.text}</span>
+                      {r.entries_per_day != null && <span className="muted tiny">≈ {n(r.entries_per_day)} {usage} at this station</span>}
                       {r.first_reported && <span className="muted tiny">listed since {date(r.first_reported)} ({days(r.first_reported)} days){r.kind === "RATP_FEED_OUTAGE" ? " · RATP, PRIM feed only — check on site" : ""}</span>}
                     </span>
                   </button>

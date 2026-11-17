@@ -88,12 +88,32 @@ class NetworkService:
         self.boardable_platforms = len(plats)
         feed = self.db.query(Q_FEED)
         self.feed = feed[0]["f"] if feed else None
+        from . import idfm_lifts as IL
+        rows = self.db.query("""MATCH (f:LiftStatusFeed) WITH f ORDER BY f.observed_at DESC LIMIT 1
+            MATCH (f)-[:LISTS]->(l:IdfmLift)-[:AT]->(s:NStation)
+            OPTIONAL MATCH (o:LiftOutage)-[:REPORTS_ON]->(l)
+            RETURN f.id AS feed, f.observed_at AS observed_at, f.night_closure_suspected AS night,
+                   l.id AS id, l.operator AS operator, l.status AS status, l.status_note AS status_note,
+                   l.reason AS reason, l.updated AS updated, l.direction AS direction, l.sides_json AS sides_json,
+                   s.id AS zdc, collect(o.id) AS reported_by ORDER BY id""")
+        self.idfm_lifts = {r["id"]: {**r, "sides": json.loads(r["sides_json"] or "[]")} for r in rows}
+        self.idfm_feed = {"id": rows[0]["feed"], "observed_at": rows[0]["observed_at"],
+                          "night_closure_suspected": rows[0]["night"] or 0} if rows else None
+        self._IL = IL
+        self.rail_lines = {l for l, v in self.lines.items() if v["mode"] == "RAIL"}
+        self.ratp_status = {i: l["status"] for i, l in self.idfm_lifts.items() if l["operator"] == "RATP"}
+        self.ratp_lifts = [l for l in self.idfm_lifts.values() if l["operator"] == "RATP"]
+        self.ratp_states = IL.point_states(self.ratp_lifts, self.ratp_status, self.rail_lines) if self.ratp_lifts else {}
         from . import feedwatch
         hist = [r["o"] for r in self.db.query("MATCH (o:FeedObservation) RETURN o {.*} AS o ORDER BY o.observed_at")]
         self.feed_watch = feedwatch.summary(hist)
         self.entries = {r["id"]: r["v"] for r in self.db.query(
             "MATCH (s:NStation) WHERE s.entries_per_day IS NOT NULL RETURN s.id AS id, s.entries_per_day AS v")}
-        rp = self.db.query("MATCH (d:Dataset {key: 'idfm_validations_ferre'}) RETURN d.title AS title, d.url AS url, d.licence AS licence")
+        rp = self.db.query("""MATCH (:NStation)-[:ENTRIES_FROM]->(d:Dataset) RETURN DISTINCT d.key AS key, d.title AS title,
+            d.url AS url, d.licence AS licence, d.role AS role LIMIT 1""")
+        rg = self.db.query("MATCH (g:Region) RETURN g {.*} AS g LIMIT 1")
+        self.region = rg[0]["g"] if rg else {"code": "idf", "name": "Île-de-France",
+                                              "network_label": "IDFM rail, metro, tram", "center": [2.35, 48.86], "zoom": 9.6}
         self.entries_source = rp[0] if rp else None
         self.outages: dict[str, dict] = {}
         if self.feed:
@@ -147,7 +167,8 @@ class NetworkService:
             out += [k] if k in self.net.platforms else list(self.points_of.get(a["platform"], []))
         return sorted(set(out))
 
-    def view_states(self, view: str, skip_outages: frozenset = frozenset(), lift_fixes: frozenset = frozenset()) -> dict[str, str]:
+    def view_states(self, view: str, skip_outages: frozenset = frozenset(), lift_fixes: frozenset = frozenset(),
+                    ratp_fixes: frozenset = frozenset()) -> dict[str, str]:
         if view == "published":
             return {}
         ratp = [o for o, x in self.outages.items() if x["operator"] != "SNCF_GC"]
@@ -173,6 +194,17 @@ class NetworkService:
                 states[p] = E.worst(states.get(p, E.OPEN), s)
             return states
         if view == "best":
+            if self.ratp_lifts:
+                states = {}
+                ratp_states = self.ratp_states
+                if ratp_fixes:
+                    st = {**self.ratp_status, **{i: "AVAILABLE" for i in ratp_fixes}}
+                    zs = {self.idfm_lifts[i]["zdc"] for i in ratp_fixes}
+                    ratp_states = {**self.ratp_states, **self._IL.point_states(
+                        [l for l in self.ratp_lifts if l["zdc"] in zs], st, self.rail_lines)}
+                for k, (s, _) in ratp_states.items():
+                    if k in self.net.platforms and s != E.OPEN:
+                        states[k] = E.worst(states.get(k, E.OPEN), s)
             live = dict(self.ss.baseline_state)
             for l in lift_fixes:
                 live[l] = A
@@ -213,7 +245,8 @@ class NetworkService:
         ops = Counter(o["operator"] for o in self.outages.values())
         rec = self.reconciliation()
         return {
-            "available": True, "feed": self.feed_info(now),
+            "available": True, "feed": self.feed_info(now), "region": self.region, "has_feed": bool(self.feed),
+            "entries_source": self.entries_source,
             "network": {"stations": len(self.stations), "stations_with_boardable_platform": len(self.net.station_platforms),
                         "boardable_platforms": self.boardable_platforms, "boarding_points": len(self.net.platforms),
                         "lines": len(self.lines),
@@ -229,6 +262,15 @@ class NetworkService:
             "reconciliation": rec["counts"],
             "stale_messages": self.stale_effect(),
             "feed_watch": self.feed_watch,
+            "idfm_status": ({**self.idfm_feed, "observed_paris": self._IL.paris_local(datetime.fromisoformat(
+                                 self.idfm_feed["observed_at"]).astimezone(timezone.utc)).isoformat(timespec="minutes"),
+                             "ratp_lifts": len(self.ratp_lifts),
+                             "ratp_unavailable": sum(1 for l in self.ratp_lifts if l["status"] == "UNAVAILABLE"),
+                             "ratp_unknown": sum(1 for l in self.ratp_lifts if l["status"] == "UNKNOWN"),
+                             "points_evaluated": len(self.ratp_states),
+                             "points_closed": sum(1 for s, _ in self.ratp_states.values() if s == E.CLOSED),
+                             "points_doubt": sum(1 for s, _ in self.ratp_states.values() if s == E.DOUBT)}
+                            if self.idfm_feed else None),
             "computed_ms": round((time.time() - t0) * 1000), "algorithm_version": REGION_ALGORITHM_VERSION,
             "method": "Ordered station pairs joined by a step-free journey (board and alight only at boardable, usable "
                       "platforms; changes inside a station). Exact reachability over the GTFS network stored in Relate.",
@@ -270,10 +312,29 @@ class NetworkService:
                                  "station_id": o["station_id"]})
                 else:
                     counts["UNRESOLVED"] += 1
+        ratp_reported = set()
+        for o in self.outages.values():
+            if o["operator"] == "SNCF_GC" or not self.ratp_lifts:
+                continue
+            hits = [l for l in self.idfm_lifts.values() if o["id"] in l["reported_by"]]
+            if not hits:
+                counts["RATP_UNMATCHED"] += 1
+                continue
+            for l in hits:
+                ratp_reported.add(l["id"])
+                verdict = {"AVAILABLE": "RATP_GHOST", "UNAVAILABLE": "RATP_CONFIRMED"}.get(l["status"], "RATP_UNCLEAR")
+                counts[verdict] += 1
+                rows.append({"outage": o["id"], "lift": l["id"], "verdict": verdict, "sncf_state": l["status"],
+                             "station_id": o["station_id"], "source": "IDFM etat-des-ascenseurs"})
+        if self.ratp_lifts:
+            counts["RATP_OUT_IN_IDFM_STATUS"] = sum(1 for l in self.ratp_lifts if l["status"] == "UNAVAILABLE")
         in_zone = {l for sid in self.sncf_of for st in self.sncf_of[sid] for l in
                    (x.id for x in self.ss.lifts.values() if x.station_id == st)}
         missing = sorted(l for l in in_zone if live.get(l) == U and l not in matched_lifts)
-        counts["MISSING_FROM_FEED"] = len(missing)
+        if self.feed:
+            counts["MISSING_FROM_FEED"] = len(missing)
+        else:
+            missing = []
         self._cache["rec"] = {"counts": dict(counts), "rows": rows, "missing": missing}
         return self._cache["rec"]
 
@@ -281,7 +342,7 @@ class NetworkService:
         """Confirmed journeys in the feed view once every G&C message that SNCF contradicts is removed."""
         if "stale" not in self._cache:
             ghosts = frozenset(r["outage"] for r in self.reconciliation()["rows"]
-                               if r["verdict"] in ("GHOST", "UNRESOLVED_STATION_ALL_WORKING"))
+                               if r["verdict"] in ("GHOST", "UNRESOLVED_STATION_ALL_WORKING", "RATP_GHOST"))
             states = self.view_states("feed", skip_outages=ghosts)
             c = self._count(states)
             base = self.view_summary("feed")["confirmed"]
@@ -329,8 +390,24 @@ class NetworkService:
             if o["operator"] != "SNCF_GC":
                 groups[frozenset(self._points_hit(o))].append(oid)
         memo: dict[Any, int] = {}
+        for lid, l in sorted(self.idfm_lifts.items()):
+            if l["operator"] != "RATP" or l["status"] == "AVAILABLE":
+                continue
+            states = self.view_states("best", ratp_fixes=frozenset([lid]))
+            key = ("live-ratp", frozenset(states.items()))
+            if key not in memo:
+                memo[key] = E.reach_counts(self.net, E.usable_sets(states, self.net.platforms)[0])[0]
+            gain = memo[key] - base_live
+            if gain > 0:
+                repairs.append({"kind": "RATP_LIFT" if l["status"] == "UNAVAILABLE" else "RATP_LIFT_CHECK",
+                                "lift": lid, "gain": gain, "state": l["status"], "status_note": l.get("status_note"),
+                                "station": self.stations[l["zdc"]]["name"], "station_id": l["zdc"],
+                                "name": l["direction"] or lid, "operator": "RATP", "first_reported": None,
+                                "updated": l["updated"],
+                                "lines": sorted({self.lines[p["line_id"]]["short_name"] for s in l["sides"]
+                                                 for p in s.get("points", []) if p["line_id"] in self.lines})})
         for oid, o in sorted(self.outages.items()):
-            if o["operator"] == "SNCF_GC":
+            if o["operator"] == "SNCF_GC" or self.ratp_lifts:
                 continue
             states = self.view_states("best", skip_outages=frozenset([oid]))
             key = ("live-skip", frozenset(states.items()))
@@ -353,12 +430,20 @@ class NetworkService:
                 st = self.ss.stations.get(l.station_id, {})
                 repairs.append({"kind": "SNCF_LIFT", "lift": lid, "gain": gain, "name": l.name, "state": s.value,
                                 "station": st.get("name"), "station_id": l.station_id})
-        repairs.sort(key=lambda r: (-r["gain"], r.get("station") or "", r.get("outage") or r.get("lift")))
+        for r in repairs:
+            sid = r.get("station_id")
+            if r["kind"] == "SNCF_LIFT":
+                sid = next((n for n, sn in self.sncf_of.items() if r.get("station_id") in sn), None)
+                r["region_station_id"] = sid
+            r["entries_per_day"] = self.entries.get(sid) if sid else None
+        # equal gains (a repair often gives back only the station's own journeys): busiest station first
+        repairs.sort(key=lambda r: (-r["gain"], r.get("state") == "UNKNOWN", -(r["entries_per_day"] or 0), r.get("station") or "",
+                                    r.get("outage") or r.get("lift")))
         # corrections: ghost G&C outages in the feed view
         base_feed = self.view_summary("feed")["confirmed"]
         corrections = []
         for row in self.reconciliation()["rows"]:
-            if row["verdict"] not in ("GHOST", "UNRESOLVED_STATION_ALL_WORKING"):
+            if row["verdict"] not in ("GHOST", "UNRESOLVED_STATION_ALL_WORKING", "RATP_GHOST"):
                 continue
             states = self.view_states("feed", skip_outages=frozenset([row["outage"]]))
             key = ("feed-skip", frozenset(states.items()))
@@ -371,7 +456,7 @@ class NetworkService:
         res = {"base_live_confirmed": base_live, "base_feed_confirmed": base_feed, "repairs": repairs,
                "corrections": corrections, "evaluations": len(memo), "computed_ms": round((time.time() - t0) * 1000),
                "method": "Each candidate is evaluated alone against the same view; gain = additional confirmed "
-                         "ordered station pairs. Deterministic order: gain, station name, id."}
+                         "ordered station pairs. Order: gain, then daily validations at the station (busiest first), name, id."}
         self._cache["rank"] = res
         return {**res, "repairs": repairs[:limit], "corrections": corrections[:limit]}
 
@@ -404,6 +489,13 @@ class NetworkService:
         out.sort()
         return [{"id": sid, "name": name, "boardable": sid in self.net.station_platforms} for _, _, name, sid in out[:limit]]
 
+    def find_station(self, ref: str) -> str | None:
+        """Station id from an id or a name (exact normalized name first, then best search hit)."""
+        if ref in self.stations:
+            return ref
+        hits = self.station_search(ref, limit=1)
+        return hits[0]["id"] if hits else None
+
     def check_journey(self, a: str, b: str, view: str = "best") -> dict[str, Any]:
         if a not in self.stations or b not in self.stations:
             raise KeyError("unknown station")
@@ -429,6 +521,65 @@ class NetworkService:
         for l in res["legs"]:
             l["path"] = self.leg_path(l)
         return res
+
+    TRIP_STATUS = ("OK", "DETOUR", "AT_RISK", "CUT", "NO_STEP_FREE_ROUTE")
+
+    def trip_status(self, a: str, b: str, usual: list[dict] | None = None, view: str = "best") -> dict[str, Any]:
+        """Rider alert for a usual trip. `usual` = the rider's usual legs [{board, alight, line}] (platform ids, as
+        check_journey returns them); default = the route of the published network. Status:
+        OK (usual route step-free now), DETOUR (usual route blocked, another confirmed step-free route exists),
+        AT_RISK (no confirmed route; one exists if lifts in doubt work), CUT (no step-free route at all today),
+        NO_STEP_FREE_ROUTE (none even on the published network)."""
+        if a not in self.stations or b not in self.stations:
+            raise KeyError("unknown station")
+        self.view_summary(view)
+        states = self._cache[f"sum:{view}"]["_states"]
+        if usual is None:
+            legs = E.journey(self.net, set(self.net.platforms), a, b, self.hops)
+            if legs is None:
+                return {"from": self._st(a), "to": self._st(b), "status": "NO_STEP_FREE_ROUTE", "usual": [],
+                        "message": self._why_none(a, b)}
+            usual = [self._leg(l, states) for l in legs]
+        bad = []
+        for l in usual:
+            for side in ("board", "alight"):
+                k = f"{l[side]}|{l['line']}"
+                if k not in self.net.platforms:
+                    raise KeyError(f"unknown boarding point {k}")
+                s = states.get(k, E.OPEN)
+                if s != E.OPEN:
+                    bad.append({"point": k, "station": self.stations[self.net.platforms[k]["station_id"]]["name"],
+                                "line": self.lines.get(l["line"], {}).get("short_name"), "side": side, "state": s})
+        now = self.check_journey(a, b, view)
+        res = {"from": self._st(a), "to": self._st(b), "view": view, "observed": self._freshness(),
+               "usual": [{k: l[k] for k in ("board", "alight", "line", "board_name", "alight_name", "line_name")}
+                         for l in usual], "usual_blocked_at": bad}
+        cut = sorted({x["station"] for x in bad if x["state"] == E.CLOSED})
+        unsure = sorted({x["station"] for x in bad if x["state"] != E.CLOSED} - set(cut))
+        where = "; ".join(filter(None, [f"cut at {', '.join(cut)}" if cut else "",
+                                        f"uncertain at {', '.join(unsure)} (a lift on the way is out or its status is unknown)"
+                                        if unsure else ""]))
+        nice = lambda legs: " then ".join(f"{l['line_name']} {l['board_name']} → {l['alight_name']}" for l in legs)
+        if not bad:
+            res["status"], res["message"] = "OK", "Your usual route is step-free today."
+        elif now["verdict"] == "STEP_FREE":
+            res["status"] = "DETOUR"
+            res["alternative"] = now["legs"]
+            res["message"] = (f"Your usual route is {where}. Step-free alternative today: {nice(now['legs'])}.")
+        elif now["verdict"] == "STEP_FREE_IF_LIFTS_WORK":
+            res["status"] = "AT_RISK"
+            res["alternative"] = now["legs"]
+            res["message"] = (f"Your usual route is {where}. The only step-free route left depends on lifts whose status is uncertain: {nice(now['legs'])}.")
+        else:
+            res["status"] = "CUT"
+            res["message"] = f"No step-free route today: your usual route is {where}, and so is every other route."
+        if res["status"] != "OK":
+            res["blocking"] = self._blocking(usual, view)
+        return res
+
+    def _freshness(self) -> dict:
+        return {"sncf_lift_status": (self.ss.snapshot or {}).get("observed_at"),
+                "idfm_lift_status": self.idfm_feed["observed_at"] if self.idfm_feed else None}
 
     def leg_path(self, leg: dict) -> list[list[float]]:
         """Coordinates of the stops ridden on one leg, read from the NEXT chain of one of its patterns."""
@@ -473,7 +624,7 @@ class NetworkService:
         pts = {(l["board"], l["line"]) for l in legs} | {(l["alight"], l["line"]) for l in legs}
         out = []
         for oid, o in sorted(self.outages.items()):
-            if view == "best" and o["operator"] == "SNCF_GC":
+            if view == "best" and (o["operator"] == "SNCF_GC" or self.ratp_lifts):
                 continue
             if view == "published":
                 break
@@ -489,6 +640,14 @@ class NetworkService:
                                     l.get(f"{'board' if pid == l['board'] else 'alight'}_state", E.OPEN) != E.OPEN:
                                 out.append({"lift": lift.id, "name": lift.name, "station": self.stations[sid]["name"],
                                             "state": self.ss.baseline_state[lift.id].value, "operator": "SNCF_GC"})
+        if view == "best" and self.ratp_lifts:
+            for l in self.ratp_lifts:
+                if l["status"] == "AVAILABLE":
+                    continue
+                touched = {(p["platform_id"], p["line_id"]) for s in l["sides"] for p in s.get("points", [])}
+                if touched & pts:
+                    out.append({"lift": l["id"], "name": l["direction"], "station": self.stations[l["zdc"]]["name"],
+                                "state": l["status"], "operator": "RATP", "updated": l["updated"]})
         seen, uniq = set(), []
         for x in out:
             k = x.get("outage") or x.get("lift")
@@ -575,7 +734,7 @@ RETURN DISTINCT t.id AS id"""
         for p, s in states.items():
             by_station[self.net.platforms[p]["station_id"]].append(s)
         n_out = Counter(o["station_id"] for o in self.outages.values()
-                        if not (view == "best" and o["operator"] == "SNCF_GC"))
+                        if not (view == "best" and (o["operator"] == "SNCF_GC" or self.ratp_lifts)))
         feats = []
         for sid, s in sorted(self.stations.items()):
             if sid in self.net.station_platforms:
@@ -588,6 +747,19 @@ RETURN DISTINCT t.id AS id"""
                           "outages": n_out.get(sid, 0), "detail": bool(self._p_all.get(sid)),
                           "sncf_station": (self.sncf_of.get(sid) or [None])[0]})
         return {"view": view, "stations": feats}
+
+    def station_lifts(self, sid: str) -> list[dict]:
+        """IDFM « État des ascenseurs » entries at this station (RATP and SNCF lifts), with the platforms they reach."""
+        out = []
+        for l in sorted(self.idfm_lifts.values(), key=lambda l: (l["status"] == "AVAILABLE", l["id"])):
+            if l["zdc"] != sid:
+                continue
+            out.append({"id": l["id"], "operator": l["operator"], "status": l["status"], "updated": l["updated"],
+                        "status_note": l.get("status_note"),
+                        "direction": l["direction"], "reported_by_prim": bool(l["reported_by"]),
+                        "lines": sorted({self.lines[p["line_id"]]["short_name"] for s in l["sides"]
+                                         for p in s.get("points", []) if p["line_id"] in self.lines})})
+        return out
 
     def station_outages(self, sid: str, view: str = "best") -> list[dict]:
         """Every lift outage the PRIM feed lists at this station (the UI says which ones the view ignores)."""

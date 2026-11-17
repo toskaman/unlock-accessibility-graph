@@ -66,3 +66,22 @@ AccessibilityAssertion 1,681 · TransferZone 392 · Line 51 · Dataset 4; SERVES
 
 Counts (snapshot 2026-11-16): NStation 996 · NPlatform 1,953 · NLine 59 · NPattern 1,055 · NEXT 14,077 · LEG 14,147 ·
 IS_ZONE 392 · LiftOutage 356 · AFFECTS 583 · MATCHES_LIFT 168.
+
+## Lift status, alerts, regions (v0.6.0)
+
+```
+(:LiftStatusFeed {id: "idfm_etat_ascenseurs@<sha12>", observed_at, sha256, lifts, night_closure_suspected})
+   -[:LISTS]->(:IdfmLift {id, operator RATP|SNCF, status AVAILABLE|UNAVAILABLE|UNKNOWN, status_note, raw_status,
+                          reason, updated, direction, situation, sides_json})
+(:IdfmLift)-[:AT]->(:NStation)                                   same IDFM ZdC id
+(:IdfmLift)-[:CONNECTS {line_id, side, derivation}]->(:NPlatform)  a platform side of the lift (DIRECTION_MATCH | LINE_AT_STATION)
+(:IdfmLift)-[:SAME_LIFT {derivation: SAME_ID}]->(:Lift)           SNCF lifts: same id as the NeTEx station layer
+(:LiftOutage)-[:REPORTS_ON {derivation: SIRI_EQUIPMENT_ID}]->(:IdfmLift)   PRIM message ↔ lift
+(:LiftStatusFeed)-[:OBSERVED_AS]->(:LiftStatusObservation {observed_at, lifts, not_available, not_available_json})
+(:Region {code, name, network_label, center, zoom})              only in second-region stores
+(:NStation)-[:ENTRIES_FROM]->(:Dataset)                          IDFM validations, or SNCF Fréquentation en gares
+```
+
+The service reads only the latest `LiftStatusFeed`. Rider trips are not stored anywhere on the server.
+A second region is a separate store (`database/regions/<code>.rl`) with the same labels; its `NStation.id` is the
+GTFS stop-area id (`OCE87723197`) and `TransferZone` nodes are those stop areas (`zones_dataset: sncf_gtfs`).

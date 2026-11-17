@@ -92,7 +92,7 @@ STATEMENTS: list[tuple[str, str]] = [
             o.observed_at = r.observed_at, o.source_label = r.source_label,
             o.source_location = r.source_location, o.dataset_sha256 = d.sha256
         MERGE (l)-[:HAS_STATUS]->(o) MERGE (o)-[:REPORTED_IN]->(d)"""),
-    ("zones", """UNWIND $rows AS r MATCH (d:Dataset {key: 'idfm_zones_correspondance'})
+    ("zones", """UNWIND $rows AS r MATCH (d:Dataset {key: r.dataset})
         MERGE (z:TransferZone {id: r.id})
         SET z.name = r.name, z.type = r.type, z.town = r.town, z.lon = r.lon, z.lat = r.lat,
             z.in_zdc_reference = r.in_zdc_reference
@@ -100,7 +100,7 @@ STATEMENTS: list[tuple[str, str]] = [
     ("station_zone", """UNWIND $rows AS r MATCH (s:Station {id: r.station_id}) MATCH (z:TransferZone {id: r.zone_id})
         MERGE (s)-[e:IN_TRANSFER_ZONE]->(z)
         SET e.distance_m = r.distance_m, e.name_score = r.name_score, e.derivation = r.derivation"""),
-    ("lines", """UNWIND $rows AS r MATCH (d:Dataset {key: 'idfm_gtfs'})
+    ("lines", """UNWIND $rows AS r MATCH (d:Dataset {key: r.dataset})
         MERGE (n:Line {id: r.id})
         SET n.short_name = r.short_name, n.long_name = r.long_name, n.mode = r.mode,
             n.color = r.color, n.text_color = r.text_color
@@ -115,6 +115,9 @@ def _rows_for(doc: dict, key: str) -> list[dict]:
         return doc["stations"]
     if key == "quay_assertions":
         return doc["quays"]
+    if key in ("zones", "lines"):   # which dataset describes them (IDFM ZdC + GTFS, or a national GTFS)
+        ds = doc.get(f"{key}_dataset") or {"zones": "idfm_zones_correspondance", "lines": "idfm_gtfs"}[key]
+        return [{**r, "dataset": ds} for r in doc.get(key, [])]
     return doc.get(key, [])
 
 
@@ -148,9 +151,10 @@ def import_all(db: GraphStore, normalized_dir: Path = NORMALIZED_DIR) -> dict[st
     result = run_import(db, normalized_dir / "graph_input.json")
     if (normalized_dir / "network.json").exists():
         from ..engine.resolve import build_index
-        from ..network.load_net import import_feed_history, import_network, import_outages
+        from ..network.load_net import import_feed_history, import_idfm_lifts, import_network, import_outages
         result["network"] = import_network(db, normalized_dir / "network.json")
         result["outages"] = import_outages(db, normalized_dir / "network_outages.json", resolver=build_index(db))
         result["feed_observations"] = import_feed_history(db, normalized_dir / "outage_feed_history.json")
+        result["idfm_lifts"] = import_idfm_lifts(db, normalized_dir / "idfm_lifts.json")
         result["after"] = db.counts()
     return result

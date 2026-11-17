@@ -46,3 +46,15 @@ This is a good-faith reading of the licence text, not legal advice.
   message text, dates and placement for the 356 lifts listed on 16 Nov 2026. *Contains information from
   Île-de-France Mobilités (PRIM), « Calculateur Île-de-France Mobilités – Messages Info Trafic », licensed under the
   Licence Mobilités.* The raw API response (`data/raw/prim/`) is not committed and the access token never is.
+
+## Added in v0.6.0
+
+* **IDFM *État des ascenseurs* (Licence Mobilités)** — `data/normalized/idfm_lifts.json` keeps, for each of the 986
+  lifts, its status, update time, the level text and UNLOCK's placement on network platforms;
+  `data/normalized/idfm_lift_history.json` keeps the lifts not available at each fetch. *Contains information from
+  Île-de-France Mobilités, « État des ascenseurs », licensed under the Licence Mobilités.* The access key is never
+  stored in the repository.
+* **SNCF *Horaires SNCF* GTFS and *Fréquentation en gares* (ODbL 1.0)** — `data/normalized/regions/ara/` (second
+  region) is a derived database under the **ODbL 1.0**. *Contains information from SNCF Voyageurs (« Horaires
+  SNCF ») and SNCF Gares & Connexions (« Fréquentation en gares », « Accessibilité des gares »), made available under
+  the ODbL.*

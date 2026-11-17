@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-16T23:14:21+00:00",
+"observed_at": "2026-11-17T00:26:26+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,22 +8,22 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 29941104,
-"sha256": "63838c2777c44e3d485238073ce88f0c923dd0dbf68520e2f4124e0a612bcc23",
-"retrieved_at": "2026-11-16T23:14:21+00:00",
+"bytes": 29712939,
+"sha256": "485609ef7e0a4b88d27ceb2e5daf33b17eb5b026c38176a160cf15dad1634f1d",
+"retrieved_at": "2026-11-17T00:26:26+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-17T00:04:17",
+"feed_non_lift_last_update": "2026-11-17T01:24:57",
 "counts": {
 "lifts": 356,
 "messages": 1047,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
-"affects_RAIL_STATION": 472,
+"affects_RAIL_STATION": 474,
 "operator_RATP": 89,
 "operator_SNCF_GC": 264,
 "operator_UNKNOWN": 3,
@@ -3105,6 +3105,12 @@
 "line_id": "IDFM:C01863",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
+},
+{
+"platform_id": "IDFM:monomodalStopPlace:462394",
+"line_id": "IDFM:C02372",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
 }
 ],
 "directions": []
@@ -3190,6 +3196,12 @@
 {
 "platform_id": "IDFM:monomodalStopPlace:462394",
 "line_id": "IDFM:C01863",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
+"platform_id": "IDFM:monomodalStopPlace:462394",
+"line_id": "IDFM:C02372",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 }

@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.6.0 — 2026-11-17
+- **Fresh RATP lift status.** IDFM *État des ascenseurs* (986 lifts, 3 updates a day, free Opendatasoft key —
+  created on the entrant's account, stored outside the repo) imported as `(:IdfmLift)` with the levels each lift
+  joins (`CONNECTS` to boarding points, `SAME_LIFT` to the 566 SNCF lifts of the station layer, `REPORTS_ON` from
+  39 PRIM messages). Per-station RATP lift graph (street ↔ halls ↔ platforms): RATP points can now be CLOSED, not
+  only DOUBT. The best view no longer uses the frozen PRIM messages. Snapshot 17 Nov 01:26 Paris: best view
+  **207,509** confirmed journeys of 256,592 (252,556 possible); IDFM contradicts 18 of the 39 RATP messages it can
+  be matched to.
+- **Night snapshots handled honestly**: lifts switched off since 23:00 in a night snapshot are UNKNOWN
+  (`NIGHT_CLOSURE_SUSPECTED`), not outages (166 on 17 Nov 01:26); the UI, bulletin and MCP say so (D26).
+- **Rider alerts** ("is my usual trip still step-free today?"): *Watch* a checked journey (kept in the browser),
+  `POST /api/region/trips/check`, `python -m unlock alerts trips.json` for a scheduled check, MCP
+  `usual_trip_alert`. Statuses OK / DETOUR (with the detour) / AT_RISK / CUT / NO_STEP_FREE_ROUTE.
+- **Daily maintenance bulletin**: `python -m unlock bulletin`, `/api/region/bulletin(.html)`, MCP
+  `maintenance_bulletin` — repairs ranked by journeys given back (ties: busiest station), *check first* list,
+  stations cut off and their lifts, changes since the previous lift-status fetch (`(:LiftStatusObservation)`),
+  messages to correct.
+- **Second region — Auvergne-Rhône-Alpes** from national data only (SNCF NeTEx, SNCF hourly status, SNCF national
+  GTFS, *Fréquentation en gares*): `python -m unlock build-region ara`, region picker in the UI, `?region=ara` on
+  every region endpoint. 327 stations, 51 declared wheelchair-accessible, 2,070 of 2,550 step-free journeys
+  confirmed on 17 Nov. Same engine, store layout and tests.
+- **Parser fix found while generalising** (D30): « Voies A et S » lost track A (read as "à"), and an exit named
+  beside a track (« Hall et Voies A et S ») was dropped. Île-de-France station layer: +54/−11 SERVES edges,
+  1,662 pairs (was 1,497), 653 confirmed, 213 single points of failure (was 191).
+- `python -m unlock refresh` (SNCF + PRIM + IDFM status, rebuild every region); `fetch-lifts`.
+- Repairs with equal gains ordered by daily station use (D28). `fetch_sources.py` reads/writes the manifest as
+  UTF-8 (Windows wrote cp1252).
+- Tests: 87 pytest + 10 Playwright e2e (new: IDFM parsing and station lift graph, night rule, rider alerts,
+  bulletin, multi-region API, second-region builder, rider-alert UI flow).
+
 ## 0.5.0 — 2026-11-17
 - **Feed watch**: every `fetch-outages` appends one observation (time, counts, last lift update, SHA-256 of all lift
   messages) to `data/normalized/outage_feed_history.json`, imported as `(:FeedObservation)` nodes. Three fetches

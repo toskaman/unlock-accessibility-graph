@@ -11,18 +11,26 @@ for the whole region and down to a single underpass:
 * **Where can I go from here in a wheelchair?** — click a station: the whole map shows what is reachable step-free.
 * **Can I get from A to B in a wheelchair?** — with the route, and the outages on the way.
 * **Which repair gives the most back?** — region-wide, then lift by lift inside a station.
-* **Is the outage data even right?** — UNLOCK cross-checks the regional outage feed against the operator's own.
+* **Is the outage data even right?** — UNLOCK cross-checks the regional outage feed against the operators' own.
+* **Is my usual trip still step-free today?** — watch a trip; UNLOCK re-checks it against today's lift status and
+  proposes a step-free detour ([rider alerts](docs/RIDER_ALERTS.md)).
+* **What should the lift teams do this morning?** — a one-page [daily bulletin](docs/BULLETIN.md) generated from
+  the graph.
+* **Does it work elsewhere?** — the same code runs on **Auvergne-Rhône-Alpes** from national SNCF open data
+  ([second region](docs/REGIONS.md)).
 
 Every number on screen is computed on the graph and can be traced back to a source record.
 
-> **What the data showed on 16 Nov 2026.** The PRIM traffic-information API lists **356 lifts out of service**
+> **What the data showed on 16–17 Nov 2026.** The PRIM traffic-information API lists **356 lifts out of service**
 > (1,047 messages) — and **none of those messages has changed since 9 October 2026**, while every other traffic
-> message is updated the same day — three fetches over four hours returned byte-identical lift content. SNCF's own hourly lift feed reports **235 of the 264 SNCF lifts it lists as
-> working**. Those stale messages alone hide **96,340** step-free journeys from anyone who builds on the feed.
+> message is updated the same day: four fetches over five hours returned byte-identical lift content. SNCF's own
+> hourly lift feed reports **225 of the 264 SNCF lifts it lists as working**, and IDFM's own lift-status dataset
+> contradicts **18 of the 39 RATP messages** UNLOCK can match to a lift. Those stale messages alone hide
+> **93,776** step-free journeys from anyone who builds on the feed.
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
 **▶ Demo video:** v0.2.0 (station mode, 1 min 36 s): [unlock-demo.mp4](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4).
-The v0.3.0 region mode is shown in the screenshots below.
+The region mode (v0.6.0) is shown in the screenshots below.
 
 ![UNLOCK whole-region mode: three views, frozen-feed finding, map and repair ranking](docs/media/region-overview.png)
 
@@ -45,36 +53,55 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 
 | You have… | Do this | You get |
 |---|---|---|
+| **A trip you make every day** | *Whole region* → check it → *Watch* (or `python -m unlock alerts trips.json`, or the API) | Each time: *step-free today* / *detour needed* (with the detour) / *at risk* / *cut*, and the lifts responsible. Trips stay in your browser. |
+| **Lift teams to brief** | *Repairs that matter* → *Today's maintenance bulletin*, or `python -m unlock bulletin` | A printable page: repairs ranked by journeys given back (ties: busiest station), stations cut off and their lifts, changes since the last fetch, statuses to check, messages to correct. |
+| **Another region** | `python -m unlock build-region ara`, then the region picker | The same views, journeys, alerts and bulletin for Auvergne-Rhône-Alpes trains. |
 | **A trip to make** | *Whole region* → *Can I get there in a wheelchair?* | The least-cost step-free route under each view (best available status / PRIM feed / published network), each leg re-checked in Relate, and the outages listed on the way. |
 | **A region to run** | *Whole region* → *Repairs that matter* | Every listed outage and every SNCF lift out of service, ranked by the step-free journeys its repair gives back across Île-de-France. |
 | **Doubts about the data** | *Whole region* → *Stale messages* / *Not in the feed* | PRIM messages SNCF contradicts, ranked by the journeys they hide; SNCF outages PRIM doesn't show. A draft note to IDFM is in `docs/research/PRIM_LIFT_FEED_NOTE.md`. |
 | **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | *Inside a station* → *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed**. |
-| **A maintenance budget for a station network** | *Inside a station* → *Repairs to make* / *Lifts you can't lose* | Lifts ranked by confirmed in-station connections restored; 191 single points of failure. |
+| **A maintenance budget for a station network** | *Inside a station* → *Repairs to make* / *Lifts you can't lose* | Lifts ranked by confirmed in-station connections restored; 213 single points of failure. |
 | **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, including `check_journey` and `region_overview`. |
 
 ## Whole region in one minute
 
+Figures below: snapshot of **17 Nov 2026, 01:26 Paris** (the app recomputes them from whatever snapshot is
+loaded; `python -m unlock refresh` fetches a new one). A night snapshot matters: lifts switched off at the end of
+service appear in IDFM's dataset as failures — UNLOCK counts the 166 switched off since 23:00 as *unknown*, never as
+outages, and says so on screen.
+
 1. The app opens on **Whole region**. The headline is the number of ordered station pairs joined by a
-   confirmed step-free journey: **256,592** in the published network, **192,377** with the best available lift
-   status, **88,255** if you believe the PRIM feed.
-2. The amber card explains the gap: PRIM's lift messages have not moved for 38 days, and SNCF contradicts
-   235 of its 264 SNCF entries.
+   confirmed step-free journey: **256,592** in the published network, **207,509** with the best available lift
+   status (SNCF's hourly feed for SNCF lifts, IDFM's lift-status dataset for RATP lifts, both read on station lift
+   graphs), **88,255** if you believe the PRIM feed.
+2. The amber card explains the gap: PRIM's lift messages have not moved for 38 days; SNCF contradicts 225 of its
+   264 SNCF entries and IDFM's own dataset 18 of the 39 RATP entries it can be matched to.
 3. *Can I get there in a wheelchair?* — **Rosa Parks → Juvisy**: step-free with the best status (RER E then
    RER C); with the PRIM feed only *possible if listed lifts work* (11 outages listed on the route). Each leg
-   says "re-checked in Relate".
-4. *Repairs that matter*: **La Croix de Berny** (+27,156): with the Viroflay Rive Gauche lift also listed out
-   (since Nov 2025), the T6/T10 tram stations lose their only confirmed step-free connections. These RATP
-   entries come only from the frozen feed — the UI says *check on site*.
-5. Click **Rosa Parks** on the map: the whole region recolours — 437 stations reachable step-free from there with the
-   best available status (66 only if listed lifts work, 3 cut), together ≈ 2.8 million validations a day. With the
-   PRIM feed: 294. *Re-derived in Relate with Cypher: 437 = 437.*
+   says "re-checked in Relate". *Watch* it: it joins *My usual trips* and is re-checked at every visit.
+4. *Repairs that matter*: equal gains (a repair usually gives one station back to the whole network: +912
+   journeys) are ordered by how busy the station is — **Paris Gare du Nord** (Transmanche lift AS 15, ≈ 186,920
+   validations a day) first. *Today's maintenance bulletin* turns the list into a printable page.
+5. Click **Rosa Parks** on the map: the whole region recolours — 455 stations reachable step-free from there with the
+   best available status (47 only if listed lifts work, 4 cut), together ≈ 2.8 million validations a day. With the
+   PRIM feed: 294. *Re-derived in Relate with Cypher: 455 = 455.*
 
    ![Where can I go from here? La Croix de Berny: 30 stations confirmed, 473 only if listed lifts work](docs/media/region-reach.png)
 
-6. The station card also lists each message, its age, and — for SNCF lifts — the lift UNLOCK matched it to
-   and what SNCF's hourly feed says. *Open inside the station* switches to the station cross-section.
+6. The station card lists every lift IDFM's dataset has at the station with its status, then each PRIM message,
+   its age, and — for SNCF lifts — the lift UNLOCK matched it to and what SNCF's hourly feed says.
+   *Open inside the station* switches to the station cross-section.
+7. Pick **Auvergne-Rhône-Alpes** in the region picker: 327 stations of the national SNCF timetable, 51 declared
+   wheelchair-accessible, **2,070 of 2,550** step-free journeys confirmed. *Lyon Gorge de Loup → Lyon Part Dieu*
+   is cut today (lift *Voie 2* out of service); the repair ranking puts it next to Pontcharra-sur-Bréda.
 
 ![Journey check: Rosa Parks → Juvisy compared across the three views](docs/media/region-journey.png)
+
+![My usual trips: Rosa Parks → Juvisy watched — detour needed, with the step-free detour](docs/media/rider-alert.png)
+
+![Daily maintenance bulletin generated from the graph](docs/media/bulletin.png)
+
+![Second region: Auvergne-Rhône-Alpes from national SNCF data — Lyon Gorge de Loup → Lyon Part Dieu cut today](docs/media/region-ara.png)
 
 ## Inside a station
 
@@ -87,8 +114,8 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 3. Click **Simulate outage**. Voie 50 and Voie 51 turn red, and 21 connections move from
    *Confirmed step-free* to *Blocked*. The published observations are not modified.
 4. The ranking recomputes over every lift that is out of service or unknown in Île-de-France. The
-   simulated lift ranks first (+21), ahead of the real out-of-service lifts at Mantes-la-Jolie (+13) and
-   Noisy-le-Sec (+13).
+   simulated lift ranks first (+21), ahead of the real out-of-service lifts at Mantes-la-Jolie (+15) and
+   Noisy-le-Sec (+15).
 5. Click a broken connection to see the evidence:
    - the actual Relate path (`Voie 40 –SERVES– ASC8 –SERVES– souterrain nord –SERVES– ASC3 –SERVES– Voie 50`)
    - how each edge was derived
@@ -163,14 +190,18 @@ All sources are listed in [DATA_SOURCES.md](DATA_SOURCES.md), with what was chec
 | Validations sur le réseau ferré (Q2 2026) | Île-de-France Mobilités | Licence Ouverte 2.0 | average daily validations per station — a weight, shown as context |
 | Accessibilité en gare | Île-de-France Mobilités | Licence Ouverte 2.0 | rail station accessibility level (autonomous / on request / booked AssistenGare / not accessible) |
 | Messages Info Trafic (PRIM API, tag « Ascenseur ») | Île-de-France Mobilités | Licence Mobilités | lift outages for RATP and SNCF stations — **needs a free personal PRIM token** to refresh; a snapshot is committed |
+| État des ascenseurs | Île-de-France Mobilités | Licence Mobilités | status of every RATP and SNCF lift in IDF and the levels it joins — **needs a free Opendatasoft API key** to refresh; a snapshot is committed |
+| Horaires SNCF (GTFS TER, Intercités, TGV) | SNCF Voyageurs | ODbL 1.0 | second-region network (Auvergne-Rhône-Alpes) |
+| Fréquentation en gares (2025) | SNCF Gares & Connexions | ODbL 1.0 | second-region usage weight |
 
 **Important findings from the data check:**
 
-- RATP lifts come only from the PRIM traffic messages (frozen since 9 Oct 2026); the IDFM `etat-des-ascenseurs`
-  dataset needs a separate Opendatasoft key that UNLOCK does not have.
+- RATP lift status now comes from IDFM's `etat-des-ascenseurs` dataset (refreshed several times a day; 391 RATP
+  lifts, each with the access and platform it joins, read into a per-station lift graph). The PRIM messages are
+  kept for comparison only.
 - The IDFM GTFS has no elevator pathways, so lift-to-platform links come from the publisher's location
   text. Every such edge is labelled with how it was derived.
-- 705 of the 1,497 pairs (47%) have a modeled lift route. The rest are reported as *No modeled route*,
+- 804 of the 1,662 pairs (48%) have a modeled lift route. The rest are reported as *No modeled route*,
   not as inaccessible.
 
 The derived dataset (`data/normalized/graph_input.json` and the snapshot store) is published under the
@@ -191,11 +222,14 @@ through a **read-only** Relate connection (the agent can't modify anything, even
 | `station_overview`, `network_summary`, `cypher_read(query)` | Context and read-only Cypher (row-capped) |
 | `step_free_reach(from, view)` | Region: stations reachable step-free from one station, with Cypher re-derivation |
 | `check_journey(from, to, view)` | Region: step-free verdict, legs, outages on the way, Relate re-check of every leg |
-| `region_overview`, `region_repairs`, `station_outages` | Region views, feed freshness, PRIM-vs-SNCF reconciliation, repairs and feed corrections |
+| `region_overview`, `region_repairs`, `station_outages` | Region views, feed freshness, PRIM-vs-SNCF/IDFM reconciliation, repairs and feed corrections, every lift's status at a station |
+| `usual_trip_alert(from, to)` | Rider alert: OK / DETOUR (with the detour) / AT_RISK / CUT, and the lifts responsible |
+| `maintenance_bulletin()` | Today's bulletin (Markdown) |
 
 ```bash
 pip install -e ".[agent]"
 claude mcp add unlock -- python -m unlock mcp   # Claude Code (uses database/unlock.rl); other MCP clients alike
+# another region: python -m unlock mcp --store database/regions/ara.rl
 ```
 
 **A real agent, with and without the graph.** Claude Code (model `claude-sonnet-5-5`) answered eight planner and
@@ -249,6 +283,23 @@ python -m unlock fetch-outages    # data/raw/prim/line_reports.json -> data/norm
 python -m unlock build
 ```
 
+**Refresh the RATP lift status** (needs a free Opendatasoft key from data.iledefrance-mobilites.fr → account →
+API keys; read from the environment only):
+
+```bash
+export UNLOCK_IDFM_ODS_KEY_FILE=/path/outside/the/repo/ods.key   # or UNLOCK_IDFM_ODS_KEY=...
+python -m unlock fetch-lifts      # + one observation in data/normalized/idfm_lift_history.json
+python -m unlock refresh          # or everything at once: SNCF + PRIM + IDFM status, then rebuild every region
+```
+
+**Second region, rider alerts, bulletin**
+
+```bash
+python -m unlock build-region ara           # Auvergne-Rhône-Alpes from national SNCF data (~1 min); served by `serve`
+python -m unlock alerts trips.json          # {"trips": [{"from": "Rosa Parks", "to": "Juvisy"}]} — exit 1 if a trip is not OK
+python -m unlock bulletin                   # reports/bulletin-<date>.{json,md,html}
+```
+
 **Inspect the store directly** with Relate's own Python API:
 
 ```python
@@ -273,8 +324,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 77 tests: unit, real-Relate integration, API, region, agent/MCP, data quality
-cd frontend && npx playwright test  # 9 end-to-end tests, incl. an axe-core WCAG 2.1 AA scan (0 serious/critical) (station flow + region flow, on a copy of the store)
+pytest                              # 87 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
+cd frontend && npx playwright test  # 10 end-to-end tests, incl. an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 ```
 
@@ -326,7 +377,10 @@ Main endpoints:
 - `GET /api/debug/queries`
 - `GET /api/region/overview` · `GET /api/region/map?view=best|feed|published` · `GET /api/region/rank`
 - `GET /api/region/reach?from=&view=` · `GET /api/region/journey?from=&to=&view=` · `GET /api/region/stations?q=` · `GET /api/region/reconciliation`
-- `GET /api/region/stations/{id}/outages` · `GET /api/region/outages/{id}`
+- `GET /api/region/stations/{id}/outages` (PRIM messages + every lift in IDFM's status) · `GET /api/region/outages/{id}`
+- `POST /api/region/trips/check {"trips": [{"from", "to", "usual"?, "last_status"?}]}` — rider alerts (stateless)
+- `GET /api/region/bulletin` · `GET /api/region/bulletin.html` — daily bulletin
+- `GET /api/regions` — every `/api/region/*` call takes `?region=ara` for the second region
 
 OpenAPI docs are at `/docs`. No endpoint accepts Cypher.
 
@@ -335,9 +389,13 @@ OpenAPI docs are at `/docs`. No endpoint accepts Cypher.
 - Lift endpoints are derived from text. Ramps and level access are not in the source, so *Blocked*
   means "no modeled step-free route". 42% of lifts describe only one end, and those ends never connect
   to anything.
-- The lift-by-lift station layer covers SNCF-managed stations only. RATP lifts enter through the PRIM
-  messages, without redundancy information: a listed RATP outage makes platforms DOUBT, never CLOSED.
-- The PRIM lift messages are frozen since 9 Oct 2026, and "best available" still uses them for RATP.
+- The lift-by-lift station layer covers SNCF-managed stations (NeTEx). RATP stations get a lighter lift graph from
+  IDFM's dataset (access ↔ hall ↔ platform per lift); a platform no RATP lift lists is not modelled.
+- Lift status at night: IDFM's dataset reports lifts switched off at end of service as failures. UNLOCK treats
+  those switched off since 23:00 in a night snapshot as *unknown*. SNCF's hourly file has no per-lift time, so a
+  night SNCF snapshot may still include such switch-offs — refresh during the day for daytime figures.
+- Outside Île-de-France, boardability comes from the station-level NeTEx flag (the national GTFS has none), and
+  there is no RATP-like second status source.
 - Region journeys are ordered station pairs, not trips or people; RER/Transilien stations are split per line,
   not per track; changes assume step-free paths between two boardable platforms of one GTFS station.
 - The status feed has no per-record timestamp. The dataset's processing time is used as the

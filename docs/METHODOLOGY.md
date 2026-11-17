@@ -11,7 +11,7 @@ published location text on `/` (see `backend/unlock/ingest/spaces.py`). Identica
 same station are one space (labelled `NAMED_SPACE`).
 
 **Origin–destination pair** — an unordered pair of *anchor* spaces in the same station:
-platform ↔ platform, or platform ↔ exit (exit ↔ exit is excluded). 1,497 pairs in the pilot.
+platform ↔ platform, or platform ↔ exit (exit ↔ exit is excluded). 1,662 pairs in the pilot (v0.6.0; 1,497 before the track-list parser fix, D30).
 A pair counts a *modeled connection*, never a number of people.
 
 **Route** — an acyclic path in Relate `(:Space)<-[:SERVES]-(:Lift)-[:SERVES]->(:Space)…` of at most
@@ -126,3 +126,38 @@ All riders; gate-less stops (most tram stops) have none. Shown as context only.
 
 **Reconciliation verdicts.** GHOST, CONFIRMED, UNCLEAR (SNCF UNKNOWN), UNRESOLVED_STATION_ALL_WORKING, UNRESOLVED,
 MISSING_FROM_FEED (SNCF UNAVAILABLE, not matched by any message).
+
+## 9. RATP lift status from IDFM « État des ascenseurs » (v0.6.0)
+
+- **Placement.** Each lift's level text is split on `/`; each side is an access (« Accès 2 rue … »), a named space
+  (« Salle d'échange ») or a platform (« Ligne M4 direction Porte de Clignancourt », « Ligne RER B direction … »).
+  A platform side is placed on the network's boarding points of that line at that station, narrowed to one
+  direction when the direction text matches the terminus or a downstream station of a stopping pattern
+  (`DIRECTION_MATCH`), else all quays of the line (`LINE_AT_STATION`). 325 RATP platform sides are placed, 19 are not.
+- **Station lift graph.** Per RATP station: nodes = street (every access side), named spaces, boarding points; one
+  edge per lift joining all its sides. A point is **OPEN** if reachable from the street with working lifts,
+  **DOUBT** if only with lifts of unknown status, **CLOSED** if not at all — `STATION_LIFT_GRAPH`. A point some
+  lift touches but that the graph cannot reach from the street even with every lift working is DOUBT when a
+  touching lift is not available (`LIFT_TOUCHES_PLATFORM`), never CLOSED. RER stations served by both SNCF and
+  RATP: an OPEN rail point with any touching RATP lift not available becomes DOUBT (`SOME_RAIL_PLATFORMS_CUT`) —
+  GTFS has one rail platform per line, so UNLOCK cannot say which tracks remain reachable.
+- **Best view** = SNCF hourly status on the NeTEx station topology for SNCF stations + this graph for RATP points
+  (the PRIM messages are no longer used in that view; they stay in the *feed* view and in the reconciliation).
+- **Night snapshots.** IDFM's dataset reports lifts switched off at the end of service as `notavailable /
+  liftFailure` (at 01:26 Paris on 17 Nov, 163 of 188 RATP "failures" had changed status after midnight). When a
+  snapshot is taken between 23:00 and 06:00 Paris time, a lift that became not available since 23:00 is recorded as
+  **UNKNOWN** with `status_note = NIGHT_CLOSURE_SUSPECTED` (raw status kept). A daytime snapshot keeps it as
+  UNAVAILABLE if it is still out. SNCF's hourly file has no per-lift time, so no such rule can be applied to it.
+- **Reconciliation.** A PRIM RATP message whose SIRI equipment id appears in an IDFM lift id is joined
+  `(:LiftOutage)-[:REPORTS_ON]->(:IdfmLift)` (39 of 89): `RATP_GHOST` when IDFM says available, `RATP_CONFIRMED`
+  when not available, `RATP_UNCLEAR` when unknown.
+
+## 10. Rider alerts, bulletin, second region (v0.6.0)
+
+- **Rider alert** (`trip_status`): the usual route's boarding/alighting points are read in the best view; if all
+  OPEN → OK; else the journey check of §8 decides DETOUR (confirmed alternative), AT_RISK (possible only) or CUT.
+  Details: [RIDER_ALERTS.md](RIDER_ALERTS.md).
+- **Repair order.** Gains are unchanged (journeys confirmed again by one repair, all else equal). Equal gains are
+  ordered by the station's daily use — a tie-breaker, not a weight (D24 still holds: a busy station never outranks
+  a larger gain). RATP lifts of unknown status are listed as *check first*, not as repairs.
+- **Second region**: [REGIONS.md](REGIONS.md).

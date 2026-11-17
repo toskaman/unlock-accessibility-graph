@@ -85,6 +85,30 @@ SOURCES: dict[str, Source] = {
             metadata_url=f"{IDFM_API}/accessibilite-en-gare",
         ),
         Source(
+            key="sncf_gtfs",
+            title="Horaires SNCF (GTFS théorique TER, Intercités, TGV)",
+            publisher="SNCF Voyageurs",
+            url="https://eu.ftp.opendatasoft.com/sncf/plandata/Export_OpenData_SNCF_GTFS_NewTripId.zip",
+            filename="sncf_national/sncf-gtfs.zip",
+            licence="Open Database License (ODbL)",
+            licence_url="https://opendatacommons.org/licenses/odbl/1-0/",
+            role="National train timetables: stations, stop points and stopping patterns for regions outside "
+                 "Île-de-France (second-region network layer)",
+            metadata_url=f"{SNCF_API}/horaires-sncf",
+        ),
+        Source(
+            key="sncf_frequentation",
+            title="Fréquentation en gares",
+            publisher="SNCF Gares & Connexions",
+            url=f"{SNCF_API}/frequentation-gares/exports/json",
+            filename="sncf_national/frequentation-gares.json",
+            licence="Open Database License (ODbL)",
+            licence_url="https://opendatacommons.org/licenses/odbl/1-0/",
+            role="Passengers per station per year (2025): a weight for how many people use a station, "
+                 "not a count of wheelchair users",
+            metadata_url=f"{SNCF_API}/frequentation-gares",
+        ),
+        Source(
             key="idfm_validations_ferre",
             title="Validations sur le réseau ferré : Nombre de validations par jour (2ème trimestre 2026)",
             publisher="Île-de-France Mobilités",

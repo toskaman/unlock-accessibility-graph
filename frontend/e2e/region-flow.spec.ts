@@ -43,3 +43,20 @@ test("region: where can I go from here — reach recoloured and re-derived in Cy
   await expect(page.locator(".reach-num")).toHaveText(r.counts.confirmed.toLocaleString("en-GB"));
   await expect(page.locator(".region-legend")).toContainText(`From ${name}`);
 });
+
+test("rider alerts: watch a usual trip, status from the API, kept in this browser", async ({ page, request }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Rosa Parks → Juvisy" }).click();
+  await expect(page.locator(".jverdict")).toBeVisible();
+  await page.getByRole("button", { name: /^Watch Rosa Parks/ }).click();
+  const api = await (await request.post("/api/region/trips/check", { data: { trips: [{ from: "73798", to: "478505" }] } })).json();
+  const label = { OK: "Step-free today", DETOUR: "Detour needed", AT_RISK: "At risk", CUT: "Cut today", NO_STEP_FREE_ROUTE: "No step-free route" }[api.trips[0].status as string]!;
+  await expect(page.locator(".tw-list li").first()).toContainText(label);
+  await page.reload();
+  await expect(page.locator(".tw-list li").first()).toContainText("Rosa Parks → Juvisy");
+  await page.getByRole("button", { name: "Stop watching Rosa Parks to Juvisy" }).click();
+  await expect(page.locator(".tw-list li")).toHaveCount(0);
+  const b = await request.get("/api/region/bulletin.html");
+  expect(b.ok()).toBeTruthy();
+  expect(await b.text()).toContain("Fix first");
+});

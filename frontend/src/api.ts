@@ -1,4 +1,4 @@
-import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName, Resolution, StationGraph, StationRow, Summary } from "./types";
+import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionInfo, RegionViewName, Resolution, SavedTrip, StationGraph, StationRow, Summary, TripStatus } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -26,6 +26,11 @@ const q = (o: Record<string, string | null | undefined>) => {
   return s ? `?${s}` : "";
 };
 
+// Which region the /api/region/* calls address (null = the server's default region, Île-de-France)
+let REGION: string | null = null;
+export const setApiRegion = (code: string | null) => { REGION = code; };
+const rg = (path: string) => (REGION ? `${path}${path.includes("?") ? "&" : "?"}region=${encodeURIComponent(REGION)}` : path);
+
 export const api = {
   resolve: (text: string) => call<Resolution>("/api/incidents/resolve", { method: "POST", body: JSON.stringify({ text }) }),
   critical: () => call<Critical>("/api/network/critical-lifts?limit=15"),
@@ -51,16 +56,19 @@ export const api = {
   withCandidate: (scenario: string, lift: string) =>
     call<{ with_candidate_counts: import("./types").Counts; gain: number }>(`/api/scenarios/${scenario}/with-candidate${q({ candidate_lift: lift })}`),
   export: (scenario: string) => call<unknown>(`/api/scenarios/${scenario}/export`, { method: "POST" }),
+  regions: () => call<RegionInfo[]>("/api/regions"),
   region: {
-    overview: () => call<RegionOverview>("/api/region/overview"),
-    map: (view: RegionViewName) => call<{ view: string; stations: RegionStation[] }>(`/api/region/map?view=${view}`),
-    rank: () => call<RegionRank>("/api/region/rank?limit=40"),
-    search: (text: string) => call<{ id: string; name: string; boardable: boolean }[]>(`/api/region/stations${q({ q: text })}`),
-    journey: (a: string, b: string, view: RegionViewName) => call<Journey>(`/api/region/journey${q({ from: a, to: b, view })}`),
+    overview: () => call<RegionOverview>(rg("/api/region/overview")),
+    map: (view: RegionViewName) => call<{ view: string; stations: RegionStation[] }>(rg(`/api/region/map?view=${view}`)),
+    rank: () => call<RegionRank>(rg("/api/region/rank?limit=40")),
+    search: (text: string) => call<{ id: string; name: string; boardable: boolean }[]>(rg(`/api/region/stations${q({ q: text })}`)),
+    journey: (a: string, b: string, view: RegionViewName) => call<Journey>(rg(`/api/region/journey${q({ from: a, to: b, view })}`)),
     stationOutages: (id: string, view: RegionViewName) =>
-      call<{ station: { id: string; name: string }; outages: OutageDetail[] }>(`/api/region/stations/${encodeURIComponent(id)}/outages?view=${view}`),
-    reconciliation: () => call<Reconciliation>("/api/region/reconciliation?limit=400"),
-    reach: (id: string, view: RegionViewName) => call<Reach>(`/api/region/reach${q({ from: id, view })}`),
+      call<{ station: { id: string; name: string }; outages: OutageDetail[] }>(rg(`/api/region/stations/${encodeURIComponent(id)}/outages?view=${view}`)),
+    reconciliation: () => call<Reconciliation>(rg("/api/region/reconciliation?limit=400")),
+    trips: (trips: SavedTrip[]) => call<{ trips: TripStatus[] }>(rg("/api/region/trips/check"), { method: "POST",
+      body: JSON.stringify({ trips: trips.map((t) => ({ label: t.label || null, from: t.from.id, to: t.to.id, usual: t.usual || null, last_status: t.last_status || null })) }) }),
+    reach: (id: string, view: RegionViewName) => call<Reach>(rg(`/api/region/reach${q({ from: id, view })}`)),
   },
   queries: () => call<{ store: string; queries: { at: string; cypher: string; param_keys: string[]; rows: number; ms: number }[]; catalog: Record<string, string> }>("/api/debug/queries?limit=40"),
 };

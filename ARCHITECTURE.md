@@ -23,6 +23,18 @@
                        frontend (React + TypeScript + MapLibre): map · station cross-section · ranking · evidence
 ```
 
+## v0.6.0 additions
+
+```
+ IDFM État des ascenseurs (key) ─ network/idfm_lifts.py (place level text, night rule) ─► idfm_lifts.json
+                                                                          + idfm_lift_history.json ─► (:IdfmLift), (:LiftStatusObservation)
+ network/service.py  best view = SNCF hourly status on NeTEx topology + IDFM status on RATP lift graphs
+ network/alerts.py   rider alerts (trip_status) — CLI, POST /api/region/trips/check, MCP usual_trip_alert
+ network/bulletin.py daily bulletin (JSON / Markdown / script-free HTML) — CLI, /api/region/bulletin(.html), MCP
+ regions.py          second region from national data → data/normalized/regions/<code>/ → database/regions/<code>.rl
+ api/app.py          serves every built region side by side (one NetworkService per store, read-only), ?region=<code>
+```
+
 ## Why Relate, and how it is used
 
 * **Embedded, single file.** `database/unlock.rl` is the system of record: 6.5 MB, 6,102 domain nodes and 11,761

@@ -19,6 +19,7 @@ type Props = {
   journey: Journey | null;
   selected: string | null;
   onSelect: (id: string) => void;
+  center?: [number, number]; zoom?: number; label?: string;
 };
 
 function stationsGeo(stations: RegionStation[], selected: string | null, reach: Props["reach"]) {
@@ -51,7 +52,7 @@ function journeyGeo(j: Journey | null) {
   return { lines: { type: "FeatureCollection" as const, features: lines }, stops: { type: "FeatureCollection" as const, features: stops } };
 }
 
-export function RegionMap({ stations, reach, journey, selected, onSelect }: Props) {
+export function RegionMap({ stations, reach, journey, selected, onSelect, center, zoom, label }: Props) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [blank, setBlank] = useState(false);
@@ -61,7 +62,7 @@ export function RegionMap({ stations, reach, journey, selected, onSelect }: Prop
 
   useEffect(() => {
     if (!box.current) return;
-    const m = new maplibregl.Map({ container: box.current, style: STYLE_URL, center: [2.4, 48.83], zoom: 8.6,
+    const m = new maplibregl.Map({ container: box.current, style: STYLE_URL, center: center || [2.4, 48.83], zoom: zoom ? zoom - 1 : 8.6,
       attributionControl: { compact: true }, dragRotate: false });
     map.current = m;
     m.on("error", (e: any) => {
@@ -124,7 +125,7 @@ export function RegionMap({ stations, reach, journey, selected, onSelect }: Prop
 
   return (
     <div className="map-wrap region-map">
-      <div ref={box} className="map" role="region" aria-label="Map of the Île-de-France rail, metro and tram stations, coloured by step-free state. Use the journey form and lists for keyboard access." />
+      <div ref={box} className="map" role="region" aria-label={`Map of ${label || "the Île-de-France rail, metro and tram"} stations, coloured by step-free state. Use the journey form and lists for keyboard access.`} />
       {blank && <p className="map-note">Basemap tiles unavailable — stations are still plotted.</p>}
     </div>
   );

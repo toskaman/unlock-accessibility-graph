@@ -41,12 +41,12 @@ rep = json.loads((NORMALIZED_DIR / "quality_report.json").read_text(encoding="ut
 doc = json.loads((NORMALIZED_DIR / "graph_input.json").read_text(encoding="utf-8"))
 c = rep["counts"]
 out["pilot_idf"] = {
-    "stations": c["netex_stop_places_idf"], "lifts": c["lifts"], "quays": c["quays"],
+    "stations": c["netex_stop_places_in_region"], "lifts": c["lifts"], "quays": c["quays"],
     "lifts_two_resolved_ends": ratio(c["lifts_two_resolved_ends"], c["lifts"]),
     "lifts_one_resolved_end": ratio(c["lifts_one_resolved_end"], c["lifts"]),
     "serves_derivations": rep["serves_derivations"], "space_roles": rep["space_roles"],
     "unmatched_track_tokens": rep["unmatched_token_count"],
-    "station_to_idfm_zone": ratio(c["stations_matched_to_zone"], c["netex_stop_places_idf"]),
+    "station_to_idfm_zone": ratio(c["stations_matched_to_zone"], c["netex_stop_places_in_region"]),
     "station_zone_name_score_lt_0_5": sum(1 for x in doc["station_zone"] if x["name_score"] < 0.5),
     "status_states": {k[7:]: v for k, v in c.items() if k.startswith("status_") and k[7:] in ("AVAILABLE", "UNAVAILABLE", "UNKNOWN")},
     "zones": c["zones"], "lines_non_bus": c["lines_non_bus"],

@@ -8,10 +8,12 @@
 - [x] Git author set to the GitHub account `toskaman` (noreply address); public repo created and pushed
 - [x] GitHub topics `relate` and `relate-neo4j-hackathon` added
 - [x] v0.2.0: install + 62 tests + build + serve verified natively on Windows 10 (Python 3.14.4)
-- [ ] v0.3.0: 74 tests + build + serve + `fetch-outages` on Windows
+- [x] v0.6.0: 87 tests + fetch (all sources) + `fetch-outages` + `fetch-lifts` + build + `build-region ara` + bulletin on Windows 10
 - [x] 1:36 narrated video (station mode) public on the v0.2.0 GitHub release
-- [ ] v0.3.0 video (whole-region mode) — recorded by the entrant (script: DEMO_SCRIPT.md), ≤ the official limit
+- [ ] New video — recorded by the entrant after a daytime `python -m unlock refresh` (script: DEMO_SCRIPT.md), ≤ the official limit
 - [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement
 - [ ] Re-read live rules page within 48 h of submission
 - [x] Secret scan before publishing — no secrets in history; agent transcripts sanitised (no local paths/accounts)
 - [x] PRIM token never in the repo (file on D:, env var); data-quality test greps the outage snapshot for it
+- [x] Opendatasoft key (IDFM lift status) never in the repo (file on D:, env var)
+- [ ] Entrant: delete the Windows-bridge result/inbox files that carried the two keys (listed in the v0.6.0 hand-over)

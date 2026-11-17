@@ -1,0 +1,24 @@
+// v0.6.0 screenshots for the README: node scripts/shot-v06.mjs [baseUrl]  (needs database/regions/ara.rl built)
+import { chromium } from "playwright";
+const base = process.argv[2] || "http://localhost:8000";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+await p.goto(`${base}/#region`);
+await p.waitForSelector(".hl-num", { timeout: 60000 });
+await p.evaluate(() => { try { localStorage.clear(); } catch { /* ignore */ } });
+await p.click("text=Rosa Parks → Juvisy");
+await p.waitForSelector(".jverdict", { timeout: 60000 });
+await p.click("text=/^Watch Rosa Parks/");
+await p.waitForSelector(".tw-list .tw-badge", { timeout: 30000 });
+await p.waitForTimeout(2500);
+await p.screenshot({ path: "../docs/media/rider-alert.png" });
+const bp = await b.newPage({ viewport: { width: 1100, height: 1300 } });
+await bp.goto(`${base}/api/region/bulletin.html`);
+await bp.screenshot({ path: "../docs/media/bulletin.png" });
+await p.selectOption(".regionpick select", "ara");
+await p.waitForSelector(".hl-num", { timeout: 60000 });
+await p.click("text=Lyon Gorge de Loup → Lyon Part Dieu");
+await p.waitForSelector(".jverdict", { timeout: 60000 });
+await p.waitForTimeout(3500);
+await p.screenshot({ path: "../docs/media/region-ara.png" });
+await b.close();

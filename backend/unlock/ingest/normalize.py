@@ -80,20 +80,42 @@ def _gtfs_lines(zip_path: Path, wanted_areas: set[str]):
                     rid = trip_route.get(parts[ti])
                     if rid:
                         area_routes[area].add(rid)
-        cal = list(rd("calendar.txt"))
-        span = (min(c["start_date"] for c in cal), max(c["end_date"] for c in cal)) if cal else (None, None)
+        names = set(z.namelist())
+        cal = list(rd("calendar.txt")) if "calendar.txt" in names else []
+        if cal:
+            span = (min(c["start_date"] for c in cal), max(c["end_date"] for c in cal))
+        elif "calendar_dates.txt" in names:
+            ds = [c["date"] for c in rd("calendar_dates.txt") if c.get("exception_type") == "1"]
+            span = (min(ds), max(ds)) if ds else (None, None)
+        else:
+            span = (None, None)
     return area_routes, routes, areas, span
 
 
-def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bool = True) -> dict:
+def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bool = True,
+          departements: tuple[str, ...] = IDF_DEPARTEMENTS, gtfs_zip: Path | None = None,
+          zdc_csv: Path | None | bool = True, dataset_keys: tuple[str, ...] | None = None,
+          gtfs_key: str = "idfm_gtfs") -> dict:
+    """Station layer for the SNCF stations of `departements`, anchored to the stop areas of a GTFS feed.
+
+    Île-de-France (default): IDFM GTFS + IDFM transfer zones (ZdC). Other regions: the national SNCF GTFS,
+    no ZdC file (every stop area is a rail stop area), zone id = last segment of the stop area id."""
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    if dataset_keys is None:   # Île-de-France: everything but the national files used by other regions
+        manifest = {k: v for k, v in manifest.items() if not v.get("file", "").startswith("sncf_national/")}
+    else:
+        manifest = {k: v for k, v in manifest.items() if k in dataset_keys}
+    gtfs_zip = gtfs_zip or raw_dir / "gtfs" / "IDFM-gtfs.zip"
+    if zdc_csv is True:
+        zdc_csv = raw_dir / "idfm" / "zones-de-correspondance.csv"
+    zone_of = (lambda sid: sid.removeprefix("IDFM:")) if zdc_csv else (lambda sid: sid.split(":")[-1])
     published, places = netex.parse(raw_dir / "sncf" / "SNCF_GC_accessibilite_gares.xml")
     status = load_status(raw_dir / "sncf" / "etat-fonctionnement-elevatique-gare.csv")
     q: Counter = Counter()
 
     q["netex_stop_places_total"] = len(places)
-    pilot = [p for p in places if p.insee[:2] in IDF_DEPARTEMENTS]
-    q["netex_stop_places_idf"] = len(pilot)
+    pilot = [p for p in places if p.insee[:2] in departements]
+    q["netex_stop_places_in_region"] = len(pilot)
 
     stations, quays, lifts, space_list, serves, snapshots = [], [], [], [], [], []
     unmatched_tokens = []
@@ -173,14 +195,15 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
     feed_span = (None, None)
     if with_gtfs:
         zdc = {}
-        with open(raw_dir / "idfm" / "zones-de-correspondance.csv", encoding="utf-8-sig", newline="") as f:
-            for r in csv.DictReader(f, delimiter=";"):
-                zdc[r["zdcid"]] = r
-        with zipfile.ZipFile(raw_dir / "gtfs" / "IDFM-gtfs.zip") as z:
+        if zdc_csv:
+            with open(zdc_csv, encoding="utf-8-sig", newline="") as f:
+                for r in csv.DictReader(f, delimiter=";"):
+                    zdc[r["zdcid"]] = r
+        with zipfile.ZipFile(gtfs_zip) as z:
             stops = list(csv.DictReader(io.TextIOWrapper(z.open("stops.txt"), encoding="utf-8-sig", newline="")))
         areas = [s for s in stops if s["location_type"] == "1"]
         q["gtfs_stop_areas"] = len(areas)
-        q["gtfs_stop_areas_matching_zdc"] = sum(1 for s in areas if s["stop_id"].removeprefix("IDFM:") in zdc)
+        q["gtfs_stop_areas_matching_zdc"] = sum(1 for s in areas if zone_of(s["stop_id"]) in zdc)
         matches = {}
         for st in stations:
             best = None
@@ -189,8 +212,8 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
                 if d > 800:
                     continue
                 ns = _name_score(st["name"], s["stop_name"])
-                zid = s["stop_id"].removeprefix("IDFM:")
-                ztype = zdc.get(zid, {}).get("zdctype", "")
+                zid = zone_of(s["stop_id"])
+                ztype = zdc.get(zid, {}).get("zdctype", "") if zdc_csv else "railStation"
                 # accept: strong name agreement within 800 m, or rail zone within 250 m with some agreement
                 ok = ns >= 0.5 or (ns > 0 and d <= 250 and ztype == "railStation")
                 if not ok:
@@ -201,21 +224,21 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
             if best:
                 _, s, d, ns, ztype = best
                 matches[st["id"]] = s["stop_id"]
-                station_zone.append({"station_id": st["id"], "zone_id": s["stop_id"].removeprefix("IDFM:"),
+                station_zone.append({"station_id": st["id"], "zone_id": zone_of(s["stop_id"]),
                                      "distance_m": round(d, 1), "name_score": round(ns, 3),
                                      "derivation": "NAME_AND_DISTANCE"})
         q["stations_matched_to_zone"] = len(matches)
         q["stations_unmatched_to_zone"] = len(stations) - len(matches)
         wanted = set(matches.values())
-        area_routes, routes, gareas, feed_span = _gtfs_lines(raw_dir / "gtfs" / "IDFM-gtfs.zip", wanted)
+        area_routes, routes, gareas, feed_span = _gtfs_lines(gtfs_zip, wanted)
         used_routes = set()
         for area_id in sorted(wanted):
             a = gareas[area_id]
-            zid = area_id.removeprefix("IDFM:")
+            zid = zone_of(area_id)
             z = zdc.get(zid, {})
             zones.append({"id": zid, "name": z.get("zdcname") or a["stop_name"], "type": z.get("zdctype"),
                           "town": z.get("zdctown"), "lon": float(a["stop_lon"]), "lat": float(a["stop_lat"]),
-                          "in_zdc_reference": zid in zdc})
+                          "in_zdc_reference": zid in zdc if zdc_csv else None})
             rids = sorted(area_routes.get(area_id, ()))
             for rid in rids:
                 r = routes[rid]
@@ -234,7 +257,7 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
         q["zone_line_links"] = len(zone_lines)
 
     datasets = [dict(v, published=(published if k == "sncf_netex_accessibility" else None),
-                     gtfs_calendar_span=list(feed_span) if k == "idfm_gtfs" else None)
+                     gtfs_calendar_span=list(feed_span) if k == gtfs_key else None)
                 for k, v in sorted(manifest.items())]
     doc = {
         "format": "unlock-graph-input/1",
@@ -243,6 +266,7 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
         "datasets": datasets, "stations": stations, "quays": quays, "lifts": lifts,
         "spaces": space_list, "serves": serves, "status_snapshots": snapshots,
         "zones": zones, "station_zone": station_zone, "lines": lines, "zone_lines": zone_lines,
+        "zones_dataset": "idfm_zones_correspondance" if zdc_csv else gtfs_key, "lines_dataset": gtfs_key,
     }
     report = {"counts": dict(sorted(q.items())), "space_roles": dict(role_counts),
               "serves_derivations": dict(der_counts), "unmatched_tokens": unmatched_tokens[:200],

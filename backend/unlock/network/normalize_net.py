@@ -101,4 +101,7 @@ def _non_lift_last_update(raw: dict) -> str | None:
 def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR) -> dict:
     net = build_network_file(raw_dir, out_dir)
     out = build_outages_file(net, out_dir=out_dir)
-    return {"network": net["counts"], "outages": out["counts"] if out else None}
+    from . import idfm_lifts
+    lifts = idfm_lifts.normalize_file(net, raw=raw_dir / "idfm" / "etat-des-ascenseurs.json", out=out_dir / "idfm_lifts.json")
+    return {"network": net["counts"], "outages": out["counts"] if out else None,
+            "idfm_lifts": lifts["counts"] if lifts else None}

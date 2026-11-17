@@ -13,7 +13,7 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, field_validator
 
@@ -64,28 +64,68 @@ class WhatIfIn(BaseModel):
         return v
 
 
+class LegIn(BaseModel):
+    board: str = Field(..., max_length=120, pattern=r"^[A-Za-z0-9:_.@\-]+$")
+    alight: str = Field(..., max_length=120, pattern=r"^[A-Za-z0-9:_.@\-]+$")
+    line: str = Field(..., max_length=120, pattern=r"^[A-Za-z0-9:_.@\-]+$")
+
+
+class TripIn(BaseModel):
+    label: str | None = Field(None, max_length=60)
+    from_: str = Field(..., alias="from", max_length=120)
+    to: str = Field(..., max_length=120)
+    usual: list[LegIn] | None = Field(None, max_length=12)
+    last_status: str | None = Field(None, max_length=30)
+
+
+class TripsIn(BaseModel):
+    trips: list[TripIn] = Field(..., min_length=1, max_length=20)
+
+
 class OutageIn(BaseModel):
     lift_ids: list[str] = Field(..., min_length=1, max_length=20)
 
 
-def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
+def _default_regions(store_path: Path) -> dict[str, Path]:
+    """Other regions built by `python -m unlock build-region <code>` (database/regions/<code>.rl), served read-only."""
+    if os.environ.get("UNLOCK_REGIONS", "1") == "0" or Path(store_path).resolve() != Path(STORE_PATH).resolve():
+        return {}
+    d = Path(STORE_PATH).parent / "regions"
+    return {p.stem: p for p in sorted(d.glob("*.rl"))} if d.exists() else {}
+
+
+def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | None = None) -> FastAPI:
+    regions = _default_regions(Path(store_path)) if regions is None else regions
+
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         t = time.perf_counter()
         db = GraphStore(store_path)
         app.state.db = db
+        extra_dbs = []
         try:
             app.state.svc = UnlockService(db)
             app.state.net = NetworkService(db, app.state.svc)
             app.state.net.warm()  # region views + ranking (~1.5 s, pure Python)
+            app.state.regions = {app.state.net.region["code"] if app.state.net.ready else "idf": app.state.net}
+            for code, path in regions.items():
+                rdb = GraphStore(path, read_only=True)
+                extra_dbs.append(rdb)
+                rn = NetworkService(rdb, UnlockService(rdb))
+                if rn.ready:
+                    rn.warm()
+                    rn.region = {**rn.region, "code": code}
+                    app.state.regions[code] = rn
         except Exception:
-            db.close()  # release the single-writer lease before failing
+            for x in [db, *extra_dbs]:
+                x.close()  # release the single-writer lease before failing
             raise
         app.state.startup_seconds = round(time.perf_counter() - t, 3)
         try:
             yield
         finally:
-            db.close()
+            for x in [db, *extra_dbs]:
+                x.close()
 
     app = FastAPI(title="UNLOCK — The Accessibility Impact Graph", version=__version__, lifespan=lifespan)
     origins = os.environ.get("UNLOCK_CORS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
@@ -210,12 +250,19 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
 
     # ------------------------------------------------------------ region (network mode)
     def net(req: Request) -> NetworkService:
-        n = req.app.state.net
+        code = req.query_params.get("region")
+        if code and code not in req.app.state.regions:
+            raise HTTPException(404, f"unknown region {code[:20]!r}")
+        n = req.app.state.regions[code] if code else req.app.state.net
         if not n.ready:
             raise HTTPException(404, "network layer not imported — run `python -m unlock build`")
         return n
 
     _VIEW = r"^(best|feed|published)$"
+
+    @app.get("/api/regions")
+    def regions_list(req: Request):
+        return [{**n.region, "default": n is req.app.state.net} for n in req.app.state.regions.values() if n.ready]
 
     @app.get("/api/region/overview")
     def region_overview(req: Request):
@@ -242,6 +289,32 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         except KeyError:
             raise HTTPException(404, "unknown station")
 
+    @app.post("/api/region/trips/check")
+    def region_trips(req: Request, body: TripsIn):
+        """Rider alerts: status of each usual trip today (OK / DETOUR / AT_RISK / CUT / NO_STEP_FREE_ROUTE).
+        Stateless: the client keeps its trips and sends back the last status it saw."""
+        from ..network.alerts import check
+        trips = [{"label": t.label, "from": t.from_, "to": t.to, "last_status": t.last_status,
+                  **({"usual": [l.model_dump() for l in t.usual]} if t.usual else {})} for t in body.trips]
+        try:
+            return {"trips": check(net(req), trips)}
+        except KeyError as e:
+            raise HTTPException(422, f"unknown boarding point in usual route: {e}")
+
+    @app.get("/api/region/bulletin")
+    def region_bulletin(req: Request):
+        from ..network import bulletin as B
+        n = net(req)
+        if "bulletin" not in n._cache:
+            b = B.build(n)
+            n._cache["bulletin"] = {**b, "markdown": B.to_markdown(b), "html": B.to_html(b)}
+        return {k: v for k, v in n._cache["bulletin"].items() if k != "html"}
+
+    @app.get("/api/region/bulletin.html", response_class=HTMLResponse)
+    def region_bulletin_html(req: Request):
+        region_bulletin(req)
+        return HTMLResponse(net(req)._cache["bulletin"]["html"])
+
     @app.get("/api/region/reach")
     def region_reach(req: Request, a: str = Query(..., alias="from"), view: str = Query("best", pattern=_VIEW)):
         n = net(req)
@@ -255,7 +328,8 @@ def create_app(store_path: Path | str = STORE_PATH) -> FastAPI:
         n = net(req)
         if _check_id(station_id) not in n.stations:
             raise HTTPException(404, "unknown station")
-        return {"station": n._st(station_id), "outages": n.station_outages(station_id, view)}
+        return {"station": n._st(station_id), "outages": n.station_outages(station_id, view),
+                "lifts": n.station_lifts(station_id), "lift_status_source": n.idfm_feed}
 
     @app.get("/api/region/outages/{outage_id}")
     def region_outage(req: Request, outage_id: str):

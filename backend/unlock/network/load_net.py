@@ -31,10 +31,12 @@ ST = [
         SET s.name = r.name, s.gtfs_id = r.gtfs_id, s.lat = r.lat, s.lon = r.lon,
             s.location = point({longitude: r.lon, latitude: r.lat}),
             s.entries_per_day = r.entries_per_day, s.entries_days = r.entries_days"""),
+    ("region", """UNWIND $rows AS r MERGE (g:Region {code: r.code})
+        SET g.name = r.name, g.network_label = r.network_label, g.center = r.center, g.zoom = r.zoom"""),
     ("datasets", """UNWIND $rows AS r MERGE (d:Dataset {key: r.key})
         SET d.title = r.title, d.publisher = r.publisher, d.url = r.url, d.licence = r.licence,
             d.licence_url = r.licence_url, d.sha256 = r.sha256, d.retrieved_at = r.retrieved_at, d.role = r.role"""),
-    ("entries_src", """UNWIND $rows AS r MATCH (s:NStation {id: r.id}) MATCH (d:Dataset {key: 'idfm_validations_ferre'})
+    ("entries_src", """UNWIND $rows AS r MATCH (s:NStation {id: r.id}) MATCH (d:Dataset {key: r.dataset})
         MERGE (s)-[:ENTRIES_FROM]->(d)"""),
     ("lines", """UNWIND $rows AS r MERGE (l:NLine {id: r.id})
         SET l.short_name = r.short_name, l.long_name = r.long_name, l.mode = r.mode, l.color = r.color,
@@ -105,10 +107,12 @@ def network_rows(net: dict) -> dict[str, list[dict]]:
     ds = [{k: d.get(k) for k in ("key", "title", "publisher", "url", "licence", "licence_url", "sha256", "retrieved_at", "role")}
           for d in net.get("datasets", [])]
     return {"stations": stations, "datasets": ds,
-            "entries_src": [{"id": s["id"]} for s in net["stations"] if s.get("entries_per_day") is not None
-                            and any(d["key"] == "idfm_validations_ferre" for d in ds)],
+            "entries_src": [{"id": s["id"], "dataset": s.get("entries_dataset", "idfm_validations_ferre")}
+                            for s in net["stations"] if s.get("entries_per_day") is not None
+                            and any(d["key"] == s.get("entries_dataset", "idfm_validations_ferre") for d in ds)],
             "lines": net["lines"], "platforms": plat, "patterns": pats,
-            "next": nxt, "legs": list(legs.values()), "zones": [{"id": s["id"]} for s in net["stations"]]}
+            "next": nxt, "legs": list(legs.values()),
+            "region": [net["region"]] if net.get("region") else [], "zones": [{"id": s["id"]} for s in net["stations"]]}
 
 
 def import_network(db: GraphStore, path: Path = NORMALIZED_DIR / "network.json") -> dict:
@@ -134,6 +138,59 @@ def import_feed_history(db: GraphStore, path: Path = NORMALIZED_DIR / "outage_fe
             o.feed_non_lift_last_update = r.feed_non_lift_last_update, o.lift_content_sha = r.lift_content_sha,
             o.source = 'PRIM line_reports, tag Ascenseur'""", {"rows": rows})
     return len(rows)
+
+
+def import_idfm_lifts(db: GraphStore, path: Path = NORMALIZED_DIR / "idfm_lifts.json") -> dict | None:
+    """IDFM « État des ascenseurs »: every lift with its status; RATP sides placed on network platforms."""
+    if not path.exists():
+        return None
+    raw = path.read_bytes()
+    doc = json.loads(raw)
+    sha = hashlib.sha256(raw).hexdigest()
+    feed = {"id": f"idfm_etat_ascenseurs@{sha[:12]}", "observed_at": doc.get("observed_at"), "sha256": sha,
+            "lifts": doc["counts"]["lifts"], "night_closure_suspected": doc["counts"].get("night_closure_suspected", 0)}
+    db.query("CREATE CONSTRAINT idfmlift_id IF NOT EXISTS FOR (n:IdfmLift) REQUIRE n.id IS UNIQUE")
+    db.query("CREATE CONSTRAINT liftstatusfeed_id IF NOT EXISTS FOR (n:LiftStatusFeed) REQUIRE n.id IS UNIQUE")
+    db.query("""MERGE (f:LiftStatusFeed {id: $f.id}) ON CREATE SET f.observed_at = $f.observed_at, f.sha256 = $f.sha256,
+        f.lifts = $f.lifts, f.night_closure_suspected = $f.night_closure_suspected,
+        f.source = 'IDFM etat-des-ascenseurs', f.licence = 'Licence Mobilités'""", {"f": feed})
+    known = {r["id"] for r in db.query("MATCH (s:NStation) RETURN s.id AS id")}
+    rows = [{**{k: l.get(k) for k in ("id", "operator", "zdc", "zdc_name", "status", "status_note", "raw_status",
+                                      "reason", "updated", "mode", "direction", "situation", "private_id")},
+             "sides_json": json.dumps(l["sides"], ensure_ascii=False)} for l in doc["lifts"] if l["zdc"] in known]
+    con = [{"lift": l["id"], "platform_id": p["platform_id"], "line_id": p["line_id"], "side": s["index"],
+            "derivation": s["derivation"]} for l in doc["lifts"] if l["zdc"] in known
+           for s in l["sides"] if s["kind"] == "PLATFORM" for p in s.get("points", [])]
+    for chunk in _batches(rows):
+        db.transaction([("""UNWIND $rows AS r MATCH (f:LiftStatusFeed {id: $fid}) MATCH (s:NStation {id: r.zdc})
+            MERGE (l:IdfmLift {id: r.id})
+            SET l += r { .operator, .zdc_name, .status, .status_note, .raw_status, .reason, .updated, .mode, .direction, .situation, .private_id,
+                         .sides_json }, l.feed_id = $fid
+            MERGE (f)-[:LISTS]->(l) MERGE (l)-[:AT]->(s)""", {"rows": chunk, "fid": feed["id"]})])
+    for chunk in _batches(con):
+        db.transaction([("""UNWIND $rows AS r MATCH (l:IdfmLift {id: r.lift}) MATCH (p:NPlatform {id: r.platform_id})
+            MERGE (l)-[e:CONNECTS {line_id: r.line_id, side: r.side}]->(p) SET e.derivation = r.derivation""",
+                         {"rows": chunk})])
+    same = db.query("""MATCH (l:IdfmLift {operator: 'SNCF'}) MATCH (x:Lift {id: l.id})
+        MERGE (l)-[e:SAME_LIFT]->(x) SET e.derivation = 'SAME_ID' RETURN count(e) AS n""")[0]["n"]
+    rep = 0
+    for r in db.query("MATCH (o:LiftOutage) WHERE o.lift_key STARTS WITH 'RATP-SIRI:' RETURN o.id AS id, o.lift_key AS k"):
+        key = r["k"].split(":", 1)[1]
+        rep += db.query("""MATCH (o:LiftOutage {id: $o}) MATCH (l:IdfmLift) WHERE l.id CONTAINS $k
+            MERGE (o)-[e:REPORTS_ON]->(l) SET e.derivation = 'SIRI_EQUIPMENT_ID' RETURN count(e) AS n""",
+                        {"o": r["id"], "k": ":" + key + ":"})[0]["n"]
+    hist_path = path.parent / "idfm_lift_history.json"
+    obs = json.loads(hist_path.read_text(encoding="utf-8"))["observations"] if hist_path.exists() else []
+    db.query("CREATE CONSTRAINT liftstatusobs_id IF NOT EXISTS FOR (n:LiftStatusObservation) REQUIRE n.id IS UNIQUE")
+    for o in obs:
+        db.query("""MERGE (o:LiftStatusObservation {id: $id}) SET o.observed_at = $o.observed_at, o.lifts = $o.lifts,
+            o.not_available = $n, o.not_available_json = $j, o.source = 'IDFM etat-des-ascenseurs'""",
+                 {"id": f"idfm_lift_status@{o['observed_at']}", "o": o, "n": len(o["not_available"]),
+                  "j": json.dumps(o["not_available"], ensure_ascii=False)})
+    db.query("""MATCH (o:LiftStatusObservation), (f:LiftStatusFeed {id: $fid}) WHERE o.observed_at = f.observed_at
+        MERGE (f)-[:OBSERVED_AS]->(o)""", {"fid": feed["id"]})
+    return {"feed_id": feed["id"], "lifts": len(rows), "connects": len(con), "same_lift": same, "reports_on": rep,
+            "observations": len(obs)}
 
 
 def import_outages(db: GraphStore, path: Path = NORMALIZED_DIR / "network_outages.json", resolver=None) -> dict | None:
