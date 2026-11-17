@@ -154,6 +154,8 @@ def main(out: Path) -> None:
         print(code, r["sizes"], flush=True)
     _dump(out / "regions.json", regions)
     _dump(out / "compare.json", {"regions": compare})
+    from unlock.agent.demo import load as load_agent_demo
+    _dump(out / "agent_demo.json", load_agent_demo())
     _dump(out / "meta.json", {"exported_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                               "version": __version__, "algorithm_version": ALGORITHM_VERSION,
                               "region_algorithm_version": REGION_ALGORITHM_VERSION, "lift_status": status})

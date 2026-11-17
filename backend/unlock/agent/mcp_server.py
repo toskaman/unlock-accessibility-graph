@@ -9,6 +9,7 @@ reports comes from these deterministic tools; simulations are computed in memory
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any
@@ -38,7 +39,10 @@ Rules for the agent:
 6. The PRIM lift feed and SNCF's hourly lift feed disagree; say which view a number comes from
    ("best" = SNCF hourly status + IDFM lift status for RATP, "feed" = PRIM only, "published" = no outages).
 7. For a rider's usual trip ("can I do my trip this morning?") use `usual_trip_alert`; for the lift teams' day,
-   `maintenance_bulletin`. Say when the lift status was read (`observed`)."""
+   `maintenance_bulletin`. Say when the lift status was read (`observed`).
+8. When a user says they saw a lift out (or working again), you may store it with `report_lift` — only what they
+   saw, never a guess. `field_reports` reads back what riders, staff and other agents reported; a report never
+   changes the official status, and you must say whether it confirms or contradicts it."""
 
 _WRITE = re.compile(r"\b(CREATE|MERGE|DELETE|DETACH|SET|REMOVE|DROP|LOAD|CALL\s+db\.|FOREACH)\b", re.I)
 
@@ -48,7 +52,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.8.1")
+                    version="0.9.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
@@ -245,6 +249,53 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
         from ..network import bulletin as B
         b = B.build(net)
         return {"markdown": B.to_markdown(b), "headline": b["headline"], "freshness": b["freshness"]}
+
+    api = os.environ.get("UNLOCK_API_URL", "").rstrip("/")
+
+    def _http(method: str, path: str, body: dict | None = None) -> dict[str, Any]:
+        import urllib.error
+        import urllib.request
+        req = urllib.request.Request(api + path, method=method, headers={"Content-Type": "application/json"},
+                                     data=json.dumps(body).encode() if body is not None else None)
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.loads(r.read().decode())
+        except urllib.error.HTTPError as e:
+            return {"error": f"HTTP {e.code}", "detail": e.read().decode()[:300]}
+        except OSError as e:
+            return {"error": "UNLOCK server unreachable", "detail": str(e)[:200]}
+
+    @mcp.tool()
+    def report_lift(lift_id: str, status: str, note: str = "", reporter: str = "") -> dict[str, Any]:
+        """Write a field report into the shared graph: status OUT or WORKING for one lift (get the id from
+        `find_lift`, `station_outages` or `field_reports`). Every other agent and the web app read it back. It never
+        changes the official status or any journey count; the reply sets it against the official status
+        (CONFIRMS / CONTRADICTS / NEW_INFO). Only report what the user says they saw; never invent a report."""
+        if not api:
+            return {"error": "Reports are written through the UNLOCK server (the one writer of the graph). "
+                             "Start `python -m unlock serve` and set UNLOCK_API_URL for this MCP server."}
+        return _http("POST", "/api/region/reports", {"lift": lift_id, "status": status, "note": note,
+                                                     "source": "agent", "reporter": reporter or "AI agent"})
+
+    @mcp.tool()
+    def field_reports(station_name: str = "", hours: float = 24) -> dict[str, Any]:
+        """Field reports (riders, staff, AI agents) of the last `hours`, newest first, read from the shared graph,
+        each with the lift's official status (the one the best view uses: SNCF's hourly file for SNCF lifts, IDFM's
+        dataset for the others) and a verdict CONFIRMS / CONTRADICTS / NEW_INFO, plus what a maintenance team should
+        check first. `other_official` gives IDFM's status of the same SNCF lift when it exists: the two official
+        sources sometimes disagree. Optional station filter."""
+        sid = ""
+        if station_name:
+            s = _station(station_name)
+            if not s:
+                return {"status": "NOT_FOUND", "missing": station_name}
+            sid = s["id"]
+        if api:
+            import urllib.parse
+            return _http("GET", "/api/region/reports?" + urllib.parse.urlencode({"hours": hours, **({"station": sid} if sid else {})}))
+        from ..network import reports as R
+        rows = R.reports(net, sid or None, hours)
+        return {"reports": rows, "summary": R.summary(rows)}
 
     mcp._unlock_db = db  # closed by main() before interpreter shutdown
     return mcp

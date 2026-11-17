@@ -77,3 +77,30 @@ test("language: English / French switch in the header, remembered after a reload
   await page.getByRole("button", { name: "EN — English" }).click();
   await expect(page.getByRole("tab", { name: "Repairs that matter" })).toBeVisible();
 });
+
+test("field report: written to the shared graph, read back and compared with the official status", async ({ page, request }) => {
+  await page.goto("/");
+  await page.getByRole("tab", { name: "Repairs that matter" }).click();
+  await page.locator(".right .rank button").first().click();
+  const card = page.locator(".stationcard");
+  await card.getByText("Report what you see").click();
+  await card.getByLabel("Out of service").check();
+  await card.getByLabel("Note (optional)").fill("e2e test");
+  await card.getByRole("button", { name: "Send the report" }).click();
+  await expect(card.getByRole("status")).toContainText("Report saved");
+  await expect(card.locator(".freports .olist li").first()).toContainText("seen out of service");
+  const api = await (await request.get("/api/region/reports")).json();
+  expect(api.reports.some((r: { note: string }) => r.note === "e2e test")).toBeTruthy();
+});
+
+test("ask an AI agent: recorded sessions replayed, the rider's trip opened on the map", async ({ page }) => {
+  await page.goto("/");
+  const panel = page.locator(".agentreplay");
+  await expect(panel.getByRole("heading", { name: "Ask an AI agent" })).toBeVisible();
+  await panel.getByRole("button", { name: "Agent 2 reads it back" }).click();
+  await expect(panel.locator(".ar-call code").first()).toContainText("field_reports");
+  await expect(panel.locator(".ar-a")).toContainText("Juvisy");
+  await panel.getByRole("button", { name: "A rider asks, in French" }).click();
+  await panel.getByRole("button", { name: "Check this trip on the map" }).click();
+  await expect(page.locator(".jresult")).toContainText("Rosa Parks → Juvisy");
+});

@@ -142,6 +142,14 @@ export type OutageDetail = { id: string; lift_key: string; operator: string; tex
 export type Reconciliation = { counts: Record<string, number>; feed: FeedInfo;
   rows: { outage: string; lift: string | null; verdict: string; sncf_state?: string; station: string; text: string; lift_name: string | null; evidence?: string[] }[];
   missing_from_feed: { lift: string; name: string; station: string }[] };
+export type AgentSession = { id: string; who: string; prompt: string; model?: string | null; seconds?: number | null;
+  calls: { name: string; input: Record<string, unknown>; result: string; truncated: boolean }[]; answer: string };
+export type FieldReport = { id: string; lift: string; status: "OUT" | "WORKING"; note: string; source: string; reporter: string;
+  reported_at: string; station_id: string | null; station: string | null; operator: string | null; label: string;
+  official_status: string; official_source: string | null; official_updated: string | null;
+  verdict: "CONFIRMS" | "CONTRADICTS" | "NEW_INFO"; age_hours: number; recent: boolean;
+  other_official?: { source: string; status: string; updated: string | null; agrees: boolean } };
+export type FieldReportIn = { lift: string; status: "OUT" | "WORKING"; note?: string; source?: "rider" | "staff" | "agent"; reporter?: string };
 export type TripStatusName = "OK" | "DETOUR" | "AT_RISK" | "CUT" | "NO_STEP_FREE_ROUTE" | "UNKNOWN_STATION";
 export type SavedTrip = { label?: string | null; from: { id: string; name: string }; to: { id: string; name: string };
   usual?: { board: string; alight: string; line: string }[]; last_status?: string | null };

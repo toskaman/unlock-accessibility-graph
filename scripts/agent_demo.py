@@ -29,6 +29,15 @@ QUESTIONS = [
     {"id": "maintenance", "who": "A lift-maintenance planner",
      "prompt": "I plan lift repairs for Île-de-France today. Which single lift repair gives back the most step-free "
                "journeys, how many, and is the official outage feed reliable enough to plan from? Answer in 4 lines."},
+    # Two separate agent sessions sharing one memory: the first writes a field report into the Relate graph (through
+    # the UNLOCK server, the graph's single writer), the second one, started afterwards, reads it back.
+    {"id": "shared_rider", "api": True, "who": "Shared memory, agent 1 — a rider reports what they see",
+     "prompt": "Je suis en fauteuil à la gare de Juvisy. L'ascenseur du quai des voies 50/51 est en panne, je viens de "
+               "le voir à l'instant. Peux-tu le signaler pour les autres usagers ? Dis-moi ensuite en 2 lignes si les "
+               "données officielles étaient déjà au courant."},
+    {"id": "shared_maintenance", "api": True, "who": "Shared memory, agent 2 — a maintenance team, in a new session",
+     "prompt": "We are the lift-maintenance team. What did riders, staff or agents report on site in the last few "
+               "hours, which reports contradict the official lift status, and what should we check first? Answer in 4 lines."},
 ]
 
 SCRUB = [(re.compile(r"[A-Za-z]:\\\\?[^\s\"']*", re.I), "<path>"), (re.compile(r"\\\\\\\\[^\s\"']+"), "<path>"),
@@ -53,10 +62,13 @@ def scrub_obj(o):
     return o
 
 
-def run(q: dict, python: str, store: str, model: str | None) -> dict:
+def run(q: dict, python: str, store: str, model: str | None, api: str = "") -> dict:
     with tempfile.TemporaryDirectory() as tmp:
+        env_mcp = {"PYTHONPATH": str(ROOT / "backend"), "PYTHONIOENCODING": "utf-8"}
+        if q.get("api") and api:
+            env_mcp["UNLOCK_API_URL"] = api
         cfg = {"mcpServers": {"unlock": {"command": python, "args": ["-m", "unlock", "mcp", "--store", store],
-                                         "env": {"PYTHONPATH": str(ROOT / "backend"), "PYTHONIOENCODING": "utf-8"}}}}
+                                         "env": env_mcp}}}
         Path(tmp, "mcp.json").write_text(json.dumps(cfg), encoding="utf-8")
         # --setting-sources project: the entrant's own Claude Code plugins and hooks stay out of the recording
         cmd = ["claude", "-p", q["prompt"], "--output-format", "stream-json", "--verbose", "--strict-mcp-config",
@@ -104,6 +116,11 @@ def render(runs: list[dict]) -> str:
          "[AGENT_EVAL.md](research/AGENT_EVAL.md)); with it, every number in the answer comes from a tool call that "
          "read the graph.", ""]
     for r in runs:
+        if r["id"] == "shared_rider":
+            L += ["## Two agents, one memory", "",
+                  "Relate is the shared memory. Agent 1 writes a field report into the graph through the UNLOCK "
+                  "server (the graph's single writer); agent 2, a separate session started afterwards, reads it back "
+                  "and sets it against the official status. A report never changes the official status or any count.", ""]
         L += [f"## {r['who']}", "", f"> {r['prompt']}", "", f"**Tool calls ({len(r['calls'])})** — read in order:", ""]
         for i, c in enumerate(r["calls"], 1):
             args = json.dumps(c["input"], ensure_ascii=False)
@@ -123,8 +140,13 @@ def main() -> None:
     ap.add_argument("--python", required=True)
     ap.add_argument("--store", required=True)
     ap.add_argument("--model", default="sonnet")
+    ap.add_argument("--api", default="", help="UNLOCK server URL for the shared-memory runs (field reports)")
+    ap.add_argument("--only", default="", help="comma-separated question ids; the other runs are kept from runs.json")
     a = ap.parse_args()
-    runs = [run(q, a.python, a.store, a.model) for q in QUESTIONS]
+    only = [x for x in a.only.split(",") if x]
+    prev = {r["id"]: r for r in json.loads((OUT / "runs.json").read_text(encoding="utf-8"))} if only and (OUT / "runs.json").exists() else {}
+    runs = [run(q, a.python, a.store, a.model, a.api) if (not only or q["id"] in only) else prev[q["id"]]
+            for q in QUESTIONS if (not only or q["id"] in only or q["id"] in prev)]
     (OUT / "runs.json").write_text(json.dumps(scrub_obj(runs), ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     init = [r.get("mcp_status") for r in runs]
     if any(s != "connected" for s in init):

@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.9.0 — 2026-11-17
+- **Two agents, one memory — field reports in the graph.** Riders, staff and AI agents can report a lift seen out
+  of service or working: `(:FieldReport)-[:ABOUT]->(lift)` in Relate, written through the server (the graph's single
+  writer), read back by every user and agent, set against the status the best view uses (CONFIRMS / CONTRADICTS /
+  NEW_INFO, plus IDFM's status when the two official sources differ). A report never changes the official status or
+  any count (D36). `POST/GET /api/region/reports`, MCP tools `report_lift` and `field_reports`, a *Report what you
+  see* form in each station card (kept in the browser in the zero-install demo), a section in the bulletin.
+  Recorded: agent 1 stores a rider's report at Juvisy, agent 2 (a new session) finds that it contradicts SNCF's
+  hourly status but agrees with IDFM's, and says what to check first (docs/AGENT_DEMO.md).
+- **Ask an AI agent, in the demo.** A panel replays the recorded sessions step by step (question, tool calls with
+  what the graph returned, answer), with *Check this trip on the map* for the rider's question. `GET /api/agent/demo`.
+- **Live demo**: `.github/workflows/live-demo.yml` rebuilds the zero-install demo every hour from the live lift
+  status and commits the history every 3 hours, once the two API keys are set as repository secrets
+  (docs/LIVE_DEMO.md, D37).
+- Clicking a station in a list now shows its reach on the map even after a journey check.
+- Social preview image and description, a 10-second animation at the top of the README, demo script v0.9 with
+  subtitles in English and French (docs/video/).
+- Tests: 96 pytest + 13 e2e.
+
 ## 0.8.1 — 2026-11-17
 - **Interface in French.** An EN / FR switch (with flags) in the header changes the whole region view: the demo,
   journeys, rider alerts (rebuilt in French from the same structured fields), history, comparison, map legends,

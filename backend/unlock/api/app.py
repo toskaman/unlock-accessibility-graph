@@ -82,6 +82,14 @@ class TripsIn(BaseModel):
     trips: list[TripIn] = Field(..., min_length=1, max_length=20)
 
 
+class ReportIn(BaseModel):
+    lift: str = Field(..., min_length=1, max_length=120)
+    status: str = Field(..., pattern="^(OUT|WORKING|out|working)$")
+    note: str = Field("", max_length=280)
+    source: str = Field("rider", pattern="^(rider|staff|agent)$")
+    reporter: str = Field("", max_length=60)
+
+
 class OutageIn(BaseModel):
     lift_ids: list[str] = Field(..., min_length=1, max_length=20)
 
@@ -379,6 +387,34 @@ def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | N
             raise HTTPException(404, "unknown station")
         return {"station": n._st(station_id), "outages": n.station_outages(station_id, view),
                 "lifts": n.station_lifts(station_id), "lift_status_source": n.idfm_feed}
+
+    @app.get("/api/agent/demo")
+    def agent_demo():
+        """Recorded agent sessions (unedited) for the replay panel."""
+        from ..agent.demo import load
+        return load()
+
+    @app.get("/api/region/reports")
+    def region_reports(req: Request, station: str | None = Query(None, max_length=120),
+                       hours: float = Query(24, gt=0, le=24 * 31)):
+        """Field reports (riders, staff, AI agents) read back from the graph, each set against the official status."""
+        from ..network import reports as R
+        rows = R.reports(net(req), _check_id(station) if station else None, hours)
+        return {"reports": rows, "summary": R.summary(rows)}
+
+    @app.post("/api/region/reports", status_code=201)
+    def region_report_add(req: Request, body: ReportIn):
+        """Add a field report. Stored in the graph; never changes the official status or any count."""
+        from ..network import reports as R
+        n = net(req)
+        if n is not req.app.state.net:
+            raise HTTPException(409, "Field reports are stored in the default region's store only in this prototype.")
+        try:
+            return R.add(n, body.lift, body.status, body.note, body.source, body.reporter)
+        except ValueError as e:
+            raise HTTPException(422, str(e))
+        except KeyError:
+            raise HTTPException(404, "unknown lift")
 
     @app.get("/api/region/outages/{outage_id}")
     def region_outage(req: Request, outage_id: str):

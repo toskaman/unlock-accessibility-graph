@@ -1,5 +1,5 @@
-import { staticCompare, staticRegionApi, staticRegions } from "./static/staticApi";
-import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionCompareRow, RegionInfo, RegionViewName, Resolution, SavedTrip, StationGraph, StationRow, Summary, TripStatus } from "./types";
+import { staticAgentDemo, staticCompare, staticRegionApi, staticRegions } from "./static/staticApi";
+import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionCompareRow, RegionInfo, RegionViewName, Resolution, SavedTrip, StationGraph, StationRow, Summary, TripStatus, FieldReport, FieldReportIn, AgentSession } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -59,6 +59,7 @@ export const api = {
   export: (scenario: string) => call<unknown>(`/api/scenarios/${scenario}/export`, { method: "POST" }),
   regions: () => call<RegionInfo[]>("/api/regions"),
   regionsCompare: () => call<{ regions: RegionCompareRow[] }>("/api/regions/compare"),
+  agentDemo: () => call<{ sessions: AgentSession[] }>("/api/agent/demo"),
   region: {
     overview: () => call<RegionOverview>(rg("/api/region/overview")),
     map: (view: RegionViewName) => call<{ view: string; stations: RegionStation[] }>(rg(`/api/region/map?view=${view}`)),
@@ -72,6 +73,9 @@ export const api = {
       body: JSON.stringify({ trips: trips.map((t) => ({ label: t.label || null, from: t.from.id, to: t.to.id, usual: t.usual || null, last_status: t.last_status || null })) }) }),
     reach: (id: string, view: RegionViewName) => call<Reach>(rg(`/api/region/reach${q({ from: id, view })}`)),
     history: () => call<{ region: string; observations: Record<string, unknown>[] }>(rg("/api/region/history")),
+    reports: (station?: string) => call<{ reports: FieldReport[] }>(rg(`/api/region/reports${q({ station, hours: "24" })}`)),
+    addReport: (r: FieldReportIn) => call<FieldReport>(rg("/api/region/reports"), { method: "POST",
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify(r) }),
     historyLifts: () => call<unknown>(rg("/api/region/history/lifts")),
     timelapse: () => call<{ region: string; frames: { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> }[] }>(rg("/api/region/history/timelapse")),
   },
@@ -85,6 +89,7 @@ if (STATIC_DEMO) {
   (api as any).region = staticRegionApi(() => REGION || "idf");
   (api as any).regions = staticRegions;
   (api as any).regionsCompare = staticCompare;
+  (api as any).agentDemo = staticAgentDemo;
 }
 export const currentRegion = () => REGION;
 export const bulletinUrl = (region: string, isDefault: boolean, lang: "en" | "fr" = "en") => {

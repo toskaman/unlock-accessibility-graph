@@ -1,0 +1,130 @@
+# Keeps the zero-install demo live: every hour, fresh lift status from SNCF, IDFM and PRIM, every region rebuilt
+# in Relate, the static demo re-exported and deployed to GitHub Pages. Every 3 hours the lift-status history is
+# committed to main (data/normalized), so the History tab and the map replay keep growing.
+#
+# Needs two repository secrets (Settings → Secrets and variables → Actions), set by the repository owner:
+#   UNLOCK_PRIM_KEY      PRIM (Île-de-France Mobilités) API token   — lift outages feed
+#   UNLOCK_IDFM_ODS_KEY  IDFM Opendatasoft API key                  — « État des ascenseurs »
+# Without them the scheduled run stops at the first step (nothing is published with partial data).
+name: Live demo
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Deploy to GitHub Pages and commit the history (off = build and check only)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-demo
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      UNLOCK_PRIM_KEY: ${{ secrets.UNLOCK_PRIM_KEY }}
+      UNLOCK_IDFM_ODS_KEY: ${{ secrets.UNLOCK_IDFM_ODS_KEY }}
+      PYTHONIOENCODING: utf-8
+    steps:
+      - name: Keys present?
+        id: keys
+        run: |
+          if [ -n "$UNLOCK_PRIM_KEY" ] && [ -n "$UNLOCK_IDFM_ODS_KEY" ]; then echo "ok=true" >> "$GITHUB_OUTPUT";
+          else echo "ok=false" >> "$GITHUB_OUTPUT"; echo "::notice::UNLOCK_PRIM_KEY / UNLOCK_IDFM_ODS_KEY secrets not set: nothing is published."; fi
+          echo "day=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          echo "record=$([ $(( 10#$(date -u +%H) % 3 )) -eq 0 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "publish=${{ github.event_name == 'schedule' || inputs.publish }}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+
+      - uses: actions/setup-python@v5
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        with: { python-version: "3.12", cache: pip }
+
+      - uses: actions/setup-node@v4
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        with: { node-version: "22", cache: npm, cache-dependency-path: frontend/package-lock.json }
+
+      - name: Install
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          pip install -e .
+          cd frontend && npm ci
+
+      - name: Static sources (GTFS, NeTEx, ridership) — cached for the day
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        id: rawcache
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/raw/gtfs
+            data/raw/idfm
+            data/raw/sncf/SNCF_GC_accessibilite_gares.xml
+            data/raw/sncf_national
+            data/manifest
+          key: raw-${{ steps.keys.outputs.day }}
+
+      - name: Fetch static sources
+        if: (steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch') && steps.rawcache.outputs.cache-hit != 'true'
+        run: python scripts/fetch_sources.py --only sncf_netex_accessibility idfm_zones_correspondance idfm_gtfs idfm_accessibilite_en_gare sncf_gtfs sncf_frequentation idfm_validations_ferre
+
+      - name: Fresh lift status (SNCF hourly file, PRIM outages, IDFM lift status)
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python scripts/fetch_sources.py --only sncf_lift_status
+          if [ -n "$UNLOCK_PRIM_KEY" ]; then python -m unlock fetch-outages; fi
+          if [ -n "$UNLOCK_IDFM_ODS_KEY" ]; then python -m unlock fetch-lifts; fi
+
+      - name: Build every region in Relate
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python -m unlock build
+          python -m unlock build-region all
+
+      - name: Record the history (every 3 hours)
+        if: steps.keys.outputs.ok == 'true' && steps.keys.outputs.record == 'true'
+        run: python -m unlock record
+
+      - name: Export and build the static demo
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          python scripts/export_static.py
+          cd frontend && node scripts/build-static.mjs
+
+      - name: Smoke test of the built demo
+        if: steps.keys.outputs.ok == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          cd frontend && npx playwright install --with-deps chromium
+          mkdir -p /tmp/pages && ln -s "$GITHUB_WORKSPACE/site" /tmp/pages/unlock-accessibility-graph
+          (cd /tmp/pages && python -m http.server 8090 >/dev/null 2>&1 &)
+          sleep 2 && node scripts/check-static-site.mjs http://localhost:8090/unlock-accessibility-graph/
+
+      - name: Deploy to GitHub Pages
+        if: steps.keys.outputs.ok == 'true' && steps.keys.outputs.publish == 'true'
+        run: |
+          git config --global user.name "unlock-live-demo"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git clone --depth 1 --branch gh-pages "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/gh-pages
+          find /tmp/gh-pages -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r site/. /tmp/gh-pages/
+          cd /tmp/gh-pages && git add -A
+          git diff --cached --quiet || (git commit -q -m "Live demo: lift status $(date -u +'%Y-%m-%d %H:%M') UTC" && git push -q origin gh-pages)
+
+      - name: Commit the history to main
+        if: steps.keys.outputs.ok == 'true' && steps.keys.outputs.publish == 'true' && steps.keys.outputs.record == 'true'
+        run: |
+          git config user.name "unlock-live-demo"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/normalized
+          git diff --cached --quiet && exit 0
+          git commit -q -m "data: lift-status observation $(date -u +'%Y-%m-%d %H:%M') UTC (live demo)"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done

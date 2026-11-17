@@ -64,11 +64,14 @@ def test_mcp_server_read_only_tools(tmp_path):
                 sim = json.loads((await s.call_tool("simulate_outage", {"lift_ids": ["L3"]})).content[0].text)
                 bad = json.loads((await s.call_tool("cypher_read", {"query": "MATCH (n) DETACH DELETE n"})).content[0].text)
                 ok = json.loads((await s.call_tool("cypher_read", {"query": "MATCH (l:Lift) RETURN count(l) AS n"})).content[0].text)
-                return names, found, sim, bad, ok
-    names, found, sim, bad, ok = asyncio.run(run())
+                rep = json.loads((await s.call_tool("report_lift", {"lift_id": "L3", "status": "OUT"})).content[0].text)
+                return names, found, sim, bad, ok, rep
+    names, found, sim, bad, ok, rep = asyncio.run(run())
+    assert {"report_lift", "field_reports"} <= names and "UNLOCK_API_URL" in rep["error"]   # writes only via the server
     assert {"find_lift", "simulate_outage", "rank_repairs", "explain_connection", "cypher_read"} <= names
     assert found["lift_candidates"][0]["lift_id"] == "L6"
     assert sim["confirmed_lost"] == 2
     assert "error" in bad and ok["rows"][0]["n"] == 7
     with GraphStore(path, read_only=True) as db:   # nothing was written by the agent session
         assert db.query("MATCH (l:Lift) RETURN count(l) AS n")[0]["n"] == 7
+        assert db.query("MATCH (r:FieldReport) RETURN count(r) AS n")[0]["n"] == 0

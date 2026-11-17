@@ -22,7 +22,11 @@ for the whole region and down to a single underpass:
   lifts that are out again and again, and replays the region on the map, observation by observation
   ([history](docs/HISTORY.md)).
 * **Can an AI agent answer a rider truthfully?** — yes, from the graph: see a real, unedited
-  [agent transcript](docs/AGENT_DEMO.md) (« mon trajet Rosa Parks → Juvisy est-il possible ce matin ? »).
+  [agent transcript](docs/AGENT_DEMO.md) (« mon trajet Rosa Parks → Juvisy est-il possible ce matin ? »), also
+  replayed in the demo (*Ask an AI agent*).
+* **Can agents share what they see?** — yes: one agent (or rider) writes a **field report** into the Relate graph,
+  another agent in a new session reads it back and sets it against the official status — without ever changing it
+  ([two agents, one memory](docs/AGENT_DEMO.md#two-agents-one-memory)).
 
 Every number on screen is computed on the graph and can be traced back to a source record.
 
@@ -35,7 +39,8 @@ Every number on screen is computed on the graph and can be traced back to a sour
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
 **▶ Try it now, nothing to install: https://toskaman.github.io/unlock-accessibility-graph/** (in English or
-French: switch in the header, or [open it in French](https://toskaman.github.io/unlock-accessibility-graph/?lang=fr)) — every region of
+French: switch in the header, or [open it in French](https://toskaman.github.io/unlock-accessibility-graph/?lang=fr)).
+Rebuilt every hour from the live lift status by GitHub Actions ([how](docs/LIVE_DEMO.md)). — every region of
 mainland France, journeys, reach, trip alerts and the bulletin, on a snapshot exported from the Relate stores; every
 journey leg and every reach is re-checked by **Relate itself, compiled to WebAssembly, in your browser**. (Live
 status, station cross-sections and simulations need the installed app below.)
@@ -43,7 +48,7 @@ status, station cross-sections and simulations need the installed app below.)
 **▶ Demo video:** v0.2.0 (station mode, 1 min 36 s): [unlock-demo.mp4](https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4).
 The region mode (v0.6.0) is shown in the screenshots below.
 
-![UNLOCK whole-region mode: three views, frozen-feed finding, map and repair ranking](docs/media/region-overview.png)
+![UNLOCK in 10 seconds: a step-free journey on the map, then one station's reach recoloured when a single lift is out, re-checked by Relate in the browser](docs/media/demo.gif)
 
 > Built for the *Relate by Neo4j Hackathon 2026*. This is a decision-support prototype built from public
 > data. It has not been validated by any operator for operational use.
@@ -72,6 +77,7 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 | **Doubts about the data** | *Whole region* → *Stale messages* / *Not in the feed* | PRIM messages SNCF contradicts, ranked by the journeys they hide; SNCF outages PRIM doesn't show. A draft note to IDFM is in `docs/research/PRIM_LIFT_FEED_NOTE.md`. |
 | **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | *Inside a station* → *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed**. |
 | **A maintenance budget for a station network** | *Inside a station* → *Repairs to make* / *Lifts you can't lose* | Lifts ranked by confirmed in-station connections restored; 213 single points of failure. |
+| **Something you see on site** ("the lift on platform 50/51 is out") | Click the station → *Report what you see*, or tell an AI agent | A field report in the shared graph, compared with the official status (confirms / contradicts / new information). It never changes a count; it shows up for every user, every agent and in the bulletin. |
 | **A history question** ("which lifts are always out?") | *Whole region* → *History* tab; under the chart, *Replay on the map* | Lifts ranked by share of daytime observations out of service (*chronic* ≥ 30 % over ≥ 7 days), how long each has been out; the map replays the stations cut or in doubt at each observation. |
 | **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, including `check_journey`, `usual_trip_alert` and `region_overview` — [transcript](docs/AGENT_DEMO.md). |
 
@@ -284,6 +290,8 @@ through a **read-only** Relate connection (the agent can't modify anything, even
 | `region_overview`, `region_repairs`, `station_outages` | Region views, feed freshness, PRIM-vs-SNCF/IDFM reconciliation, repairs and feed corrections, every lift's status at a station |
 | `usual_trip_alert(from, to)` | Rider alert: OK / DETOUR (with the detour) / AT_RISK / CUT, and the lifts responsible |
 | `maintenance_bulletin()` | Today's bulletin (Markdown) |
+| `report_lift(lift_id, status, note)` | Writes a field report into the shared graph (through the server, Relate's single writer); never changes the official status |
+| `field_reports(station, hours)` | Reads back what riders, staff and other agents reported, each against the official status (and IDFM's, when the two official sources differ) |
 
 ### Ask an agent — a real transcript
 
@@ -309,11 +317,20 @@ omitted the arguments and was rejected by the tool's schema; the transcript keep
 lift-maintenance planner, gets the top repair (+1,930 journeys), the reason not to plan from the PRIM feed (39 days
 unchanged) and the figures of the three views, all from two tool calls.
 
+### Two agents, one memory
+
+Relate is the shared memory. Agent 1, asked by a wheelchair user, resolves « l'ascenseur du quai des voies 50/51 à
+Juvisy » to one lift with `find_lift` and stores a field report with `report_lift`. Agent 2 — a new session, for the
+maintenance team — calls `field_reports` and answers: the report contradicts SNCF's hourly status (*available*),
+IDFM's dataset says *out of service* since the day before, so **check Juvisy ASC3 first**. Neither agent invented a
+fact; the report changed no journey count. Full transcript: [docs/AGENT_DEMO.md](docs/AGENT_DEMO.md#two-agents-one-memory).
+
 ### Set it up
 
 ```bash
 pip install -e ".[agent]"
 claude mcp add unlock -- python -m unlock mcp   # Claude Code (uses database/unlock.rl); other MCP clients alike
+# field reports: start `python -m unlock serve`, then give the MCP server UNLOCK_API_URL=http://127.0.0.1:8000
 # another region: python -m unlock mcp --store database/regions/ara.rl
 ```
 
@@ -411,8 +428,8 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 94 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
-cd frontend && npx playwright test  # 11 end-to-end tests, incl. the EN/FR switch, an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
+pytest                              # 96 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
+cd frontend && npx playwright test  # 13 end-to-end tests, incl. the EN/FR switch, a field report, the agent replay, an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 node frontend/scripts/check-static-a11y.mjs [url]   # axe-core WCAG 2.0/2.1 A+AA on the zero-install demo, desktop and phone (iPhone 13), home and journey+history views
 ```

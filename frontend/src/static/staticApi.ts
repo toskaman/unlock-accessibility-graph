@@ -2,7 +2,7 @@
 // (scripts/export_static.py) + journeys, reaches and rider alerts computed in the browser with the same rules,
 // each re-checked by Relate itself running as WebAssembly in a worker.
 import type { Journey, OutageDetail, Reach, Reconciliation, RegionCompareRow, RegionInfo, RegionOverview, RegionRank,
-  RegionStation, RegionViewName, SavedTrip, TripStatus } from "../types";
+  RegionStation, RegionViewName, SavedTrip, TripStatus, FieldReport, FieldReportIn, AgentSession } from "../types";
 import { norm, StaticNet, type Graph } from "./engine";
 
 export const BASE = import.meta.env.BASE_URL;           // "/unlock-accessibility-graph/" on GitHub Pages
@@ -212,9 +212,50 @@ export const staticRegionApi = (code: () => string) => ({
   trips: async (trips: SavedTrip[]) => ({ trips: await Promise.all(trips.map((t) => tripStatus(code(), t))) }),
   reach: (id: string, view: RegionViewName) => reach(code(), id, view),
   history: () => json<{ region: string; observations: Record<string, unknown>[] }>(`${code()}/history.json`),
+  reports: (station?: string) => fieldReports(code(), station),
+  addReport: (rep: FieldReportIn) => addFieldReport(code(), rep),
   historyLifts: () => json<unknown>(`${code()}/history_lifts.json`),
   timelapse: () => json<{ region: string; frames: { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> }[] }>(`${code()}/timelapse.json`),
 });
 
+// Field reports in the zero-install demo: there is no server to share them, so they stay in this browser
+// (the installed app stores them in the Relate graph, shared by every agent and user).
+const REPORTS_KEY = (c: string) => `unlock.reports.v1.${c}`;
+type StoredReport = { id: string; lift: string; status: "OUT" | "WORKING"; note: string; source: string; reporter: string; reported_at: string };
+const loadReports = (c: string): StoredReport[] => { try { return JSON.parse(localStorage.getItem(REPORTS_KEY(c)) || "[]"); } catch { return []; } };
+async function liftIndex(c: string) {
+  const r = await region(c);
+  r.cards = r.cards || await json<Cards>(`${c}/cards.json`);
+  const idx = new Map<string, { station_id: string; station: string; lift: any }>();
+  for (const [sid, card] of Object.entries(r.cards.stations)) {
+    const i = r.net.stationIdx.get(sid);
+    for (const l of (card.lifts || []) as any[]) idx.set(l.id, { station_id: sid, station: i == null ? sid : r.graph.stations[i][1], lift: l });
+  }
+  return idx;
+}
+const verdictOf = (status: string, official: string) =>
+  official !== "AVAILABLE" && official !== "UNAVAILABLE" ? "NEW_INFO" : (status === "OUT") === (official === "UNAVAILABLE") ? "CONFIRMS" : "CONTRADICTS";
+async function fieldReports(c: string, station?: string): Promise<{ reports: FieldReport[] }> {
+  const idx = await liftIndex(c), now = Date.now();
+  const rows = loadReports(c).filter((x) => now - new Date(x.reported_at).getTime() <= 24 * 3600e3).map((x) => {
+    const k = idx.get(x.lift), age = (now - new Date(x.reported_at).getTime()) / 3600e3;
+    const official = k?.lift.status || "UNKNOWN";
+    return { ...x, station_id: k?.station_id ?? null, station: k?.station ?? null, operator: k?.lift.operator ?? null,
+      label: k?.lift.direction || x.lift, official_status: official, official_source: "snapshot", official_updated: k?.lift.updated ?? null,
+      verdict: verdictOf(x.status, official), age_hours: Math.round(age * 10) / 10, recent: age <= 12 } as FieldReport;
+  });
+  return { reports: rows.filter((x) => !station || x.station_id === station).sort((a, b) => (a.reported_at < b.reported_at ? 1 : -1)) };
+}
+async function addFieldReport(c: string, rep: FieldReportIn): Promise<FieldReport> {
+  const idx = await liftIndex(c);
+  if (!idx.has(rep.lift)) throw new Error("unknown lift");
+  const at = new Date().toISOString().slice(0, 19) + "+00:00";
+  const x: StoredReport = { id: `fr-local-${Date.now()}`, lift: rep.lift, status: rep.status, note: (rep.note || "").slice(0, 280),
+    source: rep.source || "rider", reporter: (rep.reporter || "").slice(0, 60), reported_at: at };
+  try { localStorage.setItem(REPORTS_KEY(c), JSON.stringify([...loadReports(c), x].slice(-50))); } catch { /* storage unavailable */ }
+  return (await fieldReports(c)).reports.find((r) => r.id === x.id)!;
+}
+
+export const staticAgentDemo = () => json<{ sessions: AgentSession[] }>("agent_demo.json");
 export const staticRegions = () => json<RegionInfo[]>("regions.json");
 export const staticCompare = () => json<{ regions: RegionCompareRow[] }>("compare.json");

@@ -60,5 +60,84 @@
   ],
   "answer": "Line 1: The biggest single repair is the Paris Est lift \"Ascenseur - CDGX / Asc 20 Fond cours des Messageries\". It would restore 1,930 confirmed step-free station pairs (best view). Its status is UNKNOWN, not confirmed out of service, so check it on site first.\n\nLine 2: The biggest repair of a lift confirmed out of service is \"Ascenseur - AS 15 Transmanche voies 5/6\" at Gare du Nord, which would restore 964 pairs. The RATP lift at Auber also gives 964. These counts are ordered station pairs joined by a step-free journey. They aren't people or trips, and each repair was evaluated alone.\n\nLine 3: The PRIM outage feed is not reliable enough to plan from. Its lift messages were last updated on 2026-10-09, which is 39 days ago, and the lift content was identical in all 5 fetches I checked. All 356 listed lifts have messages older than 30 days. SNCF's hourly feed contradicts 253 of the 264 SNCF outages PRIM lists, and IDFM's lift-status data contradicts 37 of the 39 RATP messages it can match. The stale messages hide 126,628 journeys, and 13 SNCF outages are missing from PRIM.\n\nLine 4: Plan from the \"best\" view, which combines SNCF's hourly status with IDFM's RATP lift status. It shows 231,883 confirmed pairs, against 88,255 for the PRIM feed and 256,592 if nothing were broken. Several feed entries are probably not real outages. La Croix de Berny (a RATP ghost) would unlock 18,290 pairs if it's a false report, so check it first.",
   "cost_usd": 0.07588639999999999
+ },
+ {
+  "id": "shared_rider",
+  "api": true,
+  "who": "Shared memory, agent 1 — a rider reports what they see",
+  "prompt": "Je suis en fauteuil à la gare de Juvisy. L'ascenseur du quai des voies 50/51 est en panne, je viens de le voir à l'instant. Peux-tu le signaler pour les autres usagers ? Dis-moi ensuite en 2 lignes si les données officielles étaient déjà au courant.",
+  "seconds": 70.4,
+  "model": "claude-sonnet-5-5",
+  "mcp_status": "connected",
+  "calls": [
+   {
+    "id": "toolu_01Gfob7g7eA1cfsXyN138mz8",
+    "name": "ToolSearch",
+    "input": {
+     "query": "select:mcp__unlock__find_lift,mcp__unlock__report_lift,mcp__unlock__field_reports,mcp__unlock__station_outages",
+     "max_results": 4
+    },
+    "result": "   "
+   },
+   {
+    "id": "toolu_01XL7AZiymndB6FLmAs9QZNp",
+    "name": "find_lift",
+    "input": {
+     "report": "Ascenseur du quai des voies 50/51, gare de Juvisy, en panne"
+    },
+    "result": "{\"status\":\"RESOLVED\",\"text\":\"Ascenseur du quai des voies 50/51, gare de Juvisy, en panne\",\"reported_state\":\"UNAVAILABLE\",\"station_candidates\":[{\"station_id\":\"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC\",\"name\":\"Juvisy-sur-Orge\",\"score\":1,\"matched_alias\":\"Juvisy\"}],\"lift_candidates\":[{\"lift_id\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"lift_name\":\"ASC.PMR 4556 ASC3 Quai 50/51\",\"description\":\"Voies 50 et 51 / souterrain nord\",\"station_id\":\"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC\",\"station_name\":\"Juvisy-sur-Orge\",\"score\":6,\"evidence\":[\"station “Juvisy-sur-Orge” matched via “Juvisy”\",\"platform(s) 50, 51 — SERVES edge in the graph\"],\"published_state\":\"AVAILABLE\",\"raw_state\":\"OK\",\"pairs_depending\":21,\"would_lose_if_unavailable\":21},{\"lift_id\":\"6dd5d5e8-691e-4557-b5a2-bc073abd9e69\",\"lift_name\":\"ASC.PMR 4550 ASC9 Sortie Mairie - BV\",\"description\":\"Hall sortie Mairie\",\"station_id\":\"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC\",\"station_name\":\"Juvisy-sur-Orge\",\"score\":2,\"evidence\":[\"station “Juvisy-sur-Orge” matched via “Juvisy”\"],\"published_state\":\"AVAILABLE\",\"raw_state\":\"OK\"},{\"lift_id\":\"146a6401-6aa3-46a5-87d0-f9cfdbefaad2\",\"lift_name\":\"ASC.PMR 4558 ASC1 Sortie Seine\",\"description\":\"Sortie ville accès Seine / souterrain\",\"station_id\":\"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC\",\"station_name\":\"Juvisy-sur-Orge\",\"score\":2,\"evidence\":[\"station “Juvisy-sur-Orge” matched via “Juvisy”\"],\"published_state\":\"AVAILABLE\",\"raw_state\":\"OK\"},{\"lift_id\":\"dbc0565a-f6d5-4db3-9ce1-7a7691c96756\",\"lift_name\":\"ASC.PMR 4551 ASC8 Quai 40-41\",\"description\":\"Voies 40 et 41 / souterrain Nord\",\"station_id\":\"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC\",\"station_name\":\"Juvisy-sur-Orge\",\"score\":1,\"evidence\":[\"station “Juvisy-sur-Orge” matched via “Juvisy”\"],\"published_state\":\"AVAILABLE\",\"raw_state\":\"OK\"}],\"question\":null,\"method\":\"Deterministic retrieval over Relate: station names + linked IDFM zone names, and the platforms and spaces each lift SERVES. No language model is involved.\"}"
+   },
+   {
+    "id": "toolu_01KePyW1PeVYXH8xhzLynvia",
+    "name": "station_outages",
+    "input": {
+     "station_name": "Juvisy"
+    },
+    "result": "{\"station\":{\"id\":\"478505\",\"name\":\"Juvisy\",\"boardable\":true},\"outages\":[{\"id\":\"prim_lift_outages@3570dd5cd43f:GC:73\",\"lift_key\":\"GC:73\",\"operator\":\"SNCF_GC\",\"text\":\"GARE DE JUVISY Panne de l'ascenseur situé Sortie mairie\",\"station\":{\"id\":\"478505\",\"name\":\"Juvisy\",\"lat\":48.689485,\"lon\":2.384336},\"first_reported\":\"2026-08-23T18:58:02\",\"days_reported\":85,\"last_update\":\"2026-08-23T18:58:11\",\"announced_until\":null,\"messages\":1,\"lines\":[\"C\",\"D\"],\"platforms\":[{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"D\"},{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"C\"}],\"matched_lifts\":[{\"id\":\"6dd5d5e8-691e-4557-b5a2-bc073abd9e69\",\"name\":\"ASC.PMR 4550 ASC9 Sortie Mairie - BV\",\"sncf_state\":\"AVAILABLE\",\"evidence\":[\"station “Juvisy-sur-Orge” matched via “IDFM stop area of the message”\",\"space words mairie, sortie — SERVES edge in the graph\"]}],\"sncf_station_all_working\":null},{\"id\":\"prim_lift_outages@3570dd5cd43f:GC:75\",\"lift_key\":\"GC:75\",\"operator\":\"SNCF_GC\",\"text\":\"GARE DE JUVISY Panne de l'ascenseur situé Voies 42/43, direction Austerlitz / Saint-Quentin / Étampes\",\"station\":{\"id\":\"478505\",\"name\":\"Juvisy\",\"lat\":48.689485,\"lon\":2.384336},\"first_reported\":\"2026-09-19T15:36:59\",\"days_reported\":58,\"last_update\":\"2026-09-19T15:37:08\",\"announced_until\":null,\"messages\":1,\"lines\":[\"C\"],\"platforms\":[{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"C\"}],\"matched_lifts\":[{\"id\":\"cd654615-d950-4c2d-87b0-93615eddd3c5\",\"name\":\"ASC.PMR 4552 ASC7 Quai 42-43\",\"sncf_state\":\"AVAILABLE\",\"evidence\":[\"station “Juvisy-sur-Orge” matched via “IDFM stop area of the message”\",\"platform(s) 42, 43 — SERVES edge in the graph\"]}],\"sncf_station_all_working\":null},{\"id\":\"prim_lift_outages@3570dd5cd43f:GC:79\",\"lift_key\":\"GC:79\",\"operator\":\"SNCF_GC\",\"text\":\"GARE DE JUVISY Panne de l'ascenseur situé Voies 50/51, direction Creil / Melun Malesherbes\",\"station\":{\"id\":\"478505\",\"name\":\"Juvisy\",\"lat\":48.689485,\"lon\":2.384336},\"first_reported\":\"2026-08-14T08:19:52\",\"days_reported\":95,\"last_update\":\"2026-08-17T06:29:59\",\"announced_until\":null,\"messages\":4,\"lines\":[\"D\"],\"platforms\":[{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"D\"}],\"matched_lifts\":[{\"id\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"name\":\"ASC.PMR 4556 ASC3 Quai 50/51\",\"sncf_state\":\"AVAILABLE\",\"evidence\":[\"station “Juvisy-sur-Orge” matched via “IDFM stop area of the message”\",\"platform(s) 50, 51 — SERVES edge in the graph\"]}],\"sncf_station_all_working\":null},{\"id\":\"prim_lift_outages@3570dd5cd43f:GC:81\",\"lift_key\":\"GC:81\",\"operator\":\"SNCF_GC\",\"text\":\"GARE DE JUVISY Panne de l'ascenseur situé Sortie ville accès Seine\",\"station\":{\"id\":\"478505\",\"name\":\"Juvisy\",\"lat\":48.689485,\"lon\":2.384336},\"first_reported\":\"2026-07-26T15:53:07\",\"days_reported\":113,\"last_update\":\"2026-09-10T06:56:50\",\"announced_until\":null,\"messages\":5,\"lines\":[\"C\",\"D\"],\"platforms\":[{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"D\"},{\"id\":\"IDFM:monomodalStopPlace:45739\",\"derivation\":\"RAIL_STATION\",\"line\":\"C\"}],\"matched_lifts\":[{\"id\":\"146a6401-6aa3-46a5-87d0-f9cfdbefaad2\",\"name\":\"ASC.PMR 4558 ASC1 Sortie Seine\",\"sncf_state\":\"AVAILABLE\",\"evidence\":[\"station “Juvisy-sur-Orge” matched via “IDFM stop area of the message”\",\"space words seine, sortie — SERVES edge in the graph\"]}],\"sncf_station_all_working\":null}],\"lift_status\":[{\"id\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"operator\":\"SNCF\",\"status\":\"UNAVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"status_note\":null,\"direction\":\"Creil  /  Melun Malesherbes\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"146a6401-6aa3-46a5-87d0-f9cfdbefaad2\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:42\",\"status_note\":null,\"direction\":null,\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"40aa9694-7e05-4016-ab9e-c461ef4e33d2\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"status_note\":null,\"direction\":\"Versailles Rive Gauche\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"5ac71eb5-e5e4-4343-8064-958378aa061b\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:41\",\"status_note\":null,\"direction\":\"Versailles Chantiers  /  Dourdan  /  Étampes\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"6dd5d5e8-691e-4557-b5a2-bc073abd9e69\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:43\",\"status_note\":null,\"direction\":null,\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"8f9a8e78-d993-494f-bae9-d752c1754dd7\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:40\",\"status_note\":null,\"direction\":\"Versailles Rive Gauche\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"90a172ce-dac1-488c-94dd-44aae7fb9603\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:40\",\"status_note\":null,\"direction\":\"Versailles Rive Gauche\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"cd654615-d950-4c2d-87b0-93615eddd3c5\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"status_note\":null,\"direction\":\"Austerlitz  /  Saint-Quentin  /  Étampes\",\"reported_by_prim\":false,\"lines\":[]},{\"id\":\"dbc0565a-f6d5-4db3-9ce1-7a7691c96756\",\"operator\":\"SNCF\",\"status\":\"AVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"status_note\":null,\"direction\":\"Saint-Quentin  /  Versailles Rive Gauche\",\"reported_by_prim\":false,\"lines\":[]}],\"lift_status_source\":{\"id\":\"idfm_etat_ascenseurs@a4b293fb4466\",\"observed_at\":\"2026-11-17T09:44:13+00:00\",\"night_closure_suspected\":0}}"
+   },
+   {
+    "id": "toolu_016U1ukV44muTMRsHBNFKfgP",
+    "name": "report_lift",
+    "input": {
+     "lift_id": "63cd6c0d-e13d-4375-bfec-3888eaad6f65",
+     "status": "OUT",
+     "note": "Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.",
+     "reporter": "usager en fauteuil"
+    },
+    "result": "{\"id\":\"fr-cac82aea2b746368\",\"lift\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"status\":\"OUT\",\"note\":\"Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.\",\"source\":\"agent\",\"reporter\":\"usager en fauteuil\",\"reported_at\":\"2026-11-17T13:25:05+00:00\",\"station_id\":\"478505\",\"station\":\"Juvisy\",\"operator\":\"SNCF\",\"label\":\"Creil  /  Melun Malesherbes\",\"official_status\":\"UNAVAILABLE\",\"official_source\":\"IDFM « État des ascenseurs »\",\"official_updated\":\"2026-11-16T03:39\",\"verdict\":\"CONFIRMS\",\"age_hours\":0,\"recent\":true}"
+   }
+  ],
+  "answer": "Signalement enregistré : l'ascenseur « ASC.PMR 4556 ASC3 Quai 50/51 » (Juvisy-sur-Orge) est noté en panne. Il est visible des autres usagers et ne modifie pas le statut officiel.\n\n**Les données officielles étaient déjà au courant :** oui, ton signalement les confirme. Le statut IDFM « État des ascenseurs » le donnait indisponible depuis le 16/11 à 03h39, et le flux PRIM listait la panne (direction Creil / Melun Malesherbes, ligne D) depuis le 14/08. En revanche, le flux SNCF publié l'affichait encore « disponible » (désaccord entre sources).\n\nSelon le graphe, 21 liaisons dans la gare dépendent de cet ascenseur.",
+  "cost_usd": 0.084302
+ },
+ {
+  "id": "shared_maintenance",
+  "api": true,
+  "who": "Shared memory, agent 2 — a maintenance team, in a new session",
+  "prompt": "We are the lift-maintenance team. What did riders, staff or agents report on site in the last few hours, which reports contradict the official lift status, and what should we check first? Answer in 4 lines.",
+  "seconds": 42.9,
+  "model": "claude-sonnet-5-5",
+  "mcp_status": "connected",
+  "calls": [
+   {
+    "id": "toolu_01KokjtX8HcAPt934no56qut",
+    "name": "ToolSearch",
+    "input": {
+     "query": "select:mcp__unlock__field_reports,mcp__unlock__maintenance_bulletin",
+     "max_results": 5
+    },
+    "result": " "
+   },
+   {
+    "id": "toolu_01Q4hZJj4RMKxFgAWp1t8hCZ",
+    "name": "field_reports",
+    "input": {
+     "hours": 6
+    },
+    "result": "{\"reports\":[{\"id\":\"fr-cac82aea2b746368\",\"lift\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"status\":\"OUT\",\"note\":\"Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.\",\"source\":\"agent\",\"reporter\":\"usager en fauteuil\",\"reported_at\":\"2026-11-17T13:25:05+00:00\",\"station_id\":\"478505\",\"station\":\"Juvisy\",\"operator\":\"SNCF\",\"label\":\"ASC.PMR 4556 ASC3 Quai 50/51 — Voies 50 et 51 / souterrain nord\",\"official_status\":\"AVAILABLE\",\"official_source\":\"SNCF hourly lift status\",\"official_updated\":\"2026-11-17T09:30:16+00:00\",\"other_official\":{\"source\":\"IDFM « État des ascenseurs »\",\"status\":\"UNAVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"agrees\":false},\"verdict\":\"CONTRADICTS\",\"age_hours\":0.1,\"recent\":true}],\"summary\":{\"reports\":1,\"recent\":1,\"contradicts_official\":1,\"confirms_official\":0,\"new_info\":0,\"check_first\":[{\"id\":\"fr-cac82aea2b746368\",\"lift\":\"63cd6c0d-e13d-4375-bfec-3888eaad6f65\",\"status\":\"OUT\",\"note\":\"Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.\",\"source\":\"agent\",\"reporter\":\"usager en fauteuil\",\"reported_at\":\"2026-11-17T13:25:05+00:00\",\"station_id\":\"478505\",\"station\":\"Juvisy\",\"operator\":\"SNCF\",\"label\":\"ASC.PMR 4556 ASC3 Quai 50/51 — Voies 50 et 51 / souterrain nord\",\"official_status\":\"AVAILABLE\",\"official_source\":\"SNCF hourly lift status\",\"official_updated\":\"2026-11-17T09:30:16+00:00\",\"other_official\":{\"source\":\"IDFM « État des ascenseurs »\",\"status\":\"UNAVAILABLE\",\"updated\":\"2026-11-16T03:39\",\"agrees\":false},\"verdict\":\"CONTRADICTS\",\"age_hours\":0.1,\"recent\":true}],\"rule\":\"A field report never changes the official status or any journey count; it is set against it.\"}}"
+   }
+  ],
+  "answer": "1. **Reports (last 6 h):** There is one report. A wheelchair user said at 13:25 UTC today (about 6 minutes old) that they had just seen the lift out of service. It is lift ASC.PMR 4556 ASC3, serving platforms 50/51 (north underpass) at Juvisy (SNCF).\n2. **Contradiction:** The report contradicts the official status. SNCF's hourly feed shows AVAILABLE, last updated 09:30 UTC. IDFM's lift dataset shows UNAVAILABLE, updated 2026-11-16 03:39, so the two official sources disagree with each other.\n3. **Check first:** Inspect Juvisy ASC3 on platforms 50/51 now. The rider report and the IDFM status both point to a fault, and the SNCF \"available\" status is about 4 hours old.\n4. **Follow-up:** If the lift is confirmed out, correct the SNCF status and the passenger information. If it is working, find out why IDFM has shown it as down since yesterday. The report is unverified and doesn't change the official status.",
+  "cost_usd": 0.0598823
  }
 ]

@@ -425,3 +425,39 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
 .langswitch button + button { border-left: 1px solid #3a4a6b; }
 .langswitch button.on { background: #f3f5f7; color: var(--ink); }
 .langswitch svg { width: 21px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4); }
+
+/* field reports */
+.freports { border-top: 1px solid var(--rule); padding-top: 10px; display: grid; gap: 6px; }
+.freports h4 { margin: 0; font-size: 14px; }
+.fr-verdict { font-weight: 700; }
+.fr-CONTRADICTS { color: var(--ko); }
+.fr-CONFIRMS { color: var(--ok); }
+.fr-NEW_INFO { color: var(--unverified); }
+.fr-form summary { cursor: pointer; font-weight: 700; font-size: 13px; }
+.fr-form form { display: grid; gap: 8px; margin-top: 8px; font-size: 13px; }
+.fr-form label { display: grid; gap: 3px; }
+.fr-form select, .fr-form input:not([type="radio"]) { font: inherit; padding: 6px 8px; border: 1px solid var(--ink-3); border-radius: 6px; max-width: 100%; }
+.fr-form fieldset { border: 1px solid var(--rule); border-radius: 6px; padding: 6px 10px; display: flex; gap: 14px; flex-wrap: wrap; }
+.fr-form fieldset label { display: inline-flex; gap: 6px; align-items: center; }
+.fr-form legend { font-size: 12px; padding: 0 4px; }
+
+/* agent replay */
+.agentreplay { display: grid; gap: 8px; }
+.agentreplay h2 { margin: 0; font-size: 17px; }
+.ar-pick { display: flex; flex-wrap: wrap; gap: 4px; }
+.ar-pick button { border: 1px solid var(--rule); background: var(--panel); border-radius: 999px; padding: 4px 10px; font-size: 12.5px; }
+.ar-pick button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ar-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13.5px; }
+.ar-steps li { border-radius: 10px; padding: 8px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ar-who { display: block; font-size: 11.5px; font-weight: 700; color: var(--ink-3); margin-bottom: 2px; }
+.ar-q { background: #e9eef6; }
+.ar-call { background: var(--panel); border: 1px dashed var(--ink-3); }
+.ar-call code { font-size: 12.5px; }
+.ar-call pre { white-space: pre-wrap; font-size: 11.5px; max-height: 180px; overflow: auto; margin: 4px 0 0; }
+.ar-a { background: var(--ok-bg); border-left: 4px solid var(--ok); }
+.freports, .freports > *, .fr-form label { min-width: 0; }
+.freports p { overflow-wrap: anywhere; }
+.fr-form form { grid-template-columns: minmax(0, 1fr); }
+.fr-form select, .fr-form input:not([type="radio"]) { width: 100%; }
+.fr-form button.primary { background: var(--ink); border-color: var(--ink); color: #fff; justify-self: start; }
+.ar-a strong { font-weight: 700; }

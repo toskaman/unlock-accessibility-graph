@@ -22,6 +22,14 @@ def _history(ns) -> list[dict]:
     return [{"observed_at": r["observed_at"], "lifts": r["lifts"], "not_available": json.loads(r["na"])} for r in rows]
 
 
+def _field_reports(ns) -> dict[str, Any]:
+    from . import reports as R
+    try:
+        return R.summary(R.reports(ns, hours=24))
+    except Exception:  # a store without any report label, or an older store
+        return {"reports": 0, "recent": 0, "check_first": []}
+
+
 def build(ns, limit: int = 12) -> dict[str, Any]:
     ov = ns.overview()
     rank = ns.rank(60)
@@ -87,6 +95,7 @@ def build(ns, limit: int = 12) -> dict[str, Any]:
         "unknown_status": unknown,
         "stations_all_lifts_out": all_out,
         "stations_cut": cut_rows,
+        "field_reports": _field_reports(ns),
         "corrections": corr,
         "corrections_total": {"sncf_contradicted": rec.get("GHOST", 0) + rec.get("UNRESOLVED_STATION_ALL_WORKING", 0),
                               "ratp_contradicted": rec.get("RATP_GHOST", 0),
@@ -153,6 +162,17 @@ def to_markdown(b: dict, lang: str = "en") -> str:
             note = T("switched off at night", "éteint la nuit") if r.get("status_note") == "NIGHT_CLOSURE_SUSPECTED" else T("status unknown", "état inconnu")
             L.append(f"| {r['station']} | {(r.get('name') or r['lift'])[:90]} | {r.get('operator') or 'SNCF'} | "
                      f"{_n(r['gain'])} | {_n(r.get('entries_per_day'))} | {note} |")
+    fr_ = b.get("field_reports") or {}
+    if fr_.get("check_first"):
+        L += ["", T("## Field reports to check (riders, staff, AI agents — last 12 h)",
+                    "## Signalements terrain à vérifier (usagers, personnel, agents IA — 12 dernières heures)"), "",
+              T("A report never changes the official status; these ones contradict it or add to it.",
+                "Un signalement ne change jamais l'état officiel ; ceux-ci le contredisent ou le complètent."), ""]
+        for r in fr_["check_first"]:
+            seen = T("seen out of service", "vu hors service") if r["status"] == "OUT" else T("seen working", "vu en service")
+            v = {"CONTRADICTS": T("contradicts the official status", "contredit l'état officiel"),
+                 "NEW_INFO": T("official status unknown", "état officiel inconnu")}.get(r["verdict"], r["verdict"])
+            L.append(f"- {r.get('station') or '—'} — {str(r['label'])[:80]}: {seen} ({v}; {r['reported_at'][:16].replace('T', ' ')} UTC)")
     if b["stations_cut"]:
         L += ["", T("## Stations cut off today", "## Gares coupées aujourd'hui"), "",
               T("At least one boarding point has no step-free route to the street. Lifts not reported working:",

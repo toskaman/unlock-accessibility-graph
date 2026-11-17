@@ -1,0 +1,111 @@
+1
+00:00:00,000 --> 00:00:03,770
+L'Île-de-France publie [256 592] trajets de gare à gare sans marche.
+
+2
+00:00:03,820 --> 00:00:08,096
+Avec l'état des ascenseurs du jour, lu ascenseur par ascenseur dans un graphe
+
+3
+00:00:08,146 --> 00:00:09,950
+Relate, [231 883] sont confirmés.
+
+4
+00:00:10,000 --> 00:00:13,640
+Le flux officiel des pannes n'a pas bougé depuis le 9 octobre.
+
+5
+00:00:13,690 --> 00:00:17,093
+Les propres données de la SNCF et d'IDFM le contredisent :
+
+6
+00:00:17,143 --> 00:00:19,950
+ces messages périmés masquent [126 628] trajets.
+
+7
+00:00:20,000 --> 00:00:25,463
+Puis-je y aller en fauteuil ? Je peux suivre mon trajet quotidien :
+
+8
+00:00:25,513 --> 00:00:32,127
+il est revérifié avec les ascenseurs du jour, avec un détour sans marche quand il
+
+9
+00:00:32,177 --> 00:00:32,950
+est coupé.
+
+10
+00:00:33,000 --> 00:00:38,157
+Où puis-je aller d'ici ? Un seul ascenseur en panne, et Gare du Nord ne mène plus
+
+11
+00:00:38,207 --> 00:00:41,950
+avec certitude à [0] gare — recalculé par Relate en Cypher.
+
+12
+00:00:42,000 --> 00:00:44,195
+Pour les équipes de maintenance :
+
+13
+00:00:44,245 --> 00:00:49,705
+la réparation qui rend le plus de trajets, la gare la plus fréquentée d'abord, en
+
+14
+00:00:49,755 --> 00:00:51,950
+bulletin à imprimer chaque matin.
+
+15
+00:00:52,000 --> 00:00:56,588
+Le même code sur les données nationales ouvertes, pour chaque région de France
+
+16
+00:00:56,638 --> 00:01:01,345
+métropolitaine. Dans certaines, à peine un tiers des trajets sans marche publiés
+
+17
+00:01:01,395 --> 00:01:02,950
+sont confirmés aujourd'hui.
+
+18
+00:01:03,000 --> 00:01:07,510
+La démo se met à jour toute seule chaque heure.
+
+19
+00:01:07,560 --> 00:01:15,271
+La carte rejoue chaque relevé, et UNLOCK nomme les ascenseurs en panne encore et
+
+20
+00:01:15,321 --> 00:01:15,950
+encore.
+
+21
+00:01:16,000 --> 00:01:19,936
+Un agent IA reçoit le même graphe comme outils.
+
+22
+00:01:19,986 --> 00:01:26,466
+Il répond à un usager en français, avec le détour et les ascenseurs en cause.
+
+23
+00:01:26,516 --> 00:01:29,604
+Et les agents partagent une mémoire :
+
+24
+00:01:29,654 --> 00:01:36,727
+l'un écrit un signalement dans Relate, un autre, dans une nouvelle session, le relit
+
+25
+00:01:36,777 --> 00:01:39,950
+et le compare aux données officielles.
+
+26
+00:01:40,000 --> 00:01:45,834
+Essayez-le maintenant, sans rien installer, en anglais ou en français :
+
+27
+00:01:45,884 --> 00:01:50,060
+Relate tourne dans votre navigateur en WebAssembly.
+
+28
+00:01:50,110 --> 00:01:54,950
+UNLOCK — trouver la réparation qui rend le plus de trajets.

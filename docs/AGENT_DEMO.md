@@ -1,6 +1,6 @@
 # Ask an agent — UNLOCK's graph as tools for an AI agent
 
-Recorded 17 Nov 2026 12:08 UTC with Claude Code (headless) whose **only** tools are the UNLOCK MCP server's, on a read-only copy of the Relate store loaded with that morning's lift status. Nothing below is edited except local paths. Raw transcripts: `docs/research/agent_demo/`. Reproduce: `python scripts/agent_demo.py --python <venv python> --store <copy of database/unlock.rl>`.
+Recorded 17 Nov 2026 13:33 UTC with Claude Code (headless) whose **only** tools are the UNLOCK MCP server's, on a read-only copy of the Relate store loaded with that morning's lift status. Nothing below is edited except local paths. Raw transcripts: `docs/research/agent_demo/`. Reproduce: `python scripts/agent_demo.py --python <venv python> --store <copy of database/unlock.rl>`.
 
 Why it matters: without the graph the same model can only guess (0 of 8 checked answers right in [AGENT_EVAL.md](research/AGENT_EVAL.md)); with it, every number in the answer comes from a tool call that read the graph.
 
@@ -48,6 +48,55 @@ Line 3: The PRIM outage feed is not reliable enough to plan from. Its lift messa
 Line 4: Plan from the "best" view, which combines SNCF's hourly status with IDFM's RATP lift status. It shows 231,883 confirmed pairs, against 88,255 for the PRIM feed and 256,592 if nothing were broken. Several feed entries are probably not real outages. La Croix de Berny (a RATP ghost) would unlock 18,290 pairs if it's a false report, so check it first.
 
 *50.8 s, model claude-sonnet-5-5.*
+
+## Two agents, one memory
+
+Relate is the shared memory. Agent 1 writes a field report into the graph through the UNLOCK server (the graph's single writer); agent 2, a separate session started afterwards, reads it back and sets it against the official status. A report never changes the official status or any count.
+
+## Shared memory, agent 1 — a rider reports what they see
+
+> Je suis en fauteuil à la gare de Juvisy. L'ascenseur du quai des voies 50/51 est en panne, je viens de le voir à l'instant. Peux-tu le signaler pour les autres usagers ? Dis-moi ensuite en 2 lignes si les données officielles étaient déjà au courant.
+
+**Tool calls (4)** — read in order:
+
+1. `ToolSearch("query": "select:mcp__unlock__find_lift,mcp__unlock__report_lift,mcp__unlock__field_reports,mcp__unlock__station_outages", "max_results": 4)`
+   ↳  
+2. `find_lift("report": "Ascenseur du quai des voies 50/51, gare de Juvisy, en panne")`
+   ↳ {"status":"RESOLVED","text":"Ascenseur du quai des voies 50/51, gare de Juvisy, en panne","reported_state":"UNAVAILABLE","station_candidates":[{"station_id":"FR:91326:LMO:72a0f993-451e-4b5a-bb32-d162e42906ce:LOC","name":"Juvisy-sur-Orge","score":1,"matched_ali…
+3. `station_outages("station_name": "Juvisy")`
+   ↳ {"station":{"id":"478505","name":"Juvisy","boardable":true},"outages":[{"id":"prim_lift_outages@3570dd5cd43f:GC:73","lift_key":"GC:73","operator":"SNCF_GC","text":"GARE DE JUVISY Panne de l'ascenseur situé Sortie mairie","station":{"id":"478505","name":"Juvisy…
+4. `report_lift("lift_id": "63cd6c0d-e13d-4375-bfec-3888eaad6f65", "status": "OUT", "note": "Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.", "reporter": "usager en fauteuil")`
+   ↳ {"id":"fr-cac82aea2b746368","lift":"63cd6c0d-e13d-4375-bfec-3888eaad6f65","status":"OUT","note":"Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.","source":"agent","reporter":"usager en fauteuil","reported_at":"2026-11-1…
+
+**Answer**
+
+Signalement enregistré : l'ascenseur « ASC.PMR 4556 ASC3 Quai 50/51 » (Juvisy-sur-Orge) est noté en panne. Il est visible des autres usagers et ne modifie pas le statut officiel.
+
+**Les données officielles étaient déjà au courant :** oui, ton signalement les confirme. Le statut IDFM « État des ascenseurs » le donnait indisponible depuis le 16/11 à 03h39, et le flux PRIM listait la panne (direction Creil / Melun Malesherbes, ligne D) depuis le 14/08. En revanche, le flux SNCF publié l'affichait encore « disponible » (désaccord entre sources).
+
+Selon le graphe, 21 liaisons dans la gare dépendent de cet ascenseur.
+
+*70.4 s, model claude-sonnet-5-5.*
+
+## Shared memory, agent 2 — a maintenance team, in a new session
+
+> We are the lift-maintenance team. What did riders, staff or agents report on site in the last few hours, which reports contradict the official lift status, and what should we check first? Answer in 4 lines.
+
+**Tool calls (2)** — read in order:
+
+1. `ToolSearch("query": "select:mcp__unlock__field_reports,mcp__unlock__maintenance_bulletin", "max_results": 5)`
+   ↳  
+2. `field_reports("hours": 6)`
+   ↳ {"reports":[{"id":"fr-cac82aea2b746368","lift":"63cd6c0d-e13d-4375-bfec-3888eaad6f65","status":"OUT","note":"Vu en panne à l'instant par un usager en fauteuil, quai des voies 50/51, gare de Juvisy.","source":"agent","reporter":"usager en fauteuil","reported_at…
+
+**Answer**
+
+1. **Reports (last 6 h):** There is one report. A wheelchair user said at 13:25 UTC today (about 6 minutes old) that they had just seen the lift out of service. It is lift ASC.PMR 4556 ASC3, serving platforms 50/51 (north underpass) at Juvisy (SNCF).
+2. **Contradiction:** The report contradicts the official status. SNCF's hourly feed shows AVAILABLE, last updated 09:30 UTC. IDFM's lift dataset shows UNAVAILABLE, updated 2026-11-16 03:39, so the two official sources disagree with each other.
+3. **Check first:** Inspect Juvisy ASC3 on platforms 50/51 now. The rider report and the IDFM status both point to a fault, and the SNCF "available" status is about 4 hours old.
+4. **Follow-up:** If the lift is confirmed out, correct the SNCF status and the passenger information. If it is working, find out why IDFM has shown it as down since yesterday. The report is unverified and doesn't change the official status.
+
+*42.9 s, model claude-sonnet-5-5.*
 
 ## In the video (15 s)
 

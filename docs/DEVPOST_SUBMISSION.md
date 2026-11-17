@@ -40,11 +40,19 @@ only (SNCF NeTEx, SNCF hourly status, SNCF national timetable, station ridership
 a per-region quality column. Generalising found two problems that also affected Île-de-France — a lift-text parsing
 bug and outages silently ignored at stations whose text names no exit — both fixed.
 
-**History.** UNLOCK records the lift status twice a day: how long outages last, which lifts are chronically out, how
+**Two AI agents, one memory.** The graph is exposed to AI agents through MCP. A real, unedited session: a wheelchair
+user tells Claude « l'ascenseur du quai des voies 50/51 à Juvisy est en panne » — the agent resolves the sentence to
+one lift in the graph and writes a field report into Relate. A second agent, in a new session, for the maintenance
+team, reads it back: the report contradicts SNCF's hourly status (*available*) but agrees with IDFM's dataset (*out
+of service* since the day before), so it says: check Juvisy ASC3 first. Reports never change the official status or
+any count. Riders can report from the web page too, and the demo replays these sessions step by step (*Ask an AI agent*).
+
+**History.** UNLOCK records the lift status: how long outages last, which lifts are chronically out, how
 many step-free journeys each region loses day after day. The *History* tab ranks the lifts that are out again and
 again, and *Replay on the map* steps the region map through every recorded observation.
 
-**Try it without installing anything.** The GitHub Pages demo loads the graph exported from the Relate store into
+**Try it without installing anything, in English or French.** Rebuilt every hour from the live lift status by GitHub
+Actions. The GitHub Pages demo loads the graph exported from the Relate store into
 Relate's WebAssembly build in the visitor's browser, which re-runs the server's own Cypher to re-check every journey
 leg and every reach (the browser engine was checked identical to the server's on 1,038 reaches and 600 journeys).
 
@@ -72,7 +80,7 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. IDFM's lift-status dataset reports lifts switched off for the night as failures: a night snapshot first showed 188 RATP "outages", 163 of them switched off after midnight — UNLOCK now counts those as unknown instead of inventing 100+ repairs. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 94 tests against the real Relate engine plus 11 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself, and an axe-core scan of the deployed demo on desktop and phone); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 96 tests against the real Relate engine plus 13 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself, and an axe-core scan of the deployed demo on desktop and phone); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.

@@ -762,8 +762,10 @@ RETURN DISTINCT t.id AS id"""
         for l in sorted(self.idfm_lifts.values(), key=lambda l: (l["status"] == "AVAILABLE", l["id"])):
             if l["zdc"] != sid:
                 continue
+            sl = self.ss.lifts.get(l["id"])
             out.append({"id": l["id"], "operator": l["operator"], "status": l["status"], "updated": l["updated"],
                         "status_note": l.get("status_note"),
+                        "name": " — ".join(x for x in (sl.name, sl.description) if x) if sl else None,
                         "direction": l["direction"], "reported_by_prim": bool(l["reported_by"]),
                         "lines": sorted({self.lines[p["line_id"]]["short_name"] for s in l["sides"]
                                          for p in s.get("points", []) if p["line_id"] in self.lines})})
@@ -774,7 +776,7 @@ RETURN DISTINCT t.id AS id"""
                                   key=lambda x: (self.ss.baseline_state.get(x) == A, self.ss.lifts[x].name or "")):
                     l = self.ss.lifts[lid]
                     out.append({"id": lid, "operator": "SNCF", "status": self.ss.baseline_state.get(lid, K).value,
-                                "updated": obs, "status_note": None, "reported_by_prim": False, "lines": [],
+                                "updated": obs, "status_note": None, "reported_by_prim": False, "lines": [], "name": l.name,
                                 "direction": " — ".join(x for x in (l.name, l.description) if x)})
         return out
 

@@ -16,6 +16,7 @@ cpSync(resolve(wasm, "README.md"), resolve(pub, "relate", "README.md"));
 writeFileSync(resolve(pub, "relate", "LICENSE.txt"), "@relate/relate-wasm 1.0.2 — Apache License 2.0 — https://github.com/relatedb/relate\n");
 cpSync(data, resolve(pub, "data"), { recursive: true });
 cpSync(resolve("public/favicon.svg"), resolve(pub, "favicon.svg"));
+cpSync(resolve("public/og.png"), resolve(pub, "og.png"));
 writeFileSync(resolve(pub, ".nojekyll"), "");
 execSync(`npx vite build --base ${base} --outDir ../site --emptyOutDir`, {
   stdio: "inherit", env: { ...process.env, VITE_STATIC: "1", UNLOCK_PUBLIC_DIR: pub },

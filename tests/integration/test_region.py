@@ -244,3 +244,50 @@ def test_lift_history_report(region_store, tmp_path, monkeypatch):
         row = r["lifts"][0]
         assert row["lift"] == lid and row["share_out"] == round(2 / 3, 4) and row["out_since"] is None and not row["chronic"]
         assert all(l["lift"] != "x" for l in r["lifts"])                # lifts of other regions are not listed
+
+
+def test_field_reports_shared_through_the_graph(region_store, tmp_path):
+    """A report written by one client (an agent) is read back by another through the graph, set against the
+    official status, and changes no journey count."""
+    raw = tmp_path / "idfm_raw.json"
+    raw.write_text(json.dumps(idfm_lifts()), encoding="utf-8")
+    normalize_file(network(), raw=raw, out=tmp_path / "idfm_lifts.json")
+    with GraphStore(region_store) as db:
+        import_idfm_lifts(db, tmp_path / "idfm_lifts.json")
+    from unlock.network import reports as R
+    with GraphStore(region_store) as db:
+        ns = NetworkService(db, UnlockService(db))
+        before = ns.overview()["views"]
+        out = next(l for l in ns.station_lifts("Z3") if l["status"] == "UNAVAILABLE")["id"]
+        r1 = R.add(ns, out, "WORKING", "lift running again at 8:12", "agent", "rider agent")
+        r2 = R.add(ns, "L3", "OUT", "", "rider")                      # SNCF station-layer lift, officially working
+        assert r1["verdict"] == "CONTRADICTS" and r1["station_id"] == "Z3" and r1["official_status"] == "UNAVAILABLE"
+        assert r2["verdict"] == "CONTRADICTS" and r2["operator"] == "SNCF" and r2["station_id"] == "Z1"
+        with pytest.raises(KeyError):
+            R.add(ns, "no-such-lift", "OUT")
+        with pytest.raises(ValueError):
+            R.add(ns, out, "BROKEN")
+        assert ns.overview()["views"] == before                     # a report never changes a count
+        assert db.query("MATCH (r:FieldReport)-[:ABOUT]->(l) RETURN count(DISTINCT r) AS n")[0]["n"] == 2
+    with GraphStore(region_store, read_only=True) as db:           # another process reads the same memory
+        ns = NetworkService(db, UnlockService(db))
+        rows = R.reports(ns)
+        assert {r["reporter"] for r in rows} == {"rider agent", ""} and R.summary(rows)["contradicts_official"] == 2
+        assert [r["lift"] for r in R.reports(ns, "Z3")] == [out]
+    app = create_app(region_store)
+    with TestClient(app) as c:
+        r = c.post("/api/region/reports", json={"lift": "L3", "status": "WORKING", "source": "staff", "reporter": "team A"})
+        assert r.status_code == 201 and r.json()["verdict"] == "CONFIRMS"
+        assert c.post("/api/region/reports", json={"lift": "nope", "status": "OUT"}).status_code == 404
+        assert c.post("/api/region/reports", json={"lift": "L3", "status": "maybe"}).status_code == 422
+        got = c.get("/api/region/reports", params={"station": "Z1"}).json()
+        assert len(got["reports"]) == 2 and got["summary"]["confirms_official"] == 1
+
+
+def test_field_report_on_station_layer_lift(region_store):
+    from unlock.network import reports as R
+    with GraphStore(region_store) as db:
+        ns = NetworkService(db, UnlockService(db))
+        r = R.add(ns, "L3", "OUT", "seen out of service", "rider")    # no IDFM dataset: the SNCF station-layer lift
+        assert r["operator"] == "SNCF" and r["official_source"] == "SNCF hourly lift status" and r["station_id"] == "Z1"
+        assert db.query("MATCH (r:FieldReport)-[:ABOUT]->(l:Lift {id: 'L3'}) RETURN count(r) AS n")[0]["n"] == 1

@@ -6,6 +6,8 @@ import { HistoryChart } from "./HistoryChart";
 import { LiftHistory } from "./LiftHistory";
 import { Intro } from "./Intro";
 import { RegionMap } from "./RegionMap";
+import { FieldReports } from "./FieldReports";
+import { AgentReplay } from "./AgentReplay";
 import { fmtDate, fmtDay, isFr, netLabel, num, pl, tr } from "../i18n";
 
 const VIEW_LABEL = (v: RegionViewName) => ({
@@ -92,7 +94,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
   const [selected, setSelected] = useState<string | null>(null);
   const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[];
-    lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
+    lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; name?: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
   const [busy, setBusy] = useState<string | null>(() => tr("Computing step-free journeys across the region…", "Calcul des trajets sans marche dans toute la région…"));
   const [reach, setReach] = useState<Reach | null>(null);
   const [compare, setCompare] = useState<RegionCompareRow[] | null>(null);
@@ -255,10 +257,13 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                 <ul className="olist">
                   {stationOut.lifts.map((l) => (
                     <li key={l.id}><span className={`pst s-${l.status === "AVAILABLE" ? "OPEN" : l.status === "UNAVAILABLE" ? "CLOSED" : "DOUBT"}`}>{STATUS_WORD(l.status)}</span>{" "}
-                      {l.direction || l.id} <span className="muted tiny">· {l.operator} · {tr("updated", "mis à jour")} {l.updated || "—"}{l.reported_by_prim ? tr(" · also in PRIM", " · aussi dans PRIM") : ""}</span></li>
+                      {l.name || l.direction || l.id} <span className="muted tiny">· {l.operator} · {tr("updated", "mis à jour")} {l.updated || "—"}{l.reported_by_prim ? tr(" · also in PRIM", " · aussi dans PRIM") : ""}</span></li>
                   ))}
                 </ul>
               </details>
+            )}
+            {stationOut && stationOut.station.id === selectedStation.id && (
+              <FieldReports stationId={selectedStation.id} lifts={stationOut.lifts || []} canReport={STATIC_DEMO || isDefault} />
             )}
             {view === "best" && !!stationOut?.outages.length && (
               <p className="muted tiny">{tr("This view reads lift status from SNCF's and IDFM's status datasets; the PRIM messages below are shown for comparison.", "Cette vue lit l'état des ascenseurs dans les données de la SNCF et d'IDFM ; les messages PRIM ci-dessous sont affichés pour comparaison.")}</p>
@@ -285,6 +290,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             )}
           </section>
         )}
+        {region === "idf" && <AgentReplay onTrip={(A, B) => { setFrom(A); setTo(B); check(A, B); document.getElementById("jh")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />}
       </aside>
 
       <main className="center">
@@ -402,7 +408,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <ol className="rank">
               {rank.repairs.map((r) => (
                 <li key={r.outage || r.lift}>
-                  <button onClick={() => setSelected((r.kind === "SNCF_LIFT" ? r.region_station_id : r.station_id) || null)}>
+                  <button onClick={() => { setJourneys({}); setSelected((r.kind === "SNCF_LIFT" ? r.region_station_id : r.station_id) || null); }}>
                     <span className="gain">+{n(r.gain)}</span>
                     <span className="rbody"><span className="rwho"><strong>{r.station}</strong>{r.lines?.map((l) => <span key={l} className="tag">{l}</span>)}</span>
                       <span className="small clamp">{r.kind === "SNCF_LIFT" ? `${r.name} — ${tr("out of service in SNCF's hourly feed", "hors service d'après l'état horaire SNCF")}`
@@ -440,7 +446,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             </ul>
           </section>
         )}
-        {tab === "history" && <LiftHistory onSelect={(id) => setSelected(id)} />}
+        {tab === "history" && <LiftHistory onSelect={(id) => { setJourneys({}); setSelected(id); }} />}
         {ov && <p className="muted tiny method">{isFr()
           ? `Paires de gares (dans les deux sens) reliées par un trajet sans marche (montée et descente uniquement à des quais accessibles et utilisables ; correspondances à l'intérieur d'une gare). Accessibilité exacte calculée sur le réseau GTFS stocké dans Relate. Calculé en ${ov.computed_ms} ms.`
           : `${ov.method} Computed in ${ov.computed_ms} ms.`}</p>}
