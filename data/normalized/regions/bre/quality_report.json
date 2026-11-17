@@ -1,0 +1,57 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 60,
+  "lifts_no_resolved_end": 1,
+  "lifts_one_resolved_end": 2,
+  "lifts_two_resolved_ends": 57,
+  "lifts_with_status_record": 60,
+  "lines_non_bus": 47,
+  "netex_stop_places_in_region": 122,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 76,
+  "quay_step_free_INACCESSIBLE": 176,
+  "quays": 252,
+  "stations_matched_to_zone": 114,
+  "stations_unmatched_to_zone": 8,
+  "status_AVAILABLE": 55,
+  "status_UNAVAILABLE": 4,
+  "status_UNKNOWN": 1,
+  "zone_line_links": 332,
+  "zones": 114
+ },
+ "space_roles": {
+  "PLATFORM": 54,
+  "CONNECTOR": 22,
+  "EXIT": 16,
+  "UNSPECIFIED": 4,
+  "PRIVATE": 3,
+  "UNRESOLVED_PLATFORM": 1
+ },
+ "serves_derivations": {
+  "VOIE_TOKEN": 63,
+  "NAMED_SPACE": 69,
+  "NAMED_SPACE_WITH_TRACK": 5,
+  "NAME_VOIE_TOKEN": 2,
+  "UNSPECIFIED_END": 4
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Rennes",
+   "lift_id": "22d62779-dc96-48d0-8330-54557fc00396",
+   "token": "09"
+  },
+  {
+   "station": "Vitré",
+   "lift_id": "4e9d05d2-a41c-4ecd-825c-1c9c3bf75d88",
+   "token": "1"
+  },
+  {
+   "station": "Vitré",
+   "lift_id": "4e9d05d2-a41c-4ecd-825c-1c9c3bf75d88",
+   "token": "2"
+  }
+ ],
+ "unmatched_token_count": 3
+}

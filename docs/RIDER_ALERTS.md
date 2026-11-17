@@ -22,7 +22,7 @@ the lift-status data used: an alert is never fresher than its data.
 The **usual route** is the rider's own legs if they gave them, otherwise the route UNLOCK finds on the published
 network the first time the trip is checked (then stored with the trip, so a later detour is measured against it).
 
-## Three ways to use it
+## Four ways to use it
 
 **In the app** — check a journey, click *Watch …*. Trips are kept **in this browser only** (localStorage); the
 server stores nothing about riders. Each time the page opens, every watched trip is re-checked, and the panel
@@ -49,7 +49,23 @@ the usual route back into the file and a report `reports/alerts-<UTC time>.json`
 `python -m unlock fetch-lifts` (and the SNCF status fetch) from Windows Task Scheduler or cron; pipe the output
 to whatever notifies the rider (e-mail, SMS gateway, a chat bot). UNLOCK itself sends nothing.
 
+**Subscribe — RSS or calendar, no account.** Each watched trip in the app has *Subscribe: RSS · calendar* links:
+
+```
+GET /api/region/trips/feed.rss?from=73798&to=478505&region=idf
+GET /api/region/trips/feed.ics?from=73798&to=478505&region=idf     (webcal:// to subscribe)
+```
+
+The trip is entirely in the URL; each fetch recomputes the status. RSS: one item per (day, status), so a reader
+shows a new item when the status changes. Calendar: one all-day event for today titled with the status
+("Detour needed: Rosa Parks → Juvisy") and the detour in its description; `REFRESH-INTERVAL` asks calendar apps to
+refresh every 2 hours (Google Calendar refreshes subscriptions less often, on its own schedule). The links work
+for as long as the UNLOCK server is reachable from the reader — on a laptop, that means the same machine.
+
 **AI agents** — MCP tool `usual_trip_alert(from_station, to_station)`.
+
+**Zero-install demo** — *My usual trips* works on the GitHub Pages demo too (computed in the browser on the
+exported snapshot), without the subscription links.
 
 ## Limits
 

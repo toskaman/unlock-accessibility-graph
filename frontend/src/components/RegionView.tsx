@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { api, ApiError } from "../api";
-import type { RegionInfo, Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
+import { api, ApiError, bulletinUrl, STATIC_DEMO } from "../api";
+import type { RegionCompareRow, RegionInfo, Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
 import { TripWatch } from "./TripWatch";
+import { HistoryChart } from "./HistoryChart";
 import { RegionMap } from "./RegionMap";
 
 const VIEW_LABEL: Record<RegionViewName, string> = {
@@ -82,6 +83,11 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
     lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
   const [busy, setBusy] = useState<string | null>("Computing step-free journeys across the region…");
   const [reach, setReach] = useState<Reach | null>(null);
+  const [compare, setCompare] = useState<RegionCompareRow[] | null>(null);
+  const toggleCompare = () => {
+    if (compare) { setCompare(null); return; }
+    api.regionsCompare().then((r) => setCompare(r.regions)).catch(fail);
+  };
   const fail = (e: unknown) => onError(e instanceof ApiError ? e.message : String(e));
 
   useEffect(() => {
@@ -128,6 +134,9 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
               {regions.map((r) => <option key={r.code} value={r.code}>{r.name} — {r.network_label}</option>)}
             </select>
           </label>
+        )}
+        {regions.length > 2 && (
+          <button className="ghost small" aria-expanded={!!compare} onClick={toggleCompare}>{compare ? "Hide the comparison" : "Compare all regions"}</button>
         )}
         <div className="viewswitch light" role="tablist" aria-label="Which lift status to believe">
           {VIEWS.map((x) => (
@@ -185,7 +194,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                   </button>
                 ))}
               </div>
-              <p className="muted tiny">{j.verification.ok ? `Every leg re-checked in Relate (${j.verification.verified}/${j.verification.legs}): boardable platforms of the stated stations joined by a LEG of that line.` : "Leg verification failed — do not rely on this route."}</p>
+              <p className="muted tiny">{j.verification.ok ? `Every leg re-checked in Relate${STATIC_DEMO ? " (WebAssembly, in this browser)" : ""} (${j.verification.verified}/${j.verification.legs}): boardable platforms of the stated stations joined by a LEG of that line.` : "Leg verification failed — do not rely on this route."}</p>
             </div>
           )}
         </section>
@@ -211,7 +220,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                   <li><i className="dot red" />{n(reach.counts.cut)} cut by outages (reachable in the published network)</li>
                 </ul>
                 <p className="muted tiny">Those confirmed stations see ≈ {n(reach.entries_per_day.confirmed)} validations a day; the cut ones ≈ {n(reach.entries_per_day.cut)}.</p>
-                <p className="muted tiny">{reach.verification.ok ? `Re-derived in Relate with Cypher (${reach.verification.rounds} breadth-first rounds over HAS_PLATFORM/LEG, ${reach.verification.ms} ms): ${reach.verification.cypher} = ${reach.verification.engine}.` : `Cypher re-derivation disagrees (${reach.verification.cypher} vs ${reach.verification.engine}) — do not rely on this number.`}</p>
+                <p className="muted tiny">{reach.verification.ok ? `Re-derived in Relate${STATIC_DEMO ? " (WebAssembly, in this browser)" : ""} with Cypher (${reach.verification.rounds} breadth-first rounds over HAS_PLATFORM/LEG, ${reach.verification.ms} ms): ${reach.verification.cypher} = ${reach.verification.engine}.` : `Cypher re-derivation disagrees (${reach.verification.cypher} vs ${reach.verification.engine}) — do not rely on this number.`}</p>
               </div>
             )}
             <p className="small">{selectedStation.state === "NOT_BOARDABLE" ? "No platform declared wheelchair-boardable in GTFS / IDFM data." :
@@ -220,7 +229,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
               "UNLOCK's station topology shows no platform keeps a confirmed step-free route to the street."}</p>
             {!!stationOut?.lifts?.length && (
               <details className="liftlist" open={stationOut.lifts.some((l) => l.status !== "AVAILABLE")}>
-                <summary>{stationOut.lifts.length} lift{stationOut.lifts.length > 1 ? "s" : ""} in IDFM's lift status — {stationOut.lifts.filter((l) => l.status === "UNAVAILABLE").length} out of service</summary>
+                <summary>{stationOut.lifts.length} lift{stationOut.lifts.length > 1 ? "s" : ""} in {ov?.idfm_status ? "IDFM's" : "SNCF's hourly"} lift status — {stationOut.lifts.filter((l) => l.status === "UNAVAILABLE").length} out of service</summary>
                 <ul className="olist">
                   {stationOut.lifts.map((l) => (
                     <li key={l.id}><span className={`pst s-${l.status === "AVAILABLE" ? "OPEN" : l.status === "UNAVAILABLE" ? "CLOSED" : "DOUBT"}`}>{l.status === "AVAILABLE" ? "working" : l.status === "UNAVAILABLE" ? "out of service" : "unknown"}</span>{" "}
@@ -249,7 +258,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                 ))}
               </ul>
             ) : <p className="muted small">The PRIM feed lists no lift outage here.</p>}
-            {isDefault && selectedStation.sncf_station && selectedStation.detail && (
+            {isDefault && !STATIC_DEMO && selectedStation.sncf_station && selectedStation.detail && (
               <button className="primary small" onClick={() => onOpenStation(selectedStation.sncf_station!)}>Open inside the station →</button>
             )}
           </section>
@@ -257,6 +266,29 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
       </aside>
 
       <main className="center">
+        {compare && (
+          <section className="compare" aria-labelledby="cmph">
+            <h2 id="cmph">Every region, same method</h2>
+            <p className="small muted">Ordered station pairs joined by a step-free journey, published vs confirmed with today's lift status. Île-de-France uses richer sources (IDFM GTFS and lift status); the other regions use national SNCF data only, so compare them with each other first.</p>
+            <div className="cmp-scroll">
+              <table>
+                <thead><tr><th scope="col">Region</th><th scope="col">Accessible stations</th><th scope="col">Published</th><th scope="col">Confirmed today</th><th scope="col">Share</th><th scope="col">SNCF lifts out / unknown</th><th scope="col">Stations with a modelled lift route to the street</th></tr></thead>
+                <tbody>
+                  {compare.map((r) => (
+                    <tr key={r.code} className={r.code === region ? "on" : ""}>
+                      <th scope="row"><button className="linkish" onClick={() => onRegion(r.code)}>{r.name}</button></th>
+                      <td>{n(r.accessible_stations)}</td><td>{n(r.published)}</td><td>{n(r.confirmed)}</td>
+                      <td><span className="cmp-bar"><span style={{ width: `${Math.round((r.share_confirmed ?? 0) * 100)}%` }} /></span> {r.share_confirmed == null ? "—" : `${(r.share_confirmed * 100).toFixed(1)} %`}</td>
+                      <td>{n(r.sncf_lifts_out)} / {n(r.sncf_lifts_unknown)}{r.ratp_lifts_out != null ? ` (+${n(r.ratp_lifts_out)} RATP)` : ""}</td>
+                      <td>{n(r.with_platform_exit_topology)} of {n(r.accessible_stations_with_lifts)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="tiny muted">Where the lift text gives no platform↔street route, a lift not reported working puts the station in doubt — it is never assumed harmless. Status read: {compare[0]?.sncf_status_observed_at?.slice(0, 16).replace("T", " ")} UTC.</p>
+          </section>
+        )}
         {ov && v && pub && (
           <section className="headline" aria-label="Region-wide step-free journeys">
             <div className="hl-main">
@@ -276,6 +308,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             </div>
           </section>
         )}
+        {ov && view === "best" && <HistoryChart />}
         {ov?.feed && ov.stale_messages && (
           <section className="frozen" aria-label="Outage feed quality">
             <p><strong>The regional lift-outage feed has stopped moving.</strong> PRIM still lists {n(ov.outages.lifts)} lifts as out of service
@@ -328,7 +361,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
         {tab === "repairs" && rank && (
           <section aria-label="Repairs ranked by journeys given back">
             <p className="small">Fix one lift, give back this many confirmed step-free journeys (best available status). Equal gains: busiest station first.</p>
-            <p className="small"><a href={`/api/region/bulletin.html${isDefault ? "" : `?region=${region}`}`} target="_blank" rel="noopener">Today's maintenance bulletin (printable)</a></p>
+            <p className="small"><a href={bulletinUrl(region, isDefault)} target="_blank" rel="noopener">Today's maintenance bulletin (printable)</a></p>
             <ol className="rank">
               {rank.repairs.map((r) => (
                 <li key={r.outage || r.lift}>

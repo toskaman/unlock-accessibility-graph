@@ -1,0 +1,75 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 35,
+  "lifts_no_resolved_end": 0,
+  "lifts_one_resolved_end": 2,
+  "lifts_two_resolved_ends": 33,
+  "lifts_with_status_record": 35,
+  "lines_non_bus": 83,
+  "netex_stop_places_in_region": 160,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 43,
+  "quay_step_free_INACCESSIBLE": 310,
+  "quays": 353,
+  "stations_matched_to_zone": 156,
+  "stations_unmatched_to_zone": 4,
+  "status_AVAILABLE": 21,
+  "status_UNAVAILABLE": 11,
+  "status_UNKNOWN": 3,
+  "zone_line_links": 543,
+  "zones": 156
+ },
+ "space_roles": {
+  "PLATFORM": 30,
+  "CONNECTOR": 15,
+  "UNRESOLVED_PLATFORM": 8,
+  "EXIT": 5,
+  "UNSPECIFIED": 2
+ },
+ "serves_derivations": {
+  "NAMED_SPACE": 44,
+  "VOIE_TOKEN": 34,
+  "NAMED_SPACE_WITH_TRACK": 1,
+  "UNSPECIFIED_END": 2
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Vierzon",
+   "lift_id": "1c6624f9-79e6-45f4-b2ad-9df32f8823ec",
+   "token": "4"
+  },
+  {
+   "station": "Chartres",
+   "lift_id": "b75c9e58-1e0b-41b5-8f9f-e94f7f8e3e68",
+   "token": "a"
+  },
+  {
+   "station": "Chartres",
+   "lift_id": "68d2c41a-df21-4e79-84b9-6e5bff25b6ae",
+   "token": "b"
+  },
+  {
+   "station": "Chartres",
+   "lift_id": "ba09eff6-607b-4b79-9c75-ba4c6d326197",
+   "token": "c"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "bc9edfb6-a36b-4fae-8170-cb7666d0d381",
+   "token": "a"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "efa0e9f6-6831-47f7-826a-1f7ffe878c20",
+   "token": "b"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "5262e94c-dec8-4d1c-a537-f8829df621e1",
+   "token": "c"
+  }
+ ],
+ "unmatched_token_count": 7
+}

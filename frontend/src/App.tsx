@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { api, ApiError, setApiRegion } from "./api";
+import { api, ApiError, setApiRegion, STATIC_DEMO } from "./api";
+import { StaticBanner } from "./components/StaticBanner";
 import { MapView } from "./components/MapView";
 import { RegionView } from "./components/RegionView";
 import { STATE_LABEL, StationSection } from "./components/StationSection";
@@ -36,7 +37,7 @@ function downloadJSON(name: string, data: unknown) {
 }
 
 export default function App() {
-  const [mode, setMode] = useState<"region" | "station">(() => (location.hash.includes("station=") ? "station" : "region"));
+  const [mode, setMode] = useState<"region" | "station">(() => (!STATIC_DEMO && location.hash.includes("station=") ? "station" : "region"));
   const [summary, setSummary] = useState<Summary | null>(null);
   const [region, setRegion] = useState<string>("idf");
   const [regions, setRegions] = useState<RegionInfo[]>([]);
@@ -70,6 +71,7 @@ export default function App() {
 
   // initial load
   useEffect(() => {
+    if (STATIC_DEMO) return;
     setBusy("Loading the network graph…");
     Promise.all([api.summary(), api.stations(), api.rank(null), api.critical()])
       .then(([s, st, r, c]) => {
@@ -209,9 +211,10 @@ export default function App() {
             <h1>UNLOCK</h1>
             <p>Find the repair that unlocks the most journeys.</p>
           </div>
-          {modeTabs}
-          <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button></div>
+          {!STATIC_DEMO && modeTabs}
+          {!STATIC_DEMO && <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button></div>}
         </header>
+        {STATIC_DEMO && <StaticBanner region={region} />}
         {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>Dismiss</button></div>}
         <RegionView key={region} region={region} regions={regions} onRegion={(c) => { setApiRegion(regions.find((r) => r.code === c)?.default ? null : c); setRegion(c); }}
           onError={setError} onOpenStation={(id) => { setApiRegion(null); setRegion("idf"); setMode("station"); selectStation(id); }} />

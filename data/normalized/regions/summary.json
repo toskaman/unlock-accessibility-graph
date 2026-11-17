@@ -1,0 +1,1120 @@
+{
+ "format": "unlock-regions-summary/1",
+ "regions": [
+  {
+   "code": "idf",
+   "name": "Île-de-France",
+   "network": "IDFM rail, metro, tram",
+   "stations": 996,
+   "accessible_stations": 519,
+   "published": 256592,
+   "confirmed": 201181,
+   "possible": 252556,
+   "share_confirmed": 0.7841,
+   "stations_affected": 71,
+   "sncf_lifts": 588,
+   "sncf_lifts_out": 23,
+   "sncf_lifts_unknown": 7,
+   "ratp_lifts_out": 22,
+   "accessible_stations_with_lifts": 190,
+   "with_platform_exit_topology": 61,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "IDFM GTFS + IDFM lift status + SNCF"
+  },
+  {
+   "code": "ara",
+   "name": "Auvergne-Rhône-Alpes",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 327,
+   "accessible_stations": 51,
+   "published": 2550,
+   "confirmed": 1640,
+   "possible": 2070,
+   "share_confirmed": 0.6431,
+   "stations_affected": 10,
+   "sncf_lifts": 228,
+   "sncf_lifts_out": 24,
+   "sncf_lifts_unknown": 9,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 46,
+   "with_platform_exit_topology": 32,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 328,
+    "weak_matches": [
+     {
+      "station": "Bellegarde-sur-Valserine",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Nurieux-Volognat",
+      "distance_m": 11.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Bessay-sur-Allier",
+      "distance_m": 68.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Livron-sur-Drôme",
+      "distance_m": 2.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Loriol-sur-Drôme",
+      "distance_m": 4.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Valence",
+      "distance_m": 3.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Andrézieux-Bouthéon",
+      "distance_m": 45.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Boën-sur-Lignon",
+      "distance_m": 155.2,
+      "name_score": 0.667
+     },
+     {
+      "station": "Aurec-sur-Loire",
+      "distance_m": 7.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Bas - Monistrol-sur-Loire",
+      "distance_m": 11.4,
+      "name_score": 0.667
+     },
+     {
+      "station": "Anse Halte",
+      "distance_m": 7.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Givors",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ecully - Tassin",
+      "distance_m": 1.5,
+      "name_score": 0.25
+     },
+     {
+      "station": "Sérézin-du-Rhône",
+      "distance_m": 12.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Groisy - Thorens-Glières",
+      "distance_m": 6.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Reignier-Ésery",
+      "distance_m": 2.3,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "bfc",
+   "name": "Bourgogne-Franche-Comté",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 196,
+   "accessible_stations": 19,
+   "published": 289,
+   "confirmed": 90,
+   "possible": 196,
+   "share_confirmed": 0.3114,
+   "stations_affected": 6,
+   "sncf_lifts": 57,
+   "sncf_lifts_out": 14,
+   "sncf_lifts_unknown": 2,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 15,
+   "with_platform_exit_topology": 10,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 196,
+    "weak_matches": [
+     {
+      "station": "Collonges-lès-Premières",
+      "distance_m": 53.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Longecourt-en-Plaine",
+      "distance_m": 9.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Pagny-le-Château",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ruffey-lès-Echirey",
+      "distance_m": 25.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Velars-sur-Ouche",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Verrey-sous-Salmaise",
+      "distance_m": 31.7,
+      "name_score": 0.333
+     },
+     {
+      "station": "Byans-sur-Doubs",
+      "distance_m": 10.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Rivière-Drugeon",
+      "distance_m": 18.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Andelot-en-Montagne",
+      "distance_m": 8.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Cosne-Cours-sur-Loire",
+      "distance_m": 5.7,
+      "name_score": 0.667
+     },
+     {
+      "station": "Saincaize-Meauce",
+      "distance_m": 5.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Le Creusot - Montceau-les-Mines - Montchanin TGV",
+      "distance_m": 6.3,
+      "name_score": 0.4
+     },
+     {
+      "station": "Romanèche-Thorins",
+      "distance_m": 11.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Champigny sur Yonne",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Belfort",
+      "distance_m": 7.3,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "bre",
+   "name": "Bretagne",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 114,
+   "accessible_stations": 21,
+   "published": 420,
+   "confirmed": 420,
+   "possible": 420,
+   "share_confirmed": 1.0,
+   "stations_affected": 0,
+   "sncf_lifts": 60,
+   "sncf_lifts_out": 4,
+   "sncf_lifts_unknown": 1,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 11,
+   "with_platform_exit_topology": 5,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 114,
+    "weak_matches": [
+     {
+      "station": "Pleudihen-sur-Rance",
+      "distance_m": 6.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Carhaix-Plouguer",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Miniac-Morvan",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Gouesnière - Cancale - Saint-Méloir-des-Ondes",
+      "distance_m": 9.8,
+      "name_score": 0.4
+     },
+     {
+      "station": "Servon-sur-Vilaine",
+      "distance_m": 116.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Vern-sur-Seiche",
+      "distance_m": 16.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Lorient Bretagne Sud",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     }
+    ]
+   }
+  },
+  {
+   "code": "cvl",
+   "name": "Centre-Val de Loire",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 156,
+   "accessible_stations": 10,
+   "published": 20,
+   "confirmed": 0,
+   "possible": 20,
+   "share_confirmed": 0.0,
+   "stations_affected": 5,
+   "sncf_lifts": 35,
+   "sncf_lifts_out": 11,
+   "sncf_lifts_unknown": 3,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 8,
+   "with_platform_exit_topology": 1,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 156,
+    "weak_matches": [
+     {
+      "station": "Bengy-sur-Craon",
+      "distance_m": 7.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Urçay - La Perche",
+      "distance_m": 21.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Cloyes-sur-le-Loir",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Éguzon-Chantôme",
+      "distance_m": 0.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ballan-Miré",
+      "distance_m": 86.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Chambourg-sur-Indre",
+      "distance_m": 10.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Fondettes",
+      "distance_m": 45.3,
+      "name_score": 0.25
+     },
+     {
+      "station": "Montlouis-sur-Loire",
+      "distance_m": 6.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Reignac-sur-Indre",
+      "distance_m": 15.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Saint-Paterne-Racan",
+      "distance_m": 24.9,
+      "name_score": 0.667
+     },
+     {
+      "station": "Chouzy-sur-Cisse",
+      "distance_m": 46.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Pruniers-en-Sologne",
+      "distance_m": 65.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Romorantin-Lanthenay",
+      "distance_m": 19.5,
+      "name_score": 0.25
+     },
+     {
+      "station": "Saint-Amand-Longpré",
+      "distance_m": 18.8,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "ges",
+   "name": "Grand Est",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 334,
+   "accessible_stations": 47,
+   "published": 2162,
+   "confirmed": 1332,
+   "possible": 1980,
+   "share_confirmed": 0.6161,
+   "stations_affected": 9,
+   "sncf_lifts": 157,
+   "sncf_lifts_out": 11,
+   "sncf_lifts_unknown": 7,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 42,
+   "with_platform_exit_topology": 9,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 336,
+    "weak_matches": [
+     {
+      "station": "Vendeuvre-sur-Barse",
+      "distance_m": 0.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ay",
+      "distance_m": 11.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Maison Blanche",
+      "distance_m": 33.0,
+      "name_score": 0.667
+     },
+     {
+      "station": "Froncles Buxières",
+      "distance_m": 45.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Thiaville-sur-Meurthe",
+      "distance_m": 8.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Revigny-sur-Ornain",
+      "distance_m": 17.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Hundling",
+      "distance_m": 313.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Waligator Parc",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Obermodern-Zutzendorf",
+      "distance_m": 9.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Hoelschloch",
+      "distance_m": 1.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Cernay (Haut-Rhin)",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Mulhouse Zu Rhein Tram-Train",
+      "distance_m": 7.6,
+      "name_score": 0.4
+     },
+     {
+      "station": "Walbach",
+      "distance_m": 18.5,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "hdf",
+   "name": "Hauts-de-France",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 313,
+   "accessible_stations": 33,
+   "published": 656,
+   "confirmed": 350,
+   "possible": 656,
+   "share_confirmed": 0.5335,
+   "stations_affected": 8,
+   "sncf_lifts": 103,
+   "sncf_lifts_out": 12,
+   "sncf_lifts_unknown": 2,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 31,
+   "with_platform_exit_topology": 3,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 313,
+    "weak_matches": [
+     {
+      "station": "Bohain-en-Vermandois",
+      "distance_m": 2.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Montescourt-Lizerolles",
+      "distance_m": 78.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Saint-Erme-Outre-et-Ramecourt",
+      "distance_m": 6.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Bassée - Violaines",
+      "distance_m": 6.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Le Cateau-Cambrésis",
+      "distance_m": 7.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Dompierre-sur-Helpe",
+      "distance_m": 21.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Lille CHR",
+      "distance_m": 3.9,
+      "name_score": 0.2
+     },
+     {
+      "station": "Saint-André-lez-Lille",
+      "distance_m": 20.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Saint-Hilaire-sur-Helpe",
+      "distance_m": 39.4,
+      "name_score": 0.667
+     },
+     {
+      "station": "Breteuil",
+      "distance_m": 18.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ribécourt-Dreslincourt",
+      "distance_m": 4.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Achiet-le-Grand",
+      "distance_m": 18.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Boisleux-au-Mont",
+      "distance_m": 7.6,
+      "name_score": 0.333
+     },
+     {
+      "station": "Brebières",
+      "distance_m": 18.4,
+      "name_score": 0.5
+     },
+     {
+      "station": "Calais",
+      "distance_m": 4.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Hesdigneul-lès-Boulogne",
+      "distance_m": 16.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Isbergues",
+      "distance_m": 22.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Maresquel-Ecquemicourt",
+      "distance_m": 40.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Nœux-les-Mines",
+      "distance_m": 3.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Pihen-lès-Guînes",
+      "distance_m": 4.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Rosières-en-Santerre",
+      "distance_m": 16.4,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "nor",
+   "name": "Normandie",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 88,
+   "accessible_stations": 23,
+   "published": 462,
+   "confirmed": 240,
+   "possible": 420,
+   "share_confirmed": 0.5195,
+   "stations_affected": 6,
+   "sncf_lifts": 56,
+   "sncf_lifts_out": 4,
+   "sncf_lifts_unknown": 2,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 18,
+   "with_platform_exit_topology": 5,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 88,
+    "weak_matches": [
+     {
+      "station": "Conches-en-Ouche",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Cherbourg-en-Cotentin",
+      "distance_m": 2.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Morgny-la-Pommeraye",
+      "distance_m": 52.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Sotteville-lès-Rouen",
+      "distance_m": 47.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Tourville-la-Rivière",
+      "distance_m": 51.9,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "naq",
+   "name": "Nouvelle-Aquitaine",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 298,
+   "accessible_stations": 23,
+   "published": 506,
+   "confirmed": 210,
+   "possible": 420,
+   "share_confirmed": 0.415,
+   "stations_affected": 6,
+   "sncf_lifts": 113,
+   "sncf_lifts_out": 11,
+   "sncf_lifts_unknown": 11,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 20,
+   "with_platform_exit_topology": 2,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 298,
+    "weak_matches": [
+     {
+      "station": "La Couronne",
+      "distance_m": 24.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Bussac-Forêt",
+      "distance_m": 11.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Châtelaillon-Plage",
+      "distance_m": 18.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Lacelle",
+      "distance_m": 20.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Montaigut-le-Blanc",
+      "distance_m": 9.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Boulazac",
+      "distance_m": 28.8,
+      "name_score": 0.333
+     },
+     {
+      "station": "Le Buisson-de-Cadouin",
+      "distance_m": 1.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Les Eyzies-de-Tayac-Sireuil",
+      "distance_m": 15.9,
+      "name_score": 0.333
+     },
+     {
+      "station": "Lamonzie-Saint-Martin",
+      "distance_m": 447.8,
+      "name_score": 1.0
+     },
+     {
+      "station": "Marsac-sur-L'isle",
+      "distance_m": 5.8,
+      "name_score": 0.333
+     },
+     {
+      "station": "Mauzac-et-Grand-Castang",
+      "distance_m": 14.2,
+      "name_score": 0.333
+     },
+     {
+      "station": "Razac-sur-l'Isle",
+      "distance_m": 11.4,
+      "name_score": 0.5
+     },
+     {
+      "station": "Sarlat-la-Canéda",
+      "distance_m": 15.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Terrasson-Lavilledieu",
+      "distance_m": 21.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Le Bouscat - Saint-Germaine",
+      "distance_m": 0.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Castillon-la-Bataille",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Les Églisottes-et-Chalaures",
+      "distance_m": 20.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Gironde-sur-Dropt",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Lesparre-Médoc",
+      "distance_m": 11.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ludon-Médoc",
+      "distance_m": 15.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Teste-de-Buch",
+      "distance_m": 4.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Le Verdon-sur-Mer",
+      "distance_m": 3.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Saint-Geours-de-Maremne",
+      "distance_m": 19.3,
+      "name_score": 0.667
+     },
+     {
+      "station": "Ygos-Saint-Saturnin",
+      "distance_m": 4.8,
+      "name_score": 0.333
+     },
+     {
+      "station": "Laroque-Timbaut",
+      "distance_m": 5.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Penne-d'Agenais",
+      "distance_m": 20.9,
+      "name_score": 0.5
+     },
+     {
+      "station": "Mauzé-sur-le-Mignon",
+      "distance_m": 11.5,
+      "name_score": 0.5
+     },
+     {
+      "station": "Lathus-Saint-Rémy",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Naintré",
+      "distance_m": 21.4,
+      "name_score": 0.5
+     },
+     {
+      "station": "Bersac-sur-Rivalier",
+      "distance_m": 8.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Jonchère-Saint-Maurice",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Saint-Yrieix-la-Perche",
+      "distance_m": 7.4,
+      "name_score": 0.667
+     }
+    ]
+   }
+  },
+  {
+   "code": "occ",
+   "name": "Occitanie",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 248,
+   "accessible_stations": 24,
+   "published": 464,
+   "confirmed": 62,
+   "possible": 160,
+   "share_confirmed": 0.1336,
+   "stations_affected": 7,
+   "sncf_lifts": 89,
+   "sncf_lifts_out": 12,
+   "sncf_lifts_unknown": 16,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 14,
+   "with_platform_exit_topology": 8,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 248,
+    "weak_matches": [
+     {
+      "station": "Baraqueville Carcenac Peyralès",
+      "distance_m": 14.3,
+      "name_score": 0.333
+     },
+     {
+      "station": "Saint-Christophe-Vallon",
+      "distance_m": 0.0,
+      "name_score": 0.667
+     },
+     {
+      "station": "Sévérac-d'Aveyron",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Boucoiran-et-Nozières",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Gallargues-le-Montueux",
+      "distance_m": 40.4,
+      "name_score": 0.5
+     },
+     {
+      "station": "Nîmes",
+      "distance_m": 3.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Avignonet-Lauragais",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Bagnac-sur-Célé",
+      "distance_m": 8.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "Les Quatre-Routes-du-Lot",
+      "distance_m": 17.0,
+      "name_score": 0.667
+     },
+     {
+      "station": "Balsièges",
+      "distance_m": 45.6,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Bastide - Saint-Laurent-les-Bains",
+      "distance_m": 0.0,
+      "name_score": 0.4
+     },
+     {
+      "station": "Le Monastier-Pin-Moriès",
+      "distance_m": 6.8,
+      "name_score": 0.333
+     },
+     {
+      "station": "Saléchan - Siradan",
+      "distance_m": 588.1,
+      "name_score": 1.0
+     },
+     {
+      "station": "Fontpédrouse",
+      "distance_m": 0.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Olette - Canaveilles",
+      "distance_m": 0.0,
+      "name_score": 0.667
+     },
+     {
+      "station": "Ria-Sirach",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Salses-le-Château",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Albi",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Rabastens - Coufouleux",
+      "distance_m": 14.0,
+      "name_score": 0.333
+     },
+     {
+      "station": "Saint-Sulpice (Tarn)",
+      "distance_m": 0.0,
+      "name_score": 0.667
+     }
+    ]
+   }
+  },
+  {
+   "code": "pdl",
+   "name": "Pays de la Loire",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 130,
+   "accessible_stations": 12,
+   "published": 132,
+   "confirmed": 72,
+   "possible": 110,
+   "share_confirmed": 0.5455,
+   "stations_affected": 3,
+   "sncf_lifts": 47,
+   "sncf_lifts_out": 3,
+   "sncf_lifts_unknown": 3,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 9,
+   "with_platform_exit_topology": 4,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 130,
+    "weak_matches": [
+     {
+      "station": "Haluchère Batignolles",
+      "distance_m": 6.5,
+      "name_score": 0.667
+     },
+     {
+      "station": "Thouaré-sur-Loire",
+      "distance_m": 6.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Chalonnes-sur-Loire",
+      "distance_m": 56.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Chemillé-en-Anjou",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Ingrandes-Le Fresne-sur-Loire",
+      "distance_m": 35.3,
+      "name_score": 0.333
+     },
+     {
+      "station": "Saint-Mathurin-sur-Loire",
+      "distance_m": 21.6,
+      "name_score": 0.667
+     },
+     {
+      "station": "Le Genest-Saint-Isle",
+      "distance_m": 13.9,
+      "name_score": 0.333
+     },
+     {
+      "station": "Domfront-en-Champagne",
+      "distance_m": 10.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "Neuville-sur-Sarthe",
+      "distance_m": 13.1,
+      "name_score": 0.5
+     },
+     {
+      "station": "Noyen-sur-Sarthe",
+      "distance_m": 9.2,
+      "name_score": 0.5
+     },
+     {
+      "station": "La Suze-sur-Sarthe",
+      "distance_m": 27.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Voivres-lès-le-Mans",
+      "distance_m": 9.9,
+      "name_score": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "code": "pac",
+   "name": "Provence-Alpes-Côte d'Azur",
+   "network": "SNCF trains (TER, Intercités, TGV)",
+   "stations": 145,
+   "accessible_stations": 32,
+   "published": 992,
+   "confirmed": 552,
+   "possible": 930,
+   "share_confirmed": 0.5565,
+   "stations_affected": 8,
+   "sncf_lifts": 112,
+   "sncf_lifts_out": 18,
+   "sncf_lifts_unknown": 3,
+   "ratp_lifts_out": null,
+   "accessible_stations_with_lifts": 26,
+   "with_platform_exit_topology": 10,
+   "sncf_status_observed_at": "2026-11-16T23:30:14+00:00",
+   "method": "national SNCF data only",
+   "audit": {
+    "matches": 145,
+    "weak_matches": [
+     {
+      "station": "Laragne-Montéglin",
+      "distance_m": 4.7,
+      "name_score": 0.5
+     },
+     {
+      "station": "Nice",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Villeneuve-Loubet",
+      "distance_m": 0.0,
+      "name_score": 0.667
+     },
+     {
+      "station": "Salon-de-Provence",
+      "distance_m": 2.8,
+      "name_score": 0.5
+     },
+     {
+      "station": "Septèmes-les-Vallons",
+      "distance_m": 4.4,
+      "name_score": 0.5
+     },
+     {
+      "station": "Simiane-Collongue",
+      "distance_m": 7.3,
+      "name_score": 0.5
+     },
+     {
+      "station": "Tarascon",
+      "distance_m": 0.0,
+      "name_score": 0.5
+     },
+     {
+      "station": "Arenc Euroméditerranée",
+      "distance_m": 114.1,
+      "name_score": 0.667
+     },
+     {
+      "station": "La Pauline Hyères",
+      "distance_m": 26.3,
+      "name_score": 0.5
+     }
+    ]
+   }
+  }
+ ]
+}

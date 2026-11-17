@@ -1,4 +1,5 @@
-import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionInfo, RegionViewName, Resolution, SavedTrip, StationGraph, StationRow, Summary, TripStatus } from "./types";
+import { staticCompare, staticRegionApi, staticRegions } from "./static/staticApi";
+import type { Analysis, Critical, Explanation, Journey, Reach, OutageDetail, Ranking, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionCompareRow, RegionInfo, RegionViewName, Resolution, SavedTrip, StationGraph, StationRow, Summary, TripStatus } from "./types";
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
@@ -57,6 +58,7 @@ export const api = {
     call<{ with_candidate_counts: import("./types").Counts; gain: number }>(`/api/scenarios/${scenario}/with-candidate${q({ candidate_lift: lift })}`),
   export: (scenario: string) => call<unknown>(`/api/scenarios/${scenario}/export`, { method: "POST" }),
   regions: () => call<RegionInfo[]>("/api/regions"),
+  regionsCompare: () => call<{ regions: RegionCompareRow[] }>("/api/regions/compare"),
   region: {
     overview: () => call<RegionOverview>(rg("/api/region/overview")),
     map: (view: RegionViewName) => call<{ view: string; stations: RegionStation[] }>(rg(`/api/region/map?view=${view}`)),
@@ -69,6 +71,19 @@ export const api = {
     trips: (trips: SavedTrip[]) => call<{ trips: TripStatus[] }>(rg("/api/region/trips/check"), { method: "POST",
       body: JSON.stringify({ trips: trips.map((t) => ({ label: t.label || null, from: t.from.id, to: t.to.id, usual: t.usual || null, last_status: t.last_status || null })) }) }),
     reach: (id: string, view: RegionViewName) => call<Reach>(rg(`/api/region/reach${q({ from: id, view })}`)),
+    history: () => call<{ region: string; observations: Record<string, unknown>[] }>(rg("/api/region/history")),
   },
   queries: () => call<{ store: string; queries: { at: string; cypher: string; param_keys: string[]; rows: number; ms: number }[]; catalog: Record<string, string> }>("/api/debug/queries?limit=40"),
 };
+
+// Zero-install demo (GitHub Pages): the region surface is served from the exported snapshot, computed in the
+// browser and re-checked by Relate compiled to WebAssembly. Station mode needs the installed server.
+export const STATIC_DEMO = import.meta.env.VITE_STATIC === "1";
+if (STATIC_DEMO) {
+  (api as any).region = staticRegionApi(() => REGION || "idf");
+  (api as any).regions = staticRegions;
+  (api as any).regionsCompare = staticCompare;
+}
+export const currentRegion = () => REGION;
+export const bulletinUrl = (region: string, isDefault: boolean) =>
+  STATIC_DEMO ? `${import.meta.env.BASE_URL}data/${region}/bulletin.html` : `/api/region/bulletin.html${isDefault ? "" : `?region=${region}`}`;

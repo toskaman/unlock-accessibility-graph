@@ -35,6 +35,18 @@
  api/app.py          serves every built region side by side (one NetworkService per store, read-only), ?region=<code>
 ```
 
+## v0.7.0 additions
+
+```
+ history.py          record → data/normalized/history/{sncf_lift_status,metrics}.json; spells, chronic share
+ network/feeds.py    RSS + iCalendar renderings of trip_status (stateless URLs)
+ scripts/export_static.py ─► frontend/static-data/<region>/{graph,views,cards,blockers,history}.json + bulletin.html
+ frontend/scripts/build-static.mjs ─► site/  (VITE_STATIC=1, base /unlock-accessibility-graph/, Relate WASM in relate/)
+ frontend/src/static/engine.ts        port of network/engine.py (checked identical: scripts/check_static_engine.py)
+ frontend/src/static/relateWorker.ts  Relate WebAssembly in a worker: loads graph.json, runs Q_REACH_STEP / leg check
+ frontend/src/static/staticApi.ts     the /api/region/* surface for the static build
+```
+
 ## Why Relate, and how it is used
 
 * **Embedded, single file.** `database/unlock.rl` is the system of record: 6.5 MB, 6,102 domain nodes and 11,761

@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.7.0 — 2026-11-17
+- **Zero-install demo** on GitHub Pages (https://toskaman.github.io/unlock-accessibility-graph/): region mode for
+  every region, journeys, reach, trip alerts, comparison and bulletin, on a snapshot exported from the Relate stores
+  (`scripts/export_static.py`). Journeys and reaches are computed in the browser by a port of the server engine —
+  checked identical on 1,038 reaches and 600 journeys (`scripts/check_static_engine.py`) — and every leg and reach is
+  re-checked by **Relate compiled to WebAssembly** (`@relate/relate-wasm` 1.0.2, in a worker) with the server's own
+  Cypher. Clearly labelled as a snapshot; station mode and simulations stay in the installed app (D33).
+- **Every region of mainland France** from national SNCF data (`python -m unlock build-region all`, ~1 min): 11
+  regions besides Île-de-France, region picker, *Compare all regions* table, `GET /api/regions/compare`,
+  `scripts/regions_report.py` (with a per-region topology-coverage column and a list of weak station matches).
+- **Honest where the topology is missing** (D31): a lift not reported working at a station whose lift text gives no
+  platform↔street route now puts the station's rail points in DOUBT instead of being ignored. Île-de-France best view:
+  201,181 confirmed journeys (was 207,509 with the same status).
+- **Lift-status history** (`python -m unlock record`, run by `refresh`): national SNCF status per file version,
+  headline metrics and non-open stations per region per observation; spells / chronic-lift analyses; history chart
+  in the region view once two observations exist; `GET /api/region/history`. Collected twice a day in the daytime,
+  semi-automatically (D34, docs/HISTORY.md).
+- **Subscribe to a trip** — RSS and iCalendar links per watched trip, stateless (`/api/region/trips/feed.rss|ics`).
+- Station cards outside IDF list the station's SNCF lifts with their hourly status.
+- Building several regions in one process parses NeTEx and the national GTFS once (cached).
+- Demo script cut to 1:55 (the rules allow up to 2 minutes).
+- Tests: 92 pytest + 10 e2e; static-site smoke test (`frontend/scripts/check-static-site.mjs`).
+
 ## 0.6.0 — 2026-11-17
 - **Fresh RATP lift status.** IDFM *État des ascenseurs* (986 lifts, 3 updates a day, free Opendatasoft key —
   created on the entrant's account, stored outside the repo) imported as `(:IdfmLift)` with the levels each lift

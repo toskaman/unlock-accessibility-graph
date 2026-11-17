@@ -179,3 +179,45 @@ def test_several_regions_served_side_by_side(region_store, tmp_path):
         assert b["region"]["code"] == "zz" and a["views"]["published"] == b["views"]["published"]
         assert c.get("/api/region/overview?region=nope").status_code == 404
         assert c.post("/api/region/trips/check?region=zz", json={"trips": [{"from": "Z2", "to": "Z1"}]}).json()["trips"][0]["status"] == "OK"
+
+
+def test_lift_out_at_station_without_street_topology_is_doubt(region_store):
+    from unlock.engine.model import EquipmentStatus as LiftState
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        assert ns._p_all.get("Z1")                       # Testville is modelled
+        ns._p_all["Z1"] = set()                          # pretend the lift text gave no platform↔exit route
+        any_lift = ns._lifts_at[ns.sncf_of["Z1"][0]][0]
+        ns.ss.baseline_state[any_lift] = LiftState.UNAVAILABLE
+        states = ns.view_states("best")
+        assert all(states.get(p) == "DOUBT" for p in ns.rail_platforms["Z1"])
+
+
+def test_trip_subscription_feeds(region_store):
+    import xml.etree.ElementTree as ET
+    with TestClient(create_app(region_store, regions={})) as c:
+        r = c.get("/api/region/trips/feed.rss", params={"from": "Testville", "to": "Gamma"})
+        assert r.status_code == 200 and r.headers["content-type"].startswith("application/rss+xml")
+        item = ET.fromstring(r.text).find("channel/item")
+        assert item.find("title").text.startswith("Testville → Gamma: ")
+        i = c.get("/api/region/trips/feed.ics", params={"from": "Z1", "to": "Z4"})
+        assert i.status_code == 200 and i.text.startswith("BEGIN:VCALENDAR\r\n") and "BEGIN:VEVENT" in i.text
+        assert all(len(l.encode()) <= 75 for l in i.text.split("\r\n"))
+        assert c.get("/api/region/trips/feed.xml", params={"from": "Z1", "to": "Z4"}).status_code == 404
+        assert c.get("/api/region/trips/feed.rss", params={"from": "nowhere", "to": "Z4"}).status_code == 404
+
+
+def test_region_metrics_history_and_compare(region_store, tmp_path, monkeypatch):
+    from unlock import history as H
+    monkeypatch.setattr(H, "HIST", tmp_path / "hist")
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        row = H.region_metrics(ns, "idf")
+        assert row["published"] == 12 and row["confirmed"] == 9 and "Z3" in row["station_states"]
+        H.append_metrics([row])
+        H.append_metrics([row])                            # same observation twice → kept once
+        assert len(H.region_series("idf")["observations"]) == 1
+    with TestClient(create_app(region_store, regions={})) as c:
+        assert c.get("/api/region/history").json()["region"] == "idf"
+        rows = c.get("/api/regions/compare").json()["regions"]
+        assert rows[0]["code"] == "idf" and rows[0]["published"] == 12 and rows[0]["confirmed"] == 9

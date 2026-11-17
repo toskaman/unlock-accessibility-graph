@@ -1,7 +1,7 @@
 # Data licences and attribution
 
 The files `data/normalized/graph_input.json`, `data/normalized/quality_report.json` and the Relate store
-`database/snapshot/unlock-snapshot-2026-11-16.rl` are a **derived database** produced by UNLOCK from:
+`database/snapshot/unlock-snapshot-2026-11-17.rl` are a **derived database** produced by UNLOCK from:
 
 | Source | Publisher | Licence |
 |---|---|---|

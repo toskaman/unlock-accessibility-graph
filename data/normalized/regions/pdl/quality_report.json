@@ -1,0 +1,50 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 47,
+  "lifts_no_resolved_end": 1,
+  "lifts_one_resolved_end": 4,
+  "lifts_two_resolved_ends": 42,
+  "lifts_with_status_record": 47,
+  "lines_non_bus": 73,
+  "netex_stop_places_in_region": 132,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 52,
+  "quay_step_free_INACCESSIBLE": 251,
+  "quays": 303,
+  "stations_matched_to_zone": 130,
+  "stations_unmatched_to_zone": 2,
+  "status_AVAILABLE": 41,
+  "status_UNAVAILABLE": 3,
+  "status_UNKNOWN": 3,
+  "zone_line_links": 551,
+  "zones": 130
+ },
+ "space_roles": {
+  "PLATFORM": 46,
+  "CONNECTOR": 14,
+  "EXIT": 12,
+  "UNSPECIFIED": 6,
+  "UNRESOLVED_PLATFORM": 4
+ },
+ "serves_derivations": {
+  "VOIE_TOKEN": 43,
+  "NAMED_SPACE": 57,
+  "UNSPECIFIED_END": 6,
+  "QUAI_NUMBER": 3
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Trélazé",
+   "lift_id": "ec8c2700-6412-4a80-b2eb-76608f962143",
+   "token": "1"
+  },
+  {
+   "station": "Trélazé",
+   "lift_id": "260fdbdd-e5bb-40f8-a627-bbd83e2115f7",
+   "token": "2"
+  }
+ ],
+ "unmatched_token_count": 2
+}

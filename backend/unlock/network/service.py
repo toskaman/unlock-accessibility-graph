@@ -126,6 +126,9 @@ class NetworkService:
         self.rail_platforms = {sid: [k for k in self.net.station_platforms.get(sid, [])
                                      if self.lines[points[k]["line"]]["mode"] == "RAIL"] for sid in self.sncf_of}
         self._p_all = {sid: self._platform_anchors(sncf, {l: A for l in self.ss.lifts}) for sid, sncf in self.sncf_of.items()}
+        self._lifts_at: dict[str, list[str]] = defaultdict(list)
+        for l in self.ss.lifts.values():
+            self._lifts_at[l.station_id].append(l.id)
         self._cache: dict[str, Any] = {}
         self.ready = True
 
@@ -210,6 +213,11 @@ class NetworkService:
                 live[l] = A
             for sid in self._p_all:
                 s = self.rail_state(sid, live)
+                if s is None:
+                    # no platform↔street route modelled from the lift text: a lift not reported working there can
+                    # neither be confirmed harmless nor proved blocking → the station's rail points are in doubt
+                    if any(live.get(l) != A for st in self.sncf_of[sid] for l in self._lifts_at.get(st, ())):
+                        s = E.DOUBT
                 if s and s != E.OPEN:
                     for p in self.rail_platforms.get(sid, []):
                         states[p] = E.worst(states.get(p, E.OPEN), s)
@@ -759,6 +767,15 @@ RETURN DISTINCT t.id AS id"""
                         "direction": l["direction"], "reported_by_prim": bool(l["reported_by"]),
                         "lines": sorted({self.lines[p["line_id"]]["short_name"] for s in l["sides"]
                                          for p in s.get("points", []) if p["line_id"] in self.lines})})
+        if not out:   # regions without IDFM's dataset: the SNCF station layer's own lifts and hourly status
+            obs = (self.ss.snapshot or {}).get("observed_at")
+            for st in self.sncf_of.get(sid, []):
+                for lid in sorted(self._lifts_at.get(st, []),
+                                  key=lambda x: (self.ss.baseline_state.get(x) == A, self.ss.lifts[x].name or "")):
+                    l = self.ss.lifts[lid]
+                    out.append({"id": lid, "operator": "SNCF", "status": self.ss.baseline_state.get(lid, K).value,
+                                "updated": obs, "status_note": None, "reported_by_prim": False, "lines": [],
+                                "direction": " — ".join(x for x in (l.name, l.description) if x)})
         return out
 
     def station_outages(self, sid: str, view: str = "best") -> list[dict]:

@@ -26,3 +26,6 @@ database/e2e/
 !database/snapshot/*.rl
 database/regions/
 reports/
+frontend/static-data/
+site/
+frontend/static-public/

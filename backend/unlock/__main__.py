@@ -10,6 +10,7 @@
   python -m unlock fetch-outages   PRIM lift outages (needs UNLOCK_PRIM_KEY or UNLOCK_PRIM_KEY_FILE)
   python -m unlock fetch-lifts     IDFM lift status (needs UNLOCK_IDFM_ODS_KEY or UNLOCK_IDFM_ODS_KEY_FILE)
   python -m unlock bulletin        daily accessibility bulletin (JSON + Markdown + HTML in reports/)
+  python -m unlock record          append lift-status history + headline metrics of every built region
   python -m unlock refresh         fresh lift status (SNCF, + PRIM/IDFM when keys are set) → rebuild every region
   python -m unlock build-region ara   same method on another region (national SNCF data; see docs/REGIONS.md)
   python -m unlock alerts FILE     rider alerts for the usual trips listed in FILE (JSON, see docs/RIDER_ALERTS.md)
@@ -27,7 +28,7 @@ from .config import ROOT, STORE_PATH
 
 def main() -> None:
     ap = argparse.ArgumentParser(prog="unlock")
-    ap.add_argument("command", choices=["fetch", "fetch-outages", "fetch-lifts", "bulletin", "alerts", "build-region", "refresh", "normalize", "import", "build", "serve", "stats", "mcp"])
+    ap.add_argument("command", choices=["fetch", "fetch-outages", "fetch-lifts", "bulletin", "alerts", "build-region", "refresh", "record", "normalize", "import", "build", "serve", "stats", "mcp"])
     ap.add_argument("file", nargs="?", help="alerts: trips file")
     ap.add_argument("--out", default=None, help="bulletin/alerts: output folder (default reports/)")
     ap.add_argument("--store", default=str(STORE_PATH))
@@ -90,19 +91,46 @@ def main() -> None:
             steps.append([sys.executable, "-m", "unlock", "fetch-lifts"])
         steps.append([sys.executable, "-m", "unlock", "build", "--store", a.store])
         from .regions import REGIONS, paths
-        steps += [[sys.executable, "-m", "unlock", "build-region", c] for c in REGIONS if paths(c)["store"].exists()]
+        built = [c for c in REGIONS if paths(c)["store"].exists()]
+        if built:
+            steps.append([sys.executable, "-m", "unlock", "build-region", ",".join(built)])
+        steps.append([sys.executable, "-m", "unlock", "record", "--store", a.store])
         for s in steps:
             print("→", " ".join(s[1:]), flush=True)
             subprocess.run(s, check=True, cwd=ROOT)
         print("Done. Restart `python -m unlock serve` to load the new status (the server must be stopped while "
               "building: Relate allows one writer).")
         return
+    if a.command == "record":
+        from . import history as H
+        from .db import GraphStore
+        from .engine.service import UnlockService
+        from .network.service import NetworkService
+        from .regions import REGIONS, paths
+        sn = H.append_sncf(H.sncf_observation())
+        rows = []
+        for code, store in [("idf", Path(a.store))] + [(c, paths(c)["store"]) for c in REGIONS]:
+            if not store.exists():
+                continue
+            with GraphStore(store, read_only=True) as db:
+                ns = NetworkService(db, UnlockService(db))
+                if ns.ready:
+                    rows.append(H.region_metrics(ns, code))
+        me = H.append_metrics(rows)
+        for r in rows:
+            print(f"{r['region']:5} confirmed {r['confirmed']:>7} / {r['published']:<7} night={r['night']}")
+        print(f"history: {len(sn['observations'])} SNCF observations, {len(me['observations'])} metric rows")
+        return
     if a.command == "build-region":
         from .regions import REGIONS, build as build_region
-        code = a.file or "ara"
-        if code not in REGIONS:
-            sys.exit(f"unknown region {code!r}; known: {', '.join(REGIONS)}")
-        print(json.dumps(build_region(code), indent=1))
+        codes = (a.file or "ara").split(",")
+        if codes == ["all"]:
+            codes = list(REGIONS)
+        bad = [c for c in codes if c not in REGIONS]
+        if bad:
+            sys.exit(f"unknown region {bad[0]!r}; known: {', '.join(REGIONS)}, all")
+        for c in codes:
+            print(c, json.dumps(build_region(c)), flush=True)
         return
     if a.command in ("bulletin", "alerts"):
         from .db import GraphStore

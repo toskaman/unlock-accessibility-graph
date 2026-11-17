@@ -103,6 +103,10 @@ export type ViewSummary = { view: RegionViewName; confirmed: number; possible: n
   boarding_points: { total: number; doubt: number; closed: number }; stations_affected: number };
 export type FeedInfo = { id: string; observed_at: string; last_lift_update: string | null; last_other_update: string | null;
   lift_messages_stale_days: number | null; licence: string; source: string };
+export type RegionCompareRow = { code: string; name: string; network: string; stations: number; accessible_stations: number;
+  published: number; confirmed: number; possible: number; share_confirmed: number | null; stations_affected: number;
+  sncf_lifts: number; sncf_lifts_out: number; sncf_lifts_unknown: number; ratp_lifts_out: number | null;
+  accessible_stations_with_lifts: number; with_platform_exit_topology: number; sncf_status_observed_at: string | null; method: string };
 export type RegionInfo = { code: string; name: string; network_label: string; center: [number, number]; zoom: number; default?: boolean };
 export type RegionOverview = {
   available: boolean; feed: FeedInfo | null; region: RegionInfo; has_feed: boolean;

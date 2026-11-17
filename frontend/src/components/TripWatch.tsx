@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import type { Journey, SavedTrip, TripStatus } from "../types";
 
+const STATIC_DEMO = import.meta.env.VITE_STATIC === "1";
+const feed = (region: string, t: SavedTrip, fmt: "rss" | "ics") =>
+  `${location.origin}/api/region/trips/feed.${fmt}?${new URLSearchParams({ from: t.from.id, to: t.to.id, region }).toString()}`;
 const key = (region: string) => `unlock.trips.v1.${region}`;
 const load = (region: string): SavedTrip[] => { try { return JSON.parse(localStorage.getItem(key(region)) || "[]"); } catch { return []; } };
 const store = (region: string, t: SavedTrip[]) => { try { localStorage.setItem(key(region), JSON.stringify(t)); } catch { /* storage unavailable: keep in memory */ } };
@@ -61,6 +64,13 @@ export function TripWatch({ region, journey, onError }: { region: string; journe
                 <strong>{t.from.name} → {t.to.name}</strong>
                 <button className="ghost small" aria-label={`Stop watching ${t.from.name} to ${t.to.name}`} onClick={() => remove(i)}>Remove</button>
               </div>
+              {!STATIC_DEMO && (
+                <p className="tiny tw-subs">Subscribe:{" "}
+                  <a href={feed(region, t, "rss")}>RSS</a>{" · "}
+                  <a href={feed(region, t, "ics").replace(/^https?:/, "webcal:")}>calendar</a>{" "}
+                  <button className="linkish tiny" onClick={() => navigator.clipboard?.writeText(feed(region, t, "ics")).catch(() => undefined)}>copy calendar link</button>
+                </p>
+              )}
               {s ? <p className="small"><span className="tw-badge">{w?.label}</span>{s.changed && <span className="tw-changed"> changed since last check</span>} {s.message}</p>
                  : <p className="muted small">Checking…</p>}
             </li>

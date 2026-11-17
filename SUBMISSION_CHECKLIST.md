@@ -11,6 +11,9 @@
 - [x] v0.6.0: 87 tests + fetch (all sources) + `fetch-outages` + `fetch-lifts` + build + `build-region ara` + bulletin on Windows 10
 - [x] 1:36 narrated video (station mode) public on the v0.2.0 GitHub release
 - [ ] New video — recorded by the entrant after a daytime `python -m unlock refresh` (script: DEMO_SCRIPT.md), ≤ the official limit
+- [x] Rules re-read in full on 17 Nov 2026 (relate.devpost.com, /rules, /resources, /updates, forum): video ≤ 2 min, public `relate`-tagged repo, setup instructions, a video *or a working demo link*, tools/AI statement; judges should be able to clone, run and see the graph without asking
+- [x] Zero-install demo link (GitHub Pages) — no login, region mode, clearly labelled snapshot
+- [ ] Submit a draft early on Devpost (public voting is open; edits allowed until the deadline)
 - [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement
 - [ ] Re-read live rules page within 48 h of submission
 - [x] Secret scan before publishing — no secrets in history; agent transcripts sanitised (no local paths/accounts)

@@ -6,9 +6,11 @@
 
 **Repository:** https://github.com/toskaman/unlock-accessibility-graph (topics: `relate`, `relate-neo4j-hackathon`)
 
+**Try it (no install, no login):** https://toskaman.github.io/unlock-accessibility-graph/ — Relate runs in your browser (WebAssembly) and re-checks every journey and reach.
+
 **Video (no login needed):** *(video to be recorded by the entrant — DEMO_SCRIPT.md)*; station-mode video: https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4
 
-**Built with:** relate-db (Relate 1.0.2, embedded, single-file store), Cypher / GQL quantified path patterns, Python, FastAPI, React, TypeScript, Vite, MapLibre GL JS, Playwright, pytest. Open data: SNCF Gares & Connexions and SNCF Voyageurs (ODbL), Île-de-France Mobilités (Licence Ouverte 2.0, Licence Mobilités: GTFS, lift status, PRIM traffic-information API).
+**Built with:** relate-db (Relate 1.0.2, embedded, single-file store), Cypher / GQL quantified path patterns, Python, FastAPI, Relate WebAssembly (@relate/relate-wasm), React, TypeScript, Vite, MapLibre GL JS, Playwright, pytest. Open data: SNCF Gares & Connexions and SNCF Voyageurs (ODbL), Île-de-France Mobilités (Licence Ouverte 2.0, Licence Mobilités: GTFS, lift status, PRIM traffic-information API).
 
 ## About the project
 
@@ -33,10 +35,17 @@ the rider's browser; the same check runs from the command line for a daily sched
 **For lift teams: a daily bulletin** generated from the graph — repairs that give back the most journeys, stations cut
 off and their lifts, changes since the previous fetch, statuses to check on site, passenger messages to correct.
 
-**Not an Île-de-France special case.** The same code runs on Auvergne-Rhône-Alpes from national open data only (SNCF
-NeTEx, SNCF hourly status, SNCF national GTFS, station ridership): 327 stations, 51 declared wheelchair-accessible,
-2,070 of 2,550 step-free journeys confirmed — Lyon Gorge de Loup → Lyon Part-Dieu is cut today by one lift.
-Generalising also found a parser bug that affected Île-de-France too (fixed).
+**Every region of mainland France.** The same code runs on the 11 other mainland regions from national open data
+only (SNCF NeTEx, SNCF hourly status, SNCF national timetable, station ridership), with a side-by-side comparison and
+a per-region quality column. Generalising found two problems that also affected Île-de-France — a lift-text parsing
+bug and outages silently ignored at stations whose text names no exit — both fixed.
+
+**History.** UNLOCK records the lift status twice a day: how long outages last, which lifts are chronically out, how
+many step-free journeys each region loses day after day.
+
+**Try it without installing anything.** The GitHub Pages demo loads the graph exported from the Relate store into
+Relate's WebAssembly build in the visitor's browser, which re-runs the server's own Cypher to re-check every journey
+leg and every reach (the browser engine was checked identical to the server's on 1,038 reaches and 600 journeys).
 
 **A real finding.** The PRIM feed's 1,047 lift messages have not changed since 9 Oct 2026, while its other messages
 update daily (four fetches over five hours: byte-identical lift content). Reading each SNCF message into the exact lift
@@ -62,13 +71,13 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. IDFM's lift-status dataset reports lifts switched off for the night as failures: a night snapshot first showed 188 RATP "outages", 163 of them switched off after midnight — UNLOCK now counts those as unknown instead of inventing 100+ repairs. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 87 tests against the real Relate engine plus 10 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 92 tests against the real Relate engine plus 10 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.
 
 ### What's next
-Real riders trying the trip alerts for a week; a daily scheduled refresh to build lift-status history (how long outages last); more regions (one entry each); sending the stale-feed note to PRIM; joint "repair together" recommendations for lifts in series.
+Real riders trying the trip alerts for a week; three weeks of lift-status history turned into outage durations and chronic-lift lists; sending the stale-feed note to PRIM; joint "repair together" recommendations for lifts in series.
 
 ## Relate capabilities, third-party tools and AI disclosure
 - **Relate:** embedded Python API (`relate-db` 1.0.2), single-file persistent store, openCypher with GQL `ACYCLIC` path patterns, uniqueness constraints, range indexes, transactions, map parameters, read-only opens, result summaries.

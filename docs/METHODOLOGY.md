@@ -161,3 +161,21 @@ MISSING_FROM_FEED (SNCF UNAVAILABLE, not matched by any message).
   ordered by the station's daily use — a tie-breaker, not a weight (D24 still holds: a busy station never outranks
   a larger gain). RATP lifts of unknown status are listed as *check first*, not as repairs.
 - **Second region**: [REGIONS.md](REGIONS.md).
+
+## 11. Stations whose lift text gives no street route (v0.7.0)
+
+The SNCF station layer confirms a platform only through a platform↔exit route it can read from the lift location
+text. Where the text never names an exit (e.g. « Voie 1 / Souterrain », « Voie 2 / Souterrain » with the building at
+track level), no such route exists in the model. Until v0.6.0 those stations' rail points were left OPEN whatever
+their lifts' status. From v0.7.0, a lift not reported working at such a station makes its rail points **DOUBT**
+(possible, not confirmed); with every lift working they stay OPEN. It never makes them CLOSED. This mostly matters
+outside Île-de-France, where few stations have a modelled exit (see the region comparison), and lowers the Île-de-France
+best view by a few thousand journeys.
+
+## 12. History (v0.7.0)
+
+Every `record` appends the national SNCF lift-status file's non-available lifts (one observation per file version)
+and each region's headline numbers and non-open stations. An outage *spell* runs from the first observation listing a
+lift to the first later observation that does not; durations are therefore bounded by the observation frequency
+(twice a day), not measured to the minute. A *chronic* lift is one out in ≥ 30 % of observations over ≥ 7 days.
+Night observations are flagged and kept apart.

@@ -1,0 +1,82 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 113,
+  "lifts_no_resolved_end": 2,
+  "lifts_one_resolved_end": 6,
+  "lifts_two_resolved_ends": 105,
+  "lifts_with_status_record": 113,
+  "lines_non_bus": 86,
+  "netex_stop_places_in_region": 299,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 109,
+  "quay_step_free_INACCESSIBLE": 567,
+  "quays": 676,
+  "stations_matched_to_zone": 298,
+  "stations_unmatched_to_zone": 1,
+  "status_AVAILABLE": 91,
+  "status_UNAVAILABLE": 11,
+  "status_UNKNOWN": 11,
+  "zone_line_links": 803,
+  "zones": 298
+ },
+ "space_roles": {
+  "PLATFORM": 122,
+  "UNRESOLVED": 7,
+  "EXIT": 17,
+  "CONNECTOR": 37,
+  "UNSPECIFIED": 10,
+  "UNRESOLVED_PLATFORM": 11
+ },
+ "serves_derivations": {
+  "NAMED_SPACE": 128,
+  "VOIE_TOKEN": 122,
+  "UNSPECIFIED_END": 10,
+  "QUAI_NUMBER": 1,
+  "NAMED_SPACE_WITH_TRACK": 1
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Périgueux",
+   "lift_id": "d2b757e5-5f94-47ea-8d58-35b2aff74d06",
+   "token": "3"
+  },
+  {
+   "station": "Périgueux",
+   "lift_id": "09a7a603-a52e-41e1-9a48-f4c77697942f",
+   "token": "2"
+  },
+  {
+   "station": "Cenon",
+   "lift_id": "553897c7-5f38-4054-97b1-df84176badfa",
+   "token": "1"
+  },
+  {
+   "station": "Cenon",
+   "lift_id": "d842cbc1-0c8f-46d4-83f2-544b63d07f52",
+   "token": "2"
+  },
+  {
+   "station": "Libourne",
+   "lift_id": "ff14f168-5c48-428c-8f2e-e8f65ecf3a24",
+   "token": "1"
+  },
+  {
+   "station": "Talence Médoquine",
+   "lift_id": "bc16fd3e-7cc0-4f0f-8874-e03723d71302",
+   "token": "4"
+  },
+  {
+   "station": "Châtellerault",
+   "lift_id": "3fde76c4-a183-423f-8dad-3272da33add9",
+   "token": "2"
+  },
+  {
+   "station": "Châtellerault",
+   "lift_id": "a4438948-86f5-4a83-84fb-8f523ee31b75",
+   "token": "1"
+  }
+ ],
+ "unmatched_token_count": 8
+}

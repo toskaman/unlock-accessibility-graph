@@ -85,3 +85,10 @@ IS_ZONE 392 · LiftOutage 356 · AFFECTS 583 · MATCHES_LIFT 168.
 The service reads only the latest `LiftStatusFeed`. Rider trips are not stored anywhere on the server.
 A second region is a separate store (`database/regions/<code>.rl`) with the same labels; its `NStation.id` is the
 GTFS stop-area id (`OCE87723197`) and `TransferZone` nodes are those stop areas (`zones_dataset: sncf_gtfs`).
+
+## v0.7.0
+
+History lives in files, not in the store (`data/normalized/history/`): it spans store rebuilds. Each region store is
+built the same way (`(:Region)` node, `NStation.id` = national stop area id). The zero-install demo's
+`graph.json` is a compact projection of `NStation`, `NPlatform`, `HAS_PLATFORM`, `LEG` and `NEXT` that the browser
+re-imports into an in-memory Relate (WebAssembly) database with the same labels.

@@ -11,6 +11,7 @@ other than the snapshot's own recorded times).
 from __future__ import annotations
 
 import csv
+import functools
 import io
 import json
 import math
@@ -58,13 +59,20 @@ def load_status(path: Path) -> dict[str, dict]:
 
 def _gtfs_lines(zip_path: Path, wanted_areas: set[str]):
     """Return (area -> set(route_id), routes dict, area metadata, feed calendar span)."""
+    area_routes, routes, areas, span = _gtfs_lines_all(str(zip_path), Path(zip_path).stat().st_mtime)
+    return {a: r for a, r in area_routes.items() if a in wanted_areas}, routes, areas, span
+
+
+@functools.lru_cache(maxsize=2)
+def _gtfs_lines_all(zip_path: str, _mtime: float):
+    """Same for every stop area — cached so several regions built in one process read stop_times once."""
     with zipfile.ZipFile(zip_path) as z:
         def rd(name):
             return csv.DictReader(io.TextIOWrapper(z.open(name), encoding="utf-8-sig", newline=""))
         stops = list(rd("stops.txt"))
         areas = {s["stop_id"]: s for s in stops if s["location_type"] == "1"}
         child_to_area = {s["stop_id"]: s["parent_station"] for s in stops
-                         if s["location_type"] == "0" and s["parent_station"] in wanted_areas}
+                         if s["location_type"] == "0" and s["parent_station"]}
         routes = {r["route_id"]: r for r in rd("routes.txt")}
         trip_route = {t["trip_id"]: t["route_id"] for t in rd("trips.txt")}
         area_routes: dict[str, set[str]] = defaultdict(set)
@@ -92,6 +100,11 @@ def _gtfs_lines(zip_path: Path, wanted_areas: set[str]):
     return area_routes, routes, areas, span
 
 
+@functools.lru_cache(maxsize=1)
+def _netex(path: str, _mtime: float = 0.0):
+    return netex.parse(Path(path))
+
+
 def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bool = True,
           departements: tuple[str, ...] = IDF_DEPARTEMENTS, gtfs_zip: Path | None = None,
           zdc_csv: Path | None | bool = True, dataset_keys: tuple[str, ...] | None = None,
@@ -109,7 +122,8 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
     if zdc_csv is True:
         zdc_csv = raw_dir / "idfm" / "zones-de-correspondance.csv"
     zone_of = (lambda sid: sid.removeprefix("IDFM:")) if zdc_csv else (lambda sid: sid.split(":")[-1])
-    published, places = netex.parse(raw_dir / "sncf" / "SNCF_GC_accessibilite_gares.xml")
+    nx = raw_dir / "sncf" / "SNCF_GC_accessibilite_gares.xml"
+    published, places = _netex(str(nx), nx.stat().st_mtime)
     status = load_status(raw_dir / "sncf" / "etat-fonctionnement-elevatique-gare.csv")
     q: Counter = Counter()
 
@@ -216,6 +230,8 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
                 ztype = zdc.get(zid, {}).get("zdctype", "") if zdc_csv else "railStation"
                 # accept: strong name agreement within 800 m, or rail zone within 250 m with some agreement
                 ok = ns >= 0.5 or (ns > 0 and d <= 250 and ztype == "railStation")
+                if not zdc_csv and ns < 0.75 and d > 400:
+                    ok = False   # national GTFS: a partial name far away is another stop (Mulhouse Zu Rhein ≠ Dornach)
                 if not ok:
                     continue
                 key = (-ns, d)

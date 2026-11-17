@@ -264,6 +264,12 @@ def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | N
     def regions_list(req: Request):
         return [{**n.region, "default": n is req.app.state.net} for n in req.app.state.regions.values() if n.ready]
 
+    @app.get("/api/regions/compare")
+    def regions_compare(req: Request):
+        """Every served region side by side: same method, same day (numbers = each region's own overview)."""
+        from ..regions import compare_row
+        return {"regions": [compare_row(n, code) for code, n in req.app.state.regions.items() if n.ready]}
+
     @app.get("/api/region/overview")
     def region_overview(req: Request):
         return net(req).overview()
@@ -300,6 +306,32 @@ def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | N
             return {"trips": check(net(req), trips)}
         except KeyError as e:
             raise HTTPException(422, f"unknown boarding point in usual route: {e}")
+
+    @app.get("/api/region/trips/feed.{fmt}")
+    def region_trip_feed(req: Request, fmt: str, a: str = Query(..., alias="from", max_length=120),
+                         b: str = Query(..., alias="to", max_length=120)):
+        """Subscribe to one usual trip (RSS or iCalendar). The trip is in the URL; nothing is stored."""
+        from fastapi.responses import Response
+        from ..network import feeds
+        if fmt not in ("rss", "ics"):
+            raise HTTPException(404, "feed.rss or feed.ics")
+        n = net(req)
+        x, y = n.find_station(a), n.find_station(b)
+        if not x or not y:
+            raise HTTPException(404, "unknown station")
+        t = n.trip_status(x, y)
+        link = str(req.url)
+        if fmt == "rss":
+            return Response(feeds.rss(t, link), media_type="application/rss+xml; charset=utf-8")
+        return Response(feeds.ics(t, link), media_type="text/calendar; charset=utf-8",
+                        headers={"Content-Disposition": 'inline; filename="unlock-trip.ics"'})
+
+    @app.get("/api/region/history")
+    def region_history(req: Request):
+        """Headline numbers recorded at each lift-status observation (`python -m unlock record`)."""
+        from .. import history as H
+        n = net(req)
+        return H.region_series(n.region["code"])
 
     @app.get("/api/region/bulletin")
     def region_bulletin(req: Request):

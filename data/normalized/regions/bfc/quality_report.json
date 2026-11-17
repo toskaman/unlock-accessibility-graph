@@ -1,0 +1,71 @@
+{
+ "counts": {
+  "gtfs_stop_areas": 3426,
+  "gtfs_stop_areas_matching_zdc": 0,
+  "lifts": 57,
+  "lifts_no_resolved_end": 3,
+  "lifts_one_resolved_end": 3,
+  "lifts_two_resolved_ends": 51,
+  "lifts_with_status_record": 57,
+  "lines_non_bus": 81,
+  "netex_stop_places_in_region": 196,
+  "netex_stop_places_total": 2800,
+  "quay_step_free_ACCESSIBLE": 77,
+  "quay_step_free_INACCESSIBLE": 390,
+  "quays": 467,
+  "stations_matched_to_zone": 196,
+  "stations_unmatched_to_zone": 0,
+  "status_AVAILABLE": 41,
+  "status_UNAVAILABLE": 14,
+  "status_UNKNOWN": 2,
+  "zone_line_links": 622,
+  "zones": 196
+ },
+ "space_roles": {
+  "PLATFORM": 73,
+  "EXIT": 16,
+  "CONNECTOR": 19,
+  "UNSPECIFIED": 9,
+  "UNRESOLVED_PLATFORM": 5
+ },
+ "serves_derivations": {
+  "VOIE_TOKEN": 71,
+  "NAMED_SPACE": 56,
+  "NAMED_SPACE_WITH_TRACK": 8,
+  "UNSPECIFIED_END": 9,
+  "NAME_VOIE_TOKEN": 6
+ },
+ "unmatched_tokens": [
+  {
+   "station": "Dole",
+   "lift_id": "c43ae342-39dd-4e36-9c8d-aaa28a7aae66",
+   "token": "a"
+  },
+  {
+   "station": "Dole",
+   "lift_id": "c43ae342-39dd-4e36-9c8d-aaa28a7aae66",
+   "token": "b"
+  },
+  {
+   "station": "Dole",
+   "lift_id": "6da3633d-e55c-4682-b84a-0b98f8bdb276",
+   "token": "c"
+  },
+  {
+   "station": "Decize",
+   "lift_id": "e3d538d4-467c-46ae-8be6-a72279344915",
+   "token": "1"
+  },
+  {
+   "station": "Decize",
+   "lift_id": "1a4f0f7e-1c4b-468a-b559-b44d979fa9cd",
+   "token": "2"
+  },
+  {
+   "station": "Le Creusot - Montceau-les-Mines - Montchanin TGV",
+   "lift_id": "eecf9a5a-7fe8-4c86-a49a-5cc49af99799",
+   "token": "1"
+  }
+ ],
+ "unmatched_token_count": 6
+}
