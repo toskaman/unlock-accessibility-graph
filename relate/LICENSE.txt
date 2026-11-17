@@ -1,0 +1,1 @@
+@relate/relate-wasm 1.0.2 — Apache License 2.0 — https://github.com/relatedb/relate
