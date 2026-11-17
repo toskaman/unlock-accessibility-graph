@@ -1,0 +1,1 @@
+{"region":"bfc","sources":{"SNCF":{"observations":1,"first":"2026-11-17T09:30:16+00:00","last":"2026-11-17T09:30:16+00:00","span_days":0.0}},"chronic_rule":{"share_out":0.3,"min_days":7.0},"lifts_out_at_least_once":0,"lifts":[]}
