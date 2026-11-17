@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.8.0 — 2026-11-17
+- **Ask an agent — a real transcript** (docs/AGENT_DEMO.md, `scripts/agent_demo.py`): Claude Code in headless mode,
+  with UNLOCK's MCP tools as its only tools, answers a wheelchair user in French (« Rosa Parks → Juvisy ce matin ? »:
+  detour via Neuilly – Porte Maillot, the three lifts at Gare de Lyon, the time the status was read) and a
+  maintenance planner. Unedited apart from local paths; raw JSON published. MCP instructions now point riders to
+  `usual_trip_alert` and planners to `maintenance_bulletin`.
+- **History you can see.** *History* tab: lifts ranked by share of daytime observations out of service, *chronic*
+  flagged (≥ 30 % over ≥ 7 days), out since, IDFM's last status change. **Replay on the map**: the region map steps
+  through the recorded observations (stations cut / in doubt). New `GET /api/region/history/lifts` and
+  `/api/region/history/timelapse`; the zero-install demo re-exports them at every collection, so it shows the history
+  gathered so far.
+- **Welcome card** (3 lines, dismissible, remembered in the browser): what UNLOCK answers and where to start.
+- **Phones and accessibility.** One-column layout with no horizontal scroll on phones (390 px); axe-core scan of the
+  deployed demo (`frontend/scripts/check-static-a11y.mjs`, WCAG 2.0/2.1 A+AA, desktop + iPhone 13, home and
+  journey+history views). Fixed: the *Remove* button's accessible name now contains its visible label.
+- e2e: the stale-message drill-down accepts either an SNCF or a RATP lift (the first stale message changes with the
+  data). Tests: 94 pytest + 10 e2e.
+
 ## 0.7.0 — 2026-11-17
 - **Zero-install demo** on GitHub Pages (https://toskaman.github.io/unlock-accessibility-graph/): region mode for
   every region, journeys, reach, trip alerts, comparison and bulletin, on a snapshot exported from the Relate stores

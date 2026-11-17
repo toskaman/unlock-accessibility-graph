@@ -333,6 +333,19 @@ def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | N
         n = net(req)
         return H.region_series(n.region["code"])
 
+    @app.get("/api/region/history/lifts")
+    def region_history_lifts(req: Request):
+        """How often each lift of the region was out over the recorded daytime observations (chronic lifts)."""
+        from .. import history as H
+        n = net(req)
+        return H.lift_report(n, n.region["code"])
+
+    @app.get("/api/region/history/timelapse")
+    def region_history_timelapse(req: Request):
+        """Frames for the time-lapse map: stations not fully open at each recorded observation."""
+        from .. import history as H
+        return H.region_timelapse(net(req).region["code"])
+
     @app.get("/api/region/bulletin")
     def region_bulletin(req: Request):
         from ..network import bulletin as B

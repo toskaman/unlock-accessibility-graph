@@ -18,7 +18,8 @@ test("region: three views, journey check verified in Relate, station drill-down"
 
   await page.getByRole("tab", { name: "Stale messages" }).click();
   await page.locator(".right .rank button").first().click();
-  await expect(page.locator(".stationcard")).toContainText("SNCF's hourly feed");
+  // the stale message points at an SNCF lift (checked against SNCF's hourly feed) or a RATP one (IDFM lift status)
+  await expect(page.locator(".stationcard")).toContainText(/SNCF's hourly feed|IDFM's lift status/);
 });
 
 test("region -> inside the station", async ({ page }) => {
@@ -54,7 +55,7 @@ test("rider alerts: watch a usual trip, status from the API, kept in this browse
   await expect(page.locator(".tw-list li").first()).toContainText(label);
   await page.reload();
   await expect(page.locator(".tw-list li").first()).toContainText("Rosa Parks → Juvisy");
-  await page.getByRole("button", { name: "Stop watching Rosa Parks to Juvisy" }).click();
+  await page.getByRole("button", { name: "Remove Rosa Parks to Juvisy" }).click();
   await expect(page.locator(".tw-list li")).toHaveCount(0);
   const b = await request.get("/api/region/bulletin.html");
   expect(b.ok()).toBeTruthy();

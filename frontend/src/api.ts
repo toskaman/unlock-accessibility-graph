@@ -72,6 +72,8 @@ export const api = {
       body: JSON.stringify({ trips: trips.map((t) => ({ label: t.label || null, from: t.from.id, to: t.to.id, usual: t.usual || null, last_status: t.last_status || null })) }) }),
     reach: (id: string, view: RegionViewName) => call<Reach>(rg(`/api/region/reach${q({ from: id, view })}`)),
     history: () => call<{ region: string; observations: Record<string, unknown>[] }>(rg("/api/region/history")),
+    historyLifts: () => call<unknown>(rg("/api/region/history/lifts")),
+    timelapse: () => call<{ region: string; frames: { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> }[] }>(rg("/api/region/history/timelapse")),
   },
   queries: () => call<{ store: string; queries: { at: string; cypher: string; param_keys: string[]; rows: number; ms: number }[]; catalog: Record<string, string> }>("/api/debug/queries?limit=40"),
 };

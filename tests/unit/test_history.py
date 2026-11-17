@@ -29,3 +29,15 @@ def test_appends_are_idempotent(tmp_path):
     m = tmp_path / "m.json"
     H.append_metrics([row], m)
     assert len(H.append_metrics([row, {**row, "sncf_observed_at": "y"}], m)["observations"]) == 2
+
+
+def test_timelapse_and_series_order(tmp_path):
+    rows = [{"region": "x", "sncf_observed_at": t, "idfm_observed_at": None, "night": n, "published": 10,
+             "confirmed": c, "possible": c, "points_closed": 0, "stations_affected": 0, "station_states": st}
+            for t, n, c, st in (("2026-11-17T09:30:00+00:00", False, 9, {"A": "DOUBT"}),
+                                ("2026-11-16T23:30:00+00:00", True, 7, {"A": "CLOSED", "B": "DOUBT"}))]
+    H.append_metrics(rows, tmp_path / "metrics.json")
+    tl = H.region_timelapse("x", tmp_path)
+    assert [f["confirmed"] for f in tl["frames"]] == [7, 9] and tl["frames"][0]["night"]
+    assert tl["frames"][0]["stations"] == {"A": "CLOSED", "B": "DOUBT"}
+    assert [o["confirmed"] for o in H.region_series("x", tmp_path)["observations"]] == [7, 9]

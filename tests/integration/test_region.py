@@ -221,3 +221,22 @@ def test_region_metrics_history_and_compare(region_store, tmp_path, monkeypatch)
         assert c.get("/api/region/history").json()["region"] == "idf"
         rows = c.get("/api/regions/compare").json()["regions"]
         assert rows[0]["code"] == "idf" and rows[0]["published"] == 12 and rows[0]["confirmed"] == 9
+
+
+def test_lift_history_report(region_store, tmp_path, monkeypatch):
+    from unlock import history as H
+    with GraphStore(region_store, read_only=True) as db:
+        ns = NetworkService(db, UnlockService(db))
+        lid = sorted(ns.ss.lifts)[0]
+        obs = [{"observed_at": t, "sha256": t, "lifts": 3, "not_available": na} for t, na in (
+            ("2026-11-17T09:30:00+00:00", {lid: "UNAVAILABLE"}),        # 10:30 Paris
+            ("2026-11-17T17:30:00+00:00", {lid: "UNAVAILABLE"}),        # 18:30 Paris
+            ("2026-11-17T23:30:00+00:00", {lid: "UNAVAILABLE", "x": "UNAVAILABLE"}),   # night: ignored
+            ("2026-11-18T09:30:00+00:00", {}))]
+        for o in obs:
+            H.append_sncf(o, tmp_path / "sncf_lift_status.json")
+        r = H.lift_report(ns, "idf", tmp_path)
+        assert r["sources"]["SNCF"]["observations"] == 3                # the night observation is left out
+        row = r["lifts"][0]
+        assert row["lift"] == lid and row["share_out"] == round(2 / 3, 4) and row["out_since"] is None and not row["chronic"]
+        assert all(l["lift"] != "x" for l in r["lifts"])                # lifts of other regions are not listed

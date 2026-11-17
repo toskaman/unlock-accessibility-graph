@@ -1,30 +1,66 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../api";
 
-type Obs = { sncf_observed_at: string | null; idfm_observed_at: string | null; night: boolean; published: number; confirmed: number; possible: number };
+type Frame = { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> };
+const when = (t: string) => new Date(t).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
 
-/** Confirmed step-free journeys at each recorded lift-status observation (shown once there are two). */
-export function HistoryChart() {
-  const [obs, setObs] = useState<Obs[]>([]);
-  useEffect(() => { api.region.history().then((h) => setObs(h.observations as Obs[])).catch(() => setObs([])); }, []);
-  if (obs.length < 2) return null;
-  const W = 520, H = 120, P = 26;
-  const t = (o: Obs) => new Date(([o.sncf_observed_at, o.idfm_observed_at].filter(Boolean) as string[]).sort().slice(-1)[0]).getTime();
-  const xs = obs.map(t), x0 = Math.min(...xs), x1 = Math.max(...xs) || x0 + 1;
-  const top = Math.max(...obs.map((o) => o.published)), lo = Math.min(...obs.map((o) => o.confirmed));
-  const y0 = Math.max(0, lo - (top - lo) * 0.15);
-  const X = (v: number) => P + ((v - x0) / (x1 - x0 || 1)) * (W - 2 * P), Y = (v: number) => H - P / 2 - ((v - y0) / (top - y0 || 1)) * (H - P);
-  const day = obs.filter((o) => !o.night);
-  const line = day.map((o) => `${X(t(o))},${Y(o.confirmed)}`).join(" ");
+/** Confirmed journeys at each recorded observation, and a time-lapse that replays the map frame by frame.
+ *  Shown once two observations exist; the history grows twice a day. */
+export function HistoryChart({ onFrame }: { onFrame?: (states: Record<string, string> | null) => void }) {
+  const [frames, setFrames] = useState<Frame[]>([]);
+  const [i, setI] = useState<number | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [dayOnly, setDayOnly] = useState(true);
+  const timer = useRef<number | null>(null);
+  useEffect(() => { api.region.timelapse().then((h) => setFrames(h.frames)).catch(() => setFrames([])); }, []);
+  useEffect(() => () => { if (timer.current) window.clearInterval(timer.current); onFrame?.(null); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const shown = frames.filter((f) => !dayOnly || !f.night);
+  useEffect(() => { onFrame?.(i == null || !shown[i] ? null : shown[i].stations); }, [i, dayOnly, frames]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (frames.length < 2) return null;
+
+  const play = () => {
+    if (playing) { if (timer.current) window.clearInterval(timer.current); setPlaying(false); return; }
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    setPlaying(true);
+    let k = 0;
+    setI(0);
+    timer.current = window.setInterval(() => {
+      k += 1;
+      if (k >= shown.length) { if (timer.current) window.clearInterval(timer.current); setPlaying(false); return; }
+      setI(k);
+    }, reduce ? 2500 : 900);
+  };
+  const stop = () => { if (timer.current) window.clearInterval(timer.current); setPlaying(false); setI(null); };
+
+  const W = 520, H = 110, P = 26;
+  const pts = shown.length ? shown : frames;
+  const xs = pts.map((f) => new Date(f.t).getTime()), x0 = Math.min(...xs), x1 = Math.max(...xs);
+  const top = Math.max(...pts.map((f) => f.published)), lo = Math.min(...pts.map((f) => f.confirmed));
+  const y0 = Math.max(0, lo - (top - lo) * 0.15 - 1);
+  const X = (v: number) => P + ((v - x0) / (x1 - x0 || 1)) * (W - 2 * P);
+  const Y = (v: number) => H - P / 2 - ((v - y0) / (top - y0 || 1)) * (H - P);
+  const cur = i == null ? null : shown[i];
   return (
     <figure className="histchart">
-      <figcaption className="small">Confirmed journeys at each recorded observation ({obs.length}; hollow = night snapshot)</figcaption>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Confirmed step-free journeys over ${obs.length} observations, from ${obs[0].confirmed.toLocaleString("en-GB")} to ${obs[obs.length - 1].confirmed.toLocaleString("en-GB")}`}>
+      <figcaption className="small">
+        Confirmed journeys at each recorded observation ({shown.length}{dayOnly ? " daytime" : ""}; hollow = night).{" "}
+        <button className="ghost small" onClick={play} disabled={shown.length < 2}>{playing ? "Pause" : "▶ Replay on the map"}</button>{" "}
+        {i != null && <button className="ghost small" onClick={stop}>Back to now</button>}{" "}
+        <label className="tiny"><input type="checkbox" checked={!dayOnly} onChange={(e) => { setDayOnly(!e.target.checked); setI(null); }} /> include night snapshots</label>
+      </figcaption>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Confirmed step-free journeys over ${pts.length} observations, from ${pts[0].confirmed.toLocaleString("en-GB")} to ${pts[pts.length - 1].confirmed.toLocaleString("en-GB")}`}>
         <line x1={P} x2={W - P} y1={Y(top)} y2={Y(top)} className="hc-pub" />
         <text x={P} y={Y(top) - 4} className="hc-lbl">published {top.toLocaleString("en-GB")}</text>
-        {day.length > 1 && <polyline points={line} className="hc-line" />}
-        {obs.map((o, i) => <circle key={i} cx={X(t(o))} cy={Y(o.confirmed)} r={3.5} className={o.night ? "hc-night" : "hc-dot"}><title>{new Date(t(o)).toLocaleString("en-GB", { timeZone: "Europe/Paris" })}: {o.confirmed.toLocaleString("en-GB")}</title></circle>)}
+        {pts.length > 1 && <polyline points={pts.map((f) => `${X(new Date(f.t).getTime())},${Y(f.confirmed)}`).join(" ")} className="hc-line" />}
+        {pts.map((f) => (
+          <circle key={f.t} cx={X(new Date(f.t).getTime())} cy={Y(f.confirmed)} r={cur === f ? 6 : 3.5} className={f.night ? "hc-night" : "hc-dot"}
+                  onClick={() => setI(shown.indexOf(f) >= 0 ? shown.indexOf(f) : null)}>
+            <title>{when(f.t)}: {f.confirmed.toLocaleString("en-GB")}</title>
+          </circle>
+        ))}
       </svg>
+      {cur && <p className="small hc-now" aria-live="polite">Map at <strong>{when(cur.t)}</strong>{cur.night ? " (night)" : ""}: {cur.confirmed.toLocaleString("en-GB")} confirmed journeys, {Object.keys(cur.stations).length} stations not fully open.</p>}
     </figure>
   );
 }

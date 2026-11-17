@@ -390,3 +390,30 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
 .hc-lbl { font-size: 10px; fill: #5b667a; }
 .hc-line { fill: none; stroke: #1a7f4b; stroke-width: 2; }
 .hc-dot { fill: #1a7f4b; } .hc-night { fill: #fff; stroke: #1a7f4b; stroke-width: 1.5; }
+.hist-share { font-size: 18px; }
+.pill.chronic { background: #fde8ea; color: #8f0b1f; border: 1px solid #f2b8c0; margin-left: 6px; font-size: 11px; padding: 0 6px; border-radius: 9px; }
+.hc-now { margin: 4px 0 0; }
+.histchart circle { cursor: pointer; }
+.intro { background: #14213d; color: #fff; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; }
+.intro h2 { font-size: 18px; margin: 0 0 6px; }
+.intro p { margin: 0 0 6px; max-width: 75ch; font-size: 14px; line-height: 1.45; }
+.intro .ghost { color: #fff; border-color: #fff; }
+.intro strong { color: #9fe2bf; }
+/* phones: no horizontal scrolling — one column that may shrink below its content's natural width */
+@media (max-width: 1180px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .regionpick { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-right: 0; }
+  .regionpick select { width: 100%; max-width: 100%; margin-left: 0; }
+}
+@media (max-width: 640px) {
+  .brand p, .top .tagline { display: none; }
+  .viewswitch { flex-wrap: wrap; max-width: 100%; }
+  .viewswitch button { flex: 1 1 auto; }
+  .static-banner { padding: 8px 12px; font-size: 12.5px; }
+  .rhead { padding: 10px 12px; gap: 10px; }
+  .intro { padding: 12px 14px; }
+  .intro h2 { font-size: 16px; }
+  .hl-num { font-size: 44px; }
+  .compare table { font-size: 12px; }
+  .histchart figcaption { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+}

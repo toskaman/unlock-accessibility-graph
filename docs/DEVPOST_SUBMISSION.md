@@ -41,7 +41,8 @@ a per-region quality column. Generalising found two problems that also affected 
 bug and outages silently ignored at stations whose text names no exit — both fixed.
 
 **History.** UNLOCK records the lift status twice a day: how long outages last, which lifts are chronically out, how
-many step-free journeys each region loses day after day.
+many step-free journeys each region loses day after day. The *History* tab ranks the lifts that are out again and
+again, and *Replay on the map* steps the region map through every recorded observation.
 
 **Try it without installing anything.** The GitHub Pages demo loads the graph exported from the Relate store into
 Relate's WebAssembly build in the visitor's browser, which re-runs the server's own Cypher to re-check every journey
@@ -55,7 +56,7 @@ the feed.
 
 **Inside a station.** UNLOCK builds a graph of the 401 SNCF stations in Île-de-France: platforms, underpasses, halls and the 588 lifts that join them, each linked to its latest published status and source file. Select a lift and simulate an outage: UNLOCK shows which step-free platform↔platform and platform↔exit connections break, ranks every possible lift repair across the region by how many confirmed connections it restores (including the lifts really out of service today), and shows the exact graph path and evidence behind each number. Example: at Juvisy-sur-Orge, losing lift ASC3 cuts 21 confirmed connections — a bigger loss than any lift currently out of service in the region.
 
-Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact lift through the graph and refuses to guess when it's ambiguous), browse "lifts you can't lose" (213 single points of failure), or ask an AI agent: the same graph is a read-only MCP server, and in our test Claude Code answered 7 of 8 planner and rider questions correctly with it and 0/8 without it.
+Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact lift through the graph and refuses to guess when it's ambiguous), browse "lifts you can't lose" (213 single points of failure), or ask an AI agent: the same graph is a read-only MCP server, and in our test Claude Code answered 7 of 8 planner and rider questions correctly with it and 0/8 without it. A published, unedited transcript shows it answering a wheelchair user in French — « Rosa Parks → Juvisy ce matin ? » — with the detour and the exact lifts at fault, every fact from one tool call.
 
 ### How we built it
 - Region: GTFS stops/patterns → `NStation`, `NPlatform`, `NEXT`, `LEG` in Relate; PRIM messages → `LiftOutage
@@ -71,7 +72,7 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. IDFM's lift-status dataset reports lifts switched off for the night as failures: a night snapshot first showed 188 RATP "outages", 163 of them switched off after midnight — UNLOCK now counts those as unknown instead of inventing 100+ repairs. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 92 tests against the real Relate engine plus 10 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 94 tests against the real Relate engine plus 10 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself, and an axe-core scan of the deployed demo on desktop and phone); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.

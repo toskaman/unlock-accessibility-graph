@@ -3,6 +3,8 @@ import { api, ApiError, bulletinUrl, STATIC_DEMO } from "../api";
 import type { RegionCompareRow, RegionInfo, Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
 import { TripWatch } from "./TripWatch";
 import { HistoryChart } from "./HistoryChart";
+import { LiftHistory } from "./LiftHistory";
+import { Intro } from "./Intro";
 import { RegionMap } from "./RegionMap";
 
 const VIEW_LABEL: Record<RegionViewName, string> = {
@@ -74,7 +76,8 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [stations, setStations] = useState<RegionStation[]>([]);
   const [rank, setRank] = useState<RegionRank | null>(null);
   const [rec, setRec] = useState<Reconciliation | null>(null);
-  const [tab, setTab] = useState<"repairs" | "stale" | "missing">("repairs");
+  const [tab, setTab] = useState<"repairs" | "stale" | "missing" | "history">("repairs");
+  const [frame, setFrame] = useState<Record<string, string> | null>(null);
   const [from, setFrom] = useState<{ id: string; name: string } | null>(null);
   const [to, setTo] = useState<{ id: string; name: string } | null>(null);
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
@@ -266,6 +269,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
       </aside>
 
       <main className="center">
+        <Intro />
         {compare && (
           <section className="compare" aria-labelledby="cmph">
             <h2 id="cmph">Every region, same method</h2>
@@ -308,7 +312,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             </div>
           </section>
         )}
-        {ov && view === "best" && <HistoryChart />}
+        {ov && view === "best" && <HistoryChart onFrame={setFrame} />}
         {ov?.feed && ov.stale_messages && (
           <section className="frozen" aria-label="Outage feed quality">
             <p><strong>The regional lift-outage feed has stopped moving.</strong> PRIM still lists {n(ov.outages.lifts)} lifts as out of service
@@ -328,7 +332,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             )}
           </section>
         )}
-        <RegionMap center={ov?.region.center} zoom={ov?.region.zoom} label={ov ? `${ov.region.name} — ${ov.region.network_label}` : undefined} stations={stations} reach={reach && !j ? { origin: reach.origin.id, classes: reach.classes } : null}
+        <RegionMap center={ov?.region.center} zoom={ov?.region.zoom} label={ov ? `${ov.region.name} — ${ov.region.network_label}` : undefined} stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations} reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
                    journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }} />
         {reach && !j ? (
           <div className="legend region-legend" aria-label="Map legend — step-free reach">
@@ -357,6 +361,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
           <button role="tab" aria-selected={tab === "stale"} className={tab === "stale" ? "on" : ""} onClick={() => setTab("stale")}>Stale messages</button>
           <button role="tab" aria-selected={tab === "missing"} className={tab === "missing" ? "on" : ""} onClick={() => setTab("missing")}>Not in the feed</button>
           </>}
+          <button role="tab" aria-selected={tab === "history"} className={tab === "history" ? "on" : ""} onClick={() => setTab("history")}>History</button>
         </div>
         {tab === "repairs" && rank && (
           <section aria-label="Repairs ranked by journeys given back">
@@ -401,6 +406,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             </ul>
           </section>
         )}
+        {tab === "history" && <LiftHistory onSelect={(id) => setSelected(id)} />}
         {ov && <p className="muted tiny method">{ov.method} Computed in {ov.computed_ms} ms.</p>}
       </aside>
     </div>

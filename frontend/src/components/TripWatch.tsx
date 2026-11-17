@@ -62,7 +62,7 @@ export function TripWatch({ region, journey, onError }: { region: string; journe
             <li key={t.from.id + t.to.id} className={w?.cls}>
               <div className="tw-row">
                 <strong>{t.from.name} → {t.to.name}</strong>
-                <button className="ghost small" aria-label={`Stop watching ${t.from.name} to ${t.to.name}`} onClick={() => remove(i)}>Remove</button>
+                <button className="ghost small" aria-label={`Remove ${t.from.name} to ${t.to.name}`} onClick={() => remove(i)}>Remove</button>
               </div>
               {!STATIC_DEMO && (
                 <p className="tiny tw-subs">Subscribe:{" "}

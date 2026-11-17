@@ -175,3 +175,71 @@ def region_series(code: str, hist_dir: Path | None = None) -> dict[str, Any]:
             for o in me if o["region"] == code]
     rows.sort(key=lambda r: max(r["sncf_observed_at"] or "", r["idfm_observed_at"] or ""))
     return {"region": code, "observations": rows}
+
+
+def _is_night(t: str | None) -> bool:
+    from .network.idfm_lifts import night_window
+    return bool(t and night_window(t))
+
+
+def region_timelapse(code: str, hist_dir: Path | None = None) -> dict[str, Any]:
+    """Frames for the time-lapse map: at each recorded observation, every station not fully open."""
+    hist_dir = hist_dir or HIST
+    me = _load(hist_dir / "metrics.json", {"observations": []})["observations"]
+    fr = []
+    for o in me:
+        if o["region"] != code:
+            continue
+        t = max(o.get("sncf_observed_at") or "", o.get("idfm_observed_at") or "")
+        fr.append({"t": t, "night": bool(o.get("night")), "confirmed": o["confirmed"], "published": o["published"],
+                   "stations": o.get("station_states", {})})
+    fr.sort(key=lambda f: f["t"])
+    return {"region": code, "frames": fr}
+
+
+def lift_report(ns, code: str, hist_dir: Path | None = None, chronic_share: float = 0.3,
+                chronic_min_days: float = 7.0, limit: int = 60) -> dict[str, Any]:
+    """Per lift of this region: how often it was out in daytime observations, its spells, its current spell.
+
+    SNCF lifts from the national SNCF history; RATP lifts (Île-de-France) from IDFM's history (UNAVAILABLE only:
+    night switch-offs are recorded as UNKNOWN). Night observations are left out of every share and spell."""
+    hist_dir = hist_dir or HIST
+    sn = [o for o in _load(hist_dir / "sncf_lift_status.json", {"observations": []})["observations"]
+          if not _is_night(o["observed_at"])]
+    idfm_path = hist_dir.parent / "idfm_lift_history.json"
+    idfm = [o for o in _load(idfm_path, {"observations": []})["observations"] if not _is_night(o["observed_at"])]
+    sources = []
+    sncf_ids = set(ns.ss.lifts)
+    if sn:
+        sources.append(("SNCF", sn, {lid: (ns.ss.lifts[lid].name, ns.ss.stations.get(ns.ss.lifts[lid].station_id, {}).get("name"),
+                                         next((n for n, s in ns.sncf_of.items() if ns.ss.lifts[lid].station_id in s), None))
+                                     for lid in sncf_ids}))
+    if idfm and ns.ratp_lifts:
+        sources.append(("RATP", idfm, {l["id"]: (l["direction"] or l["id"], ns.stations.get(l["zdc"], {}).get("name"), l["zdc"])
+                                       for l in ns.ratp_lifts}))
+    rows, meta = [], {}
+    for op, obs, lifts in sources:
+        times = [o["observed_at"] for o in obs]
+        span = (datetime.fromisoformat(max(times)) - datetime.fromisoformat(min(times))).total_seconds() / 86400 if len(times) > 1 else 0.0
+        meta[op] = {"observations": len(obs), "first": min(times), "last": max(times), "span_days": round(span, 2)}
+        filtered = [{"observed_at": o["observed_at"],
+                     "not_available": {k: v for k, v in o["not_available"].items() if k in lifts}} for o in obs]
+        sh = share_out(filtered)
+        spells = outage_spells(filtered)
+        for lid, share in sh.items():
+            sp = [s for s in spells.get(lid, []) if "UNAVAILABLE" in s["states"]]
+            cur = next((s for s in sp if s["still_out"]), None)
+            name, station, region_station = lifts[lid]
+            # IDFM records when a lift's status last changed: for a lift out now, a lower bound on how long
+            since_publisher = None
+            if op == "RATP" and cur:
+                v = next((o["not_available"].get(lid) for o in filtered if o["observed_at"] == cur["start"]), None)
+                since_publisher = v[1] if isinstance(v, list) and len(v) > 1 else None
+            rows.append({"status_changed_at": since_publisher,"lift": lid, "operator": op, "name": name, "station": station, "station_id": region_station,
+                         "share_out": share, "observations_out": round(share * len(obs)), "observations": len(obs),
+                         "spells": len(sp), "out_since": cur["start"] if cur else None,
+                         "chronic": share >= chronic_share and span >= chronic_min_days,
+                         "entries_per_day": ns.entries.get(region_station) if region_station else None})
+    rows.sort(key=lambda r: (-r["share_out"], r["out_since"] or "9999", -(r["entries_per_day"] or 0), r["lift"]))
+    return {"region": code, "sources": meta, "chronic_rule": {"share_out": chronic_share, "min_days": chronic_min_days},
+            "lifts_out_at_least_once": len(rows), "lifts": rows[:limit]}

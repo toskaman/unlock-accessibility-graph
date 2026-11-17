@@ -18,8 +18,11 @@ for the whole region and down to a single underpass:
   the graph.
 * **Does it work elsewhere?** — the same code runs on **every region of mainland France** from national SNCF open
   data, with a side-by-side comparison ([regions](docs/REGIONS.md)).
-* **How long do outages last, which lifts are always out?** — UNLOCK records the lift status twice a day and keeps
-  the history ([history](docs/HISTORY.md)).
+* **How long do outages last, which lifts are always out?** — UNLOCK records the lift status twice a day, lists the
+  lifts that are out again and again, and replays the region on the map, observation by observation
+  ([history](docs/HISTORY.md)).
+* **Can an AI agent answer a rider truthfully?** — yes, from the graph: see a real, unedited
+  [agent transcript](docs/AGENT_DEMO.md) (« mon trajet Rosa Parks → Juvisy est-il possible ce matin ? »).
 
 Every number on screen is computed on the graph and can be traced back to a source record.
 
@@ -68,7 +71,8 @@ UNLOCK connects these sources so you can ask: *"Which repair restores the most v
 | **Doubts about the data** | *Whole region* → *Stale messages* / *Not in the feed* | PRIM messages SNCF contradicts, ranked by the journeys they hide; SNCF outages PRIM doesn't show. A draft note to IDFM is in `docs/research/PRIM_LIFT_FEED_NOTE.md`. |
 | **An outage report** in free text (“Juvisy : ascenseur quai 50/51 HS”) | *Inside a station* → *Start from an outage report* | The exact lift in the graph with the evidence that matched, then one click to simulate its outage. Ambiguous reports are **not guessed**. |
 | **A maintenance budget for a station network** | *Inside a station* → *Repairs to make* / *Lifts you can't lose* | Lifts ranked by confirmed in-station connections restored; 213 single points of failure. |
-| **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, including `check_journey` and `region_overview`. |
+| **A history question** ("which lifts are always out?") | *Whole region* → *History* tab; under the chart, *Replay on the map* | Lifts ranked by share of daytime observations out of service (*chronic* ≥ 30 % over ≥ 7 days), how long each has been out; the map replays the stations cut or in doubt at each observation. |
+| **An AI agent** (Claude Code, Claude Desktop…) | `python -m unlock mcp` | The same graph as read-only MCP tools, including `check_journey`, `usual_trip_alert` and `region_overview` — [transcript](docs/AGENT_DEMO.md). |
 
 ## Whole region in one minute
 
@@ -280,6 +284,32 @@ through a **read-only** Relate connection (the agent can't modify anything, even
 | `usual_trip_alert(from, to)` | Rider alert: OK / DETOUR (with the detour) / AT_RISK / CUT, and the lifts responsible |
 | `maintenance_bulletin()` | Today's bulletin (Markdown) |
 
+### Ask an agent — a real transcript
+
+Recorded 17 Nov 2026 with Claude Code in headless mode, whose **only** tools were UNLOCK's MCP tools, on a read-only
+copy of the store loaded with that morning's lift status ([full transcript, both questions](docs/AGENT_DEMO.md);
+raw JSON in `docs/research/agent_demo/`; reproduce with `python scripts/agent_demo.py`).
+
+> **Rider:** *Je me déplace en fauteuil roulant. Mon trajet de tous les jours, c'est Rosa Parks → Juvisy. Est-ce que
+> je peux le faire sans marche ce matin ? Si mon trajet habituel est coupé, propose-moi un détour et dis-moi quel
+> ascenseur pose problème.*
+>
+> **Tool call:** `usual_trip_alert("Rosa Parks", "Juvisy")` → `status: DETOUR`, blocked at Gare de Lyon (RER A,
+> alighting), three lifts listed, lift status read at 09:30 UTC (SNCF) and 09:44 UTC (IDFM).
+>
+> **Agent:** Ton trajet habituel est incertain ce matin : à Gare de Lyon (RER A), des ascenseurs sont en panne ou
+> inconnus. Le plus clair : « Ligne RER A – Ligne M14 » (RATP) est en panne. « Quai N / Salle d'échange (5012) » est
+> aussi en panne, et « Rue de Bercy (5005) » a un état inconnu. Détour sans marche : RER E de Rosa Parks à
+> Neuilly – Porte Maillot, puis RER C de Neuilly – Porte Maillot à Juvisy. Les données datent de 9h30 (SNCF) et 9h44
+> (IDFM) ; vérifie sur place avant de partir.
+
+Every station, line, lift and time in that answer is in the tool's output; the agent added nothing. (Its first call
+omitted the arguments and was rejected by the tool's schema; the transcript keeps it.) The second question, from a
+lift-maintenance planner, gets the top repair (+1,930 journeys), the reason not to plan from the PRIM feed (39 days
+unchanged) and the figures of the three views, all from two tool calls.
+
+### Set it up
+
 ```bash
 pip install -e ".[agent]"
 claude mcp add unlock -- python -m unlock mcp   # Claude Code (uses database/unlock.rl); other MCP clients alike
@@ -380,10 +410,16 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 ## Tests
 
 ```bash
-pytest                              # 92 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
+pytest                              # 94 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
 cd frontend && npx playwright test  # 10 end-to-end tests, incl. an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
+node frontend/scripts/check-static-a11y.mjs [url]   # axe-core WCAG 2.0/2.1 A+AA on the zero-install demo, desktop and phone (iPhone 13), home and journey+history views
 ```
+
+**Accessibility and phones.** The app is built for the people it is about: keyboard-operable map and lists, visible
+focus, reduced-motion respected, Atkinson Hyperlegible type. The deployed demo is scanned with axe-core (all WCAG 2.0
+and 2.1 A/AA rules) on a desktop and a phone viewport: see *Results* in [CHANGELOG](CHANGELOG.md) for the latest run.
+On a phone the layout becomes one column with no horizontal scrolling.
 
 The integration tests use the real Relate engine with file-backed stores. They cover:
 

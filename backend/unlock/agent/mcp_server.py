@@ -36,7 +36,9 @@ Rules for the agent:
    Region counts are ordered station pairs joined by a step-free journey, not trips or people.
 5. Give the evidence: lift names, the graph path from `explain_connection`, the status snapshot id and time.
 6. The PRIM lift feed and SNCF's hourly lift feed disagree; say which view a number comes from
-   ("best" = SNCF hourly + PRIM for RATP, "feed" = PRIM only, "published" = no outages)."""
+   ("best" = SNCF hourly status + IDFM lift status for RATP, "feed" = PRIM only, "published" = no outages).
+7. For a rider's usual trip ("can I do my trip this morning?") use `usual_trip_alert`; for the lift teams' day,
+   `maintenance_bulletin`. Say when the lift status was read (`observed`)."""
 
 _WRITE = re.compile(r"\b(CREATE|MERGE|DELETE|DETACH|SET|REMOVE|DROP|LOAD|CALL\s+db\.|FOREACH)\b", re.I)
 
@@ -46,7 +48,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.7.0")
+                    version="0.8.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}

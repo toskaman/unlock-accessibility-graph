@@ -129,6 +129,8 @@ def export_region(code: str, store: Path, out: Path) -> dict:
                  "blockers": _dump(out / code / "blockers.json", blockers)}
         from unlock import history as H
         sizes["history"] = _dump(out / code / "history.json", H.region_series(code))
+        sizes["history_lifts"] = _dump(out / code / "history_lifts.json", H.lift_report(ns, code))
+        sizes["timelapse"] = _dump(out / code / "timelapse.json", H.region_timelapse(code))
         b = B.build(ns)
         (out / code / "bulletin.html").write_text(B.to_html(b), encoding="utf-8", newline="\n")
         row = compare_row(ns, code)

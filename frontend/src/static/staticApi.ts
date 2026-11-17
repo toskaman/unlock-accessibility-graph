@@ -210,6 +210,8 @@ export const staticRegionApi = (code: () => string) => ({
   trips: async (trips: SavedTrip[]) => ({ trips: await Promise.all(trips.map((t) => tripStatus(code(), t))) }),
   reach: (id: string, view: RegionViewName) => reach(code(), id, view),
   history: () => json<{ region: string; observations: Record<string, unknown>[] }>(`${code()}/history.json`),
+  historyLifts: () => json<unknown>(`${code()}/history_lifts.json`),
+  timelapse: () => json<{ region: string; frames: { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> }[] }>(`${code()}/timelapse.json`),
 });
 
 export const staticRegions = () => json<RegionInfo[]>("regions.json");

@@ -19,5 +19,19 @@ the history files; nothing is installed as a system task. Each commit is titled 
 still out), share of observations out (chronic ≥ 30 % over ≥ 7 days), confirmed journeys per region over time.
 `history.summary()` says how much history exists before drawing any conclusion.
 
+**Where to see it.**
+
+- *Whole region* → **History** tab: every lift seen out of service at least once in the daytime observations,
+  ranked by the share of observations it was out, with *chronic* flagged, the date it went out and — for RATP lifts —
+  the time IDFM last changed its status. Click a lift to open its station.
+- Under the chart of confirmed journeys (best view): **Replay on the map** steps through the observations and
+  recolours the map with the stations cut or in doubt at each one (*daytime only* by default; slower with reduced
+  motion). *Back to now* restores today's map.
+- API: `GET /api/region/history`, `/api/region/history/lifts`, `/api/region/history/timelapse`. The zero-install demo
+  ships the same three files, re-exported at every collection, so it shows the history collected so far.
+
+Night observations (between 23:00 and 06:00 Paris) are left out of the lift ranking: lifts switched off at the end of
+service would otherwise look like outages.
+
 **Limits.** Two observations a day bound durations to half a day; SNCF's file has no per-lift timestamp; an outage
 that starts and ends between two fetches is never seen.
