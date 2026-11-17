@@ -15,6 +15,8 @@
 - **Phones and accessibility.** One-column layout with no horizontal scroll on phones (390 px); axe-core scan of the
   deployed demo (`frontend/scripts/check-static-a11y.mjs`, WCAG 2.0/2.1 A+AA, desktop + iPhone 13, home and
   journey+history views). Fixed: the *Remove* button's accessible name now contains its visible label.
+  **Results** on the deployed demo (17 Nov 2026, after this release): 0 violations in all four scans (desktop and
+  phone × home and journey+history); no horizontal scrolling at 390 px.
 - e2e: the stale-message drill-down accepts either an SNCF or a RATP lift (the first stale message changes with the
   data). Tests: 94 pytest + 10 e2e.
 
