@@ -87,5 +87,8 @@ if (STATIC_DEMO) {
   (api as any).regionsCompare = staticCompare;
 }
 export const currentRegion = () => REGION;
-export const bulletinUrl = (region: string, isDefault: boolean) =>
-  STATIC_DEMO ? `${import.meta.env.BASE_URL}data/${region}/bulletin.html` : `/api/region/bulletin.html${isDefault ? "" : `?region=${region}`}`;
+export const bulletinUrl = (region: string, isDefault: boolean, lang: "en" | "fr" = "en") => {
+  if (STATIC_DEMO) return `${import.meta.env.BASE_URL}data/${region}/bulletin${lang === "fr" ? "_fr" : ""}.html`;
+  const q = new URLSearchParams({ ...(isDefault ? {} : { region }), ...(lang === "fr" ? { lang } : {}) }).toString();
+  return `/api/region/bulletin.html${q ? `?${q}` : ""}`;
+};

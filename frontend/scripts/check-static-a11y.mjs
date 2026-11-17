@@ -1,5 +1,5 @@
 // WCAG 2.1 AA scan (axe-core) + phone/desktop screenshots of the zero-install demo.
-// node scripts/check-static-a11y.mjs [url] [outDir]
+// node scripts/check-static-a11y.mjs [url] [outDir]   (add ?lang=fr to the url to scan the French interface)
 import { chromium, devices } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -14,7 +14,7 @@ for (const [name, ctxOpts] of [["desktop", { viewport: { width: 1440, height: 90
   const p = await ctx.newPage();
   await p.goto(url);
   await p.waitForSelector(".hl-num", { timeout: 60000 });
-  await p.waitForSelector("text=/running as WebAssembly|could not start/", { timeout: 120000 });
+  await p.waitForSelector("text=/running as WebAssembly|could not start|en WebAssembly dans votre navigateur|pas pu démarrer/", { timeout: 120000 });
   await p.waitForTimeout(2000);
   await p.screenshot({ path: `${out}/${name}-top.png`, fullPage: false });
   const scan = async (label) => {
@@ -24,8 +24,8 @@ for (const [name, ctxOpts] of [["desktop", { viewport: { width: 1440, height: 90
   await scan("home");
   await p.getByRole("button", { name: "Rosa Parks → Juvisy" }).click();
   await p.waitForSelector(".jverdict", { timeout: 60000 });
-  await p.getByRole("button", { name: /^Watch Rosa Parks/ }).click();
-  await p.getByRole("tab", { name: "History" }).click();
+  await p.getByRole("button", { name: /^(Watch|Suivre) Rosa Parks/ }).click();
+  await p.getByRole("tab", { name: /^(History|Historique)$/ }).click();
   await p.waitForTimeout(1500);
   await scan("journey+history");
   await p.screenshot({ path: `${out}/${name}-full.png`, fullPage: true });

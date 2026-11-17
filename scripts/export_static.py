@@ -133,6 +133,7 @@ def export_region(code: str, store: Path, out: Path) -> dict:
         sizes["timelapse"] = _dump(out / code / "timelapse.json", H.region_timelapse(code))
         b = B.build(ns)
         (out / code / "bulletin.html").write_text(B.to_html(b), encoding="utf-8", newline="\n")
+        (out / code / "bulletin_fr.html").write_text(B.to_html(b, "fr"), encoding="utf-8", newline="\n")
         row = compare_row(ns, code)
         info = {**ns.region, "code": code}
         return {"info": info, "compare": row, "sizes": sizes,

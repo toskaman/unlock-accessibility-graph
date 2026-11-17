@@ -34,7 +34,8 @@ Every number on screen is computed on the graph and can be traced back to a sour
 > hide **126,628** step-free journeys from anyone who builds on the feed.
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
-**▶ Try it now, nothing to install: https://toskaman.github.io/unlock-accessibility-graph/** — every region of
+**▶ Try it now, nothing to install: https://toskaman.github.io/unlock-accessibility-graph/** (in English or
+French: switch in the header, or [open it in French](https://toskaman.github.io/unlock-accessibility-graph/?lang=fr)) — every region of
 mainland France, journeys, reach, trip alerts and the bulletin, on a snapshot exported from the Relate stores; every
 journey leg and every reach is re-checked by **Relate itself, compiled to WebAssembly, in your browser**. (Live
 status, station cross-sections and simulations need the installed app below.)
@@ -411,7 +412,7 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 
 ```bash
 pytest                              # 94 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
-cd frontend && npx playwright test  # 10 end-to-end tests, incl. an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
+cd frontend && npx playwright test  # 11 end-to-end tests, incl. the EN/FR switch, an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 node frontend/scripts/check-static-a11y.mjs [url]   # axe-core WCAG 2.0/2.1 A+AA on the zero-install demo, desktop and phone (iPhone 13), home and journey+history views
 ```

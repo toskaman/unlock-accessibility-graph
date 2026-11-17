@@ -356,9 +356,13 @@ def create_app(store_path: Path | str = STORE_PATH, regions: dict[str, Path] | N
         return {k: v for k, v in n._cache["bulletin"].items() if k != "html"}
 
     @app.get("/api/region/bulletin.html", response_class=HTMLResponse)
-    def region_bulletin_html(req: Request):
+    def region_bulletin_html(req: Request, lang: str = "en"):
+        from ..network import bulletin as B
         region_bulletin(req)
-        return HTMLResponse(net(req)._cache["bulletin"]["html"])
+        b = net(req)._cache["bulletin"]
+        if lang == "fr":
+            return HTMLResponse(B.to_html({k: v for k, v in b.items() if k not in ("markdown", "html")}, "fr"))
+        return HTMLResponse(b["html"])
 
     @app.get("/api/region/reach")
     def region_reach(req: Request, a: str = Query(..., alias="from"), view: str = Query("best", pattern=_VIEW)):

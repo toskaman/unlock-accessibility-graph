@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, ApiError, setApiRegion, STATIC_DEMO } from "./api";
 import { StaticBanner } from "./components/StaticBanner";
+import { LangSwitch } from "./components/LangSwitch";
+import { getLang, tr, useLang } from "./i18n";
 import { MapView } from "./components/MapView";
 import { RegionView } from "./components/RegionView";
 import { STATE_LABEL, StationSection } from "./components/StationSection";
@@ -37,6 +39,7 @@ function downloadJSON(name: string, data: unknown) {
 }
 
 export default function App() {
+  useLang(); // re-render everything when the language changes
   const [mode, setMode] = useState<"region" | "station">(() => (!STATIC_DEMO && location.hash.includes("station=") ? "station" : "region"));
   const [summary, setSummary] = useState<Summary | null>(null);
   const [region, setRegion] = useState<string>("idf");
@@ -197,9 +200,9 @@ export default function App() {
   }, [graph]);
 
   const modeTabs = (
-    <nav className="modes" aria-label="Scale">
-      <button aria-current={mode === "region" ? "page" : undefined} className={mode === "region" ? "on" : ""} onClick={() => setMode("region")}>Whole region</button>
-      <button aria-current={mode === "station" ? "page" : undefined} className={mode === "station" ? "on" : ""} onClick={() => setMode("station")}>Inside a station</button>
+    <nav className="modes" aria-label={tr("Scale", "Échelle")}>
+      <button aria-current={mode === "region" ? "page" : undefined} className={mode === "region" ? "on" : ""} onClick={() => setMode("region")}>{tr("Whole region", "Toute la région")}</button>
+      <button aria-current={mode === "station" ? "page" : undefined} className={mode === "station" ? "on" : ""} onClick={() => setMode("station")}>{tr("Inside a station", "Dans une gare")}</button>
     </nav>
   );
 
@@ -209,13 +212,14 @@ export default function App() {
         <header className="top">
           <div className="brand">
             <h1>UNLOCK</h1>
-            <p>Find the repair that unlocks the most journeys.</p>
+            <p>{tr("Find the repair that unlocks the most journeys.", "Trouver la réparation qui rend le plus de trajets.")}</p>
           </div>
           {!STATIC_DEMO && modeTabs}
-          {!STATIC_DEMO && <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button></div>}
+          {!STATIC_DEMO && <div className="meta"><button className="ghost" onClick={() => setInspect(true)}>{tr("Inspect the graph", "Explorer le graphe")}</button></div>}
+          <LangSwitch />
         </header>
         {STATIC_DEMO && <StaticBanner region={region} />}
-        {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>Dismiss</button></div>}
+        {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>{tr("Dismiss", "Fermer")}</button></div>}
         <RegionView key={region} region={region} regions={regions} onRegion={(c) => { setApiRegion(regions.find((r) => r.code === c)?.default ? null : c); setRegion(c); }}
           onError={setError} onOpenStation={(id) => { setApiRegion(null); setRegion("idf"); setMode("station"); selectStation(id); }} />
         {inspect && <Inspector summary={summary} onClose={() => setInspect(false)} />}
@@ -248,9 +252,11 @@ export default function App() {
           )}
           <button className="ghost" onClick={() => setInspect(true)}>Inspect the graph</button>
         </div>
+        <LangSwitch />
       </header>
+      {getLang() === "fr" && <div className="banner static-banner" role="note" lang="fr">La vue « dans une gare » n'existe pour l'instant qu'en anglais. La vue <em>Toute la région</em> est entièrement en français.</div>}
 
-      {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>Dismiss</button></div>}
+      {error && <div className="banner error" role="alert">{error} <button className="ghost" onClick={() => setError(null)}>{tr("Dismiss", "Fermer")}</button></div>}
       {view !== "baseline" && <div className="banner sim" role="status">Simulated scenario — {scenario?.name}. Published lift observations are unchanged.</div>}
 
       <aside className="left">

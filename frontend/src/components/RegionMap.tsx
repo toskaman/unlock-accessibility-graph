@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { tr } from "../i18n";
 import * as maplibregl from "maplibre-gl";
 import type { GeoJSONSource, StyleSpecification } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
@@ -125,8 +126,8 @@ export function RegionMap({ stations, reach, journey, selected, onSelect, center
 
   return (
     <div className="map-wrap region-map">
-      <div ref={box} className="map" role="region" aria-label={`Map of ${label || "the Île-de-France rail, metro and tram"} stations, coloured by step-free state. Use the journey form and lists for keyboard access.`} />
-      {blank && <p className="map-note">Basemap tiles unavailable — stations are still plotted.</p>}
+      <div ref={box} className="map" role="region" aria-label={tr(`Map of ${label || "the Île-de-France rail, metro and tram"} stations, coloured by step-free state. Use the journey form and lists for keyboard access.`, `Carte des gares (${label || "Île-de-France"}), colorées selon l'accès sans marche. Au clavier, utilisez le formulaire de trajet et les listes.`)} />
+      {blank && <p className="map-note">{tr("Basemap tiles unavailable — stations are still plotted.", "Fond de carte indisponible — les gares restent affichées.")}</p>}
     </div>
   );
 }

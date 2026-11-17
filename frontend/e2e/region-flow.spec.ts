@@ -61,3 +61,19 @@ test("rider alerts: watch a usual trip, status from the API, kept in this browse
   expect(b.ok()).toBeTruthy();
   expect(await b.text()).toContain("Fix first");
 });
+
+test("language: English / French switch in the header, remembered after a reload", async ({ page, request }) => {
+  const ov = await (await request.get("/api/region/overview")).json();
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Can I get there in a wheelchair?" })).toBeVisible();
+  await page.getByRole("button", { name: "FR — Français" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+  await expect(page.getByRole("heading", { name: "Puis-je y aller en fauteuil ?" })).toBeVisible();
+  await expect(page.locator(".hl-num")).toHaveText(ov.views.best.confirmed.toLocaleString("fr-FR"));
+  await page.getByRole("button", { name: "Rosa Parks → Juvisy" }).click();
+  await expect(page.locator(".jresult")).toContainText("Chaque tronçon revérifié dans Relate");
+  await page.reload();
+  await expect(page.getByRole("tab", { name: "Réparations utiles" })).toBeVisible();
+  await page.getByRole("button", { name: "EN — English" }).click();
+  await expect(page.getByRole("tab", { name: "Repairs that matter" })).toBeVisible();
+});

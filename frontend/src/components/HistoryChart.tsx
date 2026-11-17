@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api";
+import { fmtDate, isFr, num, tr } from "../i18n";
 
 type Frame = { t: string; night: boolean; confirmed: number; published: number; stations: Record<string, string> };
-const when = (t: string) => new Date(t).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
+const when = (t: string) => fmtDate(new Date(t), { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
 
 /** Confirmed journeys at each recorded observation, and a time-lapse that replays the map frame by frame.
  *  Shown once two observations exist; the history grows twice a day. */
@@ -44,23 +45,24 @@ export function HistoryChart({ onFrame }: { onFrame?: (states: Record<string, st
   return (
     <figure className="histchart">
       <figcaption className="small">
-        Confirmed journeys at each recorded observation ({shown.length}{dayOnly ? " daytime" : ""}; hollow = night).{" "}
-        <button className="ghost small" onClick={play} disabled={shown.length < 2}>{playing ? "Pause" : "▶ Replay on the map"}</button>{" "}
-        {i != null && <button className="ghost small" onClick={stop}>Back to now</button>}{" "}
-        <label className="tiny"><input type="checkbox" checked={!dayOnly} onChange={(e) => { setDayOnly(!e.target.checked); setI(null); }} /> include night snapshots</label>
+        {isFr() ? `Trajets confirmés à chaque relevé enregistré (${shown.length}${dayOnly ? " de jour" : ""} ; cercle vide = nuit).`
+          : `Confirmed journeys at each recorded observation (${shown.length}${dayOnly ? " daytime" : ""}; hollow = night).`}{" "}
+        <button className="ghost small" onClick={play} disabled={shown.length < 2}>{playing ? tr("Pause", "Pause") : tr("▶ Replay on the map", "▶ Rejouer sur la carte")}</button>{" "}
+        {i != null && <button className="ghost small" onClick={stop}>{tr("Back to now", "Revenir à maintenant")}</button>}{" "}
+        <label className="tiny"><input type="checkbox" checked={!dayOnly} onChange={(e) => { setDayOnly(!e.target.checked); setI(null); }} /> {tr("include night snapshots", "inclure les relevés de nuit")}</label>
       </figcaption>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Confirmed step-free journeys over ${pts.length} observations, from ${pts[0].confirmed.toLocaleString("en-GB")} to ${pts[pts.length - 1].confirmed.toLocaleString("en-GB")}`}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={tr(`Confirmed step-free journeys over ${pts.length} observations, from ${num(pts[0].confirmed)} to ${num(pts[pts.length - 1].confirmed)}`, `Trajets sans marche confirmés sur ${pts.length} relevés, de ${num(pts[0].confirmed)} à ${num(pts[pts.length - 1].confirmed)}`)}>
         <line x1={P} x2={W - P} y1={Y(top)} y2={Y(top)} className="hc-pub" />
-        <text x={P} y={Y(top) - 4} className="hc-lbl">published {top.toLocaleString("en-GB")}</text>
+        <text x={P} y={Y(top) - 4} className="hc-lbl">{tr("published", "publiés")} {num(top)}</text>
         {pts.length > 1 && <polyline points={pts.map((f) => `${X(new Date(f.t).getTime())},${Y(f.confirmed)}`).join(" ")} className="hc-line" />}
         {pts.map((f) => (
           <circle key={f.t} cx={X(new Date(f.t).getTime())} cy={Y(f.confirmed)} r={cur === f ? 6 : 3.5} className={f.night ? "hc-night" : "hc-dot"}
                   onClick={() => setI(shown.indexOf(f) >= 0 ? shown.indexOf(f) : null)}>
-            <title>{when(f.t)}: {f.confirmed.toLocaleString("en-GB")}</title>
+            <title>{when(f.t)} : {num(f.confirmed)}</title>
           </circle>
         ))}
       </svg>
-      {cur && <p className="small hc-now" aria-live="polite">Map at <strong>{when(cur.t)}</strong>{cur.night ? " (night)" : ""}: {cur.confirmed.toLocaleString("en-GB")} confirmed journeys, {Object.keys(cur.stations).length} stations not fully open.</p>}
+      {cur && <p className="small hc-now" aria-live="polite">{tr("Map at", "Carte au")} <strong>{when(cur.t)}</strong>{cur.night ? tr(" (night)", " (nuit)") : ""}{tr(": ", " : ")}{tr(`${num(cur.confirmed)} confirmed journeys, ${Object.keys(cur.stations).length} stations not fully open.`, `${num(cur.confirmed)} trajets confirmés, ${Object.keys(cur.stations).length} gares pas entièrement ouvertes.`)}</p>}
     </figure>
   );
 }

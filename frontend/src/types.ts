@@ -149,4 +149,6 @@ export type TripStatus = { status: TripStatusName; message: string; changed?: bo
   from: { id?: string; name: string }; to: { id?: string; name: string }; label?: string;
   observed?: { sncf_lift_status: string | null; idfm_lift_status: string | null };
   usual?: { board: string; alight: string; line: string; board_name: string; alight_name: string; line_name: string }[];
-  blocking?: OutageLabel[] };
+  blocking?: OutageLabel[];
+  usual_blocked_at?: { station: string; state: string }[];
+  alternative?: { board_name: string; alight_name: string; line_name?: string | null }[] };

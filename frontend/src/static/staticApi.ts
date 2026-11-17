@@ -147,6 +147,8 @@ async function tripStatus(code: string, t: SavedTrip): Promise<TripStatus> {
   if (!bad.length) return res;
   const now = await journey(code, t.from.id, t.to.id, "best");
   const nice = (legs: Journey["legs"]) => legs.map((l) => `${l.line_name} ${l.board_name} → ${l.alight_name}`).join(" then ");
+  res.usual_blocked_at = bad.map((p) => ({ station: name(p), state: n.stateOf("best", p) }));
+  if (now.verdict === "STEP_FREE" || now.verdict === "STEP_FREE_IF_LIFTS_WORK") res.alternative = now.legs;
   if (now.verdict === "STEP_FREE") { res.status = "DETOUR"; res.message = `Your usual route is ${where}. Step-free alternative today: ${nice(now.legs)}.`; }
   else if (now.verdict === "STEP_FREE_IF_LIFTS_WORK") { res.status = "AT_RISK"; res.message = `Your usual route is ${where}. The only step-free route left depends on lifts whose status is uncertain: ${nice(now.legs)}.`; }
   else { res.status = "CUT"; res.message = `No step-free route today: your usual route is ${where}, and so is every other route.`; }

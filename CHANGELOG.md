@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.1 — 2026-11-17
+- **Interface in French.** An EN / FR switch (with flags) in the header changes the whole region view: the demo,
+  journeys, rider alerts (rebuilt in French from the same structured fields), history, comparison, map legends,
+  dates and number formats (231 883). The choice is remembered in the browser; `?lang=fr` opens the page in French
+  (link for French-speaking testers: https://toskaman.github.io/unlock-accessibility-graph/?lang=fr). The default
+  follows the browser language. The station cross-section (installed app only) stays in English, and says so.
+- **Bulletin in French**: `GET /api/region/bulletin.html?lang=fr`, and `bulletin_fr.html` in the zero-install demo.
+- e2e: language switch test (11 e2e tests); the axe-core scan of the demo also runs on the French interface
+  (0 violations, desktop and phone).
+
 ## 0.8.0 — 2026-11-17
 - **Ask an agent — a real transcript** (docs/AGENT_DEMO.md, `scripts/agent_demo.py`): Claude Code in headless mode,
   with UNLOCK's MCP tools as its only tools, answers a wheelchair user in French (« Rosa Parks → Juvisy ce matin ? »:

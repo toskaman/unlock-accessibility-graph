@@ -156,6 +156,9 @@ def test_rider_alerts_and_bulletin(region_store, tmp_path):
         assert b["repairs"][0]["kind"] == "RATP_LIFT" and b["changes"]["since"] is None
         md, page = bulletin.to_markdown(b), bulletin.to_html(b)
         assert "## Fix first" in md and "Beta" in md and page.startswith("<!DOCTYPE html>") and "<script" not in page
+        md_fr = bulletin.to_markdown(b, "fr")   # French bulletin: same rows, French headings, no English section left
+        assert "## À réparer en premier" in md_fr and "Beta" in md_fr and "## Fix first" not in md_fr and "## Méthode" in md_fr
+        assert "<html lang='fr'>" in bulletin.to_html(b, "fr")
     app = create_app(region_store)
     with TestClient(app) as c:
         r = c.post("/api/region/trips/check", json={"trips": [{"from": "Z1", "to": "Z4"}, {"from": "nowhere", "to": "Z4"}]})
@@ -165,6 +168,7 @@ def test_rider_alerts_and_bulletin(region_store, tmp_path):
                       "usual": [{"board": "R:Z1", "alight": "R:Z3", "line": "nope"}]}]}).status_code == 422
         assert c.get("/api/region/bulletin").json()["format"] == "unlock-bulletin/1"
         assert c.get("/api/region/bulletin.html").text.startswith("<!DOCTYPE html>")
+        assert "À réparer en premier" in c.get("/api/region/bulletin.html?lang=fr").text
 
 
 def test_several_regions_served_side_by_side(region_store, tmp_path):

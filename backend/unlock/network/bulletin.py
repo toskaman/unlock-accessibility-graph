@@ -96,6 +96,12 @@ def build(ns, limit: int = 12) -> dict[str, Any]:
                    "confirmed again if that one lift worked, all else equal; equal gains are ordered by the "
                    f"station's daily usage ({(ns.entries_source or {}).get('title', 'n/a')}). Lift status: SNCF hourly "
                    "feed for SNCF lifts" + (", IDFM « État des ascenseurs » for RATP lifts." if ns.ratp_lifts else ".")),
+        "method_fr": ("Trajets = paires de gares (dans les deux sens) reliées par un parcours sans marche (quais accessibles "
+                      "uniquement, chaque point de montée et de descente accessible depuis la rue par des ascenseurs en service). "
+                      "Gain d'une réparation = trajets à nouveau confirmés si ce seul ascenseur fonctionnait, tout le reste égal ; "
+                      "à gain égal, les gares sont classées par fréquentation quotidienne "
+                      f"({(ns.entries_source or {}).get('title', 'n/d')}). État des ascenseurs : flux horaire SNCF pour les "
+                      "ascenseurs SNCF" + (", « État des ascenseurs » d'IDFM pour les ascenseurs RATP." if ns.ratp_lifts else ".")),
     }
 
 
@@ -103,80 +109,113 @@ def _n(x):
     return "—" if x is None else f"{x:,}".replace(",", " ")
 
 
-def to_markdown(b: dict) -> str:
+def to_markdown(b: dict, lang: str = "en") -> str:
+    """The bulletin as Markdown, in English (default) or French (lang="fr")."""
+    fr = lang == "fr"
+    T = lambda en, f: f if fr else en  # noqa: E731
     h, f = b["headline"], b["freshness"]
-    L = [f"# Step-free access bulletin — {b['region']}", "",
-         f"Generated {b['generated_at']} · SNCF lift status {f['sncf_lift_status'] or '—'}"
-         + (f" · IDFM lift status {f['idfm_lift_status']}" if f['idfm_lift_status'] else "")
-         + (f" · PRIM lift messages last updated {f['prim_last_lift_update']} ({f['prim_stale_days']} days ago)"
+    region = b["region"]
+    if fr:
+        region = (region.replace("IDFM rail, metro, tram", "RER, Transilien, métro et tram IDFM")
+                  .replace("SNCF trains (TER, Intercités, TGV)", "trains SNCF : TER, Intercités, TGV"))
+    share = f"{h['share'] * 100:.1f}".replace(".", "," if fr else ".") if h["share"] is not None else "—"
+    L = [T(f"# Step-free access bulletin — {region}", f"# Bulletin d'accessibilité sans marche — {region}"), "",
+         T(f"Generated {b['generated_at']} · SNCF lift status {f['sncf_lift_status'] or '—'}",
+           f"Produit le {b['generated_at']} · état des ascenseurs SNCF {f['sncf_lift_status'] or '—'}")
+         + (T(f" · IDFM lift status {f['idfm_lift_status']}", f" · état des ascenseurs IDFM {f['idfm_lift_status']}") if f['idfm_lift_status'] else "")
+         + (T(f" · PRIM lift messages last updated {f['prim_last_lift_update']} ({f['prim_stale_days']} days ago)",
+              f" · messages ascenseurs PRIM mis à jour pour la dernière fois le {f['prim_last_lift_update']} (il y a {f['prim_stale_days']} jours)")
             if f['prim_last_lift_update'] else ""), "",
-         f"**{_n(h['confirmed'])} of {_n(h['published'])} published step-free journeys are confirmed today "
-         f"({h['share'] * 100:.1f} %).** {_n(h['stations_affected'])} stations affected; {_n(h['points_closed'])} "
-         f"boarding points cut, {_n(h['points_doubt'])} in doubt. Lifts out: "
+         T(f"**{_n(h['confirmed'])} of {_n(h['published'])} published step-free journeys are confirmed today "
+           f"({share} %).** {_n(h['stations_affected'])} stations affected; {_n(h['points_closed'])} "
+           f"boarding points cut, {_n(h['points_doubt'])} in doubt. Lifts out: ",
+           f"**{_n(h['confirmed'])} des {_n(h['published'])} trajets sans marche publiés sont confirmés aujourd'hui "
+           f"({share} %).** {_n(h['stations_affected'])} gares touchées ; {_n(h['points_closed'])} "
+           f"points de montée coupés, {_n(h['points_doubt'])} en doute. Ascenseurs en panne : ")
          + (f"{_n(h['lifts_out']['ratp'])} RATP, " if h['lifts_out']['ratp'] is not None else "")
          + f"{_n(h['lifts_out']['sncf'])} SNCF.", "",
-         "## Fix first", "", "| # | Station | Lift | Operator | Journeys regained | Daily users | Status updated |",
+         T("## Fix first", "## À réparer en premier"), "",
+         T("| # | Station | Lift | Operator | Journeys regained | Daily users | Status updated |",
+           "| # | Gare | Ascenseur | Exploitant | Trajets rendus | Usagers par jour | État mis à jour |"),
          "|---|---|---|---|---|---|---|"]
     for i, r in enumerate(b["repairs"], 1):
         L.append(f"| {i} | {r['station']} | {(r.get('name') or r['lift'])[:90]} | {r.get('operator') or 'SNCF'} | "
                  f"{_n(r['gain'])} | {_n(r.get('entries_per_day'))} | {r.get('updated') or r.get('first_reported') or '—'} |")
     if not b["repairs"]:
-        L.append("| — | No single lift repair gives back a journey today. | | | | | |")
+        L.append(T("| — | No single lift repair gives back a journey today. | | | | | |",
+                   "| — | Aucune réparation d'un seul ascenseur ne rend de trajet aujourd'hui. | | | | | |"))
     if b.get("checks"):
-        L += ["", "## Check first — status unknown, journeys at stake", "",
-              "| Station | Lift | Operator | Journeys confirmed if it works | Daily users | Note |", "|---|---|---|---|---|---|"]
+        L += ["", T("## Check first — status unknown, journeys at stake", "## À vérifier d'abord — état inconnu, trajets en jeu"), "",
+              T("| Station | Lift | Operator | Journeys confirmed if it works | Daily users | Note |",
+                "| Gare | Ascenseur | Exploitant | Trajets confirmés s'il fonctionne | Usagers par jour | Remarque |"),
+              "|---|---|---|---|---|---|"]
         for r in b["checks"]:
-            note = "switched off at night" if r.get("status_note") == "NIGHT_CLOSURE_SUSPECTED" else "status unknown"
+            note = T("switched off at night", "éteint la nuit") if r.get("status_note") == "NIGHT_CLOSURE_SUSPECTED" else T("status unknown", "état inconnu")
             L.append(f"| {r['station']} | {(r.get('name') or r['lift'])[:90]} | {r.get('operator') or 'SNCF'} | "
                      f"{_n(r['gain'])} | {_n(r.get('entries_per_day'))} | {note} |")
     if b["stations_cut"]:
-        L += ["", "## Stations cut off today", "",
-              "At least one boarding point has no step-free route to the street. Lifts not reported working:", ""]
+        L += ["", T("## Stations cut off today", "## Gares coupées aujourd'hui"), "",
+              T("At least one boarding point has no step-free route to the street. Lifts not reported working:",
+                "Au moins un point de montée n'a plus d'accès sans marche depuis la rue. Ascenseurs non signalés en service :"), ""]
+        st_word = {"unavailable": T("unavailable", "hors service"), "unknown": T("unknown", "inconnu")}
         for r in b["stations_cut"]:
             from collections import Counter
             grp = Counter((" ".join(x["label"].split())[:70], x["operator"], x["status"].lower()) for x in r["lifts_not_working"])
-            ls = "; ".join(f"{lab} ({op}, {st}{f', ×{n} lifts' if n > 1 else ''})" for (lab, op, st), n in list(grp.items())[:6])
-            L.append(f"- {r['station']} — {ls or 'see station topology'}")
+            ls = "; ".join(f"{lab} ({op}, {st_word.get(st, st)}{f', ×{n} ' + T('lifts', 'ascenseurs') if n > 1 else ''})"
+                           for (lab, op, st), n in list(grp.items())[:6])
+            L.append(f"- {r['station']} — {ls or T('see station topology', 'voir le plan de la gare')}")
     c = b["changes"]
     if b.get("night_closure_suspected"):
-        L.insert(4, f"> Night snapshot: {b['night_closure_suspected']} RATP lifts switched off since 23:00 (Paris) are "
-                    "counted as *unknown* — end-of-service shutdown is far more likely than a breakdown. Re-run after "
-                    "the morning fetch for daytime figures.\n")
-    L += ["", "## Changes since the previous observation", ""]
+        L.insert(4, T(f"> Night snapshot: {b['night_closure_suspected']} RATP lifts switched off since 23:00 (Paris) are "
+                      "counted as *unknown* — end-of-service shutdown is far more likely than a breakdown. Re-run after "
+                      "the morning fetch for daytime figures.\n",
+                      f"> Relevé de nuit : {b['night_closure_suspected']} ascenseurs RATP éteints depuis 23 h (heure de Paris) "
+                      "sont comptés comme *inconnus* — un arrêt de fin de service est bien plus probable qu'une panne. "
+                      "Relancez après le relevé du matin pour les chiffres de jour.\n"))
+    L += ["", T("## Changes since the previous observation", "## Changements depuis le relevé précédent"), ""]
     if not c:
-        L.append("No earlier lift-status observation is stored for this region.")
+        L.append(T("No earlier lift-status observation is stored for this region.",
+                   "Aucun relevé antérieur de l'état des ascenseurs n'est enregistré pour cette région."))
     elif not c["since"]:
-        L.append("First observation: changes will appear from the next lift-status fetch.")
+        L.append(T("First observation: changes will appear from the next lift-status fetch.",
+                   "Premier relevé : les changements apparaîtront au prochain relevé."))
     else:
-        L.append(f"Since {c['since']}: {len(c['newly_out'])} newly out of service, {len(c['back_in_service'])} back in service.")
-        for title, rows in (("Newly out", c["newly_out"]), ("Back in service", c["back_in_service"])):
+        L.append(T(f"Since {c['since']}: {len(c['newly_out'])} newly out of service, {len(c['back_in_service'])} back in service.",
+                   f"Depuis le {c['since']} : {len(c['newly_out'])} nouvellement hors service, {len(c['back_in_service'])} remis en service."))
+        for title, rows in ((T("Newly out", "Nouvellement hors service"), c["newly_out"]),
+                            (T("Back in service", "Remis en service"), c["back_in_service"])):
             if rows:
                 L += ["", f"**{title}**", ""] + [f"- {r['station']} — {r['label'][:90]} ({r['operator']})" for r in rows[:25]]
     if b["unknown_status"]:
-        L += ["", "## Status unknown — check on site", ""]
-        L += [f"- {r['station']} — {r['label'][:90]} (updated {r['updated'] or '—'})" for r in b["unknown_status"]]
+        L += ["", T("## Status unknown — check on site", "## État inconnu — à vérifier sur place"), ""]
+        L += [f"- {r['station']} — {r['label'][:90]} ({T('updated', 'mis à jour')} {r['updated'] or '—'})" for r in b["unknown_status"]]
     if b["stations_all_lifts_out"]:
-        L += ["", "## Stations where every listed lift is out", ""]
-        L += [f"- {r['station']} ({r['lifts']} lift{'s' if r['lifts'] > 1 else ''})" for r in b["stations_all_lifts_out"]]
+        L += ["", T("## Stations where every listed lift is out", "## Gares où tous les ascenseurs listés sont en panne"), ""]
+        L += [f"- {r['station']} ({r['lifts']} {T('lift', 'ascenseur')}{'s' if r['lifts'] > 1 else ''})" for r in b["stations_all_lifts_out"]]
     t = b["corrections_total"]
+    method = b.get("method_fr", b["method"]) if fr else b["method"]
     if not b["corrections"] and not t["journeys_hidden"]:
-        L += ["", "## Method", "", b["method"], ""]
+        L += ["", T("## Method", "## Méthode"), "", method, ""]
         return "\n".join(L)
-    L += ["", "## Passenger information to correct", "",
-          f"The operators' own status data contradicts {_n(t['sncf_contradicted'])} SNCF and {_n(t['ratp_contradicted'])} "
-          f"RATP lift messages still published on PRIM; together they hide {_n(t['journeys_hidden'])} step-free journeys "
-          "from travellers who rely on that feed.", "", "| Station | Message | Journeys hidden | Published since |",
+    L += ["", T("## Passenger information to correct", "## Information voyageurs à corriger"), "",
+          T(f"The operators' own status data contradicts {_n(t['sncf_contradicted'])} SNCF and {_n(t['ratp_contradicted'])} "
+            f"RATP lift messages still published on PRIM; together they hide {_n(t['journeys_hidden'])} step-free journeys "
+            "from travellers who rely on that feed.",
+            f"Les propres données d'état des exploitants contredisent {_n(t['sncf_contradicted'])} messages ascenseurs SNCF et "
+            f"{_n(t['ratp_contradicted'])} RATP encore publiés sur PRIM ; ensemble, ils masquent {_n(t['journeys_hidden'])} "
+            "trajets sans marche aux voyageurs qui s'appuient sur ce flux."), "",
+          T("| Station | Message | Journeys hidden | Published since |", "| Gare | Message | Trajets masqués | Publié depuis |"),
           "|---|---|---|---|"]
     for r in b["corrections"]:
         L.append(f"| {r['station']} | {r['text'][:90]} | {_n(r['gain'])} | {r.get('first_reported') or '—'} |")
-    L += ["", "## Method", "", b["method"], ""]
+    L += ["", T("## Method", "## Méthode"), "", method, ""]
     return "\n".join(L)
 
 
-def to_html(b: dict) -> str:
+def to_html(b: dict, lang: str = "en") -> str:
     """Self-contained printable page (no script, no external resource)."""
     import re
-    md = to_markdown(b)
+    md = to_markdown(b, lang)
     out, table = [], []
 
     def inline(s):
@@ -225,8 +264,9 @@ def to_html(b: dict) -> str:
            "border-bottom:1px solid #d5d9e0;vertical-align:top}th{background:#eef1f5}p:nth-of-type(1){color:#5b667a}"
            "blockquote{margin:1rem 0;padding:.6rem .9rem;border-left:4px solid #8a5600;background:#fff6e5}"
            "@media print{body{margin:0}h2{break-after:avoid}tr{break-inside:avoid}}")
-    return (f"<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' "
-            f"content='width=device-width,initial-scale=1'><title>UNLOCK bulletin {b['generated_at'][:10]}</title>"
+    title = f"Bulletin UNLOCK {b['generated_at'][:10]}" if lang == "fr" else f"UNLOCK bulletin {b['generated_at'][:10]}"
+    return (f"<!DOCTYPE html><html lang='{'fr' if lang == 'fr' else 'en'}'><head><meta charset='utf-8'><meta name='viewport' "
+            f"content='width=device-width,initial-scale=1'><title>{title}</title>"
             f"<style>{css}</style></head><body>{''.join(out)}</body></html>")
 
 

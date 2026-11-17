@@ -260,7 +260,7 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
 .r-AMBIGUOUS .rtitle { color: var(--unverified); font-weight: 700; }
 .tiny { font-size: 11.5px; margin: 4px 0 0; }
 .rtabs { display: flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
-.rtabs button { flex: 1; border: 0; background: var(--panel); padding: 7px 8px; font-size: 14px; }
+.rtabs button { flex: 1 1 auto; border: 0; background: var(--panel); padding: 7px 6px; font-size: 13.5px; hyphens: auto; }
 .rtabs button + button { border-left: 1px solid var(--rule); }
 .rtabs button.on { background: var(--ink); color: #fff; font-weight: 700; }
 .critical ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
@@ -417,3 +417,11 @@ button.primary.small { padding: 5px 10px; font-size: 14px; }
   .compare table { font-size: 12px; }
   .histchart figcaption { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 }
+
+/* language switch */
+.langswitch { display: flex; flex: none; margin-left: auto; border: 1px solid #3a4a6b; border-radius: 8px; overflow: hidden; }
+.meta + .langswitch, .viewswitch ~ .langswitch { margin-left: 0; }
+.langswitch button { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 0; padding: 6px 10px; color: #dbe2ee; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.langswitch button + button { border-left: 1px solid #3a4a6b; }
+.langswitch button.on { background: #f3f5f7; color: var(--ink); }
+.langswitch svg { width: 21px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4); }
