@@ -51,8 +51,7 @@ any count. Riders can report from the web page too, and the demo replays these s
 many step-free journeys each region loses day after day. The *History* tab ranks the lifts that are out again and
 again, and *Replay on the map* steps the region map through every recorded observation.
 
-**Try it without installing anything, in English or French.** Rebuilt every hour from the live lift status by GitHub
-Actions. The GitHub Pages demo loads the graph exported from the Relate store into
+**Try it without installing anything, in English or French.** The GitHub Pages demo loads the graph exported from the Relate store into
 Relate's WebAssembly build in the visitor's browser, which re-runs the server's own Cypher to re-check every journey
 leg and every reach (the browser engine was checked identical to the server's on 1,038 reaches and 600 journeys).
 

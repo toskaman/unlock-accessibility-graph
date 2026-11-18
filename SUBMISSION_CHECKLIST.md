@@ -10,13 +10,16 @@
 - [x] v0.2.0: install + 62 tests + build + serve verified natively on Windows 10 (Python 3.14.4)
 - [x] v0.6.0: 87 tests + fetch (all sources) + `fetch-outages` + `fetch-lifts` + build + `build-region ara` + bulletin on Windows 10
 - [x] 1:36 narrated video (station mode) public on the v0.2.0 GitHub release
-- [ ] New video — recorded by the entrant after a daytime `python -m unlock refresh` (script: DEMO_SCRIPT.md), ≤ the official limit
+- [x] v0.8.0 / v0.8.1 / v0.9.0 pushed (agent transcript + history tab, EN/FR interface, two agents with field reports in Relate, agent replay, hourly live-demo workflow, inactive); 96 pytest + 13 e2e
+- [x] README and docs/DEVPOST_SUBMISSION.md describe v0.9.0
+- [x] « Rebuilt every hour » removed from README / Devpost / demo script (secrets not set, workflow inactive; docs/LIVE_DEMO.md says so). Optional: set `UNLOCK_PRIM_KEY` + `UNLOCK_IDFM_ODS_KEY` to turn it on
+- [ ] New video — recorded by the entrant after a daytime `python -m unlock refresh` (script: DEMO_SCRIPT.md, v0.9 with EN/FR subtitles in docs/video/), ≤ 2 min
 - [x] Rules re-read in full on 17 Nov 2026 (relate.devpost.com, /rules, /resources, /updates, forum): video ≤ 2 min, public `relate`-tagged repo, setup instructions, a video *or a working demo link*, tools/AI statement; judges should be able to clone, run and see the graph without asking
 - [x] Zero-install demo link (GitHub Pages) — no login, region mode, clearly labelled snapshot
 - [ ] Submit a draft early on Devpost (public voting is open; edits allowed until the deadline)
-- [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement
+- [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement (text ready in docs/DEVPOST_SUBMISSION.md — only the video link is missing)
 - [ ] Re-read live rules page within 48 h of submission
 - [x] Secret scan before publishing — no secrets in history; agent transcripts sanitised (no local paths/accounts)
 - [x] PRIM token never in the repo (file on D:, env var); data-quality test greps the outage snapshot for it
 - [x] Opendatasoft key (IDFM lift status) never in the repo (file on D:, env var)
-- [ ] Entrant: delete the Windows-bridge result/inbox files that carried the two keys (listed in the v0.6.0 hand-over)
+- [~] Windows-bridge files that carried the two keys: entrant chose to keep them (outside the repo)
