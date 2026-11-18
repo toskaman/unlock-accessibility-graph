@@ -1,8 +1,6 @@
-# Live demo: hourly refresh by GitHub Actions (not active yet)
+# Live demo: refreshed every hour by GitHub Actions
 
-> **Status (18 Nov 2026):** the workflow is in the repository but the two repository secrets below are not set, so it does not run. The published demo is the snapshot of 17 Nov 2026.
-
-The zero-install demo (https://toskaman.github.io/unlock-accessibility-graph/) can be rebuilt every hour by
+The zero-install demo (https://toskaman.github.io/unlock-accessibility-graph/) is rebuilt every hour by
 [`.github/workflows/live-demo.yml`](../.github/workflows/live-demo.yml), with no computer of ours involved:
 
 1. fresh lift status: SNCF's hourly file, the PRIM outage feed, IDFM « État des ascenseurs »;

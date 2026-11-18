@@ -39,7 +39,8 @@ Every number on screen is computed on the graph and can be traced back to a sour
 > Method and figures: [docs/research/NETWORK_DISCOVERY.md](docs/research/NETWORK_DISCOVERY.md).
 
 **▶ Try it now, nothing to install: https://toskaman.github.io/unlock-accessibility-graph/** (in English or
-French: switch in the header, or [open it in French](https://toskaman.github.io/unlock-accessibility-graph/?lang=fr)) — every region of
+French: switch in the header, or [open it in French](https://toskaman.github.io/unlock-accessibility-graph/?lang=fr)).
+Rebuilt every hour from the live lift status by GitHub Actions ([how](docs/LIVE_DEMO.md)) — every region of
 mainland France, journeys, reach, trip alerts and the bulletin, on a snapshot exported from the Relate stores; every
 journey leg and every reach is re-checked by **Relate itself, compiled to WebAssembly, in your browser**. (Live
 status, station cross-sections and simulations need the installed app below.)
