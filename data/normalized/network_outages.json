@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-19T18:00:05+00:00",
+"observed_at": "2026-11-19T21:29:26+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,22 +8,22 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 29425857,
-"sha256": "d74dec20e1362e0dd169f30aa8b7811a0a244fab6640922c2567a1bbd4eca80f",
-"retrieved_at": "2026-11-19T18:00:05+00:00",
+"bytes": 28579779,
+"sha256": "a3221a718a826411cfebfe23b0737fefee8b11bfee1d5b3a461f3a3edb4dc78c",
+"retrieved_at": "2026-11-19T21:29:26+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-19T18:58:17",
+"feed_non_lift_last_update": "2026-11-19T22:27:39",
 "counts": {
 "lifts": 356,
 "messages": 1046,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
-"affects_RAIL_STATION": 474,
+"affects_RAIL_STATION": 475,
 "operator_RATP": 89,
 "operator_SNCF_GC": 264,
 "operator_UNKNOWN": 3,
@@ -2623,7 +2623,7 @@
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:472273",
+"platform_id": "IDFM:472110",
 "line_id": "IDFM:C01748",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -2698,6 +2698,12 @@
 },
 {
 "platform_id": "IDFM:472570",
+"line_id": "IDFM:C01857",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
+"platform_id": "IDFM:472718",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -2992,13 +2998,13 @@
 "placement": "PLACED",
 "affects": [
 {
-"platform_id": "IDFM:471552",
+"platform_id": "IDFM:471650",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:471650",
+"platform_id": "IDFM:471918",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
