@@ -22,7 +22,7 @@ console.log("trip:", (await p.locator(".tw-list li").first().textContent()).slic
 await p.getByRole("tab", { name: "Repairs that matter" }).click();
 await p.locator(".right .rank button").nth(2).click();
 await p.waitForSelector(".reach-num", { timeout: 60000 });
-await p.waitForSelector("text=/Re-derived in Relate|disagrees/", { timeout: 60000 });
+await p.waitForSelector("text=/Re-derived in Relate|disagrees/", { state: "attached", timeout: 60000 });   // inside "How do we know?"
 console.log("reach:", (await p.locator(".reachbox").textContent()).slice(0, 500));
 
 await p.selectOption(".regionpick select", "ara");
