@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-17T09:44:09+00:00",
+"observed_at": "2026-11-19T18:00:05+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,19 +8,19 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 30310306,
-"sha256": "beb494738d9bf8ad6f297377ec859cfdfe722bf173f8740669d8dc1803c8e094",
-"retrieved_at": "2026-11-17T09:44:09+00:00",
+"bytes": 29425857,
+"sha256": "d74dec20e1362e0dd169f30aa8b7811a0a244fab6640922c2567a1bbd4eca80f",
+"retrieved_at": "2026-11-19T18:00:05+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-17T10:43:08",
+"feed_non_lift_last_update": "2026-11-19T18:58:17",
 "counts": {
 "lifts": 356,
-"messages": 1047,
+"messages": 1046,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
 "affects_RAIL_STATION": 474,
@@ -124,6 +124,7 @@
 "IDFM:C01637",
 "IDFM:C01727",
 "IDFM:C01737",
+"IDFM:C01842",
 "IDFM:C02085"
 ],
 "first_reported": "2026-08-17T05:05:09",
@@ -1379,6 +1380,7 @@
 "lines": [
 "IDFM:C01727",
 "IDFM:C01737",
+"IDFM:C01842",
 "IDFM:C02517",
 "IDFM:C02841",
 "IDFM:C02849",
@@ -5576,6 +5578,7 @@
 "IDFM:C01479",
 "IDFM:C01480",
 "IDFM:C01739",
+"IDFM:C01748",
 "IDFM:C01846",
 "IDFM:C02086",
 "IDFM:C02225",
@@ -5676,6 +5679,7 @@
 "IDFM:C01479",
 "IDFM:C01480",
 "IDFM:C01739",
+"IDFM:C01748",
 "IDFM:C01846",
 "IDFM:C02086",
 "IDFM:C02225",
@@ -5988,6 +5992,7 @@
 "IDFM:C01479",
 "IDFM:C01480",
 "IDFM:C01739",
+"IDFM:C01748",
 "IDFM:C01846",
 "IDFM:C02086",
 "IDFM:C02225",
@@ -6319,7 +6324,8 @@
 "IDFM:C01303",
 "IDFM:C01737",
 "IDFM:C01756",
-"IDFM:C01804"
+"IDFM:C01804",
+"IDFM:C01842"
 ],
 "first_reported": "2026-09-03T08:46:05",
 "last_update": "2026-09-10T07:13:41",
@@ -7168,6 +7174,7 @@
 "IDFM:C01637",
 "IDFM:C01727",
 "IDFM:C01737",
+"IDFM:C01842",
 "IDFM:C02085",
 "IDFM:C02086",
 "IDFM:C02847"
@@ -7214,6 +7221,7 @@
 "IDFM:C01637",
 "IDFM:C01727",
 "IDFM:C01737",
+"IDFM:C01842",
 "IDFM:C02085",
 "IDFM:C02086",
 "IDFM:C02847"
@@ -7716,7 +7724,8 @@
 "IDFM:C01737",
 "IDFM:C01802",
 "IDFM:C01804",
-"IDFM:C01808"
+"IDFM:C01808",
+"IDFM:C01842"
 ],
 "first_reported": "2026-08-30T18:39:29",
 "last_update": "2026-08-30T18:39:38",
@@ -7793,7 +7802,8 @@
 "IDFM:C01737",
 "IDFM:C01802",
 "IDFM:C01804",
-"IDFM:C01808"
+"IDFM:C01808",
+"IDFM:C01842"
 ],
 "first_reported": "2026-09-04T09:43:56",
 "last_update": "2026-09-26T08:42:20",
@@ -13989,7 +13999,6 @@
 "stop_area_name": "Saint-Ouen (Clichy)",
 "lines": [
 "IDFM:C01102",
-"IDFM:C01164",
 "IDFM:C01194",
 "IDFM:C01195",
 "IDFM:C01255",
@@ -16132,9 +16141,9 @@
 "IDFM:C01794",
 "IDFM:C02370"
 ],
-"first_reported": "2025-11-17T20:08:17",
+"first_reported": "2025-11-20T14:07:56",
 "last_update": "2026-09-29T14:11:17",
-"messages": 13,
+"messages": 12,
 "disruption_ids": [
 "21de90b4-01fd-11f1-b66e-0a58a9feac02",
 "31176872-1692-4d54-97d7-c3a4ce19e76f",
@@ -16142,7 +16151,6 @@
 "5b40b3c7-2834-4b01-892f-2a3507dfdf80",
 "892aa110-f7c5-48c7-8707-11ebf025a268",
 "bb9c3454-4d27-482e-b5b7-f3d4e9df4deb",
-"cabcd3e2-c3e8-11f0-839f-0a58a9feac02",
 "d941d3c6-7e51-4dfe-bbc0-9581c9a5c626",
 "ddd8f78c-05ea-11f1-9c9f-0a58a9feac02",
 "f352ff68-c611-11f0-9658-0a58a9feac02",
