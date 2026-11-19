@@ -136,4 +136,4 @@ jobs:
           git add data/normalized
           git diff --cached --quiet && exit 0
           git commit -q -m "data: lift-status observation $(date -u +'%Y-%m-%d %H:%M') UTC (live demo)"
-          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          for i in 1 2 3; do git pull -q --rebase --autostash origin main && git push -q origin HEAD:main && break; sleep 5; done
