@@ -429,13 +429,15 @@ disk (e.g. `py -3 -m venv D:\venvs\unlock`): pip upgrades inside a venv on an SM
 
 ```bash
 pytest                              # 96 tests: unit, real-Relate integration, API, region, alerts, bulletin, second region, agent/MCP, data quality
-cd frontend && npx playwright test  # 13 end-to-end tests, incl. the EN/FR switch, a field report, the agent replay, an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
+cd frontend && npx playwright test  # 14 end-to-end tests, incl. the EN/FR switch, a field report, the agent replay, the map as a list, an axe-core WCAG 2.1 AA scan (0 serious/critical) and the rider-alert flow, on a copy of the store
 python scripts/benchmark.py         # writes docs/BENCHMARK.json
 node frontend/scripts/check-static-a11y.mjs [url]   # axe-core WCAG 2.0/2.1 A+AA on the zero-install demo, desktop and phone (iPhone 13), home and journey+history views
 ```
 
-**Accessibility and phones.** The app is built for the people it is about: keyboard-operable map and lists, visible
-focus, reduced-motion respected, Atkinson Hyperlegible type. The deployed demo is scanned with axe-core (all WCAG 2.0
+**Accessibility and phones.** The app is built for the people it is about: station states shown by shape as well as
+colour (dot / ring / cross), the whole map also available as a list, an easy-read (FALC) version of the main message,
+text never below 14 px, 44 px touch targets on phones, dark mode from the system setting, visible focus,
+reduced-motion respected, Atkinson Hyperlegible type. The deployed demo is scanned with axe-core (all WCAG 2.0
 and 2.1 A/AA rules) on a desktop and a phone viewport: see *Results* in [CHANGELOG](CHANGELOG.md) for the latest run.
 On a phone the layout becomes one column with no horizontal scrolling.
 

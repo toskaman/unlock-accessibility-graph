@@ -8,22 +8,24 @@ import { Intro } from "./Intro";
 import { RegionMap } from "./RegionMap";
 import { FieldReports } from "./FieldReports";
 import { AgentReplay } from "./AgentReplay";
+import { LiftGlyph, StateMark } from "./Marks";
+import { MapList } from "./MapList";
 import { fmtDate, fmtDay, isFr, netLabel, num, pl, tr } from "../i18n";
 
 const VIEW_LABEL = (v: RegionViewName) => ({
-  best: tr("Best available status", "Meilleur état connu"),
-  feed: tr("PRIM outage feed", "Flux de pannes PRIM"),
+  best: tr("What the operators say", "Ce que disent les exploitants"),
+  feed: tr("What the official feed announces", "Ce qu'annonce le flux officiel"),
   published: tr("Published network", "Réseau publié"),
 })[v];
 const VIEW_HELP = (v: RegionViewName) => ({
-  best: tr("SNCF's hourly lift status + IDFM's lift status for RATP (refreshed several times a day), both read on station lift graphs",
-    "État horaire des ascenseurs SNCF + état des ascenseurs RATP publié par IDFM (mis à jour plusieurs fois par jour), lus sur le plan des ascenseurs de chaque gare"),
-  feed: tr("Every lift outage listed in the PRIM traffic-information feed", "Toutes les pannes d'ascenseur listées dans le flux d'information trafic PRIM"),
+  best: tr("“What the operators say”: SNCF's hourly lift status and IDFM's lift status for RATP (refreshed several times a day), both read lift by lift on a plan of each station",
+    "« Ce que disent les exploitants » : l'état horaire des ascenseurs SNCF et l'état des ascenseurs RATP publié par IDFM (mis à jour plusieurs fois par jour), lus ascenseur par ascenseur sur le plan de chaque gare"),
+  feed: tr("“What the official feed announces”: every lift outage listed in the regional traffic-information feed (PRIM)", "« Ce qu'annonce le flux officiel » : toutes les pannes d'ascenseur listées dans le flux régional d'information trafic (PRIM)"),
   published: tr("Platforms declared wheelchair-boardable, no outage at all", "Quais déclarés accessibles en fauteuil, sans aucune panne"),
 })[v];
 const VIEW_PHRASE = (v: RegionViewName) => ({
-  best: tr("with the best available lift status", "avec le meilleur état connu des ascenseurs"),
-  feed: tr("according to the PRIM outage feed", "d'après le flux de pannes PRIM"),
+  best: tr("according to the lifts' status published by the operators", "selon l'état des ascenseurs publié par les exploitants"),
+  feed: tr("according to the official outage feed", "selon le flux officiel des pannes"),
   published: tr("in the published network, ignoring outages", "dans le réseau publié, sans tenir compte des pannes"),
 })[v];
 const VERDICT_CLS: Record<Journey["verdict"], string> = {
@@ -89,6 +91,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [rec, setRec] = useState<Reconciliation | null>(null);
   const [tab, setTab] = useState<"repairs" | "stale" | "missing" | "history">("repairs");
   const [frame, setFrame] = useState<Record<string, string> | null>(null);
+  const [listView, setListView] = useState(false);
   const [from, setFrom] = useState<{ id: string; name: string } | null>(null);
   const [to, setTo] = useState<{ id: string; name: string } | null>(null);
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
@@ -157,7 +160,6 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <button key={x} role="tab" aria-selected={view === x} className={view === x ? "on" : ""} onClick={() => setView(x)} title={help(x)}>{VIEW_LABEL(x)}</button>
           ))}
         </div>
-        <p className="muted small">{help(view)}.</p>
       </div>
 
       <aside className="left">
@@ -208,10 +210,11 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                   </button>
                 ))}
               </div>
-              <p className="muted tiny">{j.verification.ok
-                ? tr(`Every leg re-checked in Relate${STATIC_DEMO ? " (WebAssembly, in this browser)" : ""} (${j.verification.verified}/${j.verification.legs}): boardable platforms of the stated stations joined by a LEG of that line.`,
-                     `Chaque tronçon revérifié dans Relate${STATIC_DEMO ? " (WebAssembly, dans ce navigateur)" : ""} (${j.verification.verified}/${j.verification.legs}) : quais accessibles des gares indiquées reliés par cette ligne.`)
-                : tr("Leg verification failed — do not rely on this route.", "La vérification d'un tronçon a échoué : ne vous fiez pas à ce trajet.")}</p>
+              {j.verification.ok ? (
+                <details className="howknow"><summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
+                  <p>{tr(`Every leg re-checked in Relate${STATIC_DEMO ? " (in this browser)" : ""} (${j.verification.verified}/${j.verification.legs}): accessible platforms of the stated stations joined by that line.`,
+                     `Chaque tronçon revérifié dans Relate${STATIC_DEMO ? " (dans ce navigateur)" : ""} (${j.verification.verified}/${j.verification.legs}) : quais accessibles des gares indiquées reliés par cette ligne.`)}</p></details>
+              ) : <p className="tiny">{tr("Leg verification failed — do not rely on this route.", "La vérification d'un tronçon a échoué : ne vous fiez pas à ce trajet.")}</p>}
             </div>
           )}
         </section>
@@ -236,13 +239,15 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                   <li><i className="dot amber" />{n(reach.counts.if_lifts_work)} {tr("only if listed lifts work", "seulement si les ascenseurs signalés fonctionnent")}</li>
                   <li><i className="dot red" />{n(reach.counts.cut)} {tr("cut by outages (reachable in the published network)", "coupées par des pannes (accessibles dans le réseau publié)")}</li>
                 </ul>
-                <p className="muted tiny">{tr(`Those confirmed stations see ≈ ${n(reach.entries_per_day.confirmed)} validations a day; the cut ones ≈ ${n(reach.entries_per_day.cut)}.`,
-                  `Les gares confirmées comptent ≈ ${n(reach.entries_per_day.confirmed)} validations par jour ; les gares coupées ≈ ${n(reach.entries_per_day.cut)}.`)}</p>
-                <p className="muted tiny">{reach.verification.ok
-                  ? tr(`Re-derived in Relate${STATIC_DEMO ? " (WebAssembly, in this browser)" : ""} with Cypher (${reach.verification.rounds} breadth-first rounds over HAS_PLATFORM/LEG, ${reach.verification.ms} ms): ${reach.verification.cypher} = ${reach.verification.engine}.`,
-                       `Recalculé dans Relate${STATIC_DEMO ? " (WebAssembly, dans ce navigateur)" : ""} en Cypher (${reach.verification.rounds} parcours en largeur sur HAS_PLATFORM/LEG, ${reach.verification.ms} ms) : ${reach.verification.cypher} = ${reach.verification.engine}.`)
-                  : tr(`Cypher re-derivation disagrees (${reach.verification.cypher} vs ${reach.verification.engine}) — do not rely on this number.`,
-                       `Le recalcul en Cypher ne donne pas le même résultat (${reach.verification.cypher} contre ${reach.verification.engine}) : ne vous fiez pas à ce nombre.`)}</p>
+                {reach.verification.ok ? (
+                  <details className="howknow"><summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
+                    <p>{tr(`Those confirmed stations see ≈ ${n(reach.entries_per_day.confirmed)} validations a day; the cut ones ≈ ${n(reach.entries_per_day.cut)}.`,
+                      `Les gares confirmées comptent ≈ ${n(reach.entries_per_day.confirmed)} validations par jour ; les gares coupées ≈ ${n(reach.entries_per_day.cut)}.`)}</p>
+                    <p>{tr(`Re-derived in Relate${STATIC_DEMO ? " (WebAssembly, in this browser)" : ""} with Cypher (${reach.verification.rounds} breadth-first rounds over HAS_PLATFORM/LEG, ${reach.verification.ms} ms): ${reach.verification.cypher} = ${reach.verification.engine}.`,
+                       `Recalculé dans Relate${STATIC_DEMO ? " (WebAssembly, dans ce navigateur)" : ""} en Cypher (${reach.verification.rounds} parcours en largeur sur HAS_PLATFORM/LEG, ${reach.verification.ms} ms) : ${reach.verification.cypher} = ${reach.verification.engine}.`)}</p>
+                  </details>
+                ) : <p className="tiny">{tr(`Cypher re-derivation disagrees (${reach.verification.cypher} vs ${reach.verification.engine}) — do not rely on this number.`,
+                       `Le recalcul en Cypher ne donne pas le même résultat (${reach.verification.cypher} contre ${reach.verification.engine}) : ne vous fiez pas à ce nombre.`)}</p>}
               </div>
             )}
             <p className="small">{selectedStation.state === "NOT_BOARDABLE" ? tr("No platform declared wheelchair-boardable in GTFS / IDFM data.", "Aucun quai déclaré accessible en fauteuil dans les données GTFS / IDFM.") :
@@ -286,11 +291,10 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
               </ul>
             ) : <p className="muted small">{tr("The PRIM feed lists no lift outage here.", "Le flux PRIM ne signale aucune panne d'ascenseur ici.")}</p>}
             {isDefault && !STATIC_DEMO && selectedStation.sncf_station && selectedStation.detail && (
-              <button className="primary small" onClick={() => onOpenStation(selectedStation.sncf_station!)}>{tr("Open inside the station →", "Voir l'intérieur de la gare →")}</button>
+              <button className="primary small" onClick={() => onOpenStation(selectedStation.sncf_station!)}>{tr("Open inside the station", "Voir l'intérieur de la gare")}</button>
             )}
           </section>
         )}
-        {region === "idf" && <AgentReplay onTrip={(A, B) => { setFrom(A); setTo(B); check(A, B); document.getElementById("jh")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />}
       </aside>
 
       <main className="center">
@@ -320,28 +324,65 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
               "Quand la description d'un ascenseur ne dit pas quel quai il relie à la rue, un ascenseur non signalé en service met la gare en doute : il n'est jamais supposé sans effet. État lu :")} {compare[0]?.sncf_status_observed_at?.slice(0, 16).replace("T", " ")} UTC.</p>
           </section>
         )}
+        {!ov && (
+          <div className="skeleton" aria-hidden="true">
+            <div className="sk-plate" /><div className="sk-map" /><div className="sk-line" /><div className="sk-line short" />
+          </div>
+        )}
         {ov && v && pub && (
-          <section className="headline" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
-            <div className="hl-main">
-              <p className="hl-num">{n(v.confirmed)}</p>
-              <p className="hl-cap">{tr(`step-free station-to-station journeys confirmed in ${ov.region.name}`, `trajets de gare à gare sans marche confirmés en ${ov.region.name}`)} {VIEW_PHRASE(view)}</p>
-              <p className="small muted">{tr(`${n(pub.confirmed)} published between ${n(ov.network.stations_with_boardable_platform)} stations`, `${n(pub.confirmed)} publiés entre ${n(ov.network.stations_with_boardable_platform)} gares`)}
-                {v.possible > v.confirmed && <> · {tr(`${n(v.possible - v.confirmed)} more only if every listed lift works`, `${n(v.possible - v.confirmed)} de plus seulement si tous les ascenseurs signalés fonctionnent`)}</>}</p>
+          <section className="mapstage" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
+            <RegionMap center={ov.region.center} zoom={ov.region.zoom} label={`${ov.region.name} — ${netLabel(ov.region.network_label)}`}
+                       stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations}
+                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
+                       journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
+              <div className="plate">
+                <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>
+                <p className="hl-num">{n(v.confirmed)}</p>
+                <p className="plate-cap">{tr("station-to-station trips with no step at all today,", "trajets de gare à gare sans une seule marche aujourd'hui,")} {VIEW_PHRASE(view)}</p>
+                <p className="plate-alt">
+                  {VIEWS.filter((x) => x !== view).map((x) => (
+                    <button key={x} className="plate-link" onClick={() => setView(x)}>{VIEW_LABEL(x)} <strong>{n(ov.views[x].confirmed)}</strong></button>
+                  ))}
+                </p>
+              </div>
+            </RegionMap>
+            <div className="mapfoot">
+              {reach && !j ? (
+                <div className="legend region-legend" aria-label={tr("Map legend — step-free reach", "Légende de la carte — accès sans marche")}>
+                  <span><b>{tr(`From ${reach.origin.name}:`, `Depuis ${reach.origin.name} :`)}</b></span>
+                  <span><StateMark kind="ok" />{tr("reachable without a step", "accessible sans marche")}</span>
+                  <span><StateMark kind="doubt" />{tr("only if listed lifts work", "seulement si les ascenseurs signalés fonctionnent")}</span>
+                  <span><StateMark kind="cut" />{tr("cut by outages", "coupée par des pannes")}</span>
+                  <span><StateMark kind="dim" />{tr("no route without a step", "pas de trajet sans marche")}</span>
+                </div>
+              ) : (
+                <div className="legend region-legend" aria-label={tr("Map legend", "Légende de la carte")}>
+                  <span><StateMark kind="open" />{tr("open", "ouverte")}</span>
+                  <span><StateMark kind="doubt" />{tr("a lift is reported out", "ascenseur signalé en panne")}</span>
+                  <span><StateMark kind="cut" />{tr("cut off", "coupée")}</span>
+                  <span><StateMark kind="dim" />{tr("no accessible platform", "aucun quai accessible")}</span>
+                </div>
+              )}
+              <button className="ghost small" aria-expanded={listView} aria-controls="maplist" onClick={() => setListView(!listView)}>
+                {listView ? tr("Hide the list", "Masquer la liste") : tr("Show as a list", "Afficher en liste")}</button>
             </div>
-            <div className="hl-bars" aria-label={tr("Confirmed journeys by view", "Trajets confirmés selon la vue")}>
-              {(["published", "best", "feed"] as RegionViewName[]).filter((x) => VIEWS.includes(x)).map((x) => (
-                <button key={x} className={`hl-bar ${x === view ? "on" : ""}`} onClick={() => setView(x)}>
-                  <span className="hb-label">{VIEW_LABEL(x)}</span>
-                  <span className="hb-track"><span className={`hb-fill hb-${x}`} style={{ width: `${(100 * ov.views[x].confirmed) / pub.confirmed}%` }} /></span>
-                  <span className="hb-val">{n(ov.views[x].confirmed)}</span>
-                </button>
-              ))}
-            </div>
+            <p className="muted small mapnote">{reach && !j ? "" : tr("Select a station to see where you can go from it.", "Choisissez une gare pour voir où l'on peut aller depuis elle.")}</p>
+            {listView && <MapList stations={stations} reach={reach && !j ? { origin: reach.origin.id, originName: reach.origin.name, classes: reach.classes } : null}
+                                  onSelect={(id) => { setJourneys({}); setSelected(id); }} />}
+            <details className="howknow">
+              <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
+              <p>{help(view)}.</p>
+              <p>{tr(`${n(pub.confirmed)} trips are published between ${n(ov.network.stations_with_boardable_platform)} stations with an accessible platform.`, `${n(pub.confirmed)} trajets sont publiés entre ${n(ov.network.stations_with_boardable_platform)} gares ayant un quai accessible.`)}
+                {v.possible > v.confirmed && <> {tr(`${n(v.possible - v.confirmed)} more would be possible if every listed lift worked.`, `${n(v.possible - v.confirmed)} de plus seraient possibles si tous les ascenseurs signalés fonctionnaient.`)}</>}</p>
+            </details>
           </section>
         )}
-        {ov && view === "best" && <HistoryChart onFrame={setFrame} />}
         {ov?.feed && ov.stale_messages && (
           <section className="frozen" aria-label={tr("Outage feed quality", "Qualité du flux de pannes")}>
+            <p className="frozen-lead">{isFr() ? <>Le flux officiel des pannes d'ascenseurs n'a pas bougé depuis {ov.feed.lift_messages_stale_days} jours. Ses messages périmés cachent <strong>{n(ov.stale_messages.journeys_hidden)}</strong> trajets sans marche.</>
+              : <>The official lift-outage feed has not changed for {ov.feed.lift_messages_stale_days} days. Its out-of-date messages hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</>}</p>
+            <details className="howknow">
+            <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
             {isFr() ? <>
             <p><strong>Le flux régional des pannes d'ascenseurs ne bouge plus.</strong> PRIM signale encore {n(ov.outages.lifts)} ascenseurs hors service
               ({n(ov.outages.messages)} messages) ; aucun n'a changé depuis le {date(ov.feed.last_lift_update)} — {ov.feed.lift_messages_stale_days} jours — alors que
@@ -368,28 +409,13 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                 ? `UNLOCK a relevé le flux ${ov.feed_watch.observations} fois entre le ${stamp(ov.feed_watch.first_observed)} et le ${stamp(ov.feed_watch.last_observed)} : le contenu des messages ascenseurs était ${ov.feed_watch.all_identical ? "identique à chaque fois" : `identique lors des ${ov.feed_watch.identical_lift_content} derniers relevés`} (même empreinte pour les ${n(ov.outages.messages)} messages).`
                 : `UNLOCK fetched the feed ${ov.feed_watch.observations} times between ${stamp(ov.feed_watch.first_observed)} and ${stamp(ov.feed_watch.last_observed)}: the lift content was ${ov.feed_watch.all_identical ? "identical every time" : `identical in the last ${ov.feed_watch.identical_lift_content}`} (same hash of all ${n(ov.outages.messages)} messages).`}</p>
             )}
+            </details>
           </section>
         )}
-        <RegionMap center={ov?.region.center} zoom={ov?.region.zoom} label={ov ? `${ov.region.name} — ${netLabel(ov.region.network_label)}` : undefined} stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations} reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
-                   journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }} />
-        {reach && !j ? (
-          <div className="legend region-legend" aria-label={tr("Map legend — step-free reach", "Légende de la carte — accès sans marche")}>
-            <span><b>{tr(`From ${reach.origin.name}:`, `Depuis ${reach.origin.name} :`)}</b></span>
-            <span><i className="dot green" />{tr("Reachable step-free", "Accessible sans marche")}</span>
-            <span><i className="dot amber" />{tr("Only if listed lifts work", "Seulement si les ascenseurs signalés fonctionnent")}</span>
-            <span><i className="dot red" />{tr("Cut by outages", "Coupée par des pannes")}</span>
-            <span><i className="dot grey" />{tr("No step-free route / not boardable", "Pas de trajet sans marche / quai non accessible")}</span>
-          </div>
-        ) : (
-          <div className="legend region-legend" aria-label={tr("Map legend", "Légende de la carte")}>
-            <span><i className="dot ink" />{tr("Boardable, open", "Accessible, ouverte")}</span>
-            <span><i className="dot amber" />{tr("Lift listed out — not confirmed", "Ascenseur signalé en panne — non confirmé")}</span>
-            <span><i className="dot red" />{tr("Cut off (station topology)", "Coupée (plan de la gare)")}</span>
-            <span><i className="dot grey" />{tr("No boardable platform", "Aucun quai accessible")}</span>
-            <span className="muted">{tr("Click a station to see where you can go from it.", "Cliquez sur une gare pour voir où l'on peut aller depuis elle.")}</span>
-          </div>
-        )}
-        {busy && <p className="busy" role="status">{busy}</p>}
+        {ov && view === "best" && <HistoryChart onFrame={setFrame} />}
+        {region === "idf" && <AgentReplay onTrip={(A, B) => { setFrom(A); setTo(B); check(A, B); document.getElementById("jh")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />}
+        {busy && ov && <p className="busy" role="status">{busy}</p>}
+        {busy && !ov && <p className="sr-only" role="status">{busy}</p>}
       </main>
 
       <aside className="right">

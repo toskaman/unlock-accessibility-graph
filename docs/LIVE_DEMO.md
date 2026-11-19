@@ -6,7 +6,7 @@ The zero-install demo (https://toskaman.github.io/unlock-accessibility-graph/) i
 1. fresh lift status: SNCF's hourly file, the PRIM outage feed, IDFM « État des ascenseurs »;
 2. `python -m unlock build` and `build-region all`: every region rebuilt in Relate from the committed snapshots and
    the day's GTFS / NeTEx (cached for the day);
-3. every 3 hours, `python -m unlock record`: the lift-status history (History tab, map replay) grows, and the
+3. when the last committed observation is about 3 hours old or more (scheduled runs are irregular), `python -m unlock record`: the lift-status history (History tab, map replay) grows, and the
    history files are committed to `main` (`data: lift-status observation … (live demo)`);
 4. `scripts/export_static.py` and `frontend/scripts/build-static.mjs`, a smoke test of the built page in Chromium,
    then a push to the `gh-pages` branch.

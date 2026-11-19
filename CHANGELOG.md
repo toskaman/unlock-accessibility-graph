@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.10.0 — 2026-11-17
+- **Map first.** The region map opens the page, with the headline on a navy station plate set on the map (like the
+  name plates of the stations) instead of a number-and-bars block; on phones the rider's question comes first, then
+  the map. The intro is one line; the demo banner one line with *More*.
+- **Plain words, half the text.** Views renamed *What the operators say* / *What the official feed announces* /
+  *Published network* (FR: *Ce que disent les exploitants* / *Ce qu'annonce le flux officiel* / *Réseau publié*);
+  method and verification sentences moved into *How do we know? / Comment on le sait ?* disclosures.
+- **States readable without colour.** Station marks by shape — dot (open), ring (only if a lift works), cross (cut
+  off) — on the map, the legend and the lists; a lift glyph as the product's mark.
+- **The map as a list** (*Show as a list*): stations grouped by state, or by where you can go from the selected
+  station, each name selecting the station — for screen readers and keyboards.
+- **Easy read** (*Facile à lire*, FALC) version of the main message.
+- **Dark mode** following the system setting; basemap restyled to the palette in both themes; skeleton loading
+  instead of a "Computing…" message; one animation only (the map recolouring when a station is chosen, off with
+  reduced motion).
+- Minimum text size 14 px; 44 px touch targets on phones.
+- Live demo: the history is recorded whenever the last committed observation is about 3 hours old (GitHub runs
+  scheduled workflows irregularly, so a clock-hour rule missed every observation).
+- Checks: axe-core WCAG 2.0/2.1 A+AA, 0 violations in English and French, light and dark, desktop and phone.
+  Tests: 96 pytest + 14 e2e.
+
 ## 0.9.0 — 2026-11-17
 - **Two agents, one memory — field reports in the graph.** Riders, staff and AI agents can report a lift seen out
   of service or working: `(:FieldReport)-[:ABOUT]->(lift)` in Relate, written through the server (the graph's single

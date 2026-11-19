@@ -6,15 +6,16 @@ import { mkdirSync, writeFileSync } from "node:fs";
 
 const url = process.argv[2] || "http://localhost:8090/unlock-accessibility-graph/";
 const out = process.argv[3] || "/tmp/a11y";
+const scheme = process.argv[4] === "dark" ? "dark" : "light";   // node check-static-a11y.mjs <url> <out> dark
 mkdirSync(out, { recursive: true });
 const b = await chromium.launch();
 const report = {};
 for (const [name, ctxOpts] of [["desktop", { viewport: { width: 1440, height: 900 } }], ["phone", { ...devices["iPhone 13"] }]]) {
-  const ctx = await b.newContext(ctxOpts);
+  const ctx = await b.newContext({ ...ctxOpts, colorScheme: scheme });
   const p = await ctx.newPage();
   await p.goto(url);
   await p.waitForSelector(".hl-num", { timeout: 60000 });
-  await p.waitForSelector("text=/running as WebAssembly|could not start|en WebAssembly dans votre navigateur|pas pu démarrer/", { timeout: 120000 });
+  await p.waitForSelector('[data-relate="ready"], [data-relate="error"]', { timeout: 120000 });
   await p.waitForTimeout(2000);
   await p.screenshot({ path: `${out}/${name}-top.png`, fullPage: false });
   const scan = async (label) => {

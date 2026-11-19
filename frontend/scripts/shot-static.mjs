@@ -5,7 +5,7 @@ const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
 await p.goto(url);
 await p.waitForSelector(".hl-num", { timeout: 60000 });
-await p.waitForSelector("text=/running as WebAssembly/", { timeout: 90000 });
+await p.waitForSelector('[data-relate="ready"], [data-relate="error"]', { timeout: 90000 });
 await p.click("text=Compare all regions");
 await p.waitForSelector(".compare table", { timeout: 30000 });
 await p.waitForTimeout(2500);

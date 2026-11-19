@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, ApiError, setApiRegion, STATIC_DEMO } from "./api";
 import { StaticBanner } from "./components/StaticBanner";
 import { LangSwitch } from "./components/LangSwitch";
+import { LiftGlyph } from "./components/Marks";
 import { getLang, tr, useLang } from "./i18n";
 import { MapView } from "./components/MapView";
 import { RegionView } from "./components/RegionView";
@@ -211,7 +212,7 @@ export default function App() {
       <div className="app region-mode">
         <header className="top">
           <div className="brand">
-            <h1>UNLOCK</h1>
+            <h1><LiftGlyph size={24} />UNLOCK</h1>
             <p>{tr("Find the repair that unlocks the most journeys.", "Trouver la réparation qui rend le plus de trajets.")}</p>
           </div>
           {!STATIC_DEMO && modeTabs}
@@ -231,7 +232,7 @@ export default function App() {
     <div className="app">
       <header className="top">
         <div className="brand">
-          <h1>UNLOCK</h1>
+          <h1><LiftGlyph size={24} />UNLOCK</h1>
           <p>Find the repair that unlocks the most journeys.</p>
         </div>
         {modeTabs}

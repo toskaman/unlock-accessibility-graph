@@ -9,7 +9,7 @@ p.on("console", (m) => { if (m.type() === "error") errs.push(m.text()); });
 p.on("pageerror", (e) => errs.push(String(e)));
 await p.goto(url);
 await p.waitForSelector(".hl-num", { timeout: 60000 });
-await p.waitForSelector("text=/running as WebAssembly/", { timeout: 90000 });
+await p.waitForSelector('[data-relate="ready"], [data-relate="error"]', { timeout: 90000 });
 console.log("banner:", (await p.locator(".static-banner").textContent()).slice(0, 400));
 console.log("headline:", await p.locator(".hl-num").textContent());
 await p.click("text=Rosa Parks → Juvisy");

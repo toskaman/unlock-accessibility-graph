@@ -7,10 +7,10 @@ test("region: three views, journey check verified in Relate, station drill-down"
   const fmt = (x: number) => x.toLocaleString("en-GB");
   await expect(page.locator(".hl-num")).toHaveText(fmt(ov.views.best.confirmed));
   await expect(page.locator(".frozen")).toContainText(`${ov.feed.lift_messages_stale_days} days`);
-  await page.getByRole("tab", { name: "PRIM outage feed" }).click();
+  await page.getByRole("tab", { name: "What the official feed announces" }).click();
   await expect(page.locator(".hl-num")).toHaveText(fmt(ov.views.feed.confirmed));
 
-  await page.getByRole("tab", { name: "Best available status" }).click();
+  await page.getByRole("tab", { name: "What the operators say" }).click();
   await page.getByRole("button", { name: "Rosa Parks → Juvisy" }).click();
   await expect(page.locator(".jverdict")).toBeVisible();
   await expect(page.locator(".jresult")).toContainText("Every leg re-checked in Relate");
@@ -103,4 +103,16 @@ test("ask an AI agent: recorded sessions replayed, the rider's trip opened on th
   await panel.getByRole("button", { name: "A rider asks, in French" }).click();
   await panel.getByRole("button", { name: "Check this trip on the map" }).click();
   await expect(page.locator(".jresult")).toContainText("Rosa Parks → Juvisy");
+});
+
+test("the map as a list and the easy-read version", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Easy read" }).click();
+  await expect(page.locator("#easyread")).toContainText("A cross: you cannot.");
+  await page.getByRole("button", { name: "Show as a list" }).click();
+  const list = page.locator("#maplist");
+  await expect(list.getByRole("heading", { name: "Stations by state" })).toBeVisible();
+  await list.locator("details").first().locator("li button").first().click();
+  await expect(page.locator(".stationcard")).toBeVisible();
+  await expect(list.getByRole("heading")).toContainText("Where you can go from");
 });

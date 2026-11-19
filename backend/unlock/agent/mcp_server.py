@@ -52,7 +52,7 @@ def build_server(store: Path | str = STORE_PATH) -> MCPServer:
     svc = UnlockService(db)
     net = NetworkService(db, svc)
     mcp = MCPServer(name="unlock", title="UNLOCK — Accessibility Impact Graph", instructions=INSTRUCTIONS,
-                    version="0.9.0")
+                    version="0.10.0")
 
     def _ov(lifts: list[str] | None, state: str = "UNAVAILABLE") -> dict[str, str]:
         return {l: state for l in (lifts or [])}
