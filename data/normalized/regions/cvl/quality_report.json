@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3421,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 35,
   "lifts_no_resolved_end": 0,
@@ -15,8 +15,8 @@
   "quays": 353,
   "stations_matched_to_zone": 156,
   "stations_unmatched_to_zone": 4,
-  "status_AVAILABLE": 30,
-  "status_UNAVAILABLE": 2,
+  "status_AVAILABLE": 23,
+  "status_UNAVAILABLE": 9,
   "status_UNKNOWN": 3,
   "zone_line_links": 548,
   "zones": 156
@@ -47,18 +47,13 @@
   },
   {
    "station": "Chartres",
-   "lift_id": "68d2c41a-df21-4e79-84b9-6e5bff25b6ae",
-   "token": "b"
-  },
-  {
-   "station": "Chartres",
    "lift_id": "ba09eff6-607b-4b79-9c75-ba4c6d326197",
    "token": "c"
   },
   {
-   "station": "Les Aubrais",
-   "lift_id": "bc9edfb6-a36b-4fae-8170-cb7666d0d381",
-   "token": "a"
+   "station": "Chartres",
+   "lift_id": "68d2c41a-df21-4e79-84b9-6e5bff25b6ae",
+   "token": "b"
   },
   {
    "station": "Les Aubrais",
@@ -69,6 +64,11 @@
    "station": "Les Aubrais",
    "lift_id": "5262e94c-dec8-4d1c-a537-f8829df621e1",
    "token": "c"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "bc9edfb6-a36b-4fae-8170-cb7666d0d381",
+   "token": "a"
   }
  ],
  "unmatched_token_count": 7

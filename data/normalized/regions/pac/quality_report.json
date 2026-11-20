@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3421,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 112,
   "lifts_no_resolved_end": 0,
@@ -15,10 +15,10 @@
   "quays": 362,
   "stations_matched_to_zone": 145,
   "stations_unmatched_to_zone": 2,
-  "status_AVAILABLE": 95,
-  "status_UNAVAILABLE": 14,
+  "status_AVAILABLE": 89,
+  "status_UNAVAILABLE": 20,
   "status_UNKNOWN": 3,
-  "zone_line_links": 427,
+  "zone_line_links": 429,
   "zones": 145
  },
  "space_roles": {
@@ -35,23 +35,23 @@
  "unmatched_tokens": [
   {
    "station": "Arles",
-   "lift_id": "6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
-   "token": "bis"
-  },
-  {
-   "station": "Arles",
    "lift_id": "430a3731-974d-46c6-b1f8-6a3b98ca30d2",
    "token": "bis"
   },
   {
-   "station": "Septèmes-les-Vallons",
-   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
-   "token": "b"
+   "station": "Arles",
+   "lift_id": "6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
+   "token": "bis"
   },
   {
    "station": "Septèmes-les-Vallons",
    "lift_id": "f6ab887b-46fe-44bb-b066-ec97207fe2ad",
    "token": "a"
+  },
+  {
+   "station": "Septèmes-les-Vallons",
+   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "token": "b"
   },
   {
    "station": "Sorgues - Châteauneuf-du-Pape",

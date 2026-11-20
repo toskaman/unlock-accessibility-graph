@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3421,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 57,
   "lifts_no_resolved_end": 3,
@@ -15,8 +15,8 @@
   "quays": 467,
   "stations_matched_to_zone": 196,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 51,
-  "status_UNAVAILABLE": 4,
+  "status_AVAILABLE": 41,
+  "status_UNAVAILABLE": 14,
   "status_UNKNOWN": 2,
   "zone_line_links": 624,
   "zones": 196
@@ -30,8 +30,8 @@
  },
  "serves_derivations": {
   "VOIE_TOKEN": 71,
-  "NAMED_SPACE": 56,
   "NAMED_SPACE_WITH_TRACK": 8,
+  "NAMED_SPACE": 56,
   "UNSPECIFIED_END": 9,
   "NAME_VOIE_TOKEN": 6
  },

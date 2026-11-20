@@ -15,8 +15,8 @@
   "quays": 1280,
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 563,
-  "status_UNAVAILABLE": 18,
+  "status_AVAILABLE": 560,
+  "status_UNAVAILABLE": 21,
   "status_UNKNOWN": 7,
   "zone_line_links": 552,
   "zones": 392
@@ -151,12 +151,12 @@
   },
   {
    "station": "Champlan",
-   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
+   "lift_id": "dddf2744-9119-4ec6-8ea6-65bf405be828",
    "token": "1"
   },
   {
    "station": "Champlan",
-   "lift_id": "dddf2744-9119-4ec6-8ea6-65bf405be828",
+   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
    "token": "1"
   },
   {
@@ -196,13 +196,13 @@
   },
   {
    "station": "Saint-Michel-sur-Orge",
-   "lift_id": "0fd31561-9d78-4cf9-90ce-4b3430f44d24",
-   "token": "1"
+   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
+   "token": "2"
   },
   {
    "station": "Saint-Michel-sur-Orge",
-   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
-   "token": "2"
+   "lift_id": "0fd31561-9d78-4cf9-90ce-4b3430f44d24",
+   "token": "1"
   },
   {
    "station": "Vigneux-sur-Seine",
@@ -236,13 +236,13 @@
   },
   {
    "station": "Meudon Val Fleury",
-   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
-   "token": "a"
+   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
+   "token": "b"
   },
   {
    "station": "Meudon Val Fleury",
-   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
-   "token": "b"
+   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
+   "token": "a"
   },
   {
    "station": "Nanterre La Folie",
@@ -301,21 +301,6 @@
   },
   {
    "station": "Argenteuil",
-   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
-   "token": "1"
-  },
-  {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "c"
-  },
-  {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "e"
-  },
-  {
-   "station": "Argenteuil",
    "lift_id": "e5520116-d1d2-49cb-872e-e298e63f0d9b",
    "token": "1bis"
   },
@@ -328,6 +313,21 @@
    "station": "Argenteuil",
    "lift_id": "00e9d20c-4e00-4e8c-a368-b3088e75a055",
    "token": "2"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
+   "token": "1"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "c"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "e"
   },
   {
    "station": "Us",
