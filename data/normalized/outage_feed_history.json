@@ -70,5 +70,13 @@
   "feed_last_lift_update": "2026-10-09T09:53:34",
   "feed_non_lift_last_update": "2026-11-20T12:26:10",
   "lift_content_sha": "3ecc13722fb51d34611f4146e12214f21613ead243746653713350d8a23152eb"
+ },
+ {
+  "observed_at": "2026-11-20T20:10:09+00:00",
+  "lifts": 356,
+  "messages": 1045,
+  "feed_last_lift_update": "2026-10-09T09:53:34",
+  "feed_non_lift_last_update": "2026-11-20T21:08:33",
+  "lift_content_sha": "26d13bcc5dfe923a3c419e0fc9f31415b5c9ce16c2f1d32cc09d79be8cd9c1a2"
  }
 ]
