@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-20T03:09:49+00:00",
+"observed_at": "2026-11-20T11:30:29+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,16 +8,16 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 28115393,
-"sha256": "556445a0c82a495cd60bef86e72f441280b2bcad9eea98c49316ce036ef45e99",
-"retrieved_at": "2026-11-20T03:09:49+00:00",
+"bytes": 28961827,
+"sha256": "5406b03d19269324df6a029d0665a77b49858d6ba2f18a9c61b566085e5f9379",
+"retrieved_at": "2026-11-20T11:30:29+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-20T04:08:12",
+"feed_non_lift_last_update": "2026-11-20T12:26:10",
 "counts": {
 "lifts": 356,
 "messages": 1046,
@@ -358,8 +358,7 @@
 "IDFM:C01727",
 "IDFM:C01736",
 "IDFM:C01744",
-"IDFM:C01794",
-"IDFM:C02370"
+"IDFM:C01794"
 ],
 "first_reported": "2026-08-26T06:03:16",
 "last_update": "2026-09-25T23:53:07",
@@ -400,8 +399,7 @@
 "IDFM:C01727",
 "IDFM:C01736",
 "IDFM:C01744",
-"IDFM:C01794",
-"IDFM:C02370"
+"IDFM:C01794"
 ],
 "first_reported": "2026-08-21T19:27:52",
 "last_update": "2026-09-03T09:39:34",
@@ -9051,7 +9049,6 @@
 "IDFM:C00064",
 "IDFM:C01736",
 "IDFM:C01845",
-"IDFM:C02370",
 "IDFM:C02642"
 ],
 "first_reported": "2026-07-31T10:29:34",
@@ -9186,7 +9183,6 @@
 "IDFM:C00064",
 "IDFM:C01736",
 "IDFM:C01845",
-"IDFM:C02370",
 "IDFM:C02642"
 ],
 "first_reported": "2026-07-28T17:57:11",
@@ -12067,7 +12063,6 @@
 "IDFM:C01985",
 "IDFM:C01987",
 "IDFM:C01992",
-"IDFM:C02370",
 "IDFM:C02642"
 ],
 "first_reported": "2026-07-28T12:56:21",
@@ -12265,7 +12260,6 @@
 "IDFM:C01985",
 "IDFM:C01987",
 "IDFM:C01992",
-"IDFM:C02370",
 "IDFM:C02642"
 ],
 "first_reported": "2026-08-18T06:50:48",
@@ -16144,8 +16138,7 @@
 "IDFM:C01727",
 "IDFM:C01736",
 "IDFM:C01744",
-"IDFM:C01794",
-"IDFM:C02370"
+"IDFM:C01794"
 ],
 "first_reported": "2025-11-20T14:07:56",
 "last_update": "2026-09-29T14:11:17",
@@ -16206,8 +16199,7 @@
 "IDFM:C01727",
 "IDFM:C01736",
 "IDFM:C01744",
-"IDFM:C01794",
-"IDFM:C02370"
+"IDFM:C01794"
 ],
 "first_reported": "2026-01-28T09:11:40",
 "last_update": "2026-01-28T09:11:48",
