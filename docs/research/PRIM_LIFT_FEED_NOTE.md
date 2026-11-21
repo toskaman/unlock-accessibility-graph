@@ -1,6 +1,6 @@
-# Draft note for IDFM / PRIM support — lift messages no longer updated
+# Note to IDFM / PRIM support — lift messages no longer updated
 
-*Draft prepared by UNLOCK for the entrant. Not sent. Contact listed by PRIM: contact-prim@iledefrance-mobilites.fr.*
+*Prepared by UNLOCK for the entrant and **sent by e-mail** to PRIM / Île-de-France Mobilités (contact-prim@iledefrance-mobilites.fr); a report on the contradictory lift statuses was also e-mailed to SNCF Gares & Connexions. No reply is recorded here yet (19 Nov 2026).*
 
 Bonjour,
 

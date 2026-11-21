@@ -8,7 +8,7 @@
 
 **Try it (no install, no login):** https://toskaman.github.io/unlock-accessibility-graph/ — Relate runs in your browser (WebAssembly) and re-checks every journey and reach.
 
-**Video (no login needed):** *(video to be recorded by the entrant — DEMO_SCRIPT.md)*; station-mode video: https://github.com/toskaman/unlock-accessibility-graph/releases/download/v0.2.0/unlock-demo.mp4
+**Video (no login needed, ≤ 2 min):** UNLOCK film, EN narration with EN/FR subtitles — link added when uploaded.
 
 **Built with:** relate-db (Relate 1.0.2, embedded, single-file store), Cypher / GQL quantified path patterns, Python, FastAPI, Relate WebAssembly (@relate/relate-wasm), React, TypeScript, Vite, MapLibre GL JS, Playwright, pytest. Open data: SNCF Gares & Connexions and SNCF Voyageurs (ODbL), Île-de-France Mobilités (Licence Ouverte 2.0, Licence Mobilités: GTFS, lift status, PRIM traffic-information API).
 
@@ -86,9 +86,9 @@ Whole-region journeys under real outages; a verifiable data-quality finding abou
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.
 
 ### What's next
-Real riders trying the trip alerts for a week; three weeks of lift-status history turned into outage durations and chronic-lift lists; sending the stale-feed note to PRIM; joint "repair together" recommendations for lifts in series.
+Real riders trying the trip alerts for a week; three weeks of lift-status history turned into outage durations and chronic-lift lists; acting on the replies to the stale-feed reports e-mailed to PRIM / Île-de-France Mobilités and SNCF Gares & Connexions; joint "repair together" recommendations for lifts in series.
 
 ## Relate capabilities, third-party tools and AI disclosure
 - **Relate:** embedded Python API (`relate-db` 1.0.2), single-file persistent store, openCypher with GQL `ACYCLIC` path patterns, uniqueness constraints, range indexes, transactions, map parameters, read-only opens, result summaries.
-- **Third-party:** FastAPI, Uvicorn, Pydantic, React, Vite, TypeScript, MapLibre GL JS (OpenFreeMap / OpenStreetMap basemap), Playwright, pytest, ffmpeg; fonts Atkinson Hyperlegible Next and Archivo (OFL).
-- **AI:** Code, analysis, docs and the demo video pipeline were produced with Claude Opus 5.5 (Anthropic) as a coding agent, directed by the entrant. Video narration synthesised with the open-weight Kokoro TTS model. The running application uses no AI for its results; an optional rephrasing step (off by default) is rejected if it introduces any number not computed by the engine.
+- **Third-party:** FastAPI, Uvicorn, Pydantic, React, Vite, TypeScript, MapLibre GL JS (OpenFreeMap / OpenStreetMap basemap), Playwright, pytest, ffmpeg; fonts Atkinson Hyperlegible Next and Archivo (OFL). Demo video: composed and rendered with HyperFrames (GSAP); music "Business Moves vol. 12" by ende.app (CC BY 4.0); sound effects by Kenney (CC0).
+- **AI:** Code, analysis, docs and the demo video pipeline were produced with Claude Opus 5.5 (Anthropic) as a coding agent, directed by the entrant. Video narration synthesised with the open-weight Kokoro TTS model (AI voice, credited on the video's end card); the video's motion design and edit were built with Claude through HyperFrames from the entrant's real product captures and direction. The running application uses no AI for its results; an optional rephrasing step (off by default) is rejected if it introduces any number not computed by the engine.

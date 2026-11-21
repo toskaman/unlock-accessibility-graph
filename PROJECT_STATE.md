@@ -15,9 +15,9 @@ Night snapshots (SNCF file has no per-lift time) · text-derived topology · RAT
 text · small independent checks (40 + 30 cases) · Devpost form still to submit (entrant).
 
 ## Next high-value tasks (ranked)
-1. `python -m unlock refresh` in the daytime, record the video and fill the Devpost form from docs/DEVPOST_SUBMISSION.md. — required
+1. Upload the final video (re-captured on v0.10), add its link and fill the Devpost form from docs/DEVPOST_SUBMISSION.md. — required
 2. Check over the next days that the hourly live-demo runs stay green (Actions tab).
-3. Send docs/research/PRIM_LIFT_FEED_NOTE.md to PRIM (entrant; waiting for e-mail replies). — impact
+3. Stale-feed reports e-mailed to PRIM / IDFM and SNCF Gares & Connexions; waiting for replies. — impact
 4. A few real riders (waiting for e-mail replies) try *My usual trips* for a week (alerts vs what they found on site). — evidence
 5. Keep the twice-daily history going (Claude reminders) and publish durations / chronic lifts in December. — usefulness
 6. Submit a draft on Devpost early: public voting (Popular Choice) is already open and 22 projects are in the gallery. — visibility

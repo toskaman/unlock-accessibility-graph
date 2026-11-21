@@ -13,7 +13,7 @@
 - [x] v0.8.0 / v0.8.1 / v0.9.0 pushed (agent transcript + history tab, EN/FR interface, two agents with field reports in Relate, agent replay, hourly live-demo workflow); 96 pytest + 13 e2e
 - [x] README and docs/DEVPOST_SUBMISSION.md describe v0.9.0
 - [x] Hourly live demo running: `UNLOCK_PRIM_KEY` + `UNLOCK_IDFM_ODS_KEY` set as repository secrets (18 Nov), manual run 44386227278 green, Pages redeployed
-- [ ] New video — recorded by the entrant after a daytime `python -m unlock refresh` (script: DEMO_SCRIPT.md, v0.9 with EN/FR subtitles in docs/video/), ≤ 2 min
+- [x] Final video (≤ 2 min, EN/FR subtitles) produced — re-captured on the v0.10 demo before upload
 - [x] Rules re-read in full on 17 Nov 2026 (relate.devpost.com, /rules, /resources, /updates, forum): video ≤ 2 min, public `relate`-tagged repo, setup instructions, a video *or a working demo link*, tools/AI statement; judges should be able to clone, run and see the graph without asking
 - [x] Zero-install demo link (GitHub Pages) — no login, region mode, clearly labelled snapshot
 - [ ] Submit a draft early on Devpost (public voting is open; edits allowed until the deadline)
