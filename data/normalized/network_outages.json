@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-21T01:29:36+00:00",
+"observed_at": "2026-11-21T09:44:42+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,16 +8,16 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 28739925,
-"sha256": "32294e8c705e3248dfa22abc3f4d7ae7fd2c7a7e4df01ccab03710587eb47a94",
-"retrieved_at": "2026-11-21T01:29:36+00:00",
+"bytes": 29352955,
+"sha256": "0ce4d684705d908ff18cf21a060c5bef9fae2150b0489802499ff8cfe5b67c73",
+"retrieved_at": "2026-11-21T09:44:42+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-21T02:24:53",
+"feed_non_lift_last_update": "2026-11-21T10:40:10",
 "counts": {
 "lifts": 356,
 "messages": 1045,
@@ -827,8 +827,7 @@
 "IDFM:C01808",
 "IDFM:C01842",
 "IDFM:C01852",
-"IDFM:C01863",
-"IDFM:C02372"
+"IDFM:C01863"
 ],
 "first_reported": "2026-09-15T16:35:41",
 "last_update": "2026-09-24T11:46:56",
@@ -877,8 +876,7 @@
 "IDFM:C01808",
 "IDFM:C01842",
 "IDFM:C01852",
-"IDFM:C01863",
-"IDFM:C02372"
+"IDFM:C01863"
 ],
 "first_reported": "2026-08-23T20:52:49",
 "last_update": "2026-09-10T11:46:46",
@@ -924,8 +922,7 @@
 "IDFM:C01808",
 "IDFM:C01842",
 "IDFM:C01852",
-"IDFM:C01863",
-"IDFM:C02372"
+"IDFM:C01863"
 ],
 "first_reported": "2026-09-28T10:41:32",
 "last_update": "2026-09-28T10:41:41",
@@ -3067,7 +3064,6 @@
 "IDFM:C01852",
 "IDFM:C01863",
 "IDFM:C02244",
-"IDFM:C02372",
 "IDFM:C02624",
 "IDFM:C02709"
 ],
@@ -3158,7 +3154,6 @@
 "IDFM:C01852",
 "IDFM:C01863",
 "IDFM:C02244",
-"IDFM:C02372",
 "IDFM:C02624",
 "IDFM:C02709"
 ],
@@ -11857,7 +11852,6 @@
 "IDFM:C01852",
 "IDFM:C01863",
 "IDFM:C02255",
-"IDFM:C02372",
 "IDFM:C02600",
 "IDFM:C02601",
 "IDFM:C02604"
