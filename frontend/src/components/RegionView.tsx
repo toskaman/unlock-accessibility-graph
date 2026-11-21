@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { api, ApiError, bulletinUrl, STATIC_DEMO } from "../api";
 import type { RegionCompareRow, RegionInfo, Journey, OutageDetail, Reach, Reconciliation, RegionOverview, RegionRank, RegionStation, RegionViewName } from "../types";
 import { TripWatch } from "./TripWatch";
@@ -132,6 +132,13 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
     } catch (e) { fail(e); } finally { setBusy(null); }
   };
 
+  // First view: open on the station whose single repair gives back the most journeys, so the map speaks at once.
+  const autoPicked = useRef<string | null>(null);
+  useEffect(() => {
+    const top = rank?.repairs?.[0]; if (!top || autoPicked.current === region) return;
+    const id = (top.kind === "SNCF_LIFT" ? top.region_station_id : top.station_id) || null;
+    autoPicked.current = region; if (id && !selected && !Object.keys(journeys).length) setSelected(id);
+  }, [rank, region]); // eslint-disable-line
   const j = journeys[view] || null;
   const v = ov?.views[view];
   const pub = ov?.views.published;
@@ -329,56 +336,9 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <div className="sk-plate" /><div className="sk-map" /><div className="sk-line" /><div className="sk-line short" />
           </div>
         )}
-        {ov && v && pub && (
-          <section className="mapstage" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
-            <RegionMap center={ov.region.center} zoom={ov.region.zoom} label={`${ov.region.name} — ${netLabel(ov.region.network_label)}`}
-                       stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations}
-                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
-                       journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
-              <div className="plate">
-                <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>
-                <p className="hl-num">{n(v.confirmed)}</p>
-                <p className="plate-cap">{tr("station-to-station trips with no step at all today,", "trajets de gare à gare sans une seule marche aujourd'hui,")} {VIEW_PHRASE(view)}</p>
-                <p className="plate-alt">
-                  {VIEWS.filter((x) => x !== view).map((x) => (
-                    <button key={x} className="plate-link" onClick={() => setView(x)}>{VIEW_LABEL(x)} <strong>{n(ov.views[x].confirmed)}</strong></button>
-                  ))}
-                </p>
-              </div>
-            </RegionMap>
-            <div className="mapfoot">
-              {reach && !j ? (
-                <div className="legend region-legend" aria-label={tr("Map legend — step-free reach", "Légende de la carte — accès sans marche")}>
-                  <span><b>{tr(`From ${reach.origin.name}:`, `Depuis ${reach.origin.name} :`)}</b></span>
-                  <span><StateMark kind="ok" />{tr("reachable without a step", "accessible sans marche")}</span>
-                  <span><StateMark kind="doubt" />{tr("only if listed lifts work", "seulement si les ascenseurs signalés fonctionnent")}</span>
-                  <span><StateMark kind="cut" />{tr("cut by outages", "coupée par des pannes")}</span>
-                  <span><StateMark kind="dim" />{tr("no route without a step", "pas de trajet sans marche")}</span>
-                </div>
-              ) : (
-                <div className="legend region-legend" aria-label={tr("Map legend", "Légende de la carte")}>
-                  <span><StateMark kind="open" />{tr("open", "ouverte")}</span>
-                  <span><StateMark kind="doubt" />{tr("a lift is reported out", "ascenseur signalé en panne")}</span>
-                  <span><StateMark kind="cut" />{tr("cut off", "coupée")}</span>
-                  <span><StateMark kind="dim" />{tr("no accessible platform", "aucun quai accessible")}</span>
-                </div>
-              )}
-              <button className="ghost small" aria-expanded={listView} aria-controls="maplist" onClick={() => setListView(!listView)}>
-                {listView ? tr("Hide the list", "Masquer la liste") : tr("Show as a list", "Afficher en liste")}</button>
-            </div>
-            <p className="muted small mapnote">{reach && !j ? "" : tr("Select a station to see where you can go from it.", "Choisissez une gare pour voir où l'on peut aller depuis elle.")}</p>
-            {listView && <MapList stations={stations} reach={reach && !j ? { origin: reach.origin.id, originName: reach.origin.name, classes: reach.classes } : null}
-                                  onSelect={(id) => { setJourneys({}); setSelected(id); }} />}
-            <details className="howknow">
-              <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
-              <p>{help(view)}.</p>
-              <p>{tr(`${n(pub.confirmed)} trips are published between ${n(ov.network.stations_with_boardable_platform)} stations with an accessible platform.`, `${n(pub.confirmed)} trajets sont publiés entre ${n(ov.network.stations_with_boardable_platform)} gares ayant un quai accessible.`)}
-                {v.possible > v.confirmed && <> {tr(`${n(v.possible - v.confirmed)} more would be possible if every listed lift worked.`, `${n(v.possible - v.confirmed)} de plus seraient possibles si tous les ascenseurs signalés fonctionnaient.`)}</>}</p>
-            </details>
-          </section>
-        )}
         {ov?.feed && ov.stale_messages && (
           <section className="frozen" aria-label={tr("Outage feed quality", "Qualité du flux de pannes")}>
+            <p className="frozen-kicker">{tr("Data alert", "Alerte données")}</p>
             <p className="frozen-lead">{isFr() ? <>Le flux officiel des pannes d'ascenseurs n'a pas bougé depuis {ov.feed.lift_messages_stale_days} jours. Ses messages périmés cachent <strong>{n(ov.stale_messages.journeys_hidden)}</strong> trajets sans marche.</>
               : <>The official lift-outage feed has not changed for {ov.feed.lift_messages_stale_days} days. Its out-of-date messages hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</>}</p>
             <details className="howknow">
@@ -409,6 +369,55 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                 ? `UNLOCK a relevé le flux ${ov.feed_watch.observations} fois entre le ${stamp(ov.feed_watch.first_observed)} et le ${stamp(ov.feed_watch.last_observed)} : le contenu des messages ascenseurs était ${ov.feed_watch.all_identical ? "identique à chaque fois" : `identique lors des ${ov.feed_watch.identical_lift_content} derniers relevés`} (même empreinte pour les ${n(ov.outages.messages)} messages).`
                 : `UNLOCK fetched the feed ${ov.feed_watch.observations} times between ${stamp(ov.feed_watch.first_observed)} and ${stamp(ov.feed_watch.last_observed)}: the lift content was ${ov.feed_watch.all_identical ? "identical every time" : `identical in the last ${ov.feed_watch.identical_lift_content}`} (same hash of all ${n(ov.outages.messages)} messages).`}</p>
             )}
+            </details>
+          </section>
+        )}
+        {ov && v && pub && (
+          <section className="mapstage" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
+            <RegionMap center={ov.region.center} zoom={ov.region.zoom} label={`${ov.region.name} — ${netLabel(ov.region.network_label)}`}
+                       stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations}
+                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
+                       journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
+              <div className="plate">
+                <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>
+                <p className="hl-num">{n(v.confirmed)}</p>
+                <p className="plate-cap">{tr("trips a wheelchair user can make today, station to station, without a single step —", "trajets possibles aujourd'hui en fauteuil, de gare à gare, sans une seule marche —")} {VIEW_PHRASE(view)}</p>
+                {view !== "published" && pub.confirmed > v.confirmed && <p className="plate-loss"><strong>{n(pub.confirmed - v.confirmed)}</strong> {tr("trips on the published map are not certain today.", "trajets du plan publié ne sont pas garantis aujourd'hui.")}</p>}
+                <p className="plate-alt">
+                  {VIEWS.filter((x) => x !== view).map((x) => (
+                    <button key={x} className="plate-link" onClick={() => setView(x)}>{VIEW_LABEL(x)} <strong>{n(ov.views[x].confirmed)}</strong></button>
+                  ))}
+                </p>
+              </div>
+            </RegionMap>
+            <div className="mapfoot">
+              {reach && !j ? (
+                <div className="legend region-legend" aria-label={tr("Map legend — step-free reach", "Légende de la carte — accès sans marche")}>
+                  <span><b>{tr(`From ${reach.origin.name}:`, `Depuis ${reach.origin.name} :`)}</b></span>
+                  <span><StateMark kind="ok" />{tr("reachable without a step", "accessible sans marche")}</span>
+                  <span><StateMark kind="doubt" />{tr("only if listed lifts work", "seulement si les ascenseurs signalés fonctionnent")}</span>
+                  <span><StateMark kind="cut" />{tr("cut by outages", "coupée par des pannes")}</span>
+                  <span><StateMark kind="dim" />{tr("no route without a step", "pas de trajet sans marche")}</span>
+                </div>
+              ) : (
+                <div className="legend region-legend" aria-label={tr("Map legend", "Légende de la carte")}>
+                  <span><StateMark kind="open" />{tr("open", "ouverte")}</span>
+                  <span><StateMark kind="doubt" />{tr("a lift is reported out", "ascenseur signalé en panne")}</span>
+                  <span><StateMark kind="cut" />{tr("cut off", "coupée")}</span>
+                  <span><StateMark kind="dim" />{tr("no accessible platform", "aucun quai accessible")}</span>
+                </div>
+              )}
+              <button className="ghost small" aria-expanded={listView} aria-controls="maplist" onClick={() => setListView(!listView)}>
+                {listView ? tr("Hide the list", "Masquer la liste") : tr("Show as a list", "Afficher en liste")}</button>
+            </div>
+            <p className="mapnote">{reach && !j ? tr("Click any other station to see where you can go from it.", "Cliquez une autre gare pour voir où l'on peut aller depuis elle.") : tr("Click a station to see where you can go from it.", "Cliquez une gare pour voir où l'on peut aller depuis elle.")}</p>
+            {listView && <MapList stations={stations} reach={reach && !j ? { origin: reach.origin.id, originName: reach.origin.name, classes: reach.classes } : null}
+                                  onSelect={(id) => { setJourneys({}); setSelected(id); }} />}
+            <details className="howknow">
+              <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
+              <p>{help(view)}.</p>
+              <p>{tr(`${n(pub.confirmed)} trips are published between ${n(ov.network.stations_with_boardable_platform)} stations with an accessible platform.`, `${n(pub.confirmed)} trajets sont publiés entre ${n(ov.network.stations_with_boardable_platform)} gares ayant un quai accessible.`)}
+                {v.possible > v.confirmed && <> {tr(`${n(v.possible - v.confirmed)} more would be possible if every listed lift worked.`, `${n(v.possible - v.confirmed)} de plus seraient possibles si tous les ascenseurs signalés fonctionnaient.`)}</>}</p>
             </details>
           </section>
         )}

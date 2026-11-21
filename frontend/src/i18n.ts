@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-/** English / French. The choice comes from ?lang=, then this browser's last choice, then the browser language.
+/** English / French. English by default; ?lang= or this browser's last choice (the EN/FR switch) can change it.
  *  Strings are written in place, in both languages: tr("English", "Français"). */
 export type Lang = "en" | "fr";
 const KEY = "unlock.lang";
@@ -12,7 +12,7 @@ function initial(): Lang {
     const s = localStorage.getItem(KEY);
     if (s === "fr" || s === "en") return s;
   } catch { /* storage or location unavailable */ }
-  return typeof navigator !== "undefined" && /^fr\b/i.test(navigator.language || "") ? "fr" : "en";
+  return "en";
 }
 
 let current: Lang = initial();
