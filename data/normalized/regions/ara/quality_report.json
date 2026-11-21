@@ -15,8 +15,8 @@
   "quays": 818,
   "stations_matched_to_zone": 328,
   "stations_unmatched_to_zone": 2,
-  "status_AVAILABLE": 209,
-  "status_UNAVAILABLE": 10,
+  "status_AVAILABLE": 199,
+  "status_UNAVAILABLE": 20,
   "status_UNKNOWN": 9,
   "zone_line_links": 1154,
   "zones": 328
