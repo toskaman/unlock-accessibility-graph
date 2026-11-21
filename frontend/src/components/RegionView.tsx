@@ -136,10 +136,25 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
     } catch (e) { fail(e); } finally { setBusy(null); }
   };
 
+  // A shared link (?from=…&to=…) opens straight on that trip.
+  const shared = useRef(false);
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    const q = new URLSearchParams(location.search), a = q.get("from"), b = q.get("to");
+    if (!a || !b) return;
+    shared.current = true;
+    const A = { id: a, name: q.get("fromName") || a }, B = { id: b, name: q.get("toName") || b };
+    setFrom(A); setTo(B); check(A, B);
+  }, []); // eslint-disable-line
+  const shareTrip = async (jr: Journey) => {
+    const u = new URL(location.href);
+    u.search = new URLSearchParams({ ...(isFr() ? { lang: "fr" } : {}), from: jr.from.id, fromName: jr.from.name, to: jr.to.id, toName: jr.to.name }).toString(); u.hash = "";
+    try { if (navigator.share) await navigator.share({ title: `UNLOCK — ${jr.from.name} → ${jr.to.name}`, url: u.toString() }); else await navigator.clipboard.writeText(u.toString()); setCopied(true); setTimeout(() => setCopied(false), 2500); } catch { /* cancelled */ }
+  };
   // First view: open on the station whose single repair gives back the most journeys, so the map speaks at once.
   const autoPicked = useRef<string | null>(null);
   useEffect(() => {
-    const top = rank?.repairs?.[0]; if (!top || autoPicked.current === region) return;
+    const top = rank?.repairs?.[0]; if (!top || autoPicked.current === region || shared.current) return;
     const id = (top.kind === "SNCF_LIFT" ? top.region_station_id : top.station_id) || null;
     autoPicked.current = region; if (id && !selected && !Object.keys(journeys).length) { setSelected(id); demoWhatIf.current = id; }
   }, [rank, region]); // eslint-disable-line
@@ -199,6 +214,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <div className={`jresult ${VERDICT(j.verdict).cls}`} aria-live="polite">
               <p className="jverdict">{VERDICT(j.verdict).title}</p>
               <p className="small">{j.from.name} → {j.to.name}, {VIEW_PHRASE(view)}</p>
+              <button className="linkish tiny share" onClick={() => shareTrip(j)}>{copied ? tr("Link copied ✓", "Lien copié ✓") : tr("Share this trip", "Partager ce trajet")}</button>
               {j.reason && <p className="small">{isFr() ? "Ces deux gares ne sont pas reliées par des quais accessibles dans le réseau publié (ou l'une n'a aucun quai déclaré accessible en fauteuil)." : j.reason}</p>}
               {j.legs.length > 0 && (
                 <ol className="legs">
