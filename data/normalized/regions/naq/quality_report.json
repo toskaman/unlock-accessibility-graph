@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3422,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 113,
   "lifts_no_resolved_end": 2,
@@ -15,8 +15,8 @@
   "quays": 676,
   "stations_matched_to_zone": 298,
   "stations_unmatched_to_zone": 1,
-  "status_AVAILABLE": 93,
-  "status_UNAVAILABLE": 8,
+  "status_AVAILABLE": 91,
+  "status_UNAVAILABLE": 10,
   "status_UNKNOWN": 12,
   "zone_line_links": 803,
   "zones": 298

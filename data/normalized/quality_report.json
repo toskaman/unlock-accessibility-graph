@@ -16,8 +16,8 @@
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
   "status_AVAILABLE": 561,
-  "status_UNAVAILABLE": 20,
-  "status_UNKNOWN": 7,
+  "status_UNAVAILABLE": 19,
+  "status_UNKNOWN": 8,
   "zone_line_links": 552,
   "zones": 392
  },
@@ -46,13 +46,13 @@
   },
   {
    "station": "Musée d'Orsay",
-   "lift_id": "19ca5b46-f039-4674-ba8b-bd6424e8bffe",
-   "token": "a"
+   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
+   "token": "b"
   },
   {
    "station": "Musée d'Orsay",
-   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
-   "token": "b"
+   "lift_id": "19ca5b46-f039-4674-ba8b-bd6424e8bffe",
+   "token": "a"
   },
   {
    "station": "Pont de l'Alma",
@@ -221,6 +221,11 @@
   },
   {
    "station": "Bécon les Bruyères",
+   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
+   "token": "1"
+  },
+  {
+   "station": "Bécon les Bruyères",
    "lift_id": "ea4d188e-1272-4375-8a40-613f8f7c312e",
    "token": "2"
   },
@@ -228,11 +233,6 @@
    "station": "Bécon les Bruyères",
    "lift_id": "34e36608-1c59-41ba-8f78-d6587904948e",
    "token": "2"
-  },
-  {
-   "station": "Bécon les Bruyères",
-   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
-   "token": "1"
   },
   {
    "station": "Meudon Val Fleury",
@@ -291,13 +291,23 @@
   },
   {
    "station": "Ivry-sur-Seine",
+   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
+   "token": "2"
+  },
+  {
+   "station": "Ivry-sur-Seine",
    "lift_id": "7e060dc3-76f2-428c-99d3-9b0c7eb5b3ce",
    "token": "1"
   },
   {
-   "station": "Ivry-sur-Seine",
-   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
-   "token": "2"
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "c"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "e"
   },
   {
    "station": "Argenteuil",
@@ -320,24 +330,14 @@
    "token": "1"
   },
   {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "c"
-  },
-  {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "e"
+   "station": "Us",
+   "lift_id": "52001851-cfa3-4e1d-9281-cd024adcc306",
+   "token": "a"
   },
   {
    "station": "Us",
    "lift_id": "0b14bd5e-aa7b-450a-a9d0-721a1bc12466",
    "token": "b"
-  },
-  {
-   "station": "Us",
-   "lift_id": "52001851-cfa3-4e1d-9281-cd024adcc306",
-   "token": "a"
   }
  ],
  "unmatched_token_count": 60

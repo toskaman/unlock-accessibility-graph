@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3422,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 157,
   "lifts_no_resolved_end": 0,
@@ -15,10 +15,10 @@
   "quays": 844,
   "stations_matched_to_zone": 336,
   "stations_unmatched_to_zone": 2,
-  "status_AVAILABLE": 141,
-  "status_UNAVAILABLE": 8,
+  "status_AVAILABLE": 140,
+  "status_UNAVAILABLE": 9,
   "status_UNKNOWN": 8,
-  "zone_line_links": 949,
+  "zone_line_links": 945,
   "zones": 336
  },
  "space_roles": {
@@ -32,9 +32,9 @@
  "serves_derivations": {
   "VOIE_TOKEN": 183,
   "NAMED_SPACE": 182,
-  "QUAI_NUMBER": 1,
   "NAME_VOIE_TOKEN": 9,
   "UNSPECIFIED_END": 5,
+  "QUAI_NUMBER": 1,
   "NAMED_SPACE_WITH_TRACK": 1
  },
  "unmatched_tokens": [
@@ -55,11 +55,6 @@
   },
   {
    "station": "Lunéville",
-   "lift_id": "850c86f4-c901-4c85-a053-2c022fd33a0e",
-   "token": "2"
-  },
-  {
-   "station": "Lunéville",
    "lift_id": "a38479f8-b350-4935-ada0-e6e9d1cbbe6b",
    "token": "3"
   },
@@ -69,9 +64,9 @@
    "token": "1"
   },
   {
-   "station": "Lingolsheim",
-   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
-   "token": "1"
+   "station": "Lunéville",
+   "lift_id": "850c86f4-c901-4c85-a053-2c022fd33a0e",
+   "token": "2"
   },
   {
    "station": "Lingolsheim",
@@ -79,14 +74,19 @@
    "token": "2"
   },
   {
-   "station": "Obernai",
-   "lift_id": "baec25ba-7c06-4ec7-a9c3-e4540710f8a0",
-   "token": "2"
+   "station": "Lingolsheim",
+   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
+   "token": "1"
   },
   {
    "station": "Obernai",
    "lift_id": "ce21383f-7e2f-4e2c-b943-54f44ee3febb",
    "token": "1"
+  },
+  {
+   "station": "Obernai",
+   "lift_id": "baec25ba-7c06-4ec7-a9c3-e4540710f8a0",
+   "token": "2"
   },
   {
    "station": "Saverne",
