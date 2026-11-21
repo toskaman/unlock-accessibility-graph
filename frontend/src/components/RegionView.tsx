@@ -6,6 +6,8 @@ import { HistoryChart } from "./HistoryChart";
 import { LiftHistory } from "./LiftHistory";
 import { Intro } from "./Intro";
 import { Tour } from "./Tour";
+import { Story } from "./Story";
+import { PathChain } from "./PathChain";
 import { RegionMap } from "./RegionMap";
 import { FieldReports } from "./FieldReports";
 import { AgentReplay } from "./AgentReplay";
@@ -98,6 +100,11 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
   const [selected, setSelected] = useState<string | null>(null);
   const [preview, setPreview] = useState<false | "all" | "here">(false);
+  // Rider view: just "can I get there?", no map; ?simple=1, the toggle, or the default on a phone.
+  const [simple, setSimple] = useState(() => { const q = new URLSearchParams(location.search).get("simple"); return q != null ? q !== "0" : window.matchMedia?.("(max-width: 600px)").matches ?? false; });
+  useEffect(() => { document.body.classList.toggle("simple", simple); return () => document.body.classList.remove("simple"); }, [simple]);
+  const [replay, setReplay] = useState(0);
+  const [storyDone, setStoryDone] = useState(() => { try { return localStorage.getItem("unlock.story.done") === "1"; } catch { return true; } });
   const [fixHere, setFixHere] = useState<{ origin: string; before: number; after: number; gained: string[]; entries_per_day: number } | null>(null);  // "what if the listed lifts worked": reach recoloured on the map
   const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[];
     lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; name?: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
@@ -197,6 +204,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
       </div>
 
       <aside className="left">
+        <button className="ghost small simpletoggle" aria-pressed={simple} onClick={() => setSimple(!simple)}>{simple ? tr("Show the map and the repairs", "Afficher la carte et les réparations") : tr("Simple view: just my trip", "Vue simple : juste mon trajet")}</button>
         <section className="journey" aria-labelledby="jh">
           <h2 id="jh">{tr("Can I get there in a wheelchair?", "Puis-je y aller en fauteuil ?")}</h2>
           <StationPicker label={tr("From", "Départ")} value={from} onPick={(s) => { setFrom(s); if (to) check(s, to); }} />
@@ -216,6 +224,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
               <p className="small">{j.from.name} → {j.to.name}, {VIEW_PHRASE(view)}</p>
               <button className="linkish tiny share" onClick={() => shareTrip(j)}>{copied ? tr("Link copied ✓", "Lien copié ✓") : tr("Share this trip", "Partager ce trajet")}</button>
               {j.reason && <p className="small">{isFr() ? "Ces deux gares ne sont pas reliées par des quais accessibles dans le réseau publié (ou l'une n'a aucun quai déclaré accessible en fauteuil)." : j.reason}</p>}
+              {j.legs.length > 0 && <PathChain legs={j.legs} />}
               {j.legs.length > 0 && (
                 <ol className="legs">
                   {j.legs.map((l, i) => (
@@ -349,8 +358,9 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
       </aside>
 
       <main className="center">
+        {!Object.keys(journeys).length && <Story onDone={() => setStoryDone(true)} />}
         <Intro />
-        {ov && <Tour />}
+        {ov && storyDone && <Tour />}
         {compare && (
           <section className="compare" aria-labelledby="cmph">
             <h2 id="cmph">{tr("Every region, same method", "Toutes les régions, même méthode")}</h2>
@@ -386,6 +396,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <p className="frozen-kicker">{tr("Data alert", "Alerte données")}</p>
             <p className="frozen-lead">{isFr() ? <>Le flux officiel des pannes d'ascenseurs n'a pas bougé depuis {ov.feed.lift_messages_stale_days} jours. Ses messages périmés cachent <strong>{n(ov.stale_messages.journeys_hidden)}</strong> trajets sans marche.</>
               : <>The official lift-outage feed has not changed for {ov.feed.lift_messages_stale_days} days. Its out-of-date messages hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</>}</p>
+            {view === "best" && <button className="ghost small replaybtn" onClick={() => { setReplay((x) => x + 1); document.querySelector(".histchart")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}>{tr("▶ Replay the last weeks on the map", "▶ Rejouer les dernières semaines sur la carte")}</button>}
             <p className="frozen-sent">{tr("We reported it by e-mail to Île-de-France Mobilités (PRIM) and SNCF Gares & Connexions; awaiting their reply. This alert updates itself every hour.", "Nous l'avons signalé par e-mail à Île-de-France Mobilités (PRIM) et à SNCF Gares & Connexions ; réponse attendue. Cette alerte se met à jour toute seule chaque heure.")}</p>
             <details className="howknow">
             <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
@@ -427,7 +438,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                        journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
               <div className="plate">
                 <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>
-                <p className="hl-num">{n(v.confirmed)}</p>
+                <p className="hl-num" key={view}>{n(v.confirmed)}</p>
                 <p className="plate-cap">{tr("trips a wheelchair user can make today, station to station, without a single step —", "trajets possibles aujourd'hui en fauteuil, de gare à gare, sans une seule marche —")} {VIEW_PHRASE(view)}</p>
                 {view !== "published" && pub.confirmed > v.confirmed && <p className="plate-loss"><strong>{n(pub.confirmed - v.confirmed)}</strong> {tr("trips on the published map are not certain today.", "trajets du plan publié ne sont pas garantis aujourd'hui.")}</p>}
                 <p className="plate-alt">
@@ -468,7 +479,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             </details>
           </section>
         )}
-        {ov && view === "best" && <HistoryChart onFrame={setFrame} />}
+        {ov && view === "best" && <HistoryChart onFrame={setFrame} playSignal={replay} />}
         {region === "idf" && <AgentReplay onTrip={(A, B) => { setFrom(A); setTo(B); check(A, B); document.getElementById("jh")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />}
         {busy && ov && <p className="busy" role="status">{busy}</p>}
         {busy && !ov && <p className="sr-only" role="status">{busy}</p>}

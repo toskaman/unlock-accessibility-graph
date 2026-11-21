@@ -7,17 +7,19 @@ const when = (t: string) => fmtDate(new Date(t), { weekday: "short", day: "numer
 
 /** Confirmed journeys at each recorded observation, and a time-lapse that replays the map frame by frame.
  *  Shown once two observations exist; the history grows twice a day. */
-export function HistoryChart({ onFrame }: { onFrame?: (states: Record<string, string> | null) => void }) {
+export function HistoryChart({ onFrame, playSignal = 0 }: { onFrame?: (states: Record<string, string> | null) => void; playSignal?: number }) {
   const [frames, setFrames] = useState<Frame[]>([]);
   const [i, setI] = useState<number | null>(null);
   const [playing, setPlaying] = useState(false);
   const [dayOnly, setDayOnly] = useState(true);
   const timer = useRef<number | null>(null);
+  const playRef = useRef<(() => void) | null>(null);
   useEffect(() => { api.region.timelapse().then((h) => setFrames(h.frames)).catch(() => setFrames([])); }, []);
   useEffect(() => () => { if (timer.current) window.clearInterval(timer.current); onFrame?.(null); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const shown = frames.filter((f) => !dayOnly || !f.night);
   useEffect(() => { onFrame?.(i == null || !shown[i] ? null : shown[i].stations); }, [i, dayOnly, frames]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (playSignal && frames.length >= 2 && !playing) playRef.current?.(); }, [playSignal]); // eslint-disable-line
   if (frames.length < 2) return null;
 
   const play = () => {
@@ -32,6 +34,7 @@ export function HistoryChart({ onFrame }: { onFrame?: (states: Record<string, st
       setI(k);
     }, reduce ? 2500 : 900);
   };
+  playRef.current = play;
   const stop = () => { if (timer.current) window.clearInterval(timer.current); setPlaying(false); setI(null); };
 
   const W = 520, H = 110, P = 26;
