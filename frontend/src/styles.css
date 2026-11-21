@@ -687,3 +687,6 @@ a { color: var(--cand); }
 .tour-k { font-size: 12px !important; letter-spacing: .08em; text-transform: uppercase; color: #9fd8c0 !important; margin: 0 !important; }
 .tour-a { display: flex; justify-content: flex-end; gap: 8px; }
 .tour .ghost { color: #fff; border-color: rgba(255,255,255,.4); }
+.whatif-k { margin: 0 0 6px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.whatif-b { display: flex; flex-wrap: wrap; gap: 6px; }
+.frozen-sent { margin: 6px 0 2px !important; font-size: 14px; color: var(--ink-2, #3b4558); }

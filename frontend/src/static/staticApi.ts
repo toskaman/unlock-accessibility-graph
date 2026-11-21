@@ -186,6 +186,19 @@ async function reach(code: string, origin: string, view: RegionViewName): Promis
   return res;
 }
 
+/** "If this station's lifts worked": the same reach, with every point of the origin station counted as usable. */
+async function reachFixHere(code: string, origin: string, view: RegionViewName) {
+  const r = await region(code), n = r.net, g = r.graph;
+  const oi = idx(r, origin);
+  const u = n.usable(view);
+  const before = n.reachSet(u.conf, oi);
+  const fixed = new Set(u.conf); for (const p of n.stationPoints.get(oi) || []) fixed.add(p);
+  const after = n.reachSet(fixed, oi);
+  const gained = [...after].filter((x) => !before.has(x));
+  const ent = Math.round(gained.reduce((a, i) => a + (g.stations[i][4] || 0), 0));
+  return { origin, before: before.size, after: after.size, gained: gained.map((i) => g.stations[i][0]), entries_per_day: ent };
+}
+
 let metaP: Promise<{ exported_at: string; version: string; lift_status: Record<string, { sncf: string | null; idfm: string | null }> }> | null = null;
 export const snapshotMeta = () => (metaP = metaP || json("meta.json"));
 
@@ -211,6 +224,7 @@ export const staticRegionApi = (code: () => string) => ({
   reconciliation: async () => (await region(code())).views.reconciliation,
   trips: async (trips: SavedTrip[]) => ({ trips: await Promise.all(trips.map((t) => tripStatus(code(), t))) }),
   reach: (id: string, view: RegionViewName) => reach(code(), id, view),
+  reachFixHere: (id: string, view: RegionViewName) => reachFixHere(code(), id, view),
   history: () => json<{ region: string; observations: Record<string, unknown>[] }>(`${code()}/history.json`),
   reports: (station?: string) => fieldReports(code(), station),
   addReport: (rep: FieldReportIn) => addFieldReport(code(), rep),

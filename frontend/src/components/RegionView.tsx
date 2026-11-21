@@ -97,7 +97,8 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [to, setTo] = useState<{ id: string; name: string } | null>(null);
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
   const [selected, setSelected] = useState<string | null>(null);
-  const [preview, setPreview] = useState(false);  // "what if the listed lifts worked": reach recoloured on the map
+  const [preview, setPreview] = useState<false | "all" | "here">(false);
+  const [fixHere, setFixHere] = useState<{ origin: string; before: number; after: number; gained: string[]; entries_per_day: number } | null>(null);  // "what if the listed lifts worked": reach recoloured on the map
   const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[];
     lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; name?: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
   const [busy, setBusy] = useState<string | null>(() => tr("Computing step-free journeys across the region…", "Calcul des trajets sans marche dans toute la région…"));
@@ -118,7 +119,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   useEffect(() => { api.region.map(view).then((m) => setStations(m.stations)).catch(fail); }, [view]); // eslint-disable-line
 
   useEffect(() => {
-    setPreview(false);
+    setPreview(false); setFixHere(null);
     if (!selected) { setStationOut(null); setReach(null); return; }
     api.region.stationOutages(selected, view).then(setStationOut).catch(fail);
     api.region.reach(selected, view).then((r) => setReach(r.origin_boardable ? r : null)).catch(fail);
@@ -147,8 +148,8 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
     if (!reach || reach.origin.id !== demoWhatIf.current) return;
     demoWhatIf.current = null;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    const a = setTimeout(() => setPreview(true), 2200), b = setTimeout(() => setPreview(false), 6200);
-    return () => { clearTimeout(a); clearTimeout(b); };
+    let live = true; const a = setTimeout(async () => { const f = (api.region as any).reachFixHere ? await (api.region as any).reachFixHere(reach.origin.id, view) : null; if (!live) return; if (f) { setFixHere(f); setPreview("here"); } else setPreview("all"); }, 2200), b = setTimeout(() => live && setPreview(false), 7200);
+    return () => { live = false; clearTimeout(a); clearTimeout(b); };
   }, [reach]);
   const j = journeys[view] || null;
   const v = ov?.views[view];
@@ -259,9 +260,18 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                 </ul>
                 {reach.counts.if_lifts_work + reach.counts.cut > 0 && (
                   <div className={`whatif${preview ? " on" : ""}`}>
-                    <button className="primary small" aria-pressed={preview} onClick={() => setPreview(!preview)}>
-                      {preview ? tr("Back to today", "Revenir à aujourd'hui") : tr("▶ If the broken lifts worked…", "▶ Si les ascenseurs en panne marchaient…")}</button>
-                    {preview && <p className="whatif-num" role="status"><strong>+{n(reach.counts.if_lifts_work + reach.counts.cut)}</strong> {tr("stations would open up from here (green on the map).", "gares s'ouvriraient depuis ici (en vert sur la carte).")}</p>}
+                    <p className="whatif-k">{tr("What would a repair give back?", "Que rendrait une réparation ?")}</p>
+                    <div className="whatif-b">
+                      {(api.region as any).reachFixHere && <button className={preview === "here" ? "primary small" : "ghost small"} aria-pressed={preview === "here"} onClick={async () => {
+                        if (preview === "here") { setPreview(false); return; }
+                        const f = fixHere?.origin === reach.origin.id ? fixHere : await (api.region as any).reachFixHere(reach.origin.id, view); setFixHere(f); setPreview("here");
+                      }}>{tr("This station's lifts fixed", "Ascenseurs de cette gare réparés")}</button>}
+                      <button className={preview === "all" ? "primary small" : "ghost small"} aria-pressed={preview === "all"} onClick={() => setPreview(preview === "all" ? false : "all")}>
+                        {tr("Every broken lift fixed", "Tous les ascenseurs réparés")}</button>
+                    </div>
+                    {preview === "here" && fixHere && <p className="whatif-num" role="status"><strong>+{n(fixHere.gained.length)}</strong> {tr("stations reachable step-free from here once the lifts of this station work again (green on the map)", "gares accessibles sans marche depuis ici une fois les ascenseurs de cette gare réparés (en vert sur la carte)")}{fixHere.entries_per_day ? tr(` — ≈ ${n(fixHere.entries_per_day)} validations a day.`, ` — ≈ ${n(fixHere.entries_per_day)} validations par jour.`) : "."}</p>}
+                    {preview === "all" && <p className="whatif-num" role="status"><strong>+{n(reach.counts.if_lifts_work + reach.counts.cut)}</strong> {tr("stations would open up from here if every broken lift worked (green on the map).", "gares s'ouvriraient depuis ici si tous les ascenseurs en panne marchaient (en vert sur la carte).")}</p>}
+                    {preview && <button className="linkish small" onClick={() => setPreview(false)}>{tr("Back to today", "Revenir à aujourd'hui")}</button>}
                   </div>
                 )}
                 {reach.verification.ok ? (
@@ -360,6 +370,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
             <p className="frozen-kicker">{tr("Data alert", "Alerte données")}</p>
             <p className="frozen-lead">{isFr() ? <>Le flux officiel des pannes d'ascenseurs n'a pas bougé depuis {ov.feed.lift_messages_stale_days} jours. Ses messages périmés cachent <strong>{n(ov.stale_messages.journeys_hidden)}</strong> trajets sans marche.</>
               : <>The official lift-outage feed has not changed for {ov.feed.lift_messages_stale_days} days. Its out-of-date messages hide <strong>{n(ov.stale_messages.journeys_hidden)}</strong> step-free journeys.</>}</p>
+            <p className="frozen-sent">{tr("We reported it by e-mail to Île-de-France Mobilités (PRIM) and SNCF Gares & Connexions; awaiting their reply. This alert updates itself every hour.", "Nous l'avons signalé par e-mail à Île-de-France Mobilités (PRIM) et à SNCF Gares & Connexions ; réponse attendue. Cette alerte se met à jour toute seule chaque heure.")}</p>
             <details className="howknow">
             <summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
             {isFr() ? <>
@@ -395,7 +406,8 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
           <section className="mapstage" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
             <RegionMap center={ov.region.center} zoom={ov.region.zoom} label={`${ov.region.name} — ${netLabel(ov.region.network_label)}`}
                        stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations}
-                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: preview ? Object.fromEntries(Object.entries(reach.classes).map(([k, c]) => [k, c === "IF_LIFTS_WORK" || c === "CUT" ? "CONFIRMED" : c])) as typeof reach.classes : reach.classes } : null}
+                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: preview === "all" ? Object.fromEntries(Object.entries(reach.classes).map(([k, c]) => [k, c === "IF_LIFTS_WORK" || c === "CUT" ? "CONFIRMED" : c])) as typeof reach.classes
+              : preview === "here" && fixHere ? { ...reach.classes, ...Object.fromEntries(fixHere.gained.map((k) => [k, "CONFIRMED"])) } as typeof reach.classes : reach.classes } : null}
                        journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
               <div className="plate">
                 <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>

@@ -109,6 +109,8 @@ test("the map as a list and the easy-read version", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Easy read" }).click();
   await expect(page.locator("#easyread")).toContainText("A cross: you cannot.");
+  // the page opens on the station whose repair matters most: close it to list every station by state
+  await page.locator(".stationcard").getByRole("button", { name: "Close" }).click();
   await page.getByRole("button", { name: "Show as a list" }).click();
   const list = page.locator("#maplist");
   await expect(list.getByRole("heading", { name: "Stations by state" })).toBeVisible();
