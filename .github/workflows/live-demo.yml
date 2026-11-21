@@ -25,6 +25,8 @@ concurrency:
   group: live-demo
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # actions still built for Node 20 run on Node 24
 jobs:
   refresh:
     runs-on: ubuntu-latest

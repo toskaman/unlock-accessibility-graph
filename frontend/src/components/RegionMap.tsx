@@ -36,7 +36,7 @@ function drawIcons(m: maplibregl.Map) {
     g.beginPath(); g.arc(h, h, r, 0, Math.PI * 2); g.fillStyle = fill; g.fill();
   };
   const icons: Record<string, ImageData> = {
-    "s-open": make(10, dot(3.2, c.ink)),
+    "s-open": make(10, dot(3.3, cssVar("--map-open", "#2457c5"))),
     "s-ok": make(12, dot(4.3, c.ok)),
     "s-doubt": make(14, (g, h) => {
       g.beginPath(); g.arc(h, h, 5.4, 0, Math.PI * 2); g.fillStyle = halo; g.fill();

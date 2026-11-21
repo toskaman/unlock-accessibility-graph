@@ -5,6 +5,7 @@ import { TripWatch } from "./TripWatch";
 import { HistoryChart } from "./HistoryChart";
 import { LiftHistory } from "./LiftHistory";
 import { Intro } from "./Intro";
+import { Tour } from "./Tour";
 import { RegionMap } from "./RegionMap";
 import { FieldReports } from "./FieldReports";
 import { AgentReplay } from "./AgentReplay";
@@ -96,6 +97,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   const [to, setTo] = useState<{ id: string; name: string } | null>(null);
   const [journeys, setJourneys] = useState<Partial<Record<RegionViewName, Journey>>>({});
   const [selected, setSelected] = useState<string | null>(null);
+  const [preview, setPreview] = useState(false);  // "what if the listed lifts worked": reach recoloured on the map
   const [stationOut, setStationOut] = useState<{ station: { id: string; name: string }; outages: OutageDetail[];
     lifts?: { id: string; operator: string; status: string; updated: string | null; direction: string | null; name?: string | null; reported_by_prim: boolean; lines: string[] }[] } | null>(null);
   const [busy, setBusy] = useState<string | null>(() => tr("Computing step-free journeys across the region…", "Calcul des trajets sans marche dans toute la région…"));
@@ -116,6 +118,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   useEffect(() => { api.region.map(view).then((m) => setStations(m.stations)).catch(fail); }, [view]); // eslint-disable-line
 
   useEffect(() => {
+    setPreview(false);
     if (!selected) { setStationOut(null); setReach(null); return; }
     api.region.stationOutages(selected, view).then(setStationOut).catch(fail);
     api.region.reach(selected, view).then((r) => setReach(r.origin_boardable ? r : null)).catch(fail);
@@ -137,8 +140,16 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
   useEffect(() => {
     const top = rank?.repairs?.[0]; if (!top || autoPicked.current === region) return;
     const id = (top.kind === "SNCF_LIFT" ? top.region_station_id : top.station_id) || null;
-    autoPicked.current = region; if (id && !selected && !Object.keys(journeys).length) setSelected(id);
+    autoPicked.current = region; if (id && !selected && !Object.keys(journeys).length) { setSelected(id); demoWhatIf.current = id; }
   }, [rank, region]); // eslint-disable-line
+  const demoWhatIf = useRef<string | null>(null);
+  useEffect(() => {  // first visit only: show once what the repairs would give back, then return to today
+    if (!reach || reach.origin.id !== demoWhatIf.current) return;
+    demoWhatIf.current = null;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const a = setTimeout(() => setPreview(true), 2200), b = setTimeout(() => setPreview(false), 6200);
+    return () => { clearTimeout(a); clearTimeout(b); };
+  }, [reach]);
   const j = journeys[view] || null;
   const v = ov?.views[view];
   const pub = ov?.views.published;
@@ -246,6 +257,13 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
                   <li><i className="dot amber" />{n(reach.counts.if_lifts_work)} {tr("only if listed lifts work", "seulement si les ascenseurs signalés fonctionnent")}</li>
                   <li><i className="dot red" />{n(reach.counts.cut)} {tr("cut by outages (reachable in the published network)", "coupées par des pannes (accessibles dans le réseau publié)")}</li>
                 </ul>
+                {reach.counts.if_lifts_work + reach.counts.cut > 0 && (
+                  <div className={`whatif${preview ? " on" : ""}`}>
+                    <button className="primary small" aria-pressed={preview} onClick={() => setPreview(!preview)}>
+                      {preview ? tr("Back to today", "Revenir à aujourd'hui") : tr("▶ If the broken lifts worked…", "▶ Si les ascenseurs en panne marchaient…")}</button>
+                    {preview && <p className="whatif-num" role="status"><strong>+{n(reach.counts.if_lifts_work + reach.counts.cut)}</strong> {tr("stations would open up from here (green on the map).", "gares s'ouvriraient depuis ici (en vert sur la carte).")}</p>}
+                  </div>
+                )}
                 {reach.verification.ok ? (
                   <details className="howknow"><summary>{tr("How do we know?", "Comment on le sait ?")}</summary>
                     <p>{tr(`Those confirmed stations see ≈ ${n(reach.entries_per_day.confirmed)} validations a day; the cut ones ≈ ${n(reach.entries_per_day.cut)}.`,
@@ -306,6 +324,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
 
       <main className="center">
         <Intro />
+        {ov && <Tour />}
         {compare && (
           <section className="compare" aria-labelledby="cmph">
             <h2 id="cmph">{tr("Every region, same method", "Toutes les régions, même méthode")}</h2>
@@ -376,7 +395,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
           <section className="mapstage" aria-label={tr("Region-wide step-free journeys", "Trajets sans marche dans toute la région")}>
             <RegionMap center={ov.region.center} zoom={ov.region.zoom} label={`${ov.region.name} — ${netLabel(ov.region.network_label)}`}
                        stations={frame ? stations.map((s) => (s.state === "NOT_BOARDABLE" ? s : { ...s, state: (frame[s.id] || "OPEN") as RegionStation["state"] })) : stations}
-                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: reach.classes } : null}
+                       reach={reach && !j && !frame ? { origin: reach.origin.id, classes: preview ? Object.fromEntries(Object.entries(reach.classes).map(([k, c]) => [k, c === "IF_LIFTS_WORK" || c === "CUT" ? "CONFIRMED" : c])) as typeof reach.classes : reach.classes } : null}
                        journey={j} selected={selected} onSelect={(id) => { setJourneys({}); setSelected(id); }}>
               <div className="plate">
                 <p className="plate-where"><LiftGlyph size={16} /> {ov.region.name}</p>
@@ -438,7 +457,7 @@ export function RegionView({ onOpenStation, onError, region, regions, onRegion }
         </div>
         {tab === "repairs" && rank && (
           <section aria-label={tr("Repairs ranked by journeys given back", "Réparations classées par trajets rendus")}>
-            <p className="small">{tr("Fix one lift, give back this many confirmed step-free journeys (best available status). Equal gains: busiest station first.", "Réparer un seul ascenseur rend ce nombre de trajets sans marche confirmés (meilleur état connu). À gain égal : la gare la plus fréquentée d'abord.")}</p>
+            <p className="small">{tr("Each line is one broken lift, and how many step-free trips come back if it is fixed. Click one to see it on the map. Ties: busiest station first.", "Chaque ligne est un ascenseur en panne, et le nombre de trajets sans marche rendus s'il est réparé. Cliquez pour le voir sur la carte. À égalité : la gare la plus fréquentée d'abord.")}</p>
             <p className="small"><a href={bulletinUrl(region, isDefault, isFr() ? "fr" : "en")} target="_blank" rel="noopener">{tr("Today's maintenance bulletin (printable)", "Bulletin de maintenance du jour (à imprimer)")}</a></p>
             <ol className="rank">
               {rank.repairs.map((r) => (
