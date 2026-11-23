@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3422,
+  "gtfs_stop_areas": 3421,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 56,
   "lifts_no_resolved_end": 0,
@@ -15,8 +15,8 @@
   "quays": 243,
   "stations_matched_to_zone": 88,
   "stations_unmatched_to_zone": 7,
-  "status_AVAILABLE": 45,
-  "status_UNAVAILABLE": 9,
+  "status_AVAILABLE": 46,
+  "status_UNAVAILABLE": 8,
   "status_UNKNOWN": 2,
   "zone_line_links": 210,
   "zones": 88
@@ -34,13 +34,13 @@
  "unmatched_tokens": [
   {
    "station": "Serqueux",
-   "lift_id": "a5e12818-8e1b-4a84-82e8-c12f1e5f5dea",
-   "token": "2"
+   "lift_id": "a47d9072-7f8c-42af-b2a1-5b973dc4bc00",
+   "token": "1"
   },
   {
    "station": "Serqueux",
-   "lift_id": "a47d9072-7f8c-42af-b2a1-5b973dc4bc00",
-   "token": "1"
+   "lift_id": "a5e12818-8e1b-4a84-82e8-c12f1e5f5dea",
+   "token": "2"
   }
  ],
  "unmatched_token_count": 2

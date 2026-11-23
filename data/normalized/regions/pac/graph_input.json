@@ -10,17 +10,17 @@
    "published": null,
    "publisher": "SNCF Gares & Connexions",
    "publisher_modified": "2026-11-13T14:00:43+00:00",
-   "retrieved_at": "2026-11-22T03:08:01+00:00",
+   "retrieved_at": "2026-11-23T00:17:35+00:00",
    "role": "Passengers per station per year (2025): a weight for how many people use a station, not a count of wheelchair users",
    "sha256": "c6d77aafacf75fffeb3adba132a488588ed27801f6a24c519c91e4c93814dada",
    "title": "Fréquentation en gares",
    "url": "https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/frequentation-gares/exports/json"
   },
   {
-   "bytes": 5586366,
+   "bytes": 5547556,
    "file": "sncf_national/sncf-gtfs.zip",
    "gtfs_calendar_span": [
-    "20261121",
+    "20261122",
     "20270430"
    ],
    "key": "sncf_gtfs",
@@ -29,14 +29,14 @@
    "published": null,
    "publisher": "SNCF Voyageurs",
    "publisher_modified": "2025-11-05T13:33:21+00:00",
-   "retrieved_at": "2026-11-22T03:07:59+00:00",
+   "retrieved_at": "2026-11-23T00:17:33+00:00",
    "role": "National train timetables: stations, stop points and stopping patterns for regions outside Île-de-France (second-region network layer)",
-   "sha256": "2057533648512c26d5a42aa228a5a6b8041a84d764693b08217a4c5dfad0a229",
+   "sha256": "0abd6918c870c6495a722406bc0c477f8d49ad4639dd9f4513b3d5f9331eaa73",
    "title": "Horaires SNCF (GTFS théorique TER, Intercités, TGV)",
    "url": "https://eu.ftp.opendatasoft.com/sncf/plandata/Export_OpenData_SNCF_GTFS_NewTripId.zip"
   },
   {
-   "bytes": 347747,
+   "bytes": 347787,
    "file": "sncf/etat-fonctionnement-elevatique-gare.csv",
    "gtfs_calendar_span": null,
    "key": "sncf_lift_status",
@@ -44,10 +44,10 @@
    "licence_url": "https://data.sncf.com/pages/licence",
    "published": null,
    "publisher": "SNCF Gares & Connexions",
-   "publisher_modified": "2026-11-22T18:30:14+00:00",
-   "retrieved_at": "2026-11-22T18:31:55+00:00",
+   "publisher_modified": "2026-11-22T23:30:13+00:00",
+   "retrieved_at": "2026-11-23T00:17:41+00:00",
    "role": "Latest published lift status (OK / KO / INCONNU), refreshed hourly by the publisher",
-   "sha256": "198cf28b7627b08b29b8ea934363e3dd9db5efd97aac0d765896e72f97279f38",
+   "sha256": "55f3a45044df775857b3ee87f78805ec72d0876c5c05e6350a204b03293d14cc",
    "title": "Etat de fonctionnement des équipements d'élévatique en gare",
    "url": "https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets/etat-fonctionnement-elevatique-gare/exports/csv?delimiter=%3B&use_labels=false"
   },
@@ -58,12 +58,12 @@
    "key": "sncf_netex_accessibility",
    "licence": "ODbL 1.0",
    "licence_url": "https://data.sncf.com/pages/licence",
-   "published": "2026-11-21T19:08:34Z",
+   "published": "2026-11-22T19:08:15Z",
    "publisher": "SNCF Gares & Connexions",
    "publisher_modified": "2026-03-27T14:56:48+00:00",
-   "retrieved_at": "2026-11-22T03:07:47+00:00",
+   "retrieved_at": "2026-11-23T00:17:21+00:00",
    "role": "Stations, platforms (quays), platform accessibility assessments, lift equipment and lift location text",
-   "sha256": "315d0c6214e4d357b20e8d4e46052b5e1b1bfa3aa96ce6cd08372c18ec23644d",
+   "sha256": "728df3fb24e6026d2e0e59db262f4dd253de8d2b8414a01caf60853f03f0cab3",
    "title": "Accessibilité des gares (NeTEx)",
    "url": "https://eu.ftp.opendatasoft.com/sncf/G&C/NeTEx_accessibilite/SNCF_GC_accessibilite_gares.xml"
   }
@@ -1446,14 +1446,6 @@
    "long_name": "Grasse - Cannes - Nice - Vintimille",
    "mode": "RAIL",
    "short_name": "C3",
-   "text_color": "FFFFFF"
-  },
-  {
-   "color": "0749FF",
-   "id": "FR:Line::11F44E86-C3F3-43CF-BCDD-AD1B4472E63D:",
-   "long_name": "Sete - Lunel",
-   "mode": "RAIL",
-   "short_name": "C10",
    "text_color": "FFFFFF"
   },
   {
@@ -6940,6 +6932,20 @@
    "space_id": "350f10bc-24ca-426d-9477-53b392b2a54e:space:souterrain"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "625ace63-337d-468e-b416-afa6cba76444",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "458dc9e9-fee6-439c-98dd-64f0c7b7a00b:space:passerelle"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "625ace63-337d-468e-b416-afa6cba76444",
+   "side_index": 1,
+   "side_text": "hall",
+   "space_id": "458dc9e9-fee6-439c-98dd-64f0c7b7a00b:space:hall"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "326acb05-0a67-46fe-a544-7814074a020e",
    "side_index": 0,
@@ -6975,18 +6981,18 @@
    "space_id": "458dc9e9-fee6-439c-98dd-64f0c7b7a00b:space:souterrain"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "625ace63-337d-468e-b416-afa6cba76444",
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
    "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "458dc9e9-fee6-439c-98dd-64f0c7b7a00b:space:passerelle"
+   "side_text": "voie 1 (bv)",
+   "space_id": "56c602f0-7b97-4c5c-b7ca-4af9c2ba961a:quay:1"
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "625ace63-337d-468e-b416-afa6cba76444",
+   "lift_id": "8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
    "side_index": 1,
-   "side_text": "hall",
-   "space_id": "458dc9e9-fee6-439c-98dd-64f0c7b7a00b:space:hall"
+   "side_text": "souterrain",
+   "space_id": "56c602f0-7b97-4c5c-b7ca-4af9c2ba961a:space:souterrain"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -6998,20 +7004,6 @@
   {
    "derivation": "NAMED_SPACE",
    "lift_id": "b0deb031-4477-4b09-ab27-f2e21f1d3d76",
-   "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "56c602f0-7b97-4c5c-b7ca-4af9c2ba961a:space:souterrain"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
-   "side_index": 0,
-   "side_text": "voie 1 (bv)",
-   "space_id": "56c602f0-7b97-4c5c-b7ca-4af9c2ba961a:quay:1"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "56c602f0-7b97-4c5c-b7ca-4af9c2ba961a:space:souterrain"
@@ -7066,6 +7058,27 @@
    "space_id": "63772e0f-b5e4-4718-b0f1-5829bcebf65f:space:souterrain"
   },
   {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
+   "side_index": 0,
+   "side_text": "voies 1 et a",
+   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:quay:1"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
+   "side_index": 0,
+   "side_text": "voies 1 et a",
+   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:quay:a"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
+   "side_index": 1,
+   "side_text": "souterrain",
+   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:space:souterrain"
+  },
+  {
    "derivation": "NAMED_SPACE",
    "lift_id": "4a42e8e4-ae43-42c0-943a-d80c477ec7b8",
    "side_index": 0,
@@ -7096,27 +7109,6 @@
   {
    "derivation": "NAMED_SPACE",
    "lift_id": "2662b7bf-74a2-4659-8213-00bb0ae48d47",
-   "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:space:souterrain"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
-   "side_index": 0,
-   "side_text": "voies 1 et a",
-   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:quay:1"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
-   "side_index": 0,
-   "side_text": "voies 1 et a",
-   "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:quay:a"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "f07ba0be-e405-4013-bba5-c819741ff790:space:souterrain"
@@ -7193,6 +7185,20 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "1c697adc-b060-4f3c-b953-26c2c5178c1e:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
+   "side_index": 1,
+   "side_text": "voie 2",
+   "space_id": "1c697adc-b060-4f3c-b953-26c2c5178c1e:quay:2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "ad2e1150-dddf-47ad-b3d7-23bcbe7a79a1",
    "side_index": 0,
    "side_text": "passerelle",
@@ -7207,17 +7213,24 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
+   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
    "side_index": 0,
    "side_text": "passerelle",
-   "space_id": "1c697adc-b060-4f3c-b953-26c2c5178c1e:space:passerelle"
+   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:space:passerelle"
   },
   {
    "derivation": "VOIE_TOKEN",
-   "lift_id": "07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
+   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
    "side_index": 1,
-   "side_text": "voie 2",
-   "space_id": "1c697adc-b060-4f3c-b953-26c2c5178c1e:quay:2"
+   "side_text": "voies d et e",
+   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:quay:d"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
+   "side_index": 1,
+   "side_text": "voies d et e",
+   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:quay:e"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7276,27 +7289,6 @@
    "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:quay:a"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
-   "side_index": 1,
-   "side_text": "voies d et e",
-   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:quay:d"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
-   "side_index": 1,
-   "side_text": "voies d et e",
-   "space_id": "a121239c-108a-4bfa-8254-069b73dbe619:quay:e"
-  },
-  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "c5786b26-b815-443a-8854-2c9a5e6d3613",
    "side_index": 0,
@@ -7340,6 +7332,20 @@
   },
   {
    "derivation": "VOIE_TOKEN",
+   "lift_id": "03648962-256a-42cd-b553-a03ee47c29e0",
+   "side_index": 0,
+   "side_text": "voie 1 (bv)",
+   "space_id": "83f93cd5-5248-46ad-99a3-7d5d3c19f9f4:quay:1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "03648962-256a-42cd-b553-a03ee47c29e0",
+   "side_index": 1,
+   "side_text": "souterrain",
+   "space_id": "83f93cd5-5248-46ad-99a3-7d5d3c19f9f4:space:souterrain"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
    "lift_id": "cb50c261-57a0-4a88-8b2b-4150e059fcda",
    "side_index": 0,
    "side_text": "voie 2",
@@ -7353,18 +7359,18 @@
    "space_id": "83f93cd5-5248-46ad-99a3-7d5d3c19f9f4:space:souterrain"
   },
   {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "03648962-256a-42cd-b553-a03ee47c29e0",
+   "derivation": "NAMED_SPACE",
+   "lift_id": "6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
    "side_index": 0,
-   "side_text": "voie 1 (bv)",
-   "space_id": "83f93cd5-5248-46ad-99a3-7d5d3c19f9f4:quay:1"
+   "side_text": "passerelle",
+   "space_id": "28efb063-7370-422c-8a6c-b9def7a8be8c:space:passerelle"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "03648962-256a-42cd-b553-a03ee47c29e0",
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
    "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "83f93cd5-5248-46ad-99a3-7d5d3c19f9f4:space:souterrain"
+   "side_text": "voie e",
+   "space_id": "28efb063-7370-422c-8a6c-b9def7a8be8c:quay:e"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7410,55 +7416,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "28efb063-7370-422c-8a6c-b9def7a8be8c:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
-   "side_index": 1,
-   "side_text": "voie e",
-   "space_id": "28efb063-7370-422c-8a6c-b9def7a8be8c:quay:e"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:passerelle"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
-   "side_index": 1,
-   "side_text": "hall a",
-   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:hall-a"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
-   "side_index": 0,
-   "side_text": "mezzanine",
-   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:mezzanine"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
-   "side_index": 1,
-   "side_text": "hall a",
-   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:hall-a"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
-   "side_index": 2,
-   "side_text": "acces rd9 cote nord",
-   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:acces-rd9-cote-nord"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "7a1eb7ff-a7f7-49f9-81f8-346f0773e6e6",
    "side_index": 0,
    "side_text": "mezzanine",
@@ -7500,6 +7457,41 @@
    "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:quay:3"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:passerelle"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
+   "side_index": 1,
+   "side_text": "hall a",
+   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:hall-a"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
+   "side_index": 0,
+   "side_text": "mezzanine",
+   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:mezzanine"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
+   "side_index": 1,
+   "side_text": "hall a",
+   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:hall-a"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
+   "side_index": 2,
+   "side_text": "acces rd9 cote nord",
+   "space_id": "4ab19d76-8365-40a3-95d3-29357c4990ef:space:acces-rd9-cote-nord"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "430a3731-974d-46c6-b1f8-6a3b98ca30d2",
    "side_index": 0,
@@ -7526,20 +7518,6 @@
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "fbf8a217-00c2-46ae-8783-b190c2465d98:space:souterrain"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "e861c2d1-ca01-4c52-a794-da467133d4a4",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "8ffc51b5-4097-4d81-a0db-a3af1678e010:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "e861c2d1-ca01-4c52-a794-da467133d4a4",
-   "side_index": 1,
-   "side_text": "voie b",
-   "space_id": "8ffc51b5-4097-4d81-a0db-a3af1678e010:quay:b"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7589,6 +7567,20 @@
    "side_index": 1,
    "side_text": "voies d et c",
    "space_id": "8ffc51b5-4097-4d81-a0db-a3af1678e010:quay:d"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "e861c2d1-ca01-4c52-a794-da467133d4a4",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "8ffc51b5-4097-4d81-a0db-a3af1678e010:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "e861c2d1-ca01-4c52-a794-da467133d4a4",
+   "side_index": 1,
+   "side_text": "voie b",
+   "space_id": "8ffc51b5-4097-4d81-a0db-a3af1678e010:quay:b"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -7648,20 +7640,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "124a19b5-6cfd-4518-a322-b65cff5d8275",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "b1f5fde1-acda-4cda-b053-fddd5d32e68d:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "124a19b5-6cfd-4518-a322-b65cff5d8275",
-   "side_index": 1,
-   "side_text": "voie 1",
-   "space_id": "b1f5fde1-acda-4cda-b053-fddd5d32e68d:quay:1"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "a24952c9-f005-4f43-ad62-60f8e563097d",
    "side_index": 0,
    "side_text": "passerelle",
@@ -7673,6 +7651,20 @@
    "side_index": 1,
    "side_text": "voie 2",
    "space_id": "b1f5fde1-acda-4cda-b053-fddd5d32e68d:quay:2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "124a19b5-6cfd-4518-a322-b65cff5d8275",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "b1f5fde1-acda-4cda-b053-fddd5d32e68d:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "124a19b5-6cfd-4518-a322-b65cff5d8275",
+   "side_index": 1,
+   "side_text": "voie 1",
+   "space_id": "b1f5fde1-acda-4cda-b053-fddd5d32e68d:quay:1"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7701,6 +7693,27 @@
    "side_index": 1,
    "side_text": "voie 1",
    "space_id": "a402ace8-44cb-4cdb-b882-52822f822b41:quay:1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
+   "side_index": 1,
+   "side_text": "voies c et d",
+   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:quay:c"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
+   "side_index": 1,
+   "side_text": "voies c et d",
+   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:quay:d"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7760,24 +7773,17 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
+   "lift_id": "14154940-bd02-4513-bb99-385525b0bfce",
    "side_index": 0,
    "side_text": "passerelle",
-   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:space:passerelle"
+   "space_id": "a9d5b415-d380-4bf0-bab2-e9910cc0e265:space:passerelle"
   },
   {
    "derivation": "VOIE_TOKEN",
-   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
+   "lift_id": "14154940-bd02-4513-bb99-385525b0bfce",
    "side_index": 1,
-   "side_text": "voies c et d",
-   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:quay:c"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
-   "side_index": 1,
-   "side_text": "voies c et d",
-   "space_id": "89daa81f-a596-4c53-bb5d-5623201be6b2:quay:d"
+   "side_text": "voie 3",
+   "space_id": "a9d5b415-d380-4bf0-bab2-e9910cc0e265:quay:3"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7806,20 +7812,6 @@
    "side_index": 1,
    "side_text": "voie 2",
    "space_id": "a9d5b415-d380-4bf0-bab2-e9910cc0e265:quay:2"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "14154940-bd02-4513-bb99-385525b0bfce",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "a9d5b415-d380-4bf0-bab2-e9910cc0e265:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "14154940-bd02-4513-bb99-385525b0bfce",
-   "side_index": 1,
-   "side_text": "voie 3",
-   "space_id": "a9d5b415-d380-4bf0-bab2-e9910cc0e265:quay:3"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7900,20 +7892,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "86a82701-5515-49d7-9552-6aea4d631d31:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
-   "side_index": 1,
-   "side_text": "voie 2",
-   "space_id": "86a82701-5515-49d7-9552-6aea4d631d31:quay:2"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "66c0967a-02cc-4a1a-b72c-beeec8eadba5",
    "side_index": 0,
    "side_text": "passerelle",
@@ -7928,17 +7906,17 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "lift_id": "0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
    "side_index": 0,
    "side_text": "passerelle",
-   "space_id": "96830e2f-b489-4fb2-8f27-a2ef57030a44:space:passerelle"
+   "space_id": "86a82701-5515-49d7-9552-6aea4d631d31:space:passerelle"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
    "side_index": 1,
-   "side_text": "voie b",
-   "space_id": "96830e2f-b489-4fb2-8f27-a2ef57030a44:space:voie-b"
+   "side_text": "voie 2",
+   "space_id": "86a82701-5515-49d7-9552-6aea4d631d31:quay:2"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7956,17 +7934,17 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
+   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
    "side_index": 0,
    "side_text": "passerelle",
-   "space_id": "a4310ddc-85de-4b8b-8338-d03cd4d746ef:space:passerelle"
+   "space_id": "96830e2f-b489-4fb2-8f27-a2ef57030a44:space:passerelle"
   },
   {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
+   "derivation": "NAMED_SPACE",
+   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
    "side_index": 1,
    "side_text": "voie b",
-   "space_id": "a4310ddc-85de-4b8b-8338-d03cd4d746ef:quay:b"
+   "space_id": "96830e2f-b489-4fb2-8f27-a2ef57030a44:space:voie-b"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -7984,17 +7962,17 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
+   "lift_id": "caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
    "side_index": 0,
-   "side_text": "hall historique",
-   "space_id": "b0ce193b-0926-4b87-8bf9-f37a1332e9a1:space:hall-historique"
+   "side_text": "passerelle",
+   "space_id": "a4310ddc-85de-4b8b-8338-d03cd4d746ef:space:passerelle"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
    "side_index": 1,
-   "side_text": "acces metro et bd bourdet",
-   "space_id": "b0ce193b-0926-4b87-8bf9-f37a1332e9a1:space:acces-metro-et-bd-bourdet"
+   "side_text": "voie b",
+   "space_id": "a4310ddc-85de-4b8b-8338-d03cd4d746ef:quay:b"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -8039,6 +8017,34 @@
    "space_id": "b0ce193b-0926-4b87-8bf9-f37a1332e9a1:space:parking-p1"
   },
   {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
+   "side_index": 0,
+   "side_text": "hall historique",
+   "space_id": "b0ce193b-0926-4b87-8bf9-f37a1332e9a1:space:hall-historique"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
+   "side_index": 1,
+   "side_text": "acces metro et bd bourdet",
+   "space_id": "b0ce193b-0926-4b87-8bf9-f37a1332e9a1:space:acces-metro-et-bd-bourdet"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "a346c44d-734f-4d94-acc8-255485a81fe8",
+   "side_index": 0,
+   "side_text": "voie 1",
+   "space_id": "ea12f311-ff7f-4f9a-a259-32d1b5992ccc:quay:1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "a346c44d-734f-4d94-acc8-255485a81fe8",
+   "side_index": 1,
+   "side_text": "souterrain",
+   "space_id": "ea12f311-ff7f-4f9a-a259-32d1b5992ccc:space:souterrain"
+  },
+  {
    "derivation": "VOIE_TOKEN",
    "lift_id": "403f69e2-58cc-4b93-bf1d-f3bc6fdc9725",
    "side_index": 0,
@@ -8074,18 +8080,18 @@
    "space_id": "ea12f311-ff7f-4f9a-a259-32d1b5992ccc:space:souterrain"
   },
   {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "a346c44d-734f-4d94-acc8-255485a81fe8",
+   "derivation": "NAMED_SPACE",
+   "lift_id": "028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
    "side_index": 0,
-   "side_text": "voie 1",
-   "space_id": "ea12f311-ff7f-4f9a-a259-32d1b5992ccc:quay:1"
+   "side_text": "passerelle",
+   "space_id": "18c8848e-1cea-4114-879d-f17b3a82e2e4:space:passerelle"
   },
   {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "a346c44d-734f-4d94-acc8-255485a81fe8",
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
    "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "ea12f311-ff7f-4f9a-a259-32d1b5992ccc:space:souterrain"
+   "side_text": "voie 3 (bv)",
+   "space_id": "18c8848e-1cea-4114-879d-f17b3a82e2e4:quay:3"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -8114,20 +8120,6 @@
    "side_index": 1,
    "side_text": "voie 2",
    "space_id": "18c8848e-1cea-4114-879d-f17b3a82e2e4:quay:2"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "18c8848e-1cea-4114-879d-f17b3a82e2e4:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
-   "side_index": 1,
-   "side_text": "voie 3 (bv)",
-   "space_id": "18c8848e-1cea-4114-879d-f17b3a82e2e4:quay:3"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -8208,20 +8200,6 @@
   },
   {
    "derivation": "VOIE_TOKEN",
-   "lift_id": "07607303-1738-4c7e-8323-4070f79e71ea",
-   "side_index": 0,
-   "side_text": "voie 1 (bv)",
-   "space_id": "5cffcb20-f00d-4efe-9048-b4718c9bb87c:quay:1"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "07607303-1738-4c7e-8323-4070f79e71ea",
-   "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "5cffcb20-f00d-4efe-9048-b4718c9bb87c:space:souterrain"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
    "lift_id": "232d1b6f-d3fe-48b4-8247-899faaf46eee",
    "side_index": 0,
    "side_text": "voies 2 et a",
@@ -8237,6 +8215,20 @@
   {
    "derivation": "NAMED_SPACE",
    "lift_id": "232d1b6f-d3fe-48b4-8247-899faaf46eee",
+   "side_index": 1,
+   "side_text": "souterrain",
+   "space_id": "5cffcb20-f00d-4efe-9048-b4718c9bb87c:space:souterrain"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "07607303-1738-4c7e-8323-4070f79e71ea",
+   "side_index": 0,
+   "side_text": "voie 1 (bv)",
+   "space_id": "5cffcb20-f00d-4efe-9048-b4718c9bb87c:quay:1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "07607303-1738-4c7e-8323-4070f79e71ea",
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "5cffcb20-f00d-4efe-9048-b4718c9bb87c:space:souterrain"
@@ -8271,20 +8263,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "35aca52d-a8a0-4a0b-9ab8-078122d4a430",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "c537322f-c6e7-4a45-a664-2dbc2c59a802:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "35aca52d-a8a0-4a0b-9ab8-078122d4a430",
-   "side_index": 1,
-   "side_text": "voie 2 (bv)",
-   "space_id": "c537322f-c6e7-4a45-a664-2dbc2c59a802:quay:2"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "970f4e96-45a3-48bf-8501-f99ea876ee14",
    "side_index": 0,
    "side_text": "passerelle",
@@ -8296,6 +8274,20 @@
    "side_index": 1,
    "side_text": "voie 1",
    "space_id": "c537322f-c6e7-4a45-a664-2dbc2c59a802:quay:1"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "35aca52d-a8a0-4a0b-9ab8-078122d4a430",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "c537322f-c6e7-4a45-a664-2dbc2c59a802:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "35aca52d-a8a0-4a0b-9ab8-078122d4a430",
+   "side_index": 1,
+   "side_text": "voie 2 (bv)",
+   "space_id": "c537322f-c6e7-4a45-a664-2dbc2c59a802:quay:2"
   },
   {
    "derivation": "NAMED_SPACE",
@@ -8327,6 +8319,20 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "444dba5f-fa60-4b60-ba79-c1dbac17e890",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "b5b17aac-55e5-4b69-87ee-1b022334af33:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "444dba5f-fa60-4b60-ba79-c1dbac17e890",
+   "side_index": 1,
+   "side_text": "voie 2 (bv)",
+   "space_id": "b5b17aac-55e5-4b69-87ee-1b022334af33:quay:2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "7664c0ee-6187-449a-930e-b458fe4d3a34",
    "side_index": 0,
    "side_text": "passerelle",
@@ -8345,20 +8351,6 @@
    "side_index": 1,
    "side_text": "voies 1 et a",
    "space_id": "b5b17aac-55e5-4b69-87ee-1b022334af33:quay:a"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "444dba5f-fa60-4b60-ba79-c1dbac17e890",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "b5b17aac-55e5-4b69-87ee-1b022334af33:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "444dba5f-fa60-4b60-ba79-c1dbac17e890",
-   "side_index": 1,
-   "side_text": "voie 2 (bv)",
-   "space_id": "b5b17aac-55e5-4b69-87ee-1b022334af33:quay:2"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -8394,6 +8386,20 @@
    "side_index": 1,
    "side_text": "souterrain",
    "space_id": "fbb5a4a5-4f28-4f6c-bb86-b73efbcb4d72:space:souterrain"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
+   "side_index": 0,
+   "side_text": "hall",
+   "space_id": "5d5ece4d-8cc9-4877-b797-76707642504c:space:hall"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
+   "side_index": 1,
+   "side_text": "souterrain",
+   "space_id": "5d5ece4d-8cc9-4877-b797-76707642504c:space:souterrain"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -8439,20 +8445,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
-   "side_index": 0,
-   "side_text": "hall",
-   "space_id": "5d5ece4d-8cc9-4877-b797-76707642504c:space:hall"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
-   "side_index": 1,
-   "side_text": "souterrain",
-   "space_id": "5d5ece4d-8cc9-4877-b797-76707642504c:space:souterrain"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "5619eb30-40ff-4bc7-99a5-deb3ab3edf09",
    "side_index": 0,
    "side_text": "passerelle",
@@ -8481,20 +8473,6 @@
   },
   {
    "derivation": "VOIE_TOKEN",
-   "lift_id": "7e78fd47-f7eb-4491-819a-a65d5cae36f0",
-   "side_index": 0,
-   "side_text": "mezzanine voie 4",
-   "space_id": "6d950f75-8a47-4c30-b0ca-66f074ad3496:quay:4"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "7e78fd47-f7eb-4491-819a-a65d5cae36f0",
-   "side_index": 1,
-   "side_text": "hall departs cote marseille porte s",
-   "space_id": "6d950f75-8a47-4c30-b0ca-66f074ad3496:space:hall-departs-cote-marseille-porte-s"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
    "lift_id": "3688545c-87a7-473f-ae5d-f2a9b66dac76",
    "side_index": 0,
    "side_text": "mezzanine voie 4",
@@ -8506,6 +8484,20 @@
    "side_index": 1,
    "side_text": "hall departs cote paris porte n",
    "space_id": "6d950f75-8a47-4c30-b0ca-66f074ad3496:space:hall-departs-cote-paris-porte-n"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "7e78fd47-f7eb-4491-819a-a65d5cae36f0",
+   "side_index": 0,
+   "side_text": "mezzanine voie 4",
+   "space_id": "6d950f75-8a47-4c30-b0ca-66f074ad3496:quay:4"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "7e78fd47-f7eb-4491-819a-a65d5cae36f0",
+   "side_index": 1,
+   "side_text": "hall departs cote marseille porte s",
+   "space_id": "6d950f75-8a47-4c30-b0ca-66f074ad3496:space:hall-departs-cote-marseille-porte-s"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -8565,6 +8557,27 @@
   },
   {
    "derivation": "NAMED_SPACE",
+   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:space:passerelle"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
+   "side_index": 1,
+   "side_text": "voies 1 et 1bis",
+   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:quay:1"
+  },
+  {
+   "derivation": "VOIE_TOKEN",
+   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
+   "side_index": 1,
+   "side_text": "voies 1 et 1bis",
+   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:quay:1bis"
+  },
+  {
+   "derivation": "NAMED_SPACE",
    "lift_id": "c295cd37-bc59-42b7-883d-4a2828b8c0d1",
    "side_index": 0,
    "side_text": "passerelle",
@@ -8600,41 +8613,6 @@
   },
   {
    "derivation": "NAMED_SPACE",
-   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:space:passerelle"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
-   "side_index": 1,
-   "side_text": "voies 1 et 1bis",
-   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:quay:1"
-  },
-  {
-   "derivation": "VOIE_TOKEN",
-   "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
-   "side_index": 1,
-   "side_text": "voies 1 et 1bis",
-   "space_id": "2112f0da-6193-486d-b30a-aed6c54ac027:quay:1bis"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "fb3fbe08-d826-41f5-a3e8-e7184940a57a",
-   "side_index": 0,
-   "side_text": "passerelle",
-   "space_id": "458aa062-bb8d-4d00-b018-77a3fa72c0b0:space:passerelle"
-  },
-  {
-   "derivation": "NAMED_SPACE",
-   "lift_id": "fb3fbe08-d826-41f5-a3e8-e7184940a57a",
-   "side_index": 1,
-   "side_text": "quai acces gare",
-   "space_id": "458aa062-bb8d-4d00-b018-77a3fa72c0b0:space:quai-acces-gare"
-  },
-  {
-   "derivation": "NAMED_SPACE",
    "lift_id": "452563aa-4e9a-4a7a-bec9-3b63c41d124c",
    "side_index": 0,
    "side_text": "passerelle",
@@ -8653,6 +8631,20 @@
    "side_index": 1,
    "side_text": "voie 1 et 2",
    "space_id": "458aa062-bb8d-4d00-b018-77a3fa72c0b0:quay:2"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "fb3fbe08-d826-41f5-a3e8-e7184940a57a",
+   "side_index": 0,
+   "side_text": "passerelle",
+   "space_id": "458aa062-bb8d-4d00-b018-77a3fa72c0b0:space:passerelle"
+  },
+  {
+   "derivation": "NAMED_SPACE",
+   "lift_id": "fb3fbe08-d826-41f5-a3e8-e7184940a57a",
+   "side_index": 1,
+   "side_text": "quai acces gare",
+   "space_id": "458aa062-bb8d-4d00-b018-77a3fa72c0b0:space:quai-acces-gare"
   },
   {
    "derivation": "VOIE_TOKEN",
@@ -13029,1125 +13021,1125 @@
    "wheelchair": "INACCESSIBLE"
   }
  ],
- "status_observed_at": "2026-11-22T18:30:14+00:00",
- "status_snapshot_id": "sncf_lift_status@198cf28b7627",
+ "status_observed_at": "2026-11-22T23:30:13+00:00",
+ "status_snapshot_id": "sncf_lift_status@55f3a45044df",
  "status_snapshots": [
   {
-   "id": "sncf_lift_status@198cf28b7627:14335779-3348-473f-aab6-0e3cf5636764",
+   "id": "sncf_lift_status@55f3a45044df:14335779-3348-473f-aab6-0e3cf5636764",
    "lift_id": "14335779-3348-473f-aab6-0e3cf5636764",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:adb1b771-c2f7-421f-a9c6-0163052499bc",
+   "id": "sncf_lift_status@55f3a45044df:adb1b771-c2f7-421f-a9c6-0163052499bc",
    "lift_id": "adb1b771-c2f7-421f-a9c6-0163052499bc",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:e14e8c60-685b-43bd-a0c9-ff2b1ac9878c",
+   "id": "sncf_lift_status@55f3a45044df:e14e8c60-685b-43bd-a0c9-ff2b1ac9878c",
    "lift_id": "e14e8c60-685b-43bd-a0c9-ff2b1ac9878c",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 (BV)",
    "source_location": "Voie 2 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:326acb05-0a67-46fe-a544-7814074a020e",
+   "id": "sncf_lift_status@55f3a45044df:326acb05-0a67-46fe-a544-7814074a020e",
    "lift_id": "326acb05-0a67-46fe-a544-7814074a020e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies A et 1",
    "source_location": "Voies A et 1 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:625ace63-337d-468e-b416-afa6cba76444",
+   "id": "sncf_lift_status@55f3a45044df:625ace63-337d-468e-b416-afa6cba76444",
    "lift_id": "625ace63-337d-468e-b416-afa6cba76444",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Hall / Passerelle",
    "source_location": "Passerelle / Hall",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:d1e1adf6-6c71-41da-8bde-18c5088bc5fc",
+   "id": "sncf_lift_status@55f3a45044df:d1e1adf6-6c71-41da-8bde-18c5088bc5fc",
    "lift_id": "d1e1adf6-6c71-41da-8bde-18c5088bc5fc",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 (BV)",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
+   "id": "sncf_lift_status@55f3a45044df:8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
    "lift_id": "8f807e1f-d7a7-4eda-ac5e-6cd88b9a65f8",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "INCONNU",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1 (BV)",
    "source_location": "Voie 1 (BV) / Souterrain",
    "state": "UNKNOWN"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:b0deb031-4477-4b09-ab27-f2e21f1d3d76",
+   "id": "sncf_lift_status@55f3a45044df:b0deb031-4477-4b09-ab27-f2e21f1d3d76",
    "lift_id": "b0deb031-4477-4b09-ab27-f2e21f1d3d76",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6497071c-0c73-4810-83a1-9e92a1886b7b",
+   "id": "sncf_lift_status@55f3a45044df:6497071c-0c73-4810-83a1-9e92a1886b7b",
    "lift_id": "6497071c-0c73-4810-83a1-9e92a1886b7b",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:66457089-3673-4e37-bdf6-b4232334627a",
+   "id": "sncf_lift_status@55f3a45044df:66457089-3673-4e37-bdf6-b4232334627a",
    "lift_id": "66457089-3673-4e37-bdf6-b4232334627a",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1 (BV)",
    "source_location": "Voie 1 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:20539cc6-2d00-4f11-815d-4164c33e9b27",
+   "id": "sncf_lift_status@55f3a45044df:20539cc6-2d00-4f11-815d-4164c33e9b27",
    "lift_id": "20539cc6-2d00-4f11-815d-4164c33e9b27",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie B",
    "source_location": "Esplanade / Voie B / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:2662b7bf-74a2-4659-8213-00bb0ae48d47",
+   "id": "sncf_lift_status@55f3a45044df:2662b7bf-74a2-4659-8213-00bb0ae48d47",
    "lift_id": "2662b7bf-74a2-4659-8213-00bb0ae48d47",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:4a42e8e4-ae43-42c0-943a-d80c477ec7b8",
+   "id": "sncf_lift_status@55f3a45044df:4a42e8e4-ae43-42c0-943a-d80c477ec7b8",
    "lift_id": "4a42e8e4-ae43-42c0-943a-d80c477ec7b8",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Hall et Commerces / Parkings",
    "source_location": "Parkings / Hall et Commerces / Souterrain",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7b110cbb-ec38-4b28-a55d-fd92ae72435e",
+   "id": "sncf_lift_status@55f3a45044df:7b110cbb-ec38-4b28-a55d-fd92ae72435e",
    "lift_id": "7b110cbb-ec38-4b28-a55d-fd92ae72435e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et A",
    "source_location": "Voies 1 et A / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:07186526-145d-40e8-a8fc-af5689a42480",
+   "id": "sncf_lift_status@55f3a45044df:07186526-145d-40e8-a8fc-af5689a42480",
    "lift_id": "07186526-145d-40e8-a8fc-af5689a42480",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et 1Bis",
    "source_location": "Voies 1 et 1bis / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:dba5a187-48b3-4afe-909f-3000be635d2c",
+   "id": "sncf_lift_status@55f3a45044df:dba5a187-48b3-4afe-909f-3000be635d2c",
    "lift_id": "dba5a187-48b3-4afe-909f-3000be635d2c",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Hall / Voie 2",
    "source_location": "Voie 2 / Hall / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:42cb0997-f3a4-4c83-837d-b4c2ed355343",
+   "id": "sncf_lift_status@55f3a45044df:42cb0997-f3a4-4c83-837d-b4c2ed355343",
    "lift_id": "42cb0997-f3a4-4c83-837d-b4c2ed355343",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur -  Souterrain / Voie A",
    "source_location": "Voie A / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:5621d84b-4851-4846-80b7-dfc18a38e74d",
+   "id": "sncf_lift_status@55f3a45044df:5621d84b-4851-4846-80b7-dfc18a38e74d",
    "lift_id": "5621d84b-4851-4846-80b7-dfc18a38e74d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur -  Souterrain / Voie B (BV)",
    "source_location": "Voie B (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
+   "id": "sncf_lift_status@55f3a45044df:07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
    "lift_id": "07e48091-6e7b-46c9-9ee3-e8fbe7a91d51",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:ad2e1150-dddf-47ad-b3d7-23bcbe7a79a1",
+   "id": "sncf_lift_status@55f3a45044df:ad2e1150-dddf-47ad-b3d7-23bcbe7a79a1",
    "lift_id": "ad2e1150-dddf-47ad-b3d7-23bcbe7a79a1",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 1 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7a1e2975-ab5f-4df0-a480-705a8ac59a39",
+   "id": "sncf_lift_status@55f3a45044df:7a1e2975-ab5f-4df0-a480-705a8ac59a39",
    "lift_id": "7a1e2975-ab5f-4df0-a480-705a8ac59a39",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies D et E / Passerelle",
    "source_location": "Passerelle / Voies D et E",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7c7d834c-9f35-45a8-8e96-52745dcf46eb",
+   "id": "sncf_lift_status@55f3a45044df:7c7d834c-9f35-45a8-8e96-52745dcf46eb",
    "lift_id": "7c7d834c-9f35-45a8-8e96-52745dcf46eb",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies B et C / Passerelle",
    "source_location": "Passerelle / Voies B et C",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:9491b797-d4d0-4f0a-aa6f-09bc330aecbe",
+   "id": "sncf_lift_status@55f3a45044df:9491b797-d4d0-4f0a-aa6f-09bc330aecbe",
    "lift_id": "9491b797-d4d0-4f0a-aa6f-09bc330aecbe",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies F et G / Passerelle",
    "source_location": "Passerelle / Voies F et G",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:975f7b27-c3fd-4fba-8e6e-45a1a2a538ad",
+   "id": "sncf_lift_status@55f3a45044df:975f7b27-c3fd-4fba-8e6e-45a1a2a538ad",
    "lift_id": "975f7b27-c3fd-4fba-8e6e-45a1a2a538ad",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie A (BV) / Passerelle",
    "source_location": "Passerelle / Voie A",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:c5786b26-b815-443a-8854-2c9a5e6d3613",
+   "id": "sncf_lift_status@55f3a45044df:c5786b26-b815-443a-8854-2c9a5e6d3613",
    "lift_id": "c5786b26-b815-443a-8854-2c9a5e6d3613",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Hall / Voie 2",
    "source_location": "Voie 2 / Hall",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:1b03c943-33c6-40a4-a9c0-7791a369f744",
+   "id": "sncf_lift_status@55f3a45044df:1b03c943-33c6-40a4-a9c0-7791a369f744",
    "lift_id": "1b03c943-33c6-40a4-a9c0-7791a369f744",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Passage souterrain / Voie 2 (Coté mer)",
    "source_location": "Voie 2 / Passage souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:aa9cfdb0-ae31-4444-bb56-5a151f97899c",
+   "id": "sncf_lift_status@55f3a45044df:aa9cfdb0-ae31-4444-bb56-5a151f97899c",
    "lift_id": "aa9cfdb0-ae31-4444-bb56-5a151f97899c",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Passage souterrain / Voie 1 (Côté bureau de vente)",
    "source_location": "Voie 1 / Passage souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:03648962-256a-42cd-b553-a03ee47c29e0",
+   "id": "sncf_lift_status@55f3a45044df:03648962-256a-42cd-b553-a03ee47c29e0",
    "lift_id": "03648962-256a-42cd-b553-a03ee47c29e0",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1 (BV)",
    "source_location": "Voie 1 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:cb50c261-57a0-4a88-8b2b-4150e059fcda",
+   "id": "sncf_lift_status@55f3a45044df:cb50c261-57a0-4a88-8b2b-4150e059fcda",
    "lift_id": "cb50c261-57a0-4a88-8b2b-4150e059fcda",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:5ce28bdc-d385-4a4e-b408-ce8ceff77194",
+   "id": "sncf_lift_status@55f3a45044df:5ce28bdc-d385-4a4e-b408-ce8ceff77194",
    "lift_id": "5ce28bdc-d385-4a4e-b408-ce8ceff77194",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies A et B / Passerelle",
    "source_location": "Passerelle / Voies A et B",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
+   "id": "sncf_lift_status@55f3a45044df:6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
    "lift_id": "6a6abfd9-ba9a-48ea-b8c1-9d566a36df83",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie E (BV) / Passerelle",
    "source_location": "Passerelle / Voie E",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:77f61e85-59a9-4083-a555-cfd54b9436c2",
+   "id": "sncf_lift_status@55f3a45044df:77f61e85-59a9-4083-a555-cfd54b9436c2",
    "lift_id": "77f61e85-59a9-4083-a555-cfd54b9436c2",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies C et D / Passerelle",
    "source_location": "Passerelle / Voies C et D",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
+   "id": "sncf_lift_status@55f3a45044df:4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
    "lift_id": "4e0c1a32-1cb3-4c95-a4c6-79f109c20dc4",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Hall A / Passerelle",
    "source_location": "Passerelle / Hall A",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7a1eb7ff-a7f7-49f9-81f8-346f0773e6e6",
+   "id": "sncf_lift_status@55f3a45044df:7a1eb7ff-a7f7-49f9-81f8-346f0773e6e6",
    "lift_id": "7a1eb7ff-a7f7-49f9-81f8-346f0773e6e6",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès RD9 côté Sud / Hall A / Mezzanine",
    "source_location": "Mezzanine / Hall A / Accès RD9 côté Sud",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
+   "id": "sncf_lift_status@55f3a45044df:c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
    "lift_id": "c96a9b26-c1e7-4778-bffe-b2f925a1cdbc",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès RD9 côté Nord / Hall A / Mezzanine",
    "source_location": "Mezzanine / Hall A / Accès RD9 côté Nord",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:e40739b1-3f5f-4606-8ab4-5732e3145f82",
+   "id": "sncf_lift_status@55f3a45044df:e40739b1-3f5f-4606-8ab4-5732e3145f82",
    "lift_id": "e40739b1-3f5f-4606-8ab4-5732e3145f82",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 3 / Mezzanine Hall B / Passerelle",
    "source_location": "Passerelle / Mezzanine Hall B / Voie 3",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:430a3731-974d-46c6-b1f8-6a3b98ca30d2",
+   "id": "sncf_lift_status@55f3a45044df:430a3731-974d-46c6-b1f8-6a3b98ca30d2",
    "lift_id": "430a3731-974d-46c6-b1f8-6a3b98ca30d2",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "KO",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et 1 bis",
    "source_location": "Voies 1 et 1 bis / Souterrain",
-   "state": "AVAILABLE"
+   "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
+   "id": "sncf_lift_status@55f3a45044df:6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
    "lift_id": "6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "KO",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 bis (BV)",
    "source_location": "Voie 2 bis (BV) / Souterrain",
-   "state": "AVAILABLE"
+   "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:3077ea73-6000-4a4c-904a-9c62572f932e",
+   "id": "sncf_lift_status@55f3a45044df:3077ea73-6000-4a4c-904a-9c62572f932e",
    "lift_id": "3077ea73-6000-4a4c-904a-9c62572f932e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie E (BV) / passerelle",
    "source_location": "Passerelle / Voie E",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7dec293c-914c-403b-8690-cc98be38cb69",
+   "id": "sncf_lift_status@55f3a45044df:7dec293c-914c-403b-8690-cc98be38cb69",
    "lift_id": "7dec293c-914c-403b-8690-cc98be38cb69",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies C et D / Passerelle",
    "source_location": "Passerelle / Voies D et C",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:e697db17-d3ac-437b-b14a-59eaef0cabad",
+   "id": "sncf_lift_status@55f3a45044df:e697db17-d3ac-437b-b14a-59eaef0cabad",
    "lift_id": "e697db17-d3ac-437b-b14a-59eaef0cabad",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Parking / Passerelle",
    "source_location": "Passerelle / Parking",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:e861c2d1-ca01-4c52-a794-da467133d4a4",
+   "id": "sncf_lift_status@55f3a45044df:e861c2d1-ca01-4c52-a794-da467133d4a4",
    "lift_id": "e861c2d1-ca01-4c52-a794-da467133d4a4",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie B / Passerelle",
    "source_location": "Passerelle / Voie B",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:9f638874-670e-4881-9699-b1b241084c97",
+   "id": "sncf_lift_status@55f3a45044df:9f638874-670e-4881-9699-b1b241084c97",
    "lift_id": "9f638874-670e-4881-9699-b1b241084c97",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies A et B",
    "source_location": "Voies A et B / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:9089e62d-7eed-491c-8f2a-9b76e23effa0",
+   "id": "sncf_lift_status@55f3a45044df:9089e62d-7eed-491c-8f2a-9b76e23effa0",
    "lift_id": "9089e62d-7eed-491c-8f2a-9b76e23effa0",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès Gare / Passerelle",
    "source_location": "Passerelle / Accès Gare",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:cf1519f8-d1d5-4baf-b898-9896c8511516",
+   "id": "sncf_lift_status@55f3a45044df:cf1519f8-d1d5-4baf-b898-9896c8511516",
    "lift_id": "cf1519f8-d1d5-4baf-b898-9896c8511516",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies A et B / Passerelle",
    "source_location": "Passerelle / Voies A et B",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:124a19b5-6cfd-4518-a322-b65cff5d8275",
+   "id": "sncf_lift_status@55f3a45044df:124a19b5-6cfd-4518-a322-b65cff5d8275",
    "lift_id": "124a19b5-6cfd-4518-a322-b65cff5d8275",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
-   "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
-   "source_location": "Passerelle / Voie 1",
-   "state": "AVAILABLE"
-  },
-  {
-   "id": "sncf_lift_status@198cf28b7627:a24952c9-f005-4f43-ad62-60f8e563097d",
-   "lift_id": "a24952c9-f005-4f43-ad62-60f8e563097d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
-   "source_label": "Ascenseur - Voie 2 / Passerelle",
-   "source_location": "Passerelle / Voie 2",
-   "state": "AVAILABLE"
-  },
-  {
-   "id": "sncf_lift_status@198cf28b7627:507efaf0-9e0a-4104-9dc3-d2e7301a719d",
-   "lift_id": "507efaf0-9e0a-4104-9dc3-d2e7301a719d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
-   "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
-   "source_location": "Passerelle / Voie 1",
-   "state": "AVAILABLE"
-  },
-  {
-   "id": "sncf_lift_status@198cf28b7627:c4b63a5f-ce1c-403e-85fb-6f05dc3da8b4",
-   "lift_id": "c4b63a5f-ce1c-403e-85fb-6f05dc3da8b4",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
+   "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
+   "source_location": "Passerelle / Voie 1",
+   "state": "UNAVAILABLE"
+  },
+  {
+   "id": "sncf_lift_status@55f3a45044df:a24952c9-f005-4f43-ad62-60f8e563097d",
+   "lift_id": "a24952c9-f005-4f43-ad62-60f8e563097d",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "KO",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:84ea67a7-65a9-4cf7-8f61-3cb4daacf40f",
-   "lift_id": "84ea67a7-65a9-4cf7-8f61-3cb4daacf40f",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "id": "sncf_lift_status@55f3a45044df:507efaf0-9e0a-4104-9dc3-d2e7301a719d",
+   "lift_id": "507efaf0-9e0a-4104-9dc3-d2e7301a719d",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
+   "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
+   "source_location": "Passerelle / Voie 1",
+   "state": "AVAILABLE"
+  },
+  {
+   "id": "sncf_lift_status@55f3a45044df:c4b63a5f-ce1c-403e-85fb-6f05dc3da8b4",
+   "lift_id": "c4b63a5f-ce1c-403e-85fb-6f05dc3da8b4",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "KO",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
+   "source_label": "Ascenseur - Voie 2 / Passerelle",
+   "source_location": "Passerelle / Voie 2",
+   "state": "UNAVAILABLE"
+  },
+  {
+   "id": "sncf_lift_status@55f3a45044df:84ea67a7-65a9-4cf7-8f61-3cb4daacf40f",
+   "lift_id": "84ea67a7-65a9-4cf7-8f61-3cb4daacf40f",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "OK",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 1 et B / Passerelle",
    "source_location": "Passerelle / Voies 1 et B",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:afaade84-c879-42ae-b967-a7f486648c98",
+   "id": "sncf_lift_status@55f3a45044df:afaade84-c879-42ae-b967-a7f486648c98",
    "lift_id": "afaade84-c879-42ae-b967-a7f486648c98",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies C et D / Passerelle",
    "source_location": "Passerelle / Voies C et D",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:b534f11d-1bc1-4e2e-bbb5-1bbad4f7e8ed",
+   "id": "sncf_lift_status@55f3a45044df:b534f11d-1bc1-4e2e-bbb5-1bbad4f7e8ed",
    "lift_id": "b534f11d-1bc1-4e2e-bbb5-1bbad4f7e8ed",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès ville côté Nord / Passerelle",
    "source_location": "Passerelle / Accès ville côté Nord",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:bc4770ed-57c7-44cd-b648-e20080e6547b",
+   "id": "sncf_lift_status@55f3a45044df:bc4770ed-57c7-44cd-b648-e20080e6547b",
    "lift_id": "bc4770ed-57c7-44cd-b648-e20080e6547b",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 Accès Parvis et Hall / Passerelle",
    "source_location": "Passerelle / Voie 2 Accès Parvis et Hall",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:14154940-bd02-4513-bb99-385525b0bfce",
+   "id": "sncf_lift_status@55f3a45044df:14154940-bd02-4513-bb99-385525b0bfce",
    "lift_id": "14154940-bd02-4513-bb99-385525b0bfce",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 3 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 3",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:4fef4091-5cfb-415e-b4c2-823b9fe07c29",
+   "id": "sncf_lift_status@55f3a45044df:4fef4091-5cfb-415e-b4c2-823b9fe07c29",
    "lift_id": "4fef4091-5cfb-415e-b4c2-823b9fe07c29",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:66590fcf-8e67-4881-b98c-ddb42ec69495",
+   "id": "sncf_lift_status@55f3a45044df:66590fcf-8e67-4881-b98c-ddb42ec69495",
    "lift_id": "66590fcf-8e67-4881-b98c-ddb42ec69495",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6260c5a1-0775-43f4-81a3-e63775ac4a16",
+   "id": "sncf_lift_status@55f3a45044df:6260c5a1-0775-43f4-81a3-e63775ac4a16",
    "lift_id": "6260c5a1-0775-43f4-81a3-e63775ac4a16",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:ec161976-eb51-4a22-91c8-e4006aa63b00",
+   "id": "sncf_lift_status@55f3a45044df:ec161976-eb51-4a22-91c8-e4006aa63b00",
    "lift_id": "ec161976-eb51-4a22-91c8-e4006aa63b00",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès Gare / Passerelle",
    "source_location": "Passerelle / Accès Gare",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:f4f7311d-25ce-479e-bd5c-1451cb0136e5",
+   "id": "sncf_lift_status@55f3a45044df:f4f7311d-25ce-479e-bd5c-1451cb0136e5",
    "lift_id": "f4f7311d-25ce-479e-bd5c-1451cb0136e5",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 2 et 4 / Passerelle",
    "source_location": "Passerelle / Voies 2 et 4",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:b68a7f5d-5517-4779-89f6-44f5bcd25a17",
+   "id": "sncf_lift_status@55f3a45044df:b68a7f5d-5517-4779-89f6-44f5bcd25a17",
    "lift_id": "b68a7f5d-5517-4779-89f6-44f5bcd25a17",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 1 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:b9d050dc-76af-41af-b30c-221beff99535",
+   "id": "sncf_lift_status@55f3a45044df:b9d050dc-76af-41af-b30c-221beff99535",
    "lift_id": "b9d050dc-76af-41af-b30c-221beff99535",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
+   "id": "sncf_lift_status@55f3a45044df:0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
    "lift_id": "0e18d44d-db64-4cf2-b6c5-6df29728a9d9",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:66c0967a-02cc-4a1a-b72c-beeec8eadba5",
+   "id": "sncf_lift_status@55f3a45044df:66c0967a-02cc-4a1a-b72c-beeec8eadba5",
    "lift_id": "66c0967a-02cc-4a1a-b72c-beeec8eadba5",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "id": "sncf_lift_status@55f3a45044df:02712160-6bfa-4e69-bef4-a9cc6a0c658b",
    "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie B / Passerelle",
    "source_location": "Passerelle / Voie B",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:f6ab887b-46fe-44bb-b066-ec97207fe2ad",
+   "id": "sncf_lift_status@55f3a45044df:f6ab887b-46fe-44bb-b066-ec97207fe2ad",
    "lift_id": "f6ab887b-46fe-44bb-b066-ec97207fe2ad",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie A (BV) / Passerelle",
    "source_location": "Passerelle / Voie A",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:083f5e87-57c8-4a11-9904-987886c2faea",
+   "id": "sncf_lift_status@55f3a45044df:083f5e87-57c8-4a11-9904-987886c2faea",
    "lift_id": "083f5e87-57c8-4a11-9904-987886c2faea",
-   "observed_at": "2026-11-22T18:30:14+00:00",
-   "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "observed_at": "2026-11-22T23:30:13+00:00",
+   "raw_state": "KO",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie A (BV) / Passerelle",
    "source_location": "Passerelle / Voie A",
-   "state": "AVAILABLE"
+   "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
+   "id": "sncf_lift_status@55f3a45044df:caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
    "lift_id": "caf8e0bc-40b9-48fa-9097-2b17e6b15ca1",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie B / Passerelle",
    "source_location": "Passerelle / Voie B",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:5c563e34-f025-47b3-a723-fa711e6b6a70",
+   "id": "sncf_lift_status@55f3a45044df:5c563e34-f025-47b3-a723-fa711e6b6a70",
    "lift_id": "5c563e34-f025-47b3-a723-fa711e6b6a70",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Parking P1 / Accès Bd Nédélec / Hall côté gare",
    "source_location": "Hall côté gare / Accès Bd Nédélec / Parking P1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:76c9d03d-9364-4fa8-8fce-0c242ed762b4",
+   "id": "sncf_lift_status@55f3a45044df:76c9d03d-9364-4fa8-8fce-0c242ed762b4",
    "lift_id": "76c9d03d-9364-4fa8-8fce-0c242ed762b4",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Parking P1 / Accès Bd Nédélec / Hall côté Place Victor Hugo",
    "source_location": "Hall côté Place Victor Hugo / Accès Bd Nédélec / Parking P1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
+   "id": "sncf_lift_status@55f3a45044df:a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
    "lift_id": "a193d15e-2d32-4191-a2a5-4e0f2ac31c5e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès Métro et Bd Bourdet / Hall historique",
    "source_location": "Hall historique / Accès Métro et Bd Bourdet",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:403f69e2-58cc-4b93-bf1d-f3bc6fdc9725",
+   "id": "sncf_lift_status@55f3a45044df:403f69e2-58cc-4b93-bf1d-f3bc6fdc9725",
    "lift_id": "403f69e2-58cc-4b93-bf1d-f3bc6fdc9725",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 2 et 3",
    "source_location": "Voies 2 et 3 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:473a99c7-8659-4b78-b009-6ca69174c937",
+   "id": "sncf_lift_status@55f3a45044df:473a99c7-8659-4b78-b009-6ca69174c937",
    "lift_id": "473a99c7-8659-4b78-b009-6ca69174c937",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 4 (BV)",
    "source_location": "Voie 4 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:a346c44d-734f-4d94-acc8-255485a81fe8",
+   "id": "sncf_lift_status@55f3a45044df:a346c44d-734f-4d94-acc8-255485a81fe8",
    "lift_id": "a346c44d-734f-4d94-acc8-255485a81fe8",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1",
    "source_location": "Voie 1 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
+   "id": "sncf_lift_status@55f3a45044df:028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
    "lift_id": "028d234f-b2b8-4ea5-be91-8ba9bff20bcc",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 3 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 3 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:354ac0c5-224f-4760-b44b-8794cc5e2db7",
+   "id": "sncf_lift_status@55f3a45044df:354ac0c5-224f-4760-b44b-8794cc5e2db7",
    "lift_id": "354ac0c5-224f-4760-b44b-8794cc5e2db7",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:4e45515b-fc43-42b1-994f-8a98ebd528b1",
+   "id": "sncf_lift_status@55f3a45044df:4e45515b-fc43-42b1-994f-8a98ebd528b1",
    "lift_id": "4e45515b-fc43-42b1-994f-8a98ebd528b1",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "INCONNU",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "UNKNOWN"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:3817e70e-b161-4e0b-85c3-d06cefa88df3",
+   "id": "sncf_lift_status@55f3a45044df:3817e70e-b161-4e0b-85c3-d06cefa88df3",
    "lift_id": "3817e70e-b161-4e0b-85c3-d06cefa88df3",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:bfb840c2-fb89-4bc9-9c15-e2ff5bed45ba",
+   "id": "sncf_lift_status@55f3a45044df:bfb840c2-fb89-4bc9-9c15-e2ff5bed45ba",
    "lift_id": "bfb840c2-fb89-4bc9-9c15-e2ff5bed45ba",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 2 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:19e85bda-5453-4a0e-9be9-673c9dd1494d",
+   "id": "sncf_lift_status@55f3a45044df:19e85bda-5453-4a0e-9be9-673c9dd1494d",
    "lift_id": "19e85bda-5453-4a0e-9be9-673c9dd1494d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "INCONNU",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1",
    "source_location": "Voie 1 / Souterrain",
    "state": "UNKNOWN"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:ea0f0eb8-a2f1-4ec8-85d4-3a7240c52236",
+   "id": "sncf_lift_status@55f3a45044df:ea0f0eb8-a2f1-4ec8-85d4-3a7240c52236",
    "lift_id": "ea0f0eb8-a2f1-4ec8-85d4-3a7240c52236",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 (BV)",
    "source_location": "Voie 2 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:10a9b055-143f-4b12-abea-fbd51d53a0bd",
+   "id": "sncf_lift_status@55f3a45044df:10a9b055-143f-4b12-abea-fbd51d53a0bd",
    "lift_id": "10a9b055-143f-4b12-abea-fbd51d53a0bd",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies A et B",
    "source_location": "Voies A et B / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:07607303-1738-4c7e-8323-4070f79e71ea",
+   "id": "sncf_lift_status@55f3a45044df:07607303-1738-4c7e-8323-4070f79e71ea",
    "lift_id": "07607303-1738-4c7e-8323-4070f79e71ea",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 1 (BV)",
    "source_location": "Voie 1 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:232d1b6f-d3fe-48b4-8247-899faaf46eee",
+   "id": "sncf_lift_status@55f3a45044df:232d1b6f-d3fe-48b4-8247-899faaf46eee",
    "lift_id": "232d1b6f-d3fe-48b4-8247-899faaf46eee",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 2 et A",
    "source_location": "Voies 2 et A / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6dab3d67-1c92-41c3-82cd-f806955e2847",
+   "id": "sncf_lift_status@55f3a45044df:6dab3d67-1c92-41c3-82cd-f806955e2847",
    "lift_id": "6dab3d67-1c92-41c3-82cd-f806955e2847",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:8fefbb43-36ff-4cf2-9ee0-75777f1cd98e",
+   "id": "sncf_lift_status@55f3a45044df:8fefbb43-36ff-4cf2-9ee0-75777f1cd98e",
    "lift_id": "8fefbb43-36ff-4cf2-9ee0-75777f1cd98e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 1 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:35aca52d-a8a0-4a0b-9ab8-078122d4a430",
+   "id": "sncf_lift_status@55f3a45044df:35aca52d-a8a0-4a0b-9ab8-078122d4a430",
    "lift_id": "35aca52d-a8a0-4a0b-9ab8-078122d4a430",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 (BV) / Passerelle",
    "source_location": "Passerelle / VoIe 2 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:970f4e96-45a3-48bf-8501-f99ea876ee14",
+   "id": "sncf_lift_status@55f3a45044df:970f4e96-45a3-48bf-8501-f99ea876ee14",
    "lift_id": "970f4e96-45a3-48bf-8501-f99ea876ee14",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:60a1fdbf-c339-485a-a5c2-fbd5786b73a5",
+   "id": "sncf_lift_status@55f3a45044df:60a1fdbf-c339-485a-a5c2-fbd5786b73a5",
    "lift_id": "60a1fdbf-c339-485a-a5c2-fbd5786b73a5",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 1 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:75c3b704-a684-4f28-86c3-4cadf934df19",
+   "id": "sncf_lift_status@55f3a45044df:75c3b704-a684-4f28-86c3-4cadf934df19",
    "lift_id": "75c3b704-a684-4f28-86c3-4cadf934df19",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:444dba5f-fa60-4b60-ba79-c1dbac17e890",
+   "id": "sncf_lift_status@55f3a45044df:444dba5f-fa60-4b60-ba79-c1dbac17e890",
    "lift_id": "444dba5f-fa60-4b60-ba79-c1dbac17e890",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 2 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7664c0ee-6187-449a-930e-b458fe4d3a34",
+   "id": "sncf_lift_status@55f3a45044df:7664c0ee-6187-449a-930e-b458fe4d3a34",
    "lift_id": "7664c0ee-6187-449a-930e-b458fe4d3a34",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 1 et A / Passerelle",
    "source_location": "Passerelle / Voies 1 et A",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:6fe47423-4a2c-4b78-be18-2d42290f67d0",
+   "id": "sncf_lift_status@55f3a45044df:6fe47423-4a2c-4b78-be18-2d42290f67d0",
    "lift_id": "6fe47423-4a2c-4b78-be18-2d42290f67d0",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et 1bis",
    "source_location": "Voies 1 et 1bis / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:ca475dc4-9a64-46c9-a2ed-af6badfb3f22",
+   "id": "sncf_lift_status@55f3a45044df:ca475dc4-9a64-46c9-a2ed-af6badfb3f22",
    "lift_id": "ca475dc4-9a64-46c9-a2ed-af6badfb3f22",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 (BV)",
    "source_location": "Voie 2 / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:21032f57-19d4-423a-a6f2-33d09ad64353",
+   "id": "sncf_lift_status@55f3a45044df:21032f57-19d4-423a-a6f2-33d09ad64353",
    "lift_id": "21032f57-19d4-423a-a6f2-33d09ad64353",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies B et C",
    "source_location": "Voies B et C / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:59954204-f797-4052-abd5-ba77850b45ad",
+   "id": "sncf_lift_status@55f3a45044df:59954204-f797-4052-abd5-ba77850b45ad",
    "lift_id": "59954204-f797-4052-abd5-ba77850b45ad",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies D et E",
    "source_location": "Voies D et E / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
+   "id": "sncf_lift_status@55f3a45044df:c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
    "lift_id": "c46027c7-0bb4-4cfa-88e4-91d468d8ee9d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Hall",
    "source_location": "Hall / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:5619eb30-40ff-4bc7-99a5-deb3ab3edf09",
+   "id": "sncf_lift_status@55f3a45044df:5619eb30-40ff-4bc7-99a5-deb3ab3edf09",
    "lift_id": "5619eb30-40ff-4bc7-99a5-deb3ab3edf09",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 / Passerelle",
    "source_location": "Passerelle / Voie 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:610c2df7-aff0-462b-a323-39c9fcf945c8",
+   "id": "sncf_lift_status@55f3a45044df:610c2df7-aff0-462b-a323-39c9fcf945c8",
    "lift_id": "610c2df7-aff0-462b-a323-39c9fcf945c8",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 (Entrée) / Passerelle",
    "source_location": "Passerelle / Voie 1",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:3688545c-87a7-473f-ae5d-f2a9b66dac76",
+   "id": "sncf_lift_status@55f3a45044df:3688545c-87a7-473f-ae5d-f2a9b66dac76",
    "lift_id": "3688545c-87a7-473f-ae5d-f2a9b66dac76",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Hall Départs côté Paris Porte N / Mezzanine Voie 4",
    "source_location": "Mezzanine Voie 4 / Hall Départs côté Paris Porte N",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:7e78fd47-f7eb-4491-819a-a65d5cae36f0",
+   "id": "sncf_lift_status@55f3a45044df:7e78fd47-f7eb-4491-819a-a65d5cae36f0",
    "lift_id": "7e78fd47-f7eb-4491-819a-a65d5cae36f0",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Hall Départs côté Marseille Porte S / Mezzanine Voie 4",
    "source_location": "Mezzanine Voie 4 / Hall Départs côté Marseille Porte S",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:1bf60dad-dd84-4451-b8de-df8e55a343b7",
+   "id": "sncf_lift_status@55f3a45044df:1bf60dad-dd84-4451-b8de-df8e55a343b7",
    "lift_id": "1bf60dad-dd84-4451-b8de-df8e55a343b7",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et C",
    "source_location": "Voies 1 et C / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:a992c4a1-5882-4e20-a9ad-b7f51d89fb24",
+   "id": "sncf_lift_status@55f3a45044df:a992c4a1-5882-4e20-a9ad-b7f51d89fb24",
    "lift_id": "a992c4a1-5882-4e20-a9ad-b7f51d89fb24",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Hall",
    "source_location": "Hall / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:b922c498-3866-4299-898c-3ccc4b76aa0d",
+   "id": "sncf_lift_status@55f3a45044df:b922c498-3866-4299-898c-3ccc4b76aa0d",
    "lift_id": "b922c498-3866-4299-898c-3ccc4b76aa0d",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies A et B",
    "source_location": "Voies A et B / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:30b3f9ef-17ad-4189-ad61-60df87c20a71",
+   "id": "sncf_lift_status@55f3a45044df:30b3f9ef-17ad-4189-ad61-60df87c20a71",
    "lift_id": "30b3f9ef-17ad-4189-ad61-60df87c20a71",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 1 et 1bis / Passerelle",
    "source_location": "Passerelle / Voies 1 et 1bis",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:bf0167f8-c704-46c0-b3cc-8563cb5ef8e4",
+   "id": "sncf_lift_status@55f3a45044df:bf0167f8-c704-46c0-b3cc-8563cb5ef8e4",
    "lift_id": "bf0167f8-c704-46c0-b3cc-8563cb5ef8e4",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès Gare / Passerelle",
    "source_location": "Passerelle / Accès Gare",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:c295cd37-bc59-42b7-883d-4a2828b8c0d1",
+   "id": "sncf_lift_status@55f3a45044df:c295cd37-bc59-42b7-883d-4a2828b8c0d1",
    "lift_id": "c295cd37-bc59-42b7-883d-4a2828b8c0d1",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 2 et 2bis / Passerelle",
    "source_location": "Passerelle / Voies 2 et 2bis",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:452563aa-4e9a-4a7a-bec9-3b63c41d124c",
+   "id": "sncf_lift_status@55f3a45044df:452563aa-4e9a-4a7a-bec9-3b63c41d124c",
    "lift_id": "452563aa-4e9a-4a7a-bec9-3b63c41d124c",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voies 1 et 2 / Passerelle",
    "source_location": "Passerelle / Voie 1 et 2",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:fb3fbe08-d826-41f5-a3e8-e7184940a57a",
+   "id": "sncf_lift_status@55f3a45044df:fb3fbe08-d826-41f5-a3e8-e7184940a57a",
    "lift_id": "fb3fbe08-d826-41f5-a3e8-e7184940a57a",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "KO",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Accès Gare / Passerelle",
    "source_location": "Passerelle / Quai Accès Gare",
    "state": "UNAVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:759b8d44-8cf5-4c12-a393-346268cddbd5",
+   "id": "sncf_lift_status@55f3a45044df:759b8d44-8cf5-4c12-a393-346268cddbd5",
    "lift_id": "759b8d44-8cf5-4c12-a393-346268cddbd5",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voies 1 et 1Bis",
    "source_location": "Voies 1 et 1Bis / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:ba5b6a6d-7aa6-414b-8b86-e73fe7e71666",
+   "id": "sncf_lift_status@55f3a45044df:ba5b6a6d-7aa6-414b-8b86-e73fe7e71666",
    "lift_id": "ba5b6a6d-7aa6-414b-8b86-e73fe7e71666",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Souterrain / Voie 2 (BV)",
    "source_location": "Voie 2 (BV) / Souterrain",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:8c7e6085-41e6-4216-ae93-885e6586f3c2",
+   "id": "sncf_lift_status@55f3a45044df:8c7e6085-41e6-4216-ae93-885e6586f3c2",
    "lift_id": "8c7e6085-41e6-4216-ae93-885e6586f3c2",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 2 (BV) / Passerelle",
    "source_location": "Passerelle / Voie 2 (BV)",
    "state": "AVAILABLE"
   },
   {
-   "id": "sncf_lift_status@198cf28b7627:c87225ab-2d41-487c-9ed7-d5435200b28e",
+   "id": "sncf_lift_status@55f3a45044df:c87225ab-2d41-487c-9ed7-d5435200b28e",
    "lift_id": "c87225ab-2d41-487c-9ed7-d5435200b28e",
-   "observed_at": "2026-11-22T18:30:14+00:00",
+   "observed_at": "2026-11-22T23:30:13+00:00",
    "raw_state": "OK",
-   "snapshot_id": "sncf_lift_status@198cf28b7627",
+   "snapshot_id": "sncf_lift_status@55f3a45044df",
    "source_label": "Ascenseur - Voie 1 et 1Bis / Passerelle",
    "source_location": "Passerelle / Voies 1 et 1Bis",
    "state": "AVAILABLE"
@@ -15603,10 +15595,6 @@
    "zone_id": "OCE87765008"
   },
   {
-   "line_id": "FR:Line::11F44E86-C3F3-43CF-BCDD-AD1B4472E63D:",
-   "zone_id": "OCE87765008"
-  },
-  {
    "line_id": "FR:Line::1C9BA26B-7D92-4D0E-86EF-895FB80E10BF:",
    "zone_id": "OCE87765008"
   },
@@ -15776,10 +15764,6 @@
   },
   {
    "line_id": "FR:Line::0202671B-7107-429E-A37B-473C55E0254C:",
-   "zone_id": "OCE87765354"
-  },
-  {
-   "line_id": "FR:Line::11F44E86-C3F3-43CF-BCDD-AD1B4472E63D:",
    "zone_id": "OCE87765354"
   },
   {

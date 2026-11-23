@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-22T18:32:09+00:00",
+"observed_at": "2026-11-23T00:17:56+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,22 +8,22 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 27843544,
-"sha256": "2bf99e2a5471b15db29ac1f73f4d9d45f335e4c55ac6d14d7e185a0fc08330c4",
-"retrieved_at": "2026-11-22T18:32:09+00:00",
+"bytes": 27317594,
+"sha256": "ba3096e1d6b41f298e2ff8b7085671cdfa8f645fda38c28e503ecd303b647102",
+"retrieved_at": "2026-11-23T00:17:56+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-22T19:20:17",
+"feed_non_lift_last_update": "2026-11-23T01:14:31",
 "counts": {
 "lifts": 356,
 "messages": 1045,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
-"affects_RAIL_STATION": 470,
+"affects_RAIL_STATION": 469,
 "operator_RATP": 89,
 "operator_SNCF_GC": 264,
 "operator_UNKNOWN": 3,
@@ -2624,12 +2624,6 @@
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:472110",
-"line_id": "IDFM:C01748",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
 "platform_id": "IDFM:monomodalStopPlace:58566",
 "line_id": "IDFM:C01739",
 "derivation": "RAIL_STATION",
@@ -2693,12 +2687,6 @@
 "affects": [
 {
 "platform_id": "IDFM:471473",
-"line_id": "IDFM:C01857",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
-"platform_id": "IDFM:472718",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -7946,6 +7934,12 @@
 "announced_until": null,
 "placement": "PLACED",
 "affects": [
+{
+"platform_id": "IDFM:470737",
+"line_id": "IDFM:C02370",
+"derivation": "RAIL_STATION",
+"line_derivation": "DIRECTION_NAMES_LINE"
+},
 {
 "platform_id": "IDFM:471389",
 "line_id": "IDFM:C01744",
