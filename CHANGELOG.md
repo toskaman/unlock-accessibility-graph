@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.1 — 2026-11-24
+- **Survive the 24 Nov 2026 SNCF NeTEx layout change.** StopPlace ids went from `FR:<INSEE>:LMO:<uuid>:LOC`
+  to `FR::monomodalStopPlace:<uuid>:LOC` (no geography left) and lift equipment ids from bare uuids to
+  `SNCF-GC:LiftEquipment:<uuid>:LOC`; the live-demo builds of 24 Nov came out empty and `record` failed.
+  Lift ids are normalised back to their uuid (status join, IDFM `SAME_LIFT` and field reports untouched);
+  the département of a stop place without an INSEE code is recovered from open data (D38): national GTFS +
+  UIC + Fréquentation postcode (with a directorate consistency check that quarantines bad postcodes instead
+  of misplacing the station), falling back to IDFM GTFS + ZdC `zdcpostalregion` for Transilien/RER stops.
+  Unmatched places are dropped and counted, never guessed. Measured against the previous file's INSEE codes:
+  2,765/2,800 agree (plus one quarantined typo and one old code corrected); all regions rebuild with zero
+  lift coverage lost (Île-de-France still 401 stations, 588/588 lifts with status).
+- Old-layout files keep the previous behaviour untouched (no new reference file read).
+- Tests: 108 pytest (+12: UIC chain, DRG quarantine, ZdC fallback, unknown-is-dropped, both id layouts,
+  build pilot on new/old files, DRG table guard).
+
 ## 0.10.0 — 2026-11-17
 - **Map first.** The region map opens the page, with the headline on a navy station plate set on the map (like the
   name plates of the stations) instead of a number-and-bars block; on phones the rider's question comes first, then

@@ -47,6 +47,7 @@ STATEMENTS: list[tuple[str, str]] = [
             d.published = r.published, d.role = r.role"""),
     ("stations", """UNWIND $rows AS r MERGE (s:Station {id: r.id})
         SET s.uuid = r.uuid, s.insee = r.insee, s.name = r.name, s.lon = r.lon, s.lat = r.lat,
+            s.department = r.department, s.department_derivation = r.department_derivation,
             s.location = point({longitude: r.lon, latitude: r.lat}),
             s.transport_mode = r.transport_mode, s.stop_place_type = r.stop_place_type
         WITH s MATCH (d:Dataset {key: 'sncf_netex_accessibility'}) MERGE (s)-[:DESCRIBED_IN]->(d)"""),

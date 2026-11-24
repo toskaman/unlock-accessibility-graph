@@ -59,7 +59,8 @@ SOURCES: dict[str, Source] = {
             filename="idfm/zones-de-correspondance.csv",
             licence="Licence Ouverte v2.0 (Etalab)",
             licence_url="https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
-            role="IDFM transfer zones (ZdC) used to anchor SNCF stations in the regional stop reference",
+            role="IDFM transfer zones (ZdC) used to anchor SNCF stations in the regional stop reference; "
+                 "zdcpostalregion locates Transilien/RER stops absent from the national GTFS",
             metadata_url=f"{IDFM_API}/zones-de-correspondance",
         ),
         Source(
@@ -105,7 +106,8 @@ SOURCES: dict[str, Source] = {
             licence="Open Database License (ODbL)",
             licence_url="https://opendatacommons.org/licenses/odbl/1-0/",
             role="Passengers per station per year (2025): a weight for how many people use a station, "
-                 "not a count of wheelchair users",
+                 "not a count of wheelchair users; UIC + postcode locate NeTEx stop places in a département "
+                 "since the 2026-11-24 NeTEx carries no INSEE code",
             metadata_url=f"{SNCF_API}/frequentation-gares",
         ),
         Source(

@@ -14,39 +14,16 @@ import csv
 import functools
 import io
 import json
-import math
-import re
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
 from ..config import IDF_DEPARTEMENTS, MANIFEST_PATH, NORMALIZED_DIR, RAW_DIR
 from . import netex, spaces
+from .departments import assign_departments, haversine, name_score
 
 STATUS_MAP = {"OK": "AVAILABLE", "KO": "UNAVAILABLE", "INCONNU": "UNKNOWN"}
 ROUTE_TYPES = {"0": "TRAM", "1": "METRO", "2": "RAIL", "3": "BUS", "7": "FUNICULAR", "5": "CABLE"}
-
-
-def _haversine(lat1, lon1, lat2, lon2) -> float:
-    r = 6371008.8
-    p1, p2 = math.radians(lat1), math.radians(lat2)
-    dp, dl = p2 - p1, math.radians(lon2 - lon1)
-    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(a))
-
-
-def _name_tokens(name: str) -> set[str]:
-    n = spaces.normalize(name)
-    n = re.sub(r"[^a-z0-9 ]+", " ", n)
-    stop = {"gare", "de", "du", "des", "la", "le", "les", "d", "l", "sur", "et", "en", "rer", "sncf", "station"}
-    return {t for t in n.split() if t not in stop and len(t) > 1}
-
-
-def _name_score(a: str, b: str) -> float:
-    ta, tb = _name_tokens(a), _name_tokens(b)
-    if not ta or not tb:
-        return 0.0
-    return len(ta & tb) / len(ta | tb)
 
 
 def load_status(path: Path) -> dict[str, dict]:
@@ -128,7 +105,18 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
     q: Counter = Counter()
 
     q["netex_stop_places_total"] = len(places)
-    pilot = [p for p in places if p.insee[:2] in departements]
+    need_dept = [p for p in places if not p.insee]
+    assigned = assign_departments(need_dept, raw_dir) if need_dept else {}
+    dept_of: dict[str, tuple[str, str]] = {}
+    for p in places:
+        if p.insee:
+            dept_of[p.uuid] = (p.insee[:2], "NETEX_ID")
+            continue
+        a = assigned.get(p.uuid)
+        dept_of[p.uuid] = (a.dept, a.derivation) if a is not None else ("", "UNKNOWN")
+    for _d, der in dept_of.values():
+        q[f"stations_dept_{der.lower()}"] += 1
+    pilot = [p for p in places if dept_of[p.uuid][0] in departements]
     q["netex_stop_places_in_region"] = len(pilot)
 
     stations, quays, lifts, space_list, serves, snapshots = [], [], [], [], [], []
@@ -140,6 +128,7 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
         a = p.assessment
         stations.append({
             "id": p.id, "uuid": p.uuid, "insee": p.insee, "name": p.name, "lon": p.lon, "lat": p.lat,
+            "department": dept_of[p.uuid][0], "department_derivation": dept_of[p.uuid][1],
             "transport_mode": p.transport_mode, "stop_place_type": p.stop_place_type,
             "step_free": a.limits["StepFreeAccess"] if a else "UNKNOWN",
             "wheelchair": a.limits["WheelchairAccess"] if a else "UNKNOWN",
@@ -222,10 +211,10 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
         for st in stations:
             best = None
             for s in areas:
-                d = _haversine(st["lat"], st["lon"], float(s["stop_lat"]), float(s["stop_lon"]))
+                d = haversine(st["lat"], st["lon"], float(s["stop_lat"]), float(s["stop_lon"]))
                 if d > 800:
                     continue
-                ns = _name_score(st["name"], s["stop_name"])
+                ns = name_score(st["name"], s["stop_name"])
                 zid = zone_of(s["stop_id"])
                 ztype = zdc.get(zid, {}).get("zdctype", "") if zdc_csv else "railStation"
                 # accept: strong name agreement within 800 m, or rail zone within 250 m with some agreement
@@ -284,9 +273,14 @@ def build(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR, with_gtfs: bo
         "zones": zones, "station_zone": station_zone, "lines": lines, "zone_lines": zone_lines,
         "zones_dataset": "idfm_zones_correspondance" if zdc_csv else gtfs_key, "lines_dataset": gtfs_key,
     }
+    dept_unknown = sorted({p.name or p.uuid for p in places if dept_of[p.uuid][1] == "UNKNOWN"})
+    dept_quarantined = sorted({p.name or p.uuid for p in places if dept_of[p.uuid][1] == "QUARANTINED_DRG_MISMATCH"})
     report = {"counts": dict(sorted(q.items())), "space_roles": dict(role_counts),
               "serves_derivations": dict(der_counts), "unmatched_tokens": unmatched_tokens[:200],
-              "unmatched_token_count": len(unmatched_tokens)}
+              "unmatched_token_count": len(unmatched_tokens),
+              "dept_unknown_stations": dept_unknown[:200], "dept_unknown_station_count": len(dept_unknown),
+              "dept_quarantined_stations": dept_quarantined[:200],
+              "dept_quarantined_station_count": len(dept_quarantined)}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "graph_input.json").write_text(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=1), encoding="utf-8", newline="\n")
     (out_dir / "quality_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")

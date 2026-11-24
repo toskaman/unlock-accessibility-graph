@@ -104,6 +104,16 @@ def _assessment(e: ET.Element) -> Assessment | None:
     return Assessment(tri(_t(a, "n:MobilityImpairedAccess")), limits)
 
 
+def _lift_id(lid: str) -> str:
+    # Until 2026-11-23 the file carried bare equipment uuids; from 2026-11-24
+    # SNCF-GC:LiftEquipment:<uuid>:LOC. The uuid is what the hourly status
+    # file, the IDFM join and field reports key on, so keep returning it.
+    parts = lid.split(":")
+    if len(parts) >= 3 and parts[0] == "SNCF-GC" and parts[1] == "LiftEquipment":
+        return parts[2]
+    return lid
+
+
 def parse(path: Path) -> tuple[str | None, list[StopPlace]]:
     root = ET.parse(path).getroot()
     published = _t(root, "n:PublicationTimestamp")
@@ -111,8 +121,12 @@ def parse(path: Path) -> tuple[str | None, list[StopPlace]]:
     for sp in root.iter(f"{{{NS['n']}}}StopPlace"):
         sid = sp.get("id") or ""
         parts = sid.split(":")
-        # id layout observed: FR:<INSEE>:LMO:<uuid>:LOC
-        insee = parts[1] if len(parts) > 3 else ""
+        # id layouts observed:
+        #   until 2026-11-23: FR:<INSEE>:LMO:<uuid>:LOC
+        #   from 2026-11-24:   FR::monomodalStopPlace:<uuid>:LOC (no geography;
+        #     the département is recovered in ingest/departments.py)
+        raw_insee = parts[1] if len(parts) > 3 else ""
+        insee = raw_insee if raw_insee.isdigit() else ""
         uuid = parts[3] if len(parts) > 3 else sid
         place = StopPlace(
             id=sid, uuid=uuid, insee=insee, name=_t(sp, "n:Name"),
@@ -133,7 +147,7 @@ def parse(path: Path) -> tuple[str | None, list[StopPlace]]:
         for ep in sp.findall(".//n:EquipmentPlace", NS):
             for le in ep.findall("n:placeEquipments/n:LiftEquipment", NS):
                 place.lifts.append(Lift(
-                    id=le.get("id") or "", name=_t(le, "n:Name"), description=_t(le, "n:Description"),
+                    id=_lift_id(le.get("id") or ""), name=_t(le, "n:Name"), description=_t(le, "n:Description"),
                     status_attr=le.get("status"), depth_mm=_i(le, "n:Depth"),
                     max_load_kg=_i(le, "n:MaximumLoad"), width_mm=_i(le, "n:Width"),
                     lon=_f(ep, "n:Centroid/n:Location/n:Longitude"),
