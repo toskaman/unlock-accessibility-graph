@@ -11,7 +11,7 @@
 - [x] v0.6.0: 87 tests + fetch (all sources) + `fetch-outages` + `fetch-lifts` + build + `build-region ara` + bulletin on Windows 10
 - [x] 1:36 narrated video (station mode) public on the v0.2.0 GitHub release
 - [x] v0.8.0 / v0.8.1 / v0.9.0 pushed (agent transcript + history tab, EN/FR interface, two agents with field reports in Relate, agent replay, hourly live-demo workflow); 96 pytest + 13 e2e
-- [x] v0.10.0 / v0.10.1 pushed (map-first UI, trip sharing, repair preview, 24 Nov NeTEx layout fix); 108 pytest + 14 e2e
+- [x] v0.10.0 / v0.10.1 / v0.10.2 pushed (map-first UI, trip sharing, repair preview, 24 Nov NeTEx layout fix, fetch hardening); 112 pytest + 14 e2e
 - [x] README and docs/DEVPOST_SUBMISSION.md describe v0.10.x
 - [x] Hourly live demo running: `UNLOCK_PRIM_KEY` + `UNLOCK_IDFM_ODS_KEY` set as repository secrets (18 Nov); history observations committed 21–23 Nov; 0.10.1 re-triggered 24 Nov evening after the NeTEx breakage
 - [x] Final film v7 (118 s, EN narration, EN/FR subtitles, thumbnail) QC-measured 24 Nov — awaiting upload

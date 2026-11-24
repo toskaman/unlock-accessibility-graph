@@ -22,11 +22,11 @@ A platform can be "accessible" and still unreachable when one lift breaks. Wheth
 wheelchair-boardable platform), the status of all 986 lifts (SNCF hourly feed + IDFM's lift-status dataset, read on
 per-station lift graphs) and the lift outages published on PRIM into the same Relate graph, then computes exactly how
 many station-to-station journeys are step-free under three views: the published network (256,592), the best
-available lift status (231,883 on 17 Nov, 10:44) and the PRIM outage feed (88,255). Click any station and the whole
-map shows where a wheelchair user can go from there (Rosa Parks: 481 stations confirmed, 294 if you believe the feed),
-each reach re-derived in Cypher. Anyone can ask *can I get from A to B in a wheelchair?* and get the route, the
-outages on it and a Relate re-check of every leg. Repairs are ranked by journeys given back region-wide, ties broken by
-how busy the station is (top: Paris Gare du Nord's Transmanche lift).
+available lift status (234,781 on 24 Nov, 20:05 Paris) and the PRIM outage feed (88,255). Click any station and the
+whole map shows where a wheelchair user can go from there (Rosa Parks on 17 Nov: 481 stations confirmed, 294 if you
+believe the feed), each reach re-derived in Cypher. Anyone can ask *can I get from A to B in a wheelchair?* and get
+the route, the outages on it and a Relate re-check of every leg. Repairs are ranked by journeys given back
+region-wide, ties broken by how busy the station is (top on 24 Nov: Paris Est, +1,942 journeys).
 
 **For riders: "is my usual trip still step-free today?"** Watch a trip; each visit re-checks it against today's lift
 status — step-free / detour needed (with the detour) / at risk / cut, and which lift is responsible. Trips stay in
@@ -56,10 +56,11 @@ Actions. The GitHub Pages demo loads the graph exported from the Relate store in
 Relate's WebAssembly build in the visitor's browser, which re-runs the server's own Cypher to re-check every journey
 leg and every reach (the browser engine was checked identical to the server's on 1,038 reaches and 600 journeys).
 
-**A real finding.** The PRIM feed's 1,047 lift messages have not changed since 9 Oct 2026, while its other messages
-update daily (five fetches over 15 hours: byte-identical lift content). Reading each SNCF message into the exact lift
-and comparing with SNCF's hourly feed, UNLOCK finds 216 of 264 contradicted; IDFM's own lift-status dataset contradicts
-37 of the 39 RATP messages it can be matched to — stale messages that hide 126,628 step-free journeys from apps built on
+**A real finding (24 Nov 2026).** The PRIM feed's 1,045 lift messages have not changed since 9 Oct 2026 (46 days),
+while its other messages update daily (22 fetches since 16 Nov, lift content identical in the last 13). Reading each
+SNCF message into the exact lift and comparing with SNCF's hourly feed, UNLOCK finds 228 of 264 contradicted (160 read
+into the exact lift, 68 at stations where every lift reports working); IDFM's own lift-status dataset contradicts 38 of
+the 39 RATP messages it can be matched to — stale messages that hide 130,358 step-free journeys from apps built on
 the feed.
 
 **Inside a station.** UNLOCK builds a graph of the 401 SNCF stations in Île-de-France: platforms, underpasses, halls and the 588 lifts that join them, each linked to its latest published status and source file. Select a lift and simulate an outage: UNLOCK shows which step-free platform↔platform and platform↔exit connections break, ranks every possible lift repair across the region by how many confirmed connections it restores (including the lifts really out of service today), and shows the exact graph path and evidence behind each number. Example: at Juvisy-sur-Orge, losing lift ASC3 cuts 21 confirmed connections — a bigger loss than any lift currently out of service in the region.
@@ -80,7 +81,7 @@ Three ways in: paste a free-text outage report (UNLOCK resolves it to the exact 
 The IDFM GTFS has no lift pathways — the data-feasibility gate forced a switch to SNCF's NeTEx and text-derived topology, with uncertainty made explicit instead of hidden. IDFM's lift-status dataset reports lifts switched off for the night as failures: a night snapshot first showed 188 RATP "outages", 163 of them switched off after midnight — UNLOCK now counts those as unknown instead of inventing 100+ repairs. Relate connections are thread-affine with a single writer, so the API owns the store on one dedicated thread.
 
 ### Accomplishments
-Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 108 tests against the real Relate engine plus 14 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself, and an axe-core scan of the deployed demo on desktop and phone, in English and French, light and dark); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
+Whole-region journeys under real outages; a verifiable data-quality finding about the regional lift feed; real current outages ranked region-wide; incident reports resolved 21/22 vs 9/22 for plain text search (0 vs 13 confidently wrong); agent 7/8 with the graph vs 0/8 without (eight station- and region-level questions, both rounds published); every number traceable to a path and a source hash; 112 tests against the real Relate engine plus 14 end-to-end tests (incl. a WCAG 2.1 AA scan of UNLOCK itself, and an axe-core scan of the deployed demo on desktop and phone, in English and French, light and dark); every region reach re-derived in Cypher for all 519 origins × 3 views with zero disagreement; runs natively on Windows and Linux in seconds.
 
 ### What we learned
 Accessibility is a property of connections, not of places — and a graph query answers "what does this break?" where a list of lifts cannot.
