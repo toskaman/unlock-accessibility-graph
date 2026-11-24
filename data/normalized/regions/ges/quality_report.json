@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 157,
   "lifts_no_resolved_end": 0,
@@ -8,49 +8,48 @@
   "lifts_two_resolved_ends": 152,
   "lifts_with_status_record": 157,
   "lines_non_bus": 102,
-  "netex_stop_places_in_region": 338,
+  "netex_stop_places_in_region": 335,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 199,
-  "quay_step_free_INACCESSIBLE": 645,
-  "quays": 844,
-  "stations_matched_to_zone": 336,
-  "stations_unmatched_to_zone": 2,
-  "status_AVAILABLE": 136,
+  "quay_step_free_INACCESSIBLE": 640,
+  "quays": 839,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
+  "stations_matched_to_zone": 335,
+  "stations_unmatched_to_zone": 0,
+  "status_AVAILABLE": 137,
   "status_UNAVAILABLE": 12,
-  "status_UNKNOWN": 9,
-  "zone_line_links": 902,
-  "zones": 336
+  "status_UNKNOWN": 8,
+  "zone_line_links": 925,
+  "zones": 335
  },
  "space_roles": {
   "PLATFORM": 174,
   "CONNECTOR": 53,
   "EXIT": 21,
-  "UNRESOLVED_PLATFORM": 12,
+  "UNSPECIFIED": 5,
   "UNRESOLVED": 6,
-  "UNSPECIFIED": 5
+  "UNRESOLVED_PLATFORM": 12
  },
  "serves_derivations": {
-  "VOIE_TOKEN": 183,
   "NAMED_SPACE": 182,
-  "QUAI_NUMBER": 1,
+  "VOIE_TOKEN": 183,
   "NAME_VOIE_TOKEN": 9,
   "UNSPECIFIED_END": 5,
-  "NAMED_SPACE_WITH_TRACK": 1
+  "NAMED_SPACE_WITH_TRACK": 1,
+  "QUAI_NUMBER": 1
  },
  "unmatched_tokens": [
   {
-   "station": "Saint-Dizier",
-   "lift_id": "4ea5402f-f80f-4bfd-bacb-98d44dd50bd2",
-   "token": "1"
-  },
-  {
-   "station": "Saint-Dizier",
-   "lift_id": "2e12d869-ba46-4f4e-b247-809e9108604d",
-   "token": "2"
-  },
-  {
    "station": "Dieulouard",
    "lift_id": "45d3a2c2-8363-402f-af3f-3db587d0d38a",
+   "token": "bis"
+  },
+  {
+   "station": "Saverne",
+   "lift_id": "237d93f4-f377-4e4a-b100-8bbf606e75c7",
    "token": "bis"
   },
   {
@@ -69,16 +68,6 @@
    "token": "1"
   },
   {
-   "station": "Lingolsheim",
-   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
-   "token": "1"
-  },
-  {
-   "station": "Lingolsheim",
-   "lift_id": "c276b0c7-82f7-42c2-9424-0098e0aec85c",
-   "token": "2"
-  },
-  {
    "station": "Obernai",
    "lift_id": "baec25ba-7c06-4ec7-a9c3-e4540710f8a0",
    "token": "2"
@@ -89,10 +78,63 @@
    "token": "1"
   },
   {
-   "station": "Saverne",
-   "lift_id": "237d93f4-f377-4e4a-b100-8bbf606e75c7",
-   "token": "bis"
+   "station": "Saint-Dizier",
+   "lift_id": "4ea5402f-f80f-4bfd-bacb-98d44dd50bd2",
+   "token": "1"
+  },
+  {
+   "station": "Saint-Dizier",
+   "lift_id": "2e12d869-ba46-4f4e-b247-809e9108604d",
+   "token": "2"
+  },
+  {
+   "station": "Lingolsheim",
+   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
+   "token": "1"
+  },
+  {
+   "station": "Lingolsheim",
+   "lift_id": "c276b0c7-82f7-42c2-9424-0098e0aec85c",
+   "token": "2"
   }
  ],
- "unmatched_token_count": 11
+ "unmatched_token_count": 11,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

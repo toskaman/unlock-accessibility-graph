@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 57,
   "lifts_no_resolved_end": 3,
@@ -8,34 +8,48 @@
   "lifts_two_resolved_ends": 51,
   "lifts_with_status_record": 57,
   "lines_non_bus": 80,
-  "netex_stop_places_in_region": 196,
+  "netex_stop_places_in_region": 195,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 77,
-  "quay_step_free_INACCESSIBLE": 390,
-  "quays": 467,
-  "stations_matched_to_zone": 196,
+  "quay_step_free_INACCESSIBLE": 386,
+  "quays": 463,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
+  "stations_matched_to_zone": 195,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 54,
-  "status_UNAVAILABLE": 1,
+  "status_AVAILABLE": 53,
+  "status_UNAVAILABLE": 2,
   "status_UNKNOWN": 2,
-  "zone_line_links": 622,
-  "zones": 196
+  "zone_line_links": 616,
+  "zones": 195
  },
  "space_roles": {
-  "PLATFORM": 73,
   "EXIT": 16,
   "CONNECTOR": 19,
-  "UNSPECIFIED": 9,
-  "UNRESOLVED_PLATFORM": 5
+  "UNRESOLVED_PLATFORM": 5,
+  "PLATFORM": 73,
+  "UNSPECIFIED": 9
  },
  "serves_derivations": {
+  "NAMED_SPACE": 56,
   "VOIE_TOKEN": 71,
   "NAMED_SPACE_WITH_TRACK": 8,
-  "NAMED_SPACE": 56,
   "UNSPECIFIED_END": 9,
   "NAME_VOIE_TOKEN": 6
  },
  "unmatched_tokens": [
+  {
+   "station": "Decize",
+   "lift_id": "e3d538d4-467c-46ae-8be6-a72279344915",
+   "token": "1"
+  },
+  {
+   "station": "Decize",
+   "lift_id": "1a4f0f7e-1c4b-468a-b559-b44d979fa9cd",
+   "token": "2"
+  },
   {
    "station": "Dole",
    "lift_id": "c43ae342-39dd-4e36-9c8d-aaa28a7aae66",
@@ -52,20 +66,48 @@
    "token": "c"
   },
   {
-   "station": "Decize",
-   "lift_id": "e3d538d4-467c-46ae-8be6-a72279344915",
-   "token": "1"
-  },
-  {
-   "station": "Decize",
-   "lift_id": "1a4f0f7e-1c4b-468a-b559-b44d979fa9cd",
-   "token": "2"
-  },
-  {
    "station": "Le Creusot - Montceau-les-Mines - Montchanin TGV",
    "lift_id": "eecf9a5a-7fe8-4c86-a49a-5cc49af99799",
    "token": "1"
   }
  ],
- "unmatched_token_count": 6
+ "unmatched_token_count": 6,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

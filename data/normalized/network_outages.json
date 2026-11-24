@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-23T20:10:10+00:00",
+"observed_at": "2026-11-24T19:03:00+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,22 +8,22 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 27392912,
-"sha256": "e8d3929c286dde50954f0466875b90c8b70df59a84a8fd9d78f10c76ffdb6901",
-"retrieved_at": "2026-11-23T20:10:10+00:00",
+"bytes": 29383568,
+"sha256": "a76b3ab523b8eb900afc29649646c963716f737d2de5880caa77cb6706207e59",
+"retrieved_at": "2026-11-24T19:03:00+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-23T21:06:18",
+"feed_non_lift_last_update": "2026-11-24T20:02:31",
 "counts": {
 "lifts": 356,
 "messages": 1045,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
-"affects_RAIL_STATION": 469,
+"affects_RAIL_STATION": 470,
 "operator_RATP": 89,
 "operator_SNCF_GC": 264,
 "operator_UNKNOWN": 3,
@@ -2612,13 +2612,13 @@
 "placement": "PLACED",
 "affects": [
 {
-"platform_id": "IDFM:472013",
+"platform_id": "IDFM:470776",
 "line_id": "IDFM:C01748",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:472102",
+"platform_id": "IDFM:472013",
 "line_id": "IDFM:C01748",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -2687,6 +2687,12 @@
 "affects": [
 {
 "platform_id": "IDFM:471473",
+"line_id": "IDFM:C01857",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
+"platform_id": "IDFM:471646",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -2981,13 +2987,13 @@
 "placement": "PLACED",
 "affects": [
 {
-"platform_id": "IDFM:471650",
+"platform_id": "IDFM:471918",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:471918",
+"platform_id": "IDFM:472319",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -5216,7 +5222,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -5276,7 +5281,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -5331,7 +5335,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -5391,7 +5394,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -5447,7 +5449,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -5508,7 +5509,6 @@
 "IDFM:C01739",
 "IDFM:C01740",
 "IDFM:C01742",
-"IDFM:C01846",
 "IDFM:C01847",
 "IDFM:C01849",
 "IDFM:C02479",
@@ -12591,8 +12591,7 @@
 "stop_area_name": "Bir-Hakeim (Paris)",
 "lines": [
 "IDFM:C01080",
-"IDFM:C01376",
-"IDFM:C02268"
+"IDFM:C01376"
 ],
 "first_reported": "2026-10-09T09:35:22",
 "last_update": "2026-10-09T09:35:31",
@@ -14460,8 +14459,7 @@
 "IDFM:C01415",
 "IDFM:C01422",
 "IDFM:C01635",
-"IDFM:C01742",
-"IDFM:C02268"
+"IDFM:C01742"
 ],
 "first_reported": "2026-09-29T14:09:51",
 "last_update": "2026-09-29T14:09:59",
@@ -14539,8 +14537,7 @@
 "IDFM:C01415",
 "IDFM:C01422",
 "IDFM:C01635",
-"IDFM:C01742",
-"IDFM:C02268"
+"IDFM:C01742"
 ],
 "first_reported": "2026-09-11T20:11:54",
 "last_update": "2026-09-11T20:12:03",
@@ -15864,8 +15861,7 @@
 "stop_area_name": "Bir-Hakeim (Paris)",
 "lines": [
 "IDFM:C01080",
-"IDFM:C01376",
-"IDFM:C02268"
+"IDFM:C01376"
 ],
 "first_reported": "2026-09-29T20:10:29",
 "last_update": "2026-09-29T20:10:38",

@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 103,
   "lifts_no_resolved_end": 0,
@@ -8,15 +8,19 @@
   "lifts_two_resolved_ends": 101,
   "lifts_with_status_record": 103,
   "lines_non_bus": 85,
-  "netex_stop_places_in_region": 330,
+  "netex_stop_places_in_region": 326,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 149,
-  "quay_step_free_INACCESSIBLE": 679,
-  "quays": 828,
+  "quay_step_free_INACCESSIBLE": 671,
+  "quays": 820,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 313,
-  "stations_unmatched_to_zone": 17,
-  "status_AVAILABLE": 93,
-  "status_UNAVAILABLE": 8,
+  "stations_unmatched_to_zone": 13,
+  "status_AVAILABLE": 95,
+  "status_UNAVAILABLE": 6,
   "status_UNKNOWN": 2,
   "zone_line_links": 753,
   "zones": 313
@@ -24,30 +28,20 @@
  "space_roles": {
   "PLATFORM": 144,
   "CONNECTOR": 37,
-  "UNRESOLVED_PLATFORM": 1,
   "EXIT": 11,
   "PRIVATE": 1,
-  "UNSPECIFIED": 2,
-  "UNRESOLVED": 1
+  "UNRESOLVED_PLATFORM": 1,
+  "UNRESOLVED": 1,
+  "UNSPECIFIED": 2
  },
  "serves_derivations": {
   "NAMED_SPACE": 109,
   "VOIE_TOKEN": 149,
+  "QUAI_NUMBER": 2,
   "NAME_VOIE_TOKEN": 2,
-  "UNSPECIFIED_END": 2,
-  "QUAI_NUMBER": 2
+  "UNSPECIFIED_END": 2
  },
  "unmatched_tokens": [
-  {
-   "station": "Hirson",
-   "lift_id": "ec696fdf-0ba9-4e9a-8496-60f88d7d131b",
-   "token": "a"
-  },
-  {
-   "station": "Hirson",
-   "lift_id": "e652fb72-94ea-4fd2-98a9-f71d8fd9a0e6",
-   "token": "b"
-  },
   {
    "station": "Villers-Cotterêts",
    "lift_id": "18d99bed-ad60-45d2-8060-f2afc6075382",
@@ -57,7 +51,55 @@
    "station": "Hazebrouck",
    "lift_id": "9fdcd19d-e1a8-41c6-8cab-aeec4eea571b",
    "token": "a"
+  },
+  {
+   "station": "Hirson",
+   "lift_id": "ec696fdf-0ba9-4e9a-8496-60f88d7d131b",
+   "token": "a"
+  },
+  {
+   "station": "Hirson",
+   "lift_id": "e652fb72-94ea-4fd2-98a9-f71d8fd9a0e6",
+   "token": "b"
   }
  ],
- "unmatched_token_count": 4
+ "unmatched_token_count": 4,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

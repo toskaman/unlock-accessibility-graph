@@ -1,7 +1,7 @@
 {
  "counts": {
-  "gtfs_stop_areas": 15406,
-  "gtfs_stop_areas_matching_zdc": 15406,
+  "gtfs_stop_areas": 15408,
+  "gtfs_stop_areas_matching_zdc": 15408,
   "lifts": 588,
   "lifts_no_resolved_end": 1,
   "lifts_one_resolved_end": 249,
@@ -13,81 +13,55 @@
   "quay_step_free_ACCESSIBLE": 842,
   "quay_step_free_INACCESSIBLE": 438,
   "quays": 1280,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 549,
-  "status_UNAVAILABLE": 32,
+  "status_AVAILABLE": 556,
+  "status_UNAVAILABLE": 25,
   "status_UNKNOWN": 7,
   "zone_line_links": 551,
   "zones": 392
  },
  "space_roles": {
-  "UNRESOLVED_PLATFORM": 72,
-  "UNSPECIFIED": 251,
-  "EXIT": 179,
   "PLATFORM": 515,
   "CONNECTOR": 107,
   "UNRESOLVED": 15,
+  "EXIT": 179,
+  "UNRESOLVED_PLATFORM": 72,
+  "UNSPECIFIED": 251,
   "PRIVATE": 11
  },
  "serves_derivations": {
+  "VOIE_TOKEN": 512,
   "NAMED_SPACE": 553,
   "UNSPECIFIED_END": 251,
-  "VOIE_TOKEN": 512,
-  "NAMED_SPACE_WITH_TRACK": 21,
   "QUAI_NUMBER": 72,
+  "NAMED_SPACE_WITH_TRACK": 21,
   "NAME_VOIE_TOKEN": 3
  },
  "unmatched_tokens": [
   {
-   "station": "Saint-Michel Notre-Dame",
-   "lift_id": "abba3e52-1c6e-46db-af97-c3584be0ba9b",
-   "token": "b"
+   "station": "Bécon les Bruyères",
+   "lift_id": "ea4d188e-1272-4375-8a40-613f8f7c312e",
+   "token": "2"
   },
   {
-   "station": "Musée d'Orsay",
-   "lift_id": "19ca5b46-f039-4674-ba8b-bd6424e8bffe",
-   "token": "a"
+   "station": "Bécon les Bruyères",
+   "lift_id": "34e36608-1c59-41ba-8f78-d6587904948e",
+   "token": "2"
   },
   {
-   "station": "Musée d'Orsay",
-   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
-   "token": "b"
-  },
-  {
-   "station": "Pont de l'Alma",
-   "lift_id": "de8542d3-fe23-4298-8037-06d9e6ab7110",
-   "token": "a"
-  },
-  {
-   "station": "Pont de l'Alma",
-   "lift_id": "6739b0e0-d3e3-4196-a65d-4875d254a426",
-   "token": "b"
-  },
-  {
-   "station": "Invalides",
-   "lift_id": "ef096d00-259e-4168-af33-f51ac9f7bf6d",
-   "token": "d"
-  },
-  {
-   "station": "Aubergenville Élisabethville",
-   "lift_id": "bb7c58d4-2ad6-44a0-8166-c6b954237d02",
-   "token": "b"
-  },
-  {
-   "station": "Aubergenville Élisabethville",
-   "lift_id": "2b6080bb-6815-4154-afa1-2434c9bbca4c",
-   "token": "a"
+   "station": "Bécon les Bruyères",
+   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
+   "token": "1"
   },
   {
    "station": "Maisons-Laffitte",
    "lift_id": "8071c3f1-03a8-47d7-9f53-969efeb33f52",
    "token": "1bis"
-  },
-  {
-   "station": "Saint-Quentin en Yvelines - Montigny-le-Bretonneux",
-   "lift_id": "edb6cadc-f193-4a00-93c3-e8d6eb57c3cd",
-   "token": "3"
   },
   {
    "station": "Poissy",
@@ -115,13 +89,33 @@
    "token": "8"
   },
   {
-   "station": "Sartrouville",
-   "lift_id": "7ec69609-4096-4332-b493-c2e3cedc74bc",
+   "station": "Aubergenville Élisabethville",
+   "lift_id": "bb7c58d4-2ad6-44a0-8166-c6b954237d02",
    "token": "b"
   },
   {
-   "station": "Sartrouville",
-   "lift_id": "5fdba95c-fad1-43de-90ba-3245314996af",
+   "station": "Aubergenville Élisabethville",
+   "lift_id": "2b6080bb-6815-4154-afa1-2434c9bbca4c",
+   "token": "a"
+  },
+  {
+   "station": "Épinay - Villetaneuse T11",
+   "lift_id": "f7df5e44-d80e-4282-99f4-04e6aa9c36e8",
+   "token": "4"
+  },
+  {
+   "station": "Étampes",
+   "lift_id": "6097a9a6-a2d5-4c3f-b985-5f11dde9675d",
+   "token": "1b"
+  },
+  {
+   "station": "Étampes",
+   "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
+   "token": "2b"
+  },
+  {
+   "station": "Étampes",
+   "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
    "token": "c"
   },
   {
@@ -135,116 +129,6 @@
    "token": "1"
   },
   {
-   "station": "Les Clairières de Verneuil",
-   "lift_id": "befa9629-b877-4561-bba1-885e9c80c41c",
-   "token": "3"
-  },
-  {
-   "station": "Les Clairières de Verneuil",
-   "lift_id": "befa9629-b877-4561-bba1-885e9c80c41c",
-   "token": "4"
-  },
-  {
-   "station": "Brunoy",
-   "lift_id": "41cca279-64d4-4a62-8ed2-1aea389cefc5",
-   "token": "3"
-  },
-  {
-   "station": "Champlan",
-   "lift_id": "dddf2744-9119-4ec6-8ea6-65bf405be828",
-   "token": "1"
-  },
-  {
-   "station": "Champlan",
-   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
-   "token": "1"
-  },
-  {
-   "station": "Corbeil-Essonnes",
-   "lift_id": "ac39fbdf-686c-42e1-91c8-92291f89c941",
-   "token": "3"
-  },
-  {
-   "station": "Corbeil-Essonnes",
-   "lift_id": "34617d89-69c4-465b-a4af-d62f0f72775a",
-   "token": "2"
-  },
-  {
-   "station": "Étampes",
-   "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
-   "token": "2b"
-  },
-  {
-   "station": "Étampes",
-   "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
-   "token": "c"
-  },
-  {
-   "station": "Étampes",
-   "lift_id": "6097a9a6-a2d5-4c3f-b985-5f11dde9675d",
-   "token": "1b"
-  },
-  {
-   "station": "Massy Europe",
-   "lift_id": "e1392ac8-4f34-4958-9d05-5afe99b967ab",
-   "token": "2"
-  },
-  {
-   "station": "Massy Europe",
-   "lift_id": "a983f4b0-2980-4497-8397-a208d8bcffbc",
-   "token": "1"
-  },
-  {
-   "station": "Saint-Michel-sur-Orge",
-   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
-   "token": "2"
-  },
-  {
-   "station": "Saint-Michel-sur-Orge",
-   "lift_id": "0fd31561-9d78-4cf9-90ce-4b3430f44d24",
-   "token": "1"
-  },
-  {
-   "station": "Vigneux-sur-Seine",
-   "lift_id": "ba640a68-fbd8-463f-b6bd-0e8598c828b2",
-   "token": "1"
-  },
-  {
-   "station": "Le Stade",
-   "lift_id": "9d3a8915-d2c3-43c3-abac-b8f972a898b7",
-   "token": "1"
-  },
-  {
-   "station": "Le Stade",
-   "lift_id": "39d67c6e-89bf-4c10-8fd0-b3a73f7c4673",
-   "token": "2"
-  },
-  {
-   "station": "Bécon les Bruyères",
-   "lift_id": "ea4d188e-1272-4375-8a40-613f8f7c312e",
-   "token": "2"
-  },
-  {
-   "station": "Bécon les Bruyères",
-   "lift_id": "34e36608-1c59-41ba-8f78-d6587904948e",
-   "token": "2"
-  },
-  {
-   "station": "Bécon les Bruyères",
-   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
-   "token": "1"
-  },
-  {
-   "station": "Meudon Val Fleury",
-   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
-   "token": "b"
-  },
-  {
-   "station": "Meudon Val Fleury",
-   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
-   "token": "a"
-  },
-  {
    "station": "Nanterre La Folie",
    "lift_id": "83553bfe-7c99-4f9c-b7a6-37b04316d220",
    "token": "de"
@@ -255,24 +139,19 @@
    "token": "bc"
   },
   {
-   "station": "Aulnay-sous-Bois",
-   "lift_id": "e993e9a2-2db2-48f0-9900-18789bbc25ff",
-   "token": "1"
+   "station": "Saint-Michel Notre-Dame",
+   "lift_id": "abba3e52-1c6e-46db-af97-c3584be0ba9b",
+   "token": "b"
   },
   {
-   "station": "Bondy",
-   "lift_id": "4cefeb96-a975-439d-bd91-1ed9cddfac59",
-   "token": "f"
+   "station": "Musée d'Orsay",
+   "lift_id": "19ca5b46-f039-4674-ba8b-bd6424e8bffe",
+   "token": "a"
   },
   {
-   "station": "Épinay - Villetaneuse T11",
-   "lift_id": "f7df5e44-d80e-4282-99f4-04e6aa9c36e8",
-   "token": "4"
-  },
-  {
-   "station": "Le Vert de Maisons",
-   "lift_id": "9bbbe2fa-1d86-4fa8-aa58-34d15da843e8",
-   "token": "2"
+   "station": "Musée d'Orsay",
+   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
+   "token": "b"
   },
   {
    "station": "Choisy-le-Roi",
@@ -285,19 +164,94 @@
    "token": "1"
   },
   {
+   "station": "Massy Europe",
+   "lift_id": "e1392ac8-4f34-4958-9d05-5afe99b967ab",
+   "token": "2"
+  },
+  {
+   "station": "Massy Europe",
+   "lift_id": "a983f4b0-2980-4497-8397-a208d8bcffbc",
+   "token": "1"
+  },
+  {
+   "station": "Vigneux-sur-Seine",
+   "lift_id": "ba640a68-fbd8-463f-b6bd-0e8598c828b2",
+   "token": "1"
+  },
+  {
+   "station": "Aulnay-sous-Bois",
+   "lift_id": "e993e9a2-2db2-48f0-9900-18789bbc25ff",
+   "token": "1"
+  },
+  {
+   "station": "Brunoy",
+   "lift_id": "41cca279-64d4-4a62-8ed2-1aea389cefc5",
+   "token": "3"
+  },
+  {
+   "station": "Sartrouville",
+   "lift_id": "7ec69609-4096-4332-b493-c2e3cedc74bc",
+   "token": "b"
+  },
+  {
+   "station": "Sartrouville",
+   "lift_id": "5fdba95c-fad1-43de-90ba-3245314996af",
+   "token": "c"
+  },
+  {
    "station": "Créteil Pompadour",
    "lift_id": "1ad9f67e-78e6-4441-8580-516608489b03",
    "token": "2"
   },
   {
-   "station": "Ivry-sur-Seine",
-   "lift_id": "7e060dc3-76f2-428c-99d3-9b0c7eb5b3ce",
+   "station": "Pont de l'Alma",
+   "lift_id": "de8542d3-fe23-4298-8037-06d9e6ab7110",
+   "token": "a"
+  },
+  {
+   "station": "Pont de l'Alma",
+   "lift_id": "6739b0e0-d3e3-4196-a65d-4875d254a426",
+   "token": "b"
+  },
+  {
+   "station": "Le Stade",
+   "lift_id": "9d3a8915-d2c3-43c3-abac-b8f972a898b7",
    "token": "1"
   },
   {
-   "station": "Ivry-sur-Seine",
-   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
+   "station": "Le Stade",
+   "lift_id": "39d67c6e-89bf-4c10-8fd0-b3a73f7c4673",
    "token": "2"
+  },
+  {
+   "station": "Meudon Val Fleury",
+   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
+   "token": "b"
+  },
+  {
+   "station": "Meudon Val Fleury",
+   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
+   "token": "a"
+  },
+  {
+   "station": "Invalides",
+   "lift_id": "ef096d00-259e-4168-af33-f51ac9f7bf6d",
+   "token": "d"
+  },
+  {
+   "station": "Saint-Michel-sur-Orge",
+   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
+   "token": "2"
+  },
+  {
+   "station": "Saint-Michel-sur-Orge",
+   "lift_id": "0fd31561-9d78-4cf9-90ce-4b3430f44d24",
+   "token": "1"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
+   "token": "1"
   },
   {
    "station": "Argenteuil",
@@ -316,11 +270,6 @@
   },
   {
    "station": "Argenteuil",
-   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
-   "token": "1"
-  },
-  {
-   "station": "Argenteuil",
    "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
    "token": "c"
   },
@@ -328,6 +277,21 @@
    "station": "Argenteuil",
    "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
    "token": "e"
+  },
+  {
+   "station": "Bondy",
+   "lift_id": "4cefeb96-a975-439d-bd91-1ed9cddfac59",
+   "token": "f"
+  },
+  {
+   "station": "Ivry-sur-Seine",
+   "lift_id": "7e060dc3-76f2-428c-99d3-9b0c7eb5b3ce",
+   "token": "1"
+  },
+  {
+   "station": "Ivry-sur-Seine",
+   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
+   "token": "2"
   },
   {
    "station": "Us",
@@ -338,7 +302,85 @@
    "station": "Us",
    "lift_id": "52001851-cfa3-4e1d-9281-cd024adcc306",
    "token": "a"
+  },
+  {
+   "station": "Les Clairières de Verneuil",
+   "lift_id": "befa9629-b877-4561-bba1-885e9c80c41c",
+   "token": "3"
+  },
+  {
+   "station": "Les Clairières de Verneuil",
+   "lift_id": "befa9629-b877-4561-bba1-885e9c80c41c",
+   "token": "4"
+  },
+  {
+   "station": "Champlan",
+   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
+   "token": "1"
+  },
+  {
+   "station": "Champlan",
+   "lift_id": "dddf2744-9119-4ec6-8ea6-65bf405be828",
+   "token": "1"
+  },
+  {
+   "station": "Corbeil-Essonnes",
+   "lift_id": "34617d89-69c4-465b-a4af-d62f0f72775a",
+   "token": "2"
+  },
+  {
+   "station": "Corbeil-Essonnes",
+   "lift_id": "ac39fbdf-686c-42e1-91c8-92291f89c941",
+   "token": "3"
+  },
+  {
+   "station": "Saint-Quentin en Yvelines - Montigny-le-Bretonneux",
+   "lift_id": "edb6cadc-f193-4a00-93c3-e8d6eb57c3cd",
+   "token": "3"
+  },
+  {
+   "station": "Le Vert de Maisons",
+   "lift_id": "9bbbe2fa-1d86-4fa8-aa58-34d15da843e8",
+   "token": "2"
   }
  ],
- "unmatched_token_count": 60
+ "unmatched_token_count": 60,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

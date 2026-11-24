@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 60,
   "lifts_no_resolved_end": 1,
@@ -8,13 +8,17 @@
   "lifts_two_resolved_ends": 57,
   "lifts_with_status_record": 60,
   "lines_non_bus": 47,
-  "netex_stop_places_in_region": 122,
+  "netex_stop_places_in_region": 114,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 76,
-  "quay_step_free_INACCESSIBLE": 176,
-  "quays": 252,
+  "quay_step_free_INACCESSIBLE": 166,
+  "quays": 242,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 114,
-  "stations_unmatched_to_zone": 8,
+  "stations_unmatched_to_zone": 0,
   "status_AVAILABLE": 58,
   "status_UNAVAILABLE": 1,
   "status_UNKNOWN": 1,
@@ -23,11 +27,11 @@
  },
  "space_roles": {
   "PLATFORM": 54,
-  "CONNECTOR": 22,
   "EXIT": 16,
+  "CONNECTOR": 22,
   "UNSPECIFIED": 4,
-  "PRIVATE": 3,
-  "UNRESOLVED_PLATFORM": 1
+  "UNRESOLVED_PLATFORM": 1,
+  "PRIVATE": 3
  },
  "serves_derivations": {
   "VOIE_TOKEN": 63,
@@ -38,11 +42,6 @@
  },
  "unmatched_tokens": [
   {
-   "station": "Rennes",
-   "lift_id": "22d62779-dc96-48d0-8330-54557fc00396",
-   "token": "09"
-  },
-  {
    "station": "Vitré",
    "lift_id": "4e9d05d2-a41c-4ecd-825c-1c9c3bf75d88",
    "token": "1"
@@ -51,7 +50,50 @@
    "station": "Vitré",
    "lift_id": "4e9d05d2-a41c-4ecd-825c-1c9c3bf75d88",
    "token": "2"
+  },
+  {
+   "station": "Rennes",
+   "lift_id": "22d62779-dc96-48d0-8330-54557fc00396",
+   "token": "09"
   }
  ],
- "unmatched_token_count": 3
+ "unmatched_token_count": 3,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

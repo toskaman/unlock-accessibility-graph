@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 35,
   "lifts_no_resolved_end": 0,
@@ -8,33 +8,52 @@
   "lifts_two_resolved_ends": 33,
   "lifts_with_status_record": 35,
   "lines_non_bus": 83,
-  "netex_stop_places_in_region": 160,
+  "netex_stop_places_in_region": 159,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 43,
-  "quay_step_free_INACCESSIBLE": 310,
-  "quays": 353,
-  "stations_matched_to_zone": 156,
+  "quay_step_free_INACCESSIBLE": 308,
+  "quays": 351,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
+  "stations_matched_to_zone": 155,
   "stations_unmatched_to_zone": 4,
-  "status_AVAILABLE": 29,
-  "status_UNAVAILABLE": 3,
+  "status_AVAILABLE": 30,
+  "status_UNAVAILABLE": 2,
   "status_UNKNOWN": 3,
-  "zone_line_links": 548,
-  "zones": 156
+  "zone_line_links": 543,
+  "zones": 155
  },
  "space_roles": {
   "PLATFORM": 30,
+  "EXIT": 5,
   "CONNECTOR": 15,
   "UNRESOLVED_PLATFORM": 8,
-  "EXIT": 5,
   "UNSPECIFIED": 2
  },
  "serves_derivations": {
-  "NAMED_SPACE": 44,
   "VOIE_TOKEN": 34,
-  "NAMED_SPACE_WITH_TRACK": 1,
-  "UNSPECIFIED_END": 2
+  "NAMED_SPACE": 44,
+  "UNSPECIFIED_END": 2,
+  "NAMED_SPACE_WITH_TRACK": 1
  },
  "unmatched_tokens": [
+  {
+   "station": "Les Aubrais",
+   "lift_id": "bc9edfb6-a36b-4fae-8170-cb7666d0d381",
+   "token": "a"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "efa0e9f6-6831-47f7-826a-1f7ffe878c20",
+   "token": "b"
+  },
+  {
+   "station": "Les Aubrais",
+   "lift_id": "5262e94c-dec8-4d1c-a537-f8829df621e1",
+   "token": "c"
+  },
   {
    "station": "Vierzon",
    "lift_id": "1c6624f9-79e6-45f4-b2ad-9df32f8823ec",
@@ -54,22 +73,45 @@
    "station": "Chartres",
    "lift_id": "68d2c41a-df21-4e79-84b9-6e5bff25b6ae",
    "token": "b"
-  },
-  {
-   "station": "Les Aubrais",
-   "lift_id": "efa0e9f6-6831-47f7-826a-1f7ffe878c20",
-   "token": "b"
-  },
-  {
-   "station": "Les Aubrais",
-   "lift_id": "5262e94c-dec8-4d1c-a537-f8829df621e1",
-   "token": "c"
-  },
-  {
-   "station": "Les Aubrais",
-   "lift_id": "bc9edfb6-a36b-4fae-8170-cb7666d0d381",
-   "token": "a"
   }
  ],
- "unmatched_token_count": 7
+ "unmatched_token_count": 7,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }

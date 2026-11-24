@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3421,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 47,
   "lifts_no_resolved_end": 1,
@@ -8,13 +8,17 @@
   "lifts_two_resolved_ends": 42,
   "lifts_with_status_record": 47,
   "lines_non_bus": 73,
-  "netex_stop_places_in_region": 132,
+  "netex_stop_places_in_region": 130,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 62,
-  "quay_step_free_INACCESSIBLE": 241,
-  "quays": 303,
+  "quay_step_free_INACCESSIBLE": 238,
+  "quays": 300,
+  "stations_dept_quarantined_drg_mismatch": 1,
+  "stations_dept_uic_postal": 2383,
+  "stations_dept_unknown": 31,
+  "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 130,
-  "stations_unmatched_to_zone": 2,
+  "stations_unmatched_to_zone": 0,
   "status_AVAILABLE": 40,
   "status_UNAVAILABLE": 4,
   "status_UNKNOWN": 3,
@@ -23,10 +27,10 @@
  },
  "space_roles": {
   "PLATFORM": 46,
-  "CONNECTOR": 14,
   "EXIT": 12,
-  "UNSPECIFIED": 6,
-  "UNRESOLVED_PLATFORM": 4
+  "CONNECTOR": 14,
+  "UNRESOLVED_PLATFORM": 4,
+  "UNSPECIFIED": 6
  },
  "serves_derivations": {
   "VOIE_TOKEN": 43,
@@ -46,5 +50,43 @@
    "token": "2"
   }
  ],
- "unmatched_token_count": 2
+ "unmatched_token_count": 2,
+ "dept_unknown_stations": [
+  "Bellevigny",
+  "Belz - Ploemel",
+  "Blonville-sur-Mer - Benerville",
+  "Boën-sur-Lignon",
+  "Digne les Bains",
+  "Dives-sur-Mer - Cabourg",
+  "Dives-sur-Mer Port Guillaume",
+  "Escaudœuvres",
+  "Fondettes",
+  "Gournay - Ferrières",
+  "Houlgate",
+  "Hundling",
+  "Jœuf",
+  "Kerhostin",
+  "L'Isthme",
+  "La Ville-Dieu-du-Temple",
+  "Le Pont-de-Claix",
+  "Les Sables Blancs",
+  "Ourscamp",
+  "Penthièvre",
+  "Plouharnel - Carnac",
+  "Pointe de Grave",
+  "Pouxeux",
+  "Quiberon",
+  "Rœux",
+  "Saint-Pierre-Quiberon",
+  "Saint-Péray",
+  "Sérifontaine",
+  "Torfou-Sèvremoine",
+  "Villers-sur-Mer",
+  "Viévola"
+ ],
+ "dept_unknown_station_count": 31,
+ "dept_quarantined_stations": [
+  "Pont-sur-Yonne"
+ ],
+ "dept_quarantined_station_count": 1
 }
