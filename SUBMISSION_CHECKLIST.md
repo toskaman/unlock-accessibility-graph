@@ -19,6 +19,7 @@
 - [x] Zero-install demo link (GitHub Pages) — no login, region mode, clearly labelled snapshot
 - [ ] Submit a draft early on Devpost (public voting is open; edits allowed until the deadline)
 - [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement (text ready in docs/DEVPOST_SUBMISSION.md — only the video link is missing)
+- [x] Form assets ready 24 Nov: film v7 + EN/FR subtitles + thumbnail (video-v3/deliverables/), 7 fresh screenshots (docs/media/region-overview, region-journey, region-reach, region-stale, regions-compare, region-history, bulletin)
 - [ ] Re-read live rules page within 48 h of submission
 - [x] Secret scan before publishing — no secrets in history; agent transcripts sanitised (no local paths/accounts)
 - [x] PRIM token never in the repo (file on D:, env var); data-quality test greps the outage snapshot for it
