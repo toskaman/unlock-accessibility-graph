@@ -31,7 +31,14 @@ def build_network_file(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR) 
     acc_path = raw_dir / "idfm" / "accessibilite-en-gare.json"
     levels = {}
     if acc_path.exists():
-        for r in json.loads(acc_path.read_text(encoding="utf-8")):
+        try:
+            acc_rows = json.loads(acc_path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            # A corrupt export must degrade the demo, not kill the build (the
+            # fetcher validates first; this is the second line of defence).
+            print(f"WARNING: ignoring unreadable {acc_path.name}: {e}", flush=True)
+            acc_rows = []
+        for r in acc_rows:
             levels[r["stop_point_id"].replace("stop_point:", "")] = ACCESS_LEVELS.get(r["accessibility_level_id"], "UNKNOWN")
     for p in net["platforms"]:
         if p["id"] in levels:
@@ -39,7 +46,12 @@ def build_network_file(raw_dir: Path = RAW_DIR, out_dir: Path = NORMALIZED_DIR) 
         p["boardable"] = boardable(p)
     val_path = raw_dir / "idfm" / "validations-ferre-q2-2026.json"
     if val_path.exists():
-        rows = {str(int(r["id_zdc"])): r for r in json.loads(val_path.read_text(encoding="utf-8")) if r.get("id_zdc")}
+        try:
+            val_rows = json.loads(val_path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            print(f"WARNING: ignoring unreadable {val_path.name}: {e}", flush=True)
+            val_rows = []
+        rows = {str(int(r["id_zdc"])): r for r in val_rows if r.get("id_zdc")}
         for st in net["stations"]:
             r = rows.get(st["id"])
             if r and r.get("d"):

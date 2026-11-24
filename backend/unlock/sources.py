@@ -7,7 +7,14 @@ as a ``:Dataset`` node so every derived fact can be traced back to a file hash.
 """
 from __future__ import annotations
 
+import csv
+import gzip
+import io
+import json
+import zipfile
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
+from pathlib import Path
 
 IDFM_API = "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets"
 SNCF_API = "https://ressources.data.sncf.com/api/explore/v2.1/catalog/datasets"
@@ -125,6 +132,56 @@ SOURCES: dict[str, Source] = {
         ),
     ]
 }
+
+
+def validate_snapshot(path, suffix: str | None = None) -> None:
+    """Raise ValueError when a downloaded snapshot is not what its suffix claims.
+
+    The portals occasionally serve a truncated export or an error page (the
+    IDFM accessibilité export came down as 21 KB of gzip on 24 Nov 2026 after
+    146 KB of JSON three hours earlier). Catching it here keeps a corrupt file
+    out of data/raw; the fetcher retries, and the build never sees it.
+    """
+    path = Path(path)
+    suffix = suffix if suffix is not None else path.suffix
+    raw = path.read_bytes()
+    if raw[:2] == b"\x1f\x8b" and suffix not in (".zip", ".gz"):
+        raise ValueError(f"{path.name}: gzip bytes for a {suffix} file (portal hiccup?)")
+    try:
+        if suffix == ".json":
+            json.loads(raw.decode("utf-8-sig"))
+        elif suffix == ".csv":
+            text = raw.decode("utf-8-sig")
+            rows = list(csv.reader(io.StringIO(text)))
+            if len(rows) < 2 or len(rows[0]) < 2:  # the portals use ';'
+                rows = list(csv.reader(io.StringIO(text), delimiter=";"))
+            if len(rows) < 2 or len(rows[0]) < 2:
+                raise ValueError("fewer than 2 rows/columns")
+        elif suffix == ".zip":
+            with zipfile.ZipFile(path) as z:
+                bad = z.testzip()
+                if bad is not None:
+                    raise ValueError(f"corrupt member {bad}")
+        elif suffix == ".xml":
+            ET.fromstring(raw)
+        elif raw.strip() == b"":
+            raise ValueError("empty file")
+    except ValueError:
+        raise
+    except Exception as e:
+        raise ValueError(f"{path.name}: invalid {suffix} ({e.__class__.__name__}: {e})")
+
+
+def gunzip_in_place(path) -> bool:
+    """Decompress a gzipped download in place; True when it was gzip."""
+    with open(path, "rb") as f:
+        if f.read(2) != b"\x1f\x8b":
+            return False
+    with gzip.open(path, "rb") as f:
+        raw = f.read()
+    with open(path, "wb") as f:
+        f.write(raw)
+    return True
 
 
 # Needs a personal PRIM API token (free account). Fetched by `python -m unlock fetch-outages`, never by `fetch`.

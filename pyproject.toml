@@ -1,6 +1,6 @@
 [project]
 name = "unlock-accessibility-graph"
-version = "0.10.1"
+version = "0.10.2"
 description = "UNLOCK — The Accessibility Impact Graph (Relate by Neo4j Hackathon 2026)"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.2 — 2026-11-24
+- **Harden the fetcher against corrupt portal exports.** The IDFM accessibilité export came down as 21 KB of
+  gzip on 24 Nov evening (146 KB of JSON three hours earlier) and killed the build. Downloads are now
+  validated by type (JSON parses, CSV decodes with rows, zip members intact, XML parses), transparently
+  gunzipped when the portal serves gzip, and retried 3× before failing loudly; nothing corrupt reaches
+  `data/raw`. As a second line of defence, the network build ignores an unreadable accessibilité or
+  validations file with a warning instead of crashing (platforms fall back to the GTFS flag).
+- Tests: 112 pytest (+4: snapshot validation, gzip transparency, `.part` suffix handling).
+
 ## 0.10.1 — 2026-11-24
 - **Survive the 24 Nov 2026 SNCF NeTEx layout change.** StopPlace ids went from `FR:<INSEE>:LMO:<uuid>:LOC`
   to `FR::monomodalStopPlace:<uuid>:LOC` (no geography left) and lift equipment ids from bare uuids to

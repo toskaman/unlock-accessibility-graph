@@ -6,14 +6,16 @@ Every file gets size, sha256, retrieval time and the publisher's own
 """
 from __future__ import annotations
 
-import argparse, datetime as dt, hashlib, json, sys, urllib.request
+import argparse, datetime as dt, hashlib, json, sys, time, urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 from unlock.config import MANIFEST_PATH, RAW_DIR  # noqa: E402
-from unlock.sources import SOURCES  # noqa: E402
+from unlock.sources import SOURCES, gunzip_in_place, validate_snapshot  # noqa: E402
 
 MAX_BYTES = 400 * 1024 * 1024
+ATTEMPTS = 3
+RETRY_SLEEP_S = 30
 
 
 def _get(url: str, dest: Path) -> tuple[int, str]:
@@ -27,8 +29,11 @@ def _get(url: str, dest: Path) -> tuple[int, str]:
             if n > MAX_BYTES:
                 raise RuntimeError(f"{url} exceeds {MAX_BYTES} bytes")
             h.update(chunk); f.write(chunk)
+    if gunzip_in_place(tmp):
+        print("  (portal served gzip; decompressed)", flush=True)
+    validate_snapshot(tmp, suffix=dest.suffix)
     tmp.replace(dest)
-    return n, h.hexdigest()
+    return dest.stat().st_size, hashlib.sha256(dest.read_bytes()).hexdigest()
 
 
 def _publisher_modified(meta_url: str | None) -> str | None:
@@ -55,7 +60,19 @@ def main() -> None:
             continue
         dest = RAW_DIR / s.filename
         print(f"fetch {key} -> {dest}", flush=True)
-        n, sha = _get(s.url, dest)
+        err: Exception | None = None
+        for attempt in range(1, ATTEMPTS + 1):
+            try:
+                n, sha = _get(s.url, dest)
+                err = None
+                break
+            except Exception as e:  # network or portal hiccup, or a corrupt export
+                err = e
+                print(f"  attempt {attempt}/{ATTEMPTS} failed: {e}", flush=True)
+                if attempt < ATTEMPTS:
+                    time.sleep(RETRY_SLEEP_S)
+        if err is not None:
+            raise err
         manifest[key] = {
             "key": key, "title": s.title, "publisher": s.publisher, "url": s.url,
             "file": s.filename, "bytes": n, "sha256": sha,

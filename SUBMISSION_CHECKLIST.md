@@ -11,10 +11,11 @@
 - [x] v0.6.0: 87 tests + fetch (all sources) + `fetch-outages` + `fetch-lifts` + build + `build-region ara` + bulletin on Windows 10
 - [x] 1:36 narrated video (station mode) public on the v0.2.0 GitHub release
 - [x] v0.8.0 / v0.8.1 / v0.9.0 pushed (agent transcript + history tab, EN/FR interface, two agents with field reports in Relate, agent replay, hourly live-demo workflow); 96 pytest + 13 e2e
-- [x] README and docs/DEVPOST_SUBMISSION.md describe v0.9.0
-- [x] Hourly live demo running: `UNLOCK_PRIM_KEY` + `UNLOCK_IDFM_ODS_KEY` set as repository secrets (18 Nov), manual run 44386227278 green, Pages redeployed
-- [x] Final video (≤ 2 min, EN/FR subtitles) produced — re-captured on the v0.10 demo before upload
-- [x] Rules re-read in full on 17 Nov 2026 (relate.devpost.com, /rules, /resources, /updates, forum): video ≤ 2 min, public `relate`-tagged repo, setup instructions, a video *or a working demo link*, tools/AI statement; judges should be able to clone, run and see the graph without asking
+- [x] v0.10.0 / v0.10.1 pushed (map-first UI, trip sharing, repair preview, 24 Nov NeTEx layout fix); 108 pytest + 14 e2e
+- [x] README and docs/DEVPOST_SUBMISSION.md describe v0.10.x
+- [x] Hourly live demo running: `UNLOCK_PRIM_KEY` + `UNLOCK_IDFM_ODS_KEY` set as repository secrets (18 Nov); history observations committed 21–23 Nov; 0.10.1 re-triggered 24 Nov evening after the NeTEx breakage
+- [x] Final film v7 (118 s, EN narration, EN/FR subtitles, thumbnail) QC-measured 24 Nov — awaiting upload
+- [x] Rules re-read in full on 24 Nov 2026 (relate.devpost.com, /rules, /updates — no change since 17 Nov): video ≤ 2 min, public `relate`-tagged repo, setup instructions, a video *or a working demo link*, tools/AI statement; judges should be able to clone, run and see the graph without asking
 - [x] Zero-install demo link (GitHub Pages) — no login, region mode, clearly labelled snapshot
 - [ ] Submit a draft early on Devpost (public voting is open; edits allowed until the deadline)
 - [ ] Devpost form: title, tagline, description, video link, repo link, screenshots, tool/AI statement (text ready in docs/DEVPOST_SUBMISSION.md — only the video link is missing)
