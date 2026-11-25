@@ -182,5 +182,13 @@
   "feed_last_lift_update": "2026-10-09T09:53:34",
   "feed_non_lift_last_update": "2026-11-25T01:24:48",
   "lift_content_sha": "26d13bcc5dfe923a3c419e0fc9f31415b5c9ce16c2f1d32cc09d79be8cd9c1a2"
+ },
+ {
+  "observed_at": "2026-11-25T09:49:48+00:00",
+  "lifts": 356,
+  "messages": 1045,
+  "feed_last_lift_update": "2026-10-09T09:53:34",
+  "feed_non_lift_last_update": "2026-11-25T10:47:55",
+  "lift_content_sha": "26d13bcc5dfe923a3c419e0fc9f31415b5c9ce16c2f1d32cc09d79be8cd9c1a2"
  }
 ]
