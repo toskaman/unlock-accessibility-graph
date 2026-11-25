@@ -7,7 +7,7 @@
   "lifts_one_resolved_end": 2,
   "lifts_two_resolved_ends": 101,
   "lifts_with_status_record": 103,
-  "lines_non_bus": 85,
+  "lines_non_bus": 86,
   "netex_stop_places_in_region": 326,
   "netex_stop_places_total": 2800,
   "quay_step_free_ACCESSIBLE": 149,
@@ -19,10 +19,10 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 313,
   "stations_unmatched_to_zone": 13,
-  "status_AVAILABLE": 95,
-  "status_UNAVAILABLE": 6,
+  "status_AVAILABLE": 86,
+  "status_UNAVAILABLE": 15,
   "status_UNKNOWN": 2,
-  "zone_line_links": 753,
+  "zone_line_links": 762,
   "zones": 313
  },
  "space_roles": {

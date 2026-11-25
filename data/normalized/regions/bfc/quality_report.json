@@ -19,8 +19,8 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 195,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 53,
-  "status_UNAVAILABLE": 2,
+  "status_AVAILABLE": 41,
+  "status_UNAVAILABLE": 14,
   "status_UNKNOWN": 2,
   "zone_line_links": 616,
   "zones": 195
@@ -36,8 +36,8 @@
   "NAMED_SPACE": 56,
   "VOIE_TOKEN": 71,
   "NAMED_SPACE_WITH_TRACK": 8,
-  "UNSPECIFIED_END": 9,
-  "NAME_VOIE_TOKEN": 6
+  "NAME_VOIE_TOKEN": 6,
+  "UNSPECIFIED_END": 9
  },
  "unmatched_tokens": [
   {

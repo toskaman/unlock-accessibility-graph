@@ -19,8 +19,8 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 145,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 99,
-  "status_UNAVAILABLE": 10,
+  "status_AVAILABLE": 91,
+  "status_UNAVAILABLE": 18,
   "status_UNKNOWN": 3,
   "zone_line_links": 427,
   "zones": 145
@@ -44,13 +44,13 @@
   },
   {
    "station": "Septèmes-les-Vallons",
-   "lift_id": "f6ab887b-46fe-44bb-b066-ec97207fe2ad",
-   "token": "a"
+   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "token": "b"
   },
   {
    "station": "Septèmes-les-Vallons",
-   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
-   "token": "b"
+   "lift_id": "f6ab887b-46fe-44bb-b066-ec97207fe2ad",
+   "token": "a"
   },
   {
    "station": "Arles",

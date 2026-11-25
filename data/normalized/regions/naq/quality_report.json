@@ -19,8 +19,8 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 298,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 95,
-  "status_UNAVAILABLE": 8,
+  "status_AVAILABLE": 94,
+  "status_UNAVAILABLE": 9,
   "status_UNKNOWN": 12,
   "zone_line_links": 802,
   "zones": 298
@@ -68,13 +68,13 @@
   },
   {
    "station": "Châtellerault",
-   "lift_id": "a4438948-86f5-4a83-84fb-8f523ee31b75",
-   "token": "1"
+   "lift_id": "3fde76c4-a183-423f-8dad-3272da33add9",
+   "token": "2"
   },
   {
    "station": "Châtellerault",
-   "lift_id": "3fde76c4-a183-423f-8dad-3272da33add9",
-   "token": "2"
+   "lift_id": "a4438948-86f5-4a83-84fb-8f523ee31b75",
+   "token": "1"
   },
   {
    "station": "Libourne",
