@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-26T12:23:58+00:00",
+"observed_at": "2026-11-26T22:19:38+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,16 +8,16 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 30238783,
-"sha256": "643ca01d54401633c0a7f1b799e196962ffb2dab884a368edd8267ba2c82d301",
-"retrieved_at": "2026-11-26T12:23:58+00:00",
+"bytes": 28984818,
+"sha256": "51be4fcf3d441a3eef45adb374eaca26a6dd86f1bedd0f521ed37d4abef13be5",
+"retrieved_at": "2026-11-26T22:19:38+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-26T13:20:42",
+"feed_non_lift_last_update": "2026-11-26T23:18:27",
 "counts": {
 "lifts": 356,
 "messages": 1045,
