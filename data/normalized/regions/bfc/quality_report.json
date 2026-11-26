@@ -1,12 +1,12 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3424,
   "gtfs_stop_areas_matching_zdc": 0,
-  "lifts": 57,
+  "lifts": 67,
   "lifts_no_resolved_end": 3,
   "lifts_one_resolved_end": 3,
-  "lifts_two_resolved_ends": 51,
-  "lifts_with_status_record": 57,
+  "lifts_two_resolved_ends": 61,
+  "lifts_with_status_record": 67,
   "lines_non_bus": 80,
   "netex_stop_places_in_region": 195,
   "netex_stop_places_total": 2800,
@@ -19,25 +19,26 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 195,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 53,
-  "status_UNAVAILABLE": 2,
-  "status_UNKNOWN": 2,
+  "status_AVAILABLE": 43,
+  "status_UNAVAILABLE": 18,
+  "status_UNKNOWN": 6,
   "zone_line_links": 616,
   "zones": 195
  },
  "space_roles": {
-  "EXIT": 16,
-  "CONNECTOR": 19,
-  "UNRESOLVED_PLATFORM": 5,
-  "PLATFORM": 73,
+  "EXIT": 18,
+  "CONNECTOR": 23,
+  "UNRESOLVED_PLATFORM": 8,
+  "PLATFORM": 80,
   "UNSPECIFIED": 9
  },
  "serves_derivations": {
-  "NAMED_SPACE": 56,
-  "VOIE_TOKEN": 71,
+  "NAMED_SPACE": 71,
+  "VOIE_TOKEN": 76,
   "NAMED_SPACE_WITH_TRACK": 8,
+  "UNSPECIFIED_END": 9,
   "NAME_VOIE_TOKEN": 6,
-  "UNSPECIFIED_END": 9
+  "QUAI_NUMBER": 2
  },
  "unmatched_tokens": [
   {
@@ -69,9 +70,24 @@
    "station": "Le Creusot - Montceau-les-Mines - Montchanin TGV",
    "lift_id": "eecf9a5a-7fe8-4c86-a49a-5cc49af99799",
    "token": "1"
+  },
+  {
+   "station": "Chalon-sur-Saône",
+   "lift_id": "d597c619-7e4e-4b5d-b3ef-8f90324e4b65",
+   "token": "5"
+  },
+  {
+   "station": "Chalon-sur-Saône",
+   "lift_id": "329643d3-ba6c-47c1-85ab-3c1903a6960a",
+   "token": "3"
+  },
+  {
+   "station": "Chalon-sur-Saône",
+   "lift_id": "77bc5106-b8c9-4c25-af18-d0807266dfb3",
+   "token": "4"
   }
  ],
- "unmatched_token_count": 6,
+ "unmatched_token_count": 9,
  "dept_unknown_stations": [
   "Bellevigny",
   "Belz - Ploemel",

@@ -1,12 +1,12 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3424,
   "gtfs_stop_areas_matching_zdc": 0,
-  "lifts": 112,
-  "lifts_no_resolved_end": 0,
+  "lifts": 115,
+  "lifts_no_resolved_end": 1,
   "lifts_one_resolved_end": 0,
-  "lifts_two_resolved_ends": 112,
-  "lifts_with_status_record": 112,
+  "lifts_two_resolved_ends": 114,
+  "lifts_with_status_record": 115,
   "lines_non_bus": 50,
   "netex_stop_places_in_region": 145,
   "netex_stop_places_total": 2800,
@@ -19,22 +19,24 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 145,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 97,
-  "status_UNAVAILABLE": 13,
-  "status_UNKNOWN": 2,
+  "status_AVAILABLE": 91,
+  "status_UNAVAILABLE": 19,
+  "status_UNKNOWN": 5,
   "zone_line_links": 427,
   "zones": 145
  },
  "space_roles": {
-  "PLATFORM": 120,
-  "EXIT": 26,
+  "PLATFORM": 121,
+  "EXIT": 28,
   "CONNECTOR": 48,
-  "UNRESOLVED_PLATFORM": 3
+  "UNRESOLVED_PLATFORM": 3,
+  "UNSPECIFIED": 2
  },
  "serves_derivations": {
-  "NAMED_SPACE": 138,
-  "VOIE_TOKEN": 121,
-  "NAMED_SPACE_WITH_TRACK": 1
+  "NAMED_SPACE": 140,
+  "VOIE_TOKEN": 123,
+  "NAMED_SPACE_WITH_TRACK": 1,
+  "UNSPECIFIED_END": 2
  },
  "unmatched_tokens": [
   {
@@ -44,22 +46,22 @@
   },
   {
    "station": "Septèmes-les-Vallons",
-   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
-   "token": "b"
-  },
-  {
-   "station": "Septèmes-les-Vallons",
    "lift_id": "f6ab887b-46fe-44bb-b066-ec97207fe2ad",
    "token": "a"
   },
   {
-   "station": "Arles",
-   "lift_id": "6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
-   "token": "bis"
+   "station": "Septèmes-les-Vallons",
+   "lift_id": "02712160-6bfa-4e69-bef4-a9cc6a0c658b",
+   "token": "b"
   },
   {
    "station": "Arles",
    "lift_id": "430a3731-974d-46c6-b1f8-6a3b98ca30d2",
+   "token": "bis"
+  },
+  {
+   "station": "Arles",
+   "lift_id": "6ff28b7a-9b77-4f9a-9d2c-0f06c019b20a",
    "token": "bis"
   }
  ],

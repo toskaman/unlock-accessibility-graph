@@ -1,12 +1,12 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3424,
   "gtfs_stop_areas_matching_zdc": 0,
-  "lifts": 60,
+  "lifts": 62,
   "lifts_no_resolved_end": 1,
   "lifts_one_resolved_end": 2,
-  "lifts_two_resolved_ends": 57,
-  "lifts_with_status_record": 60,
+  "lifts_two_resolved_ends": 59,
+  "lifts_with_status_record": 62,
   "lines_non_bus": 47,
   "netex_stop_places_in_region": 114,
   "netex_stop_places_total": 2800,
@@ -19,26 +19,26 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 114,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 58,
-  "status_UNAVAILABLE": 1,
-  "status_UNKNOWN": 1,
+  "status_AVAILABLE": 54,
+  "status_UNAVAILABLE": 5,
+  "status_UNKNOWN": 3,
   "zone_line_links": 332,
   "zones": 114
  },
  "space_roles": {
-  "PLATFORM": 54,
+  "PLATFORM": 56,
   "EXIT": 16,
-  "CONNECTOR": 22,
+  "CONNECTOR": 23,
   "UNSPECIFIED": 4,
   "UNRESOLVED_PLATFORM": 1,
   "PRIVATE": 3
  },
  "serves_derivations": {
-  "VOIE_TOKEN": 63,
+  "VOIE_TOKEN": 65,
+  "NAMED_SPACE": 71,
   "NAMED_SPACE_WITH_TRACK": 5,
-  "NAMED_SPACE": 69,
-  "NAME_VOIE_TOKEN": 2,
-  "UNSPECIFIED_END": 4
+  "UNSPECIFIED_END": 4,
+  "NAME_VOIE_TOKEN": 2
  },
  "unmatched_tokens": [
   {

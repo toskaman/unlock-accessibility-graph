@@ -1,12 +1,12 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3424,
   "gtfs_stop_areas_matching_zdc": 0,
-  "lifts": 157,
+  "lifts": 163,
   "lifts_no_resolved_end": 0,
-  "lifts_one_resolved_end": 5,
-  "lifts_two_resolved_ends": 152,
-  "lifts_with_status_record": 157,
+  "lifts_one_resolved_end": 8,
+  "lifts_two_resolved_ends": 155,
+  "lifts_with_status_record": 163,
   "lines_non_bus": 103,
   "netex_stop_places_in_region": 335,
   "netex_stop_places_total": 2800,
@@ -19,25 +19,25 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 335,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 140,
-  "status_UNAVAILABLE": 9,
-  "status_UNKNOWN": 8,
+  "status_AVAILABLE": 139,
+  "status_UNAVAILABLE": 13,
+  "status_UNKNOWN": 11,
   "zone_line_links": 930,
   "zones": 335
  },
  "space_roles": {
-  "PLATFORM": 174,
-  "CONNECTOR": 53,
+  "PLATFORM": 181,
+  "CONNECTOR": 54,
   "EXIT": 21,
-  "UNSPECIFIED": 5,
+  "UNSPECIFIED": 8,
   "UNRESOLVED": 6,
   "UNRESOLVED_PLATFORM": 12
  },
  "serves_derivations": {
-  "NAMED_SPACE": 182,
-  "VOIE_TOKEN": 183,
-  "NAME_VOIE_TOKEN": 9,
-  "UNSPECIFIED_END": 5,
+  "NAMED_SPACE": 185,
+  "VOIE_TOKEN": 187,
+  "NAME_VOIE_TOKEN": 12,
+  "UNSPECIFIED_END": 8,
   "NAMED_SPACE_WITH_TRACK": 1,
   "QUAI_NUMBER": 1
  },
@@ -54,6 +54,11 @@
   },
   {
    "station": "Lunéville",
+   "lift_id": "850c86f4-c901-4c85-a053-2c022fd33a0e",
+   "token": "2"
+  },
+  {
+   "station": "Lunéville",
    "lift_id": "a38479f8-b350-4935-ada0-e6e9d1cbbe6b",
    "token": "3"
   },
@@ -63,19 +68,14 @@
    "token": "1"
   },
   {
-   "station": "Lunéville",
-   "lift_id": "850c86f4-c901-4c85-a053-2c022fd33a0e",
+   "station": "Obernai",
+   "lift_id": "baec25ba-7c06-4ec7-a9c3-e4540710f8a0",
    "token": "2"
   },
   {
    "station": "Obernai",
    "lift_id": "ce21383f-7e2f-4e2c-b943-54f44ee3febb",
    "token": "1"
-  },
-  {
-   "station": "Obernai",
-   "lift_id": "baec25ba-7c06-4ec7-a9c3-e4540710f8a0",
-   "token": "2"
   },
   {
    "station": "Saint-Dizier",
@@ -89,13 +89,13 @@
   },
   {
    "station": "Lingolsheim",
-   "lift_id": "c276b0c7-82f7-42c2-9424-0098e0aec85c",
-   "token": "2"
+   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
+   "token": "1"
   },
   {
    "station": "Lingolsheim",
-   "lift_id": "64634b2f-2702-464f-aa1c-98b99a3adaf6",
-   "token": "1"
+   "lift_id": "c276b0c7-82f7-42c2-9424-0098e0aec85c",
+   "token": "2"
   }
  ],
  "unmatched_token_count": 11,

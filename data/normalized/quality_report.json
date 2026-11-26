@@ -2,11 +2,11 @@
  "counts": {
   "gtfs_stop_areas": 15408,
   "gtfs_stop_areas_matching_zdc": 15408,
-  "lifts": 588,
-  "lifts_no_resolved_end": 1,
+  "lifts": 591,
+  "lifts_no_resolved_end": 2,
   "lifts_one_resolved_end": 249,
-  "lifts_two_resolved_ends": 338,
-  "lifts_with_status_record": 588,
+  "lifts_two_resolved_ends": 340,
+  "lifts_with_status_record": 591,
   "lines_non_bus": 51,
   "netex_stop_places_in_region": 401,
   "netex_stop_places_total": 2800,
@@ -20,34 +20,29 @@
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
   "status_AVAILABLE": 553,
-  "status_UNAVAILABLE": 28,
-  "status_UNKNOWN": 7,
+  "status_UNAVAILABLE": 29,
+  "status_UNKNOWN": 9,
   "zone_line_links": 551,
   "zones": 392
  },
  "space_roles": {
-  "PLATFORM": 515,
+  "PLATFORM": 518,
   "CONNECTOR": 107,
   "UNRESOLVED": 15,
   "EXIT": 179,
   "UNRESOLVED_PLATFORM": 72,
-  "UNSPECIFIED": 251,
+  "UNSPECIFIED": 253,
   "PRIVATE": 11
  },
  "serves_derivations": {
-  "NAMED_SPACE": 553,
-  "VOIE_TOKEN": 512,
-  "UNSPECIFIED_END": 251,
+  "VOIE_TOKEN": 515,
+  "NAMED_SPACE": 556,
   "QUAI_NUMBER": 72,
+  "UNSPECIFIED_END": 253,
   "NAMED_SPACE_WITH_TRACK": 21,
   "NAME_VOIE_TOKEN": 3
  },
  "unmatched_tokens": [
-  {
-   "station": "Bécon les Bruyères",
-   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
-   "token": "1"
-  },
   {
    "station": "Bécon les Bruyères",
    "lift_id": "ea4d188e-1272-4375-8a40-613f8f7c312e",
@@ -59,9 +54,24 @@
    "token": "2"
   },
   {
+   "station": "Bécon les Bruyères",
+   "lift_id": "4ff22592-041c-484e-9e3a-89107d165de8",
+   "token": "1"
+  },
+  {
    "station": "Maisons-Laffitte",
    "lift_id": "8071c3f1-03a8-47d7-9f53-969efeb33f52",
    "token": "1bis"
+  },
+  {
+   "station": "Poissy",
+   "lift_id": "ea1bc89c-ff18-43bf-9f85-3abf9a66c2fc",
+   "token": "2b"
+  },
+  {
+   "station": "Poissy",
+   "lift_id": "ea1bc89c-ff18-43bf-9f85-3abf9a66c2fc",
+   "token": "6"
   },
   {
    "station": "Poissy",
@@ -77,16 +87,6 @@
    "station": "Poissy",
    "lift_id": "29100985-b12d-405a-a61d-4e36c2547edb",
    "token": "8"
-  },
-  {
-   "station": "Poissy",
-   "lift_id": "ea1bc89c-ff18-43bf-9f85-3abf9a66c2fc",
-   "token": "2b"
-  },
-  {
-   "station": "Poissy",
-   "lift_id": "ea1bc89c-ff18-43bf-9f85-3abf9a66c2fc",
-   "token": "6"
   },
   {
    "station": "Aubergenville Élisabethville",
@@ -105,11 +105,6 @@
   },
   {
    "station": "Étampes",
-   "lift_id": "6097a9a6-a2d5-4c3f-b985-5f11dde9675d",
-   "token": "1b"
-  },
-  {
-   "station": "Étampes",
    "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
    "token": "2b"
   },
@@ -117,6 +112,11 @@
    "station": "Étampes",
    "lift_id": "a94a36cb-3083-4c0c-af13-22b1b756d9f4",
    "token": "c"
+  },
+  {
+   "station": "Étampes",
+   "lift_id": "6097a9a6-a2d5-4c3f-b985-5f11dde9675d",
+   "token": "1b"
   },
   {
    "station": "Vernouillet - Verneuil",
@@ -145,23 +145,23 @@
   },
   {
    "station": "Musée d'Orsay",
-   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
-   "token": "b"
-  },
-  {
-   "station": "Musée d'Orsay",
    "lift_id": "19ca5b46-f039-4674-ba8b-bd6424e8bffe",
    "token": "a"
   },
   {
-   "station": "Choisy-le-Roi",
-   "lift_id": "9ee7bac6-868d-4c14-a691-4f849476db43",
-   "token": "2"
+   "station": "Musée d'Orsay",
+   "lift_id": "e263764c-481a-449f-b396-7aa8bd4b18a0",
+   "token": "b"
   },
   {
    "station": "Choisy-le-Roi",
    "lift_id": "7b4f582e-860f-4118-aeed-06dc78575ed6",
    "token": "1"
+  },
+  {
+   "station": "Choisy-le-Roi",
+   "lift_id": "9ee7bac6-868d-4c14-a691-4f849476db43",
+   "token": "2"
   },
   {
    "station": "Massy Europe",
@@ -190,13 +190,13 @@
   },
   {
    "station": "Sartrouville",
-   "lift_id": "7ec69609-4096-4332-b493-c2e3cedc74bc",
-   "token": "b"
+   "lift_id": "5fdba95c-fad1-43de-90ba-3245314996af",
+   "token": "c"
   },
   {
    "station": "Sartrouville",
-   "lift_id": "5fdba95c-fad1-43de-90ba-3245314996af",
-   "token": "c"
+   "lift_id": "7ec69609-4096-4332-b493-c2e3cedc74bc",
+   "token": "b"
   },
   {
    "station": "Créteil Pompadour",
@@ -225,13 +225,13 @@
   },
   {
    "station": "Meudon Val Fleury",
-   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
-   "token": "b"
+   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
+   "token": "a"
   },
   {
    "station": "Meudon Val Fleury",
-   "lift_id": "65017eac-b3e6-4ee5-b207-817112e5cc28",
-   "token": "a"
+   "lift_id": "7c1efaf6-760b-4208-aef6-13e1fe8e0b63",
+   "token": "b"
   },
   {
    "station": "Invalides",
@@ -240,28 +240,13 @@
   },
   {
    "station": "Saint-Michel-sur-Orge",
-   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
-   "token": "2"
-  },
-  {
-   "station": "Saint-Michel-sur-Orge",
    "lift_id": "0fd31561-9d78-4cf9-90ce-4b3430f44d24",
    "token": "1"
   },
   {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "c"
-  },
-  {
-   "station": "Argenteuil",
-   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
-   "token": "e"
-  },
-  {
-   "station": "Argenteuil",
-   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
-   "token": "1"
+   "station": "Saint-Michel-sur-Orge",
+   "lift_id": "b79cb2af-e4b7-4702-b054-bbbd969b8b1e",
+   "token": "2"
   },
   {
    "station": "Argenteuil",
@@ -279,14 +264,24 @@
    "token": "2"
   },
   {
+   "station": "Argenteuil",
+   "lift_id": "9c94daf2-4638-439d-ade1-1ebf2f6b9099",
+   "token": "1"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "c"
+  },
+  {
+   "station": "Argenteuil",
+   "lift_id": "851b356c-05df-4714-a791-05ba7652fbc9",
+   "token": "e"
+  },
+  {
    "station": "Bondy",
    "lift_id": "4cefeb96-a975-439d-bd91-1ed9cddfac59",
    "token": "f"
-  },
-  {
-   "station": "Ivry-sur-Seine",
-   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
-   "token": "2"
   },
   {
    "station": "Ivry-sur-Seine",
@@ -294,14 +289,19 @@
    "token": "1"
   },
   {
-   "station": "Us",
-   "lift_id": "52001851-cfa3-4e1d-9281-cd024adcc306",
-   "token": "a"
+   "station": "Ivry-sur-Seine",
+   "lift_id": "75f08cec-1378-4eff-a351-74a70f3bc3a4",
+   "token": "2"
   },
   {
    "station": "Us",
    "lift_id": "0b14bd5e-aa7b-450a-a9d0-721a1bc12466",
    "token": "b"
+  },
+  {
+   "station": "Us",
+   "lift_id": "52001851-cfa3-4e1d-9281-cd024adcc306",
+   "token": "a"
   },
   {
    "station": "Les Clairières de Verneuil",
@@ -315,23 +315,23 @@
   },
   {
    "station": "Champlan",
-   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
-   "token": "1"
-  },
-  {
-   "station": "Champlan",
    "lift_id": "dddf2744-9119-4ec6-8ea6-65bf405be828",
    "token": "1"
   },
   {
-   "station": "Corbeil-Essonnes",
-   "lift_id": "34617d89-69c4-465b-a4af-d62f0f72775a",
-   "token": "2"
+   "station": "Champlan",
+   "lift_id": "6cce1d1e-6e80-435e-9347-6d6fa9cb764d",
+   "token": "1"
   },
   {
    "station": "Corbeil-Essonnes",
    "lift_id": "ac39fbdf-686c-42e1-91c8-92291f89c941",
    "token": "3"
+  },
+  {
+   "station": "Corbeil-Essonnes",
+   "lift_id": "34617d89-69c4-465b-a4af-d62f0f72775a",
+   "token": "2"
   },
   {
    "station": "Saint-Quentin en Yvelines - Montigny-le-Bretonneux",

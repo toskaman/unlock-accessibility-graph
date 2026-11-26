@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3423,
+  "gtfs_stop_areas": 3424,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 115,
   "lifts_no_resolved_end": 2,
@@ -19,8 +19,8 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 298,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 96,
-  "status_UNAVAILABLE": 7,
+  "status_AVAILABLE": 93,
+  "status_UNAVAILABLE": 10,
   "status_UNKNOWN": 12,
   "zone_line_links": 802,
   "zones": 298
@@ -53,13 +53,13 @@
   },
   {
    "station": "Cenon",
-   "lift_id": "d842cbc1-0c8f-46d4-83f2-544b63d07f52",
-   "token": "2"
+   "lift_id": "553897c7-5f38-4054-97b1-df84176badfa",
+   "token": "1"
   },
   {
    "station": "Cenon",
-   "lift_id": "553897c7-5f38-4054-97b1-df84176badfa",
-   "token": "1"
+   "lift_id": "d842cbc1-0c8f-46d4-83f2-544b63d07f52",
+   "token": "2"
   },
   {
    "station": "Talence Médoquine",
@@ -68,13 +68,13 @@
   },
   {
    "station": "Châtellerault",
-   "lift_id": "3fde76c4-a183-423f-8dad-3272da33add9",
-   "token": "2"
+   "lift_id": "a4438948-86f5-4a83-84fb-8f523ee31b75",
+   "token": "1"
   },
   {
    "station": "Châtellerault",
-   "lift_id": "a4438948-86f5-4a83-84fb-8f523ee31b75",
-   "token": "1"
+   "lift_id": "3fde76c4-a183-423f-8dad-3272da33add9",
+   "token": "2"
   },
   {
    "station": "Libourne",
