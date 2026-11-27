@@ -1,6 +1,6 @@
 {
  "counts": {
-  "gtfs_stop_areas": 3424,
+  "gtfs_stop_areas": 3423,
   "gtfs_stop_areas_matching_zdc": 0,
   "lifts": 228,
   "lifts_no_resolved_end": 6,
@@ -19,10 +19,10 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 327,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 205,
-  "status_UNAVAILABLE": 16,
+  "status_AVAILABLE": 215,
+  "status_UNAVAILABLE": 6,
   "status_UNKNOWN": 7,
-  "zone_line_links": 1157,
+  "zone_line_links": 1152,
   "zones": 327
  },
  "space_roles": {
