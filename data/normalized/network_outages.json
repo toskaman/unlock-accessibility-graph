@@ -1,6 +1,6 @@
 {
 "format": "unlock-outages/1",
-"observed_at": "2026-11-27T23:26:07+00:00",
+"observed_at": "2026-11-28T07:42:16+00:00",
 "source": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "dataset": {
 "key": "prim_lift_outages",
@@ -8,22 +8,22 @@
 "publisher": "Île-de-France Mobilités (PRIM)",
 "url": "https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/line_reports",
 "file": "prim/line_reports.json",
-"bytes": 30319581,
-"sha256": "1f30e05afa3d051fc7a9c4d314a124dd78797bc00240f7a798898b192ac46d0b",
-"retrieved_at": "2026-11-27T23:26:07+00:00",
+"bytes": 29823987,
+"sha256": "5fa602429f2f4d8d92c138915fc87099126b78ff0d0dd5d15afd058f0965211f",
+"retrieved_at": "2026-11-28T07:42:16+00:00",
 "publisher_modified": null,
 "licence": "Licence Mobilités",
 "licence_url": "https://prim.iledefrance-mobilites.fr/fr/licences",
 "role": "Lift outages published to passengers and re-users for RATP and SNCF stations, with location text"
 },
 "feed_last_lift_update": "2026-10-09T09:53:34",
-"feed_non_lift_last_update": "2026-11-28T00:20:21",
+"feed_non_lift_last_update": "2026-11-28T08:41:31",
 "counts": {
 "lifts": 356,
 "messages": 1045,
 "affects_DIRECTION_MATCH": 35,
 "affects_LINE_AT_STATION": 76,
-"affects_RAIL_STATION": 477,
+"affects_RAIL_STATION": 478,
 "operator_RATP": 89,
 "operator_SNCF_GC": 264,
 "operator_UNKNOWN": 3,
@@ -2607,12 +2607,6 @@
 "placement": "PLACED",
 "affects": [
 {
-"platform_id": "IDFM:470776",
-"line_id": "IDFM:C01748",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
 "platform_id": "IDFM:471341",
 "line_id": "IDFM:C01748",
 "derivation": "RAIL_STATION",
@@ -2693,25 +2687,19 @@
 "placement": "PLACED",
 "affects": [
 {
-"platform_id": "IDFM:471473",
-"line_id": "IDFM:C01857",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
 "platform_id": "IDFM:471592",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:471646",
+"platform_id": "IDFM:472582",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:472582",
+"platform_id": "IDFM:472718",
 "line_id": "IDFM:C01857",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -3012,19 +3000,7 @@
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
-"platform_id": "IDFM:471918",
-"line_id": "IDFM:C01744",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
 "platform_id": "IDFM:472308",
-"line_id": "IDFM:C01744",
-"derivation": "RAIL_STATION",
-"line_derivation": "ALL_LINES_AT_STATION"
-},
-{
-"platform_id": "IDFM:472319",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"
@@ -7960,6 +7936,18 @@
 "placement": "PLACED",
 "affects": [
 {
+"platform_id": "IDFM:471389",
+"line_id": "IDFM:C01744",
+"derivation": "RAIL_STATION",
+"line_derivation": "DIRECTION_NAMES_LINE"
+},
+{
+"platform_id": "IDFM:471389",
+"line_id": "IDFM:C02370",
+"derivation": "RAIL_STATION",
+"line_derivation": "DIRECTION_NAMES_LINE"
+},
+{
 "platform_id": "IDFM:472104",
 "line_id": "IDFM:C01744",
 "derivation": "RAIL_STATION",
@@ -11439,6 +11427,12 @@
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
+"platform_id": "IDFM:472979",
+"line_id": "IDFM:C01745",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
 "platform_id": "IDFM:monomodalStopPlace:47910",
 "line_id": "IDFM:C01731",
 "derivation": "RAIL_STATION",
@@ -11622,6 +11616,12 @@
 "line_derivation": "ALL_LINES_AT_STATION"
 },
 {
+"platform_id": "IDFM:472979",
+"line_id": "IDFM:C01745",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
 "platform_id": "IDFM:monomodalStopPlace:47910",
 "line_id": "IDFM:C01731",
 "derivation": "RAIL_STATION",
@@ -11682,6 +11682,12 @@
 "affects": [
 {
 "platform_id": "IDFM:471462",
+"line_id": "IDFM:C01745",
+"derivation": "RAIL_STATION",
+"line_derivation": "ALL_LINES_AT_STATION"
+},
+{
+"platform_id": "IDFM:472979",
 "line_id": "IDFM:C01745",
 "derivation": "RAIL_STATION",
 "line_derivation": "ALL_LINES_AT_STATION"

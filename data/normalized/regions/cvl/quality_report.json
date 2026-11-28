@@ -19,10 +19,10 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 155,
   "stations_unmatched_to_zone": 4,
-  "status_AVAILABLE": 26,
-  "status_UNAVAILABLE": 5,
+  "status_AVAILABLE": 29,
+  "status_UNAVAILABLE": 2,
   "status_UNKNOWN": 4,
-  "zone_line_links": 543,
+  "zone_line_links": 540,
   "zones": 155
  },
  "space_roles": {

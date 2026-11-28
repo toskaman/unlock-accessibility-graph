@@ -19,8 +19,8 @@
   "stations_dept_zdc_postalregion": 385,
   "stations_matched_to_zone": 401,
   "stations_unmatched_to_zone": 0,
-  "status_AVAILABLE": 550,
-  "status_UNAVAILABLE": 32,
+  "status_AVAILABLE": 548,
+  "status_UNAVAILABLE": 34,
   "status_UNKNOWN": 9,
   "zone_line_links": 551,
   "zones": 392
